@@ -4,6 +4,8 @@
 //  The contents of this file are implicitly included at the beginning of every source file.
 //
 
+//  Note use of -fmodules and -fcxx-modules for Other C Flags and Other C++ Flags
+
 #import <Availability.h>
 
 #ifndef __IPHONE_5_0

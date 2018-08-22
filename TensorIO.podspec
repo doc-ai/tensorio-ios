@@ -9,34 +9,21 @@
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of TensorIO.'
+  s.summary          = 'An Objective-C wrapper to TensorFlow Lite.'
+  s.description      = 'Perform inference with TensorFlow Lite models using all the conveniences of Objective-C'
+  s.homepage         = 'https://github.com/doc.ai/TensorIO'
+  s.license          = { :type => 'Apache 2', :file => 'LICENSE' }
+  s.author           = { 'philip@doc.ai' => 'philip@doc.ai' }
+  s.source           = { :git => 'https://github.com/doc-ai/TensorIO.git', :tag => s.version.to_s }
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
-
-  s.homepage         = 'https://github.com/phil@phildow.net/TensorIO'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'phil@phildow.net' => 'phil@phildow.net' }
-  s.source           = { :git => 'https://github.com/phil@phildow.net/TensorIO.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.ios.deployment_target = '8.0'
-
+  s.ios.deployment_target = '9.3'
   s.source_files = 'TensorIO/Classes/**/*'
+  s.static_framework = true
+  s.frameworks = 'Foundation', 'AVFoundation', 'CoreMedia', 'Accelerate', 'VideoToolbox'
+  s.dependency 'TensorFlowLite'
+  s.library = 'c++'
   
-  # s.resource_bundles = {
-  #   'TensorIO' => ['TensorIO/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.xcconfig = {
+    'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers"',
+  }
 end

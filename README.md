@@ -5,6 +5,19 @@
 [![License](https://img.shields.io/cocoapods/l/TensorIO.svg?style=flat)](https://cocoapods.org/pods/TensorIO)
 [![Platform](https://img.shields.io/cocoapods/p/TensorIO.svg?style=flat)](https://cocoapods.org/pods/TensorIO)
 
+TensorIO is ...
+
+TensorIO is machine learning on iOS in four lines of code:
+
+```objc
+UIImage *image = [UIImage imageNamed:@"example-image"];
+TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
+
+id<TIOModel> model = [TIOModelBundleManager.sharedManager bundleWithId:@"mobilenet-v2-100-224-unquantized"].newModel;
+NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
+
+```
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
