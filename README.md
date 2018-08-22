@@ -35,8 +35,8 @@ pod 'TensorIO'
 
 ## Author
 
-phil@phildow.net, phil@phildow.net
+philip@doc.ai
 
 ## License
 
-TensorIO is available under the MIT license. See the LICENSE file for more info.
+TensorIO is available under the Apache 2 license. See the LICENSE file for more info.
