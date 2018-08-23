@@ -34,7 +34,7 @@
     [super viewDidLoad];
 	
     // Acquire am example image
- 
+    
     UIImage *image = [UIImage imageNamed:@"example-image"];
     
     // TIOModels take inputs and produce outputs that conform to the TIOData protocol
@@ -42,13 +42,11 @@
     
     TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
-    // The TIOModelBundleManager returns instances of TIOModelBundle, which we can call newModel on to acquire a TIOModel
-    // We previously loaded the models folder in the AppDelegate, see application:didFinishLaunchingWithOptions:
-    // A model can also be loaded directly from a path
+    // Load the model directory from a model bundle at some path
+    // You may also use the TIOModelBundleManager and TIOModelBundle to manage multiple models
     
-    id<TIOModel> model = [TIOModelBundleManager.sharedManager bundleWithId:@"mobilenet-v2-100-224-unquantized"].newModel;
-    
-    // Would be nice if that were [TIOModel modelWithId:@""]
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"mobilenet_v2_1.4_224" ofType:@"tfbundle" inDirectory:@"models"];
+    id<TIOModel> model = [TIOTFLiteModel modelWithBundleAtPath:path];
     
     // Acquire the named results from performing inference on the model
     // This returns a dictionary whose entries corresponding to the names of the model outputs in the model.json file

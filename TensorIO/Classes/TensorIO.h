@@ -14,6 +14,11 @@
 #import "TIOVisionModelHelpers.h"
 #import "TIOVisionPipeline.h"
 
+// TFLite Model
+
+#import "TIOTFLiteModel.h"
+#import "TIOTFLiteErrors.h"
+
 // TIO Data
 
 #import "TIOData.h"

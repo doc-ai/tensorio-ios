@@ -20,23 +20,11 @@
 
 #import "AppDelegate.h"
 
-#import "TensorIO.h"
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    
-    // Load model bundles
-    
-    NSString *modelsPath = [[NSBundle mainBundle] pathForResource:@"models" ofType:nil];
-    NSError *error;
-    
-    if ( ![TIOModelBundleManager.sharedManager loadModelBundlesAtPath:modelsPath error:&error] ) {
-        NSLog(@"Unable to load model bundles at path %@", modelsPath);
-    }
-    
     return YES;
 }
 

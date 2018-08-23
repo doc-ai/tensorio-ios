@@ -60,8 +60,7 @@
     XCTAssertNotNil(dequantizer);
     XCTAssert(dequantizer(255) == 1);
     XCTAssert(dequantizer(0) == 0);
-    XCTAssert(dequantizer(127) >= (0.5-epsilon));
-    XCTAssert(dequantizer(127) <= (0.5+epsilon));
+    XCTAssertEqualWithAccuracy(dequantizer(127), 0.5, epsilon);
 }
 
 - (void)testDataDequantizerForDictReturnsNil {

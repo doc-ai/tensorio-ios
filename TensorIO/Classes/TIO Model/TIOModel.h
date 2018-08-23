@@ -142,6 +142,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle;
 
 /**
+ * Convenience method for initializing a model directly from bundle at some path
+ *
+ * @param path The path to the model bundle folder
+ *
+ * @return instancetype An instance of the model, or `nil`.
+ */
+
++ (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
+
+/**
  * Loads a model into memory.
  *
  * A model should load itself prior to running on any input, but consumers of the model may want
