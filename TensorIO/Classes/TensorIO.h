@@ -18,25 +18,31 @@
 //  limitations under the License.
 //
 
-// TIO Model
+// Model
 
-#import "TIOModelBundleManager.h"
-#import "TIOModelBundle.h"
 #import "TIOModel.h"
-
-#import "TIOModelOptions.h"
+#import "TIOModelBundle.h"
+#import "TIOModelBundleManager.h"
 #import "TIOModelJSONParsing.h"
+#import "TIOModelOptions.h"
 #import "TIOPixelNormalization.h"
 #import "TIOQuantization.h"
 #import "TIOVisionModelHelpers.h"
 #import "TIOVisionPipeline.h"
+
+// Layer Interface
+
+#import "TIOLayerDescription.h"
+#import "TIOLayerInterface.h"
+#import "TIOPixelBufferLayerDescription.h"
+#import "TIOVectorLayerDescription.h"
 
 // TFLite Model
 
 #import "TIOTFLiteModel.h"
 #import "TIOTFLiteErrors.h"
 
-// TIO Data
+// Data
 
 #import "TIOData.h"
 #import "TIOVector.h"
@@ -46,7 +52,7 @@
 #import "NSDictionary+TIOData.h"
 #import "NSNumber+TIOData.h"
 
-// TIO Utilities
+// Utilities
 
 #import "NSArray+TIOExtensions.h"
 #import "NSDictionary+TIOExtensions.h"
