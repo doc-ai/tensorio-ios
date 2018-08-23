@@ -101,7 +101,7 @@
     XCTAssert([vectorResults[@"output_z"] isEqualToNumber:@(25)]);
 }
 
-// MARK: - Vector, Matrix, Tesnor Tests
+// MARK: - Vector, Matrix, Tensor Tests
 
 - (void)test1x1VectorsModel {
     TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"1_in_1_out_vectors_test"];
