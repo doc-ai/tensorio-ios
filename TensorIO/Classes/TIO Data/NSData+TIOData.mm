@@ -31,9 +31,11 @@
     
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
     
-    if ( description.isQuantized && dequantizer ) {
+    if ( description.isQuantized && dequantizer != nil ) {
         assert(NO);
         return nil;
+    } else if ( description.isQuantized && dequantizer == nil ) {
+        return [[NSData alloc] initWithBytes:bytes length:length];
     } else {
         return [[NSData alloc] initWithBytes:bytes length:length];
     }
@@ -44,9 +46,11 @@
     
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
     
-    if ( description.isQuantized && quantizer ) {
+    if ( description.isQuantized && quantizer != nil ) {
         assert(NO);
         return;
+    } else if ( description.isQuantized && quantizer == nil ) {
+        [self getBytes:buffer length:length];
     } else {
         [self getBytes:buffer length:length];
     }
