@@ -60,3 +60,17 @@ TensorIO is available under the Apache 2 license. See the LICENSE file for more 
 
 ## Usage
 
+Because the umbrella TensorIO header imports headers with C++ syntax, any files that use TensorIO must have Obj-C++ extensions. Rename any `.m` file to `.mm`.
+
+Then wherever you'd like to use TensorIO, add:
+
+```objc
+#import <TensorIO/TensorIO.h>
+```
+
+To use TensorIO as a module, make sure `use_frameworks!` is uncommented in your Podfile, then wherever you'd lke to use TensorIO, add:
+
+```objc
+@import TensorIO;
+```
+
