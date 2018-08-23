@@ -35,7 +35,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 See *MainViewController.mm* for sample code. See *TensorIOTFLiteModelIntegrationTests.mm* for examples on how to run inference on models with multiple kinds of inputs and outputs. iPython notebooks for the test models may be found in the *notebooks* directory in this repo.
 
- For more detailed information about using TensorIO, refer to the **Usage** section below.
+ For more detailed information about using TensorIO, refer to the **Usag** sections below.
 
 ## Requirements
 
@@ -60,6 +60,8 @@ TensorIO is available under the Apache 2 license. See the LICENSE file for more 
 
 ## Usage
 
+### Importing TensorIO
+
 Because the umbrella TensorIO header imports headers with C++ syntax, any files that use TensorIO must have Obj-C++ extensions. Rename any `.m` file to `.mm`.
 
 Then wherever you'd like to use TensorIO, add:
@@ -68,9 +70,44 @@ Then wherever you'd like to use TensorIO, add:
 #import <TensorIO/TensorIO.h>
 ```
 
-To use TensorIO as a module, make sure `use_frameworks!` is uncommented in your Podfile, then wherever you'd lke to use TensorIO, add:
+To use TensorIO as a module, make sure `use_frameworks!` is uncommented in your Podfile. You may also need to add the following *Other C Flags* to your project's build settings:
+
+```
+-fmodules
+-fcxx-modules
+```
+
+Then wherever you'd lke to use TensorIO, add:
 
 ```objc
 @import TensorIO;
 ```
+
+*Because of how Objective-C++ and Objective-C headers interract, you may only import TensorIO into implementation files. If you must reference TensorIO types in your header files, forward declare them with `@class` and `@protocol` directives:*
+
+**MyClass.h**
+
+```objc
+@import Foundation;
+
+@class TIOTFLiteModel;
+
+@interface MyClass: NSObject
+@property TIOTFLiteModel *model;
+@end
+```
+
+**MyClass.m**
+
+```objc
+#import "MyClass.h"
+
+@import TensorIO;
+
+@implementation MyClass
+@end
+
+```
+
+### Basic Usage
 
