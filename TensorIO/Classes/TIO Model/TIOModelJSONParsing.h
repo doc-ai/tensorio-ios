@@ -77,13 +77,13 @@ _Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary *dict);
  * Converts an array of shape values to an `TIOImageVolume`.
  */
 
-TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> *shape);
+TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> *_Nullable shape);
 
 /**
  * Converts a pixel format string such as `"RGB"` or `"BGR"` to a Core Video pixel format type.
  */
 
-OSType PixelFormatForString(NSString* formatString);
+OSType TIOPixelFormatForString(NSString * _Nullable formatString);
 
 /**
  * Returns the TIOPixelNormalizer given an input dictionary.

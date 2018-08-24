@@ -109,7 +109,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     
     // Pixel Format
 
-    OSType pixelFormat = PixelFormatForString(dict[@"format"]);
+    OSType pixelFormat = TIOPixelFormatForString(dict[@"format"]);
 
     if ( pixelFormat == TIOPixelFormatTypeInvalid ) {
         NSLog(@"Expected dict.format string to be RGB or BGR in model.json, found %@", dict[@"format"]);
@@ -177,7 +177,7 @@ _Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary *dict) {
     return nil;
 }
 
-TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> *shape) {
+TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> * _Nullable shape) {
     
     if ( shape == nil ) {
         NSLog(@"Expected input.shape array field in model.json, none found");
@@ -196,7 +196,7 @@ TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> *shape) {
     };
 }
 
-OSType PixelFormatForString(NSString* string) {
+OSType TIOPixelFormatForString(NSString * _Nullable string) {
     
     if ( string == nil ) {
         NSLog(@"Expected input.format string in model.json, none found");

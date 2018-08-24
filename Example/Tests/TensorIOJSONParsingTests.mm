@@ -330,4 +330,71 @@
     XCTAssertNil(dequantizer);
 }
 
+// MARK: - Pixel Format
+
+- (void)testPixelFormatForStringParsesRGB {
+    // it should parse RGB
+    
+    OSType pixelFormat = TIOPixelFormatForString(@"RGB");
+    XCTAssertEqual(pixelFormat, kCVPixelFormatType_32ARGB);
+}
+
+- (void)testPixelFormatForStringParsesBGR {
+    // it should parse BGR
+    
+    OSType pixelFormat = TIOPixelFormatForString(@"BGR");
+    XCTAssertEqual(pixelFormat, kCVPixelFormatType_32BGRA);
+}
+
+- (void)testPixelFormatForStringReturnsInvalidForNilString {
+    // it should return invalid
+    
+    OSType pixelFormat = TIOPixelFormatForString(nil);
+    XCTAssertEqual(pixelFormat, TIOPixelFormatTypeInvalid);
+}
+
+- (void)testPixelFormatForStringReturnsInvalidForOtherString {
+    // it should return invalid
+    
+    OSType pixelFormat = TIOPixelFormatForString(@"CMYK");
+    XCTAssertEqual(pixelFormat, TIOPixelFormatTypeInvalid);
+}
+
+// MARK: - Image Volume
+
+- (void)testImageVolumeForShapeReturnsInvalidForNilInput {
+    // it should return invalid
+    
+    NSDictionary *dict = @{};
+    NSArray<NSNumber*> *shape = dict[@"shape"];
+    
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    XCTAssertTrue(TIOImageVolumesEqual(volume, kTIOImageVolumeInvalid));
+}
+
+- (void)testImageVolumeForShapeReturnsInvalidForVolumesGreaterThanThreeDimensions {
+    // it should return invalid
+    
+    NSDictionary *dict = @{  @"shape": @[ @(224), @(224), @(3), @(1) ] };
+    NSArray<NSNumber*> *shape = dict[@"shape"];
+    
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    XCTAssertTrue(TIOImageVolumesEqual(volume, kTIOImageVolumeInvalid));
+}
+
+- (void)testImageVolumeForShapeParsesVolume {
+    // it should return an image volume
+    
+    NSDictionary *dict = @{  @"shape": @[ @(224), @(224), @(3) ] };
+    NSArray<NSNumber*> *shape = dict[@"shape"];
+    TIOImageVolume expectedVolume = {
+        .width = 224,
+        .height = 224,
+        .channels = 3
+    };
+    
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    XCTAssertTrue(TIOImageVolumesEqual(volume, expectedVolume));
+}
+
 @end
