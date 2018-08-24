@@ -58,7 +58,7 @@
         }
     } else  if ( description.isQuantized && quantizer == nil ) {
         for ( NSInteger i = 0; i < self.count; i++ ) {
-            ((uint8_t *)buffer)[i] = ((NSNumber*)self[i]).charValue;
+            ((uint8_t *)buffer)[i] = ((NSNumber*)self[i]).unsignedCharValue;
         }
     } else {
         for ( NSInteger i = 0; i < self.count; i++ ) {

@@ -30,6 +30,7 @@
 		E31C7996212DF38300139C90 /* TensorIOJSONParsingTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31C7995212DF38300139C90 /* TensorIOJSONParsingTests.mm */; };
 		E31C7998212E069B00139C90 /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E31C7997212E069B00139C90 /* models-tests */; };
 		E31C799A212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31C7999212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm */; };
+		E31C79DF212F63AC00139C90 /* TensorIODataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31C79DE212F63AC00139C90 /* TensorIODataTests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		E31C7995212DF38300139C90 /* TensorIOJSONParsingTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOJSONParsingTests.mm; sourceTree = "<group>"; };
 		E31C7997212E069B00139C90 /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
 		E31C7999212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOTFLiteModelIntegrationTests.mm; sourceTree = "<group>"; };
+		E31C79DE212F63AC00139C90 /* TensorIODataTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIODataTests.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 			children = (
 				6003F5BB195388D20070C39A /* Tests.m */,
 				E31C7995212DF38300139C90 /* TensorIOJSONParsingTests.mm */,
+				E31C79DE212F63AC00139C90 /* TensorIODataTests.mm */,
 				E31C7999212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
@@ -377,6 +380,7 @@
 			files = (
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
 				E31C7996212DF38300139C90 /* TensorIOJSONParsingTests.mm in Sources */,
+				E31C79DF212F63AC00139C90 /* TensorIODataTests.mm in Sources */,
 				E31C799A212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

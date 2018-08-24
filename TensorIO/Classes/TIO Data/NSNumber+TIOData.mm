@@ -32,7 +32,7 @@
     if ( description.isQuantized && dequantizer != nil ) {
         return [self initWithFloat:dequantizer(((uint8_t *)buffer)[0])];
     } else if ( description.isQuantized && dequantizer == nil ) {
-        return [self initWithChar:((uint8_t *)buffer)[0]];
+        return [self initWithUnsignedChar:((uint8_t *)buffer)[0]];
     } else {
         return [self initWithFloat:((float_t *)buffer)[0]];
     }
@@ -46,7 +46,7 @@
     if ( description.isQuantized && quantizer != nil ) {
         ((uint8_t *)buffer)[0] = quantizer(self.floatValue);
     } else if ( description.isQuantized && quantizer == nil ) {
-        ((uint8_t *)buffer)[0] = self.charValue;
+        ((uint8_t *)buffer)[0] = self.unsignedCharValue;
     } else {
         ((float_t *)buffer)[0] = self.floatValue;
     }
