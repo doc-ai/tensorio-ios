@@ -690,11 +690,11 @@ quantized_value = unquantized_value * 255
 We can perform a sanity check with a few values:
 
 ```
-Unquantized Value	Quantized Value
-=================	===============
-0					0
-0.5					127
-1					255
+Unquantized Value	-> Quantized Value
+
+0	->	0
+0.5	->	127
+1	->	255
 ```
 
 Similarly, for this example the output values produced by inference are a softmax probability distribution. The quantized model necessarily produces outputs in a range from 0 to 255, and we want to convert those back to a valid probability distribution. This will again be a uniform redistribution of values, and all we need to do is apply a scaling factor of 1.0/255.0:
@@ -716,8 +716,8 @@ Instruct TensorIO to perform quantization by adding a *quantization* field to an
     "name": "vector-input",
     "type": "array",
     "shape": [4],
-    "quantize": @{
-      "scale": 255
+    "quantize": {
+      "scale": 255,
       "bias": 0
     }
   },
@@ -765,7 +765,7 @@ Dequantization is the inverse of quantization and is specified for an output lay
 For dequantization, scale and bias are applied in inverse order, where the bias values will be the negative equivalent of a quantization bias, and the scale will be the inverse of a quantization scale.
 
 ```
-dequantized_value =  (quantized_value + bias) * scale 
+dequantized_value = (quantized_value + bias) * scale 
 ```
 
 For example, to dequantize from a range of 0 to 255 back to a range of 0 to 1, use a bias of 0 and a scale of 1.0/255.0:
@@ -776,8 +776,8 @@ For example, to dequantize from a range of 0 to 255 back to a range of 0 to 1, u
     "name": "vector-output",
     "type": "array",
     "shape": [4],
-    "dequantize": @{
-      "scale": 0.004
+    "dequantize": {
+      "scale": 0.004,
       "bias": 0
     }
   }
