@@ -45,6 +45,12 @@ See the **Usage** section below for important notes on adding TensorIO to your p
 		* [ A Complete Example ](#quantization-complete-example)
 		* [ Quantized Models without Quantization ](#quantization-without-quantization)
 	* [ Working with Image Data ](#images)
+		* [A Basic Example](#images-basic-example)
+		* [ Pixel Buffers ](#pixel-buffer)
+		* [ The Format Field ](#pixel-format)
+		* [ Pixel Normalization ](#pixel-normalization)
+		* [ Pixel Denormalization ](#pixel-normalization)
+		* [ A Complete Example ](#pixel-buffer-complete-example)
 	* [ Advanced Usage ](#advanced-usage)
 <!-- * [ Net Runner ](#netrunner) -->
 * [ FAQ ](#faq)
@@ -72,16 +78,15 @@ See *MainViewController.mm* for sample code. See *TensorIOTFLiteModelIntegration
 <a name="requirements"></a>
 ## Requirements
 
-TensorIO works on iOS 9.3 or higher. You must be using XCode 10.0 (beta) or higher.
+TensorIO works on iOS 9.3 or higher.
 
 <a name="installation"></a>
 ## Installation
 
-TensorIO is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+<!-- TensorIO is available through [CocoaPods](https://cocoapods.org).  --> Until TensorIO is listed with CocoaPods, to instal it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'TensorIO'
+pod 'TensorIO', :git => 'https://github.com/doc-ai/TensorIO'
 ```
 
 <a name="author"></a>
@@ -304,7 +309,7 @@ Let's look at each of these fields in detail.
 <a name="model-field"></a>
 #### The Model Field
 
-The model field is a dictionary that itself supports three entries:
+The model field is a dictionary that itself contains three entries:
 
 ```json
 "model": {
@@ -393,7 +398,7 @@ From a tensor's perspective all shapes are represented as an unrolled vector of 
 
 When you order your data into an array of bytes or an array of numbers in preparation for running a model on it, unroll the bytes using row major ordering. That is, traverse higher order dimensions before lower ones.
 
-For example, a two dimensional matrix with the following values should be unrolled by columns first and then row. That is, start with the first row, traverse every column, move to the second row, traverse every column, and so on:
+For example, a two dimensional matrix with the following values should be unrolled across columns first and then row. That is, start with the first row, traverse every column, move to the second row, traverse every column, and so on:
 
 ```objc
 [ [ 1 2 3 ]
@@ -438,8 +443,8 @@ NSArray *vectorInput = @[ ... ]; // with 8 values
 NSArray *matrixInput = @[ ... ]; // with 100 values in row major order
 
 NSArray *arrayInputs = @[
-	vectorInput,
-	matrixInput
+  vectorInput,
+  matrixInput
 ];
 
 [model runOn:arrayInputs];
@@ -452,8 +457,8 @@ NSArray *vectorInput = @[ ... ]; // with 8 values
 NSArray *matrixInput = @[ ... ]; // with 100 values in row major order
 
 NSDictionary *dictionaryInputs = @{
-	@"vector-input": vectorInput,
-	@"matrix-input": matrixInput
+  @"vector-input": vectorInput,
+  @"matrix-input": matrixInput
 };
 
 [model runOn:dictionaryInputs];
@@ -661,11 +666,11 @@ Quantization is a technique for reducing model sizes by representing weights wit
 
 In TF Lite, models represent weights with and perform operations on four byte floating point representations of data (`float_t`). These models receive floating point inputs and produce floating point outputs. Floating point models can represent numeric values in the range -3.4E+38 to +3.4E+38. Pretty sweet.
 
-A quantized TF Lite model works with single byte representations `(uint8_t)`. It expects single byte inputs and it produces single byte outputs. A single signed byte can represent numbers in the range of 0 to 255. Still pretty cool.
+A quantized TF Lite model works with single byte representations `(uint8_t)`. It expects single byte inputs and it produces single byte outputs. A single unsigned byte can represent numbers in the range of 0 to 255. Still pretty cool.
 
 When you use a quantized model but start with floating point data, you must first transform that four byte representation into one byte. This is called *quantization*. The model's single byte output must also be transformed back into a floating point representation, an inverse process called *dequantization*. TensorIO can do both for you.
 
-<i color="red">TensorIO 0.1.0 does not currently support quantization, if only because we haven't tested it against quantized models. What follows is how quantization will work. TensorIO does not support dequantization either, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1.</i>
+<i color="red">TensorIO 0.1.0 does not currently support quantization, if only because we haven't tested it against quantized models. What follows is how quantization will work. TensorIO 0.1.0 does not support dequantization either, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1.</i>
 
 <a name="quantization-basic-example"></a>
 #### A basic example
@@ -681,7 +686,7 @@ First, when working with a quantized TF Lite model, change the *model.quantized*
 },
 ```
 
-For this example, the input data coming from application space will always be in a floating point range of 0 to 1. Our quantized model requires those values to be in the range of 0 to 255. Quantization in TF Lite uniformly distributes a floating point range over a single byte range, so all we need to do here is apply a scaling factor of 255:
+For this example, the input data coming from application space will always be in a floating point range from 0 to 1. Our quantized model requires those values to be in the range from 0 to 255. Quantization in TF Lite uniformly distributes a floating point range over a single byte range, so all we need to do here is apply a scaling factor of 255:
 
 ```
 quantized_value = unquantized_value * 255
@@ -690,7 +695,7 @@ quantized_value = unquantized_value * 255
 We can perform a sanity check with a few values:
 
 ```
-Unquantized Value	-> Quantized Value
+Unquantized Value -> Quantized Value
 
 0	->	0
 0.5	->	127
@@ -708,7 +713,7 @@ Note that the transformations are inverses of one anther, and a sanity check pro
 <a name="quantization-field"></a>
 #### The Quantization Field
 
-Instruct TensorIO to perform quantization by adding a *quantization* field to an input dictionary:
+Instruct TensorIO to perform quantization by adding a *quantize* field to an input dictionary:
 
 ```json
 "inputs": [
@@ -741,7 +746,7 @@ quantized_value = scale * unquantized_value + bias
 
 *standard*
 
-The *standard* is a string value corresponding to one of a number of commonly used quantization functions. Its presence overrides the *scale* and *bias* fields.
+The *standard* field is a string value corresponding to one of a number of commonly used quantization functions. Its presence overrides the *scale* and *bias* fields.
 
 TensorIO currently has support for two standard quantizations. The ranges tell TensorIO *what values you are quantizing from*:
 
@@ -796,7 +801,7 @@ A standard set of dequantization functions is supported and describes the range 
 }
 ```
 
-<i color="red">TensorIO 0.1.0 does not support dequantization, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1. Use the "[0,1]" standard dequantization shown above</i>
+<i color="red">TensorIO 0.1.0 does not support dequantization, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1. Use the "[0,1]" standard dequantization shown above.</i>
 
 Once these fields have been specified in a *model.json* file, no additional change is required in the Objective-C code. Simply send floating point values in and get floating point values back
 
@@ -859,7 +864,7 @@ The model bundle will again have two files in it:
 
 ```
 myquantizedmodel.tfbundle
-  - models.jsn
+  - model.json
   - model.tflite
 ```
 
@@ -939,7 +944,7 @@ NSArray *quxOutputs = inference[@"qux-outputs"]; // length 6 in range [-1,1]
 <a name="quantization-without-quantization"></a>
 #### Quantized Models without Quantization
 
-The *quantized* field is optional for *array* input layers, even when the model is quantized. When you use a quantized model without including a *quantize* field, it is up to you to ensure that the data you send to TensorIO for inference is already quantized and that you treat output data as still quantized. 
+The *quantize* field is optional for *array* input layers, even when the model is quantized. When you use a quantized model without including a *quantize* field, it is up to you to ensure that the data you send to TensorIO for inference is already quantized and that you treat output data as still quantized. 
 
 This could be because your input and output data is only ever in the range of [0,255], for example pixel data, or because you are quantizing the floating point inputs yourself before sending them to the model.
 
@@ -963,7 +968,228 @@ NSArray *quantizedOutput = inference[@"quantized-output"]; // in range [0,255]
 <a name="images"></a>
 ### Working with Image Data
 
-...
+TensorIO has built-in support for working with image data and can both perform inference on image data and return image data as an output. A key concept when working with image data is the *pixel buffer*, which is a pixel by pixel representation of an image in memory. 
+
+TensorIO works with pixel buffers and includes a wrapper for native `CVPixelBufferRef` but also provides utility functions for converting instances of `UIImage` to and from pixel buffers.
+
+Let's see an example.
+
+<a name="images-basic-example"></a>
+#### A Basic Example
+
+As always, inform TensorIO that an input layer expects pixel buffer data by modifying that layer's description in *model.json*. Set its *type* to *image*. You must also specify the *shape* and additionally the *format* of the image as either *RGB* or *BGR*. More on image formats below. 
+
+For now let's assume the tensor takes image volumes of size 224x224x3 with RGB byte ordering:
+
+```json
+"inputs": [
+  {
+    "name": "image-input",
+    "type": "image",
+    "shape": [224,224,3],
+    "format": "RGB"
+  }
+]
+```
+
+We can then pass image data to this model by wrapping an image's pixel buffer in a `TIOPixelBuffer`, which knows how to copy pixel data to the tensor given the format:
+
+```objc
+UIImage *image = [UIImage imageNamed:@"example-image"];
+CVPixelBufferRef pixelBuffer = image.pixelBuffer;
+TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+
+NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
+```
+
+<a name="pixel-buffer"></a>
+#### Pixel Buffers
+
+A pixel buffer is a pixel by pixel representation of image data laid out in a contiugous block of memory. On iOS some APIs provide raw pixel buffers by default, such as some of the AVFoundation APIs, while in other cases we must construct pixel buffers ourselves.
+
+A pixel buffer always has a size, which includes the width and height, as well as a format, such as ARGB or BGRA, which lets the buffer know how many *channels* of data there are for each pixel and in what order those bytes appear. In the case of ARGB and BGRA, there are four channels of data arranged in alpha-red-green-blue or blue-green-red-alpha, respectively.
+
+The ARGB and BGRA pixel buffers on iOS represent each pixel using four bytes of memory, with a single byte allocated to each channel. Each color in the pixel is represented by a range of values from 0 to 255, and the alpha channel also, allowing a pixel to represent over 16 million colors with 256 alpha values.
+
+<a name="pixel-format"></a>
+#### The Format Field
+
+Tensors operate on pixel buffers with specific byte orderings. Imagine the memory for a pixel buffer in ARGB format. The top left pixel at [0,0] will appear first, then the pixel to its right at [1,0], and to its right at [2,0] and so on, with the bytes appearing in the order alpha-red-green-blue:
+
+```
+[ARGB][ARGB][ARGB][ARGB][ARGB]...
+```
+
+Now imagine what that same image looks like to the tensor in BGRA format:
+
+```
+[BGRA][BGRA][BGRA][BGRA][BGRA]...
+```
+
+The byte ordering, which is to say, the format of the pixel buffer, definitely matters! 
+
+You must let TensorIO know what kind of byte ordering an input layer expects via the *format* field. Consequently you must know what kind of byte ordering your model expects.
+
+TensorIO supports two byte orderings for models, *RGB* and *BGR*. Models ignore the alpha channel and don't expect it to be present, so TensorIO internally skips it when copying ARGB or BGRA pixel buffer bytes into  tensors that expect RGB or BGR data.
+
+```json
+{
+  "format": "RGB"
+}
+
+{
+  "format": "BGR"
+}
+```
+
+<a name="pixel-normalization"></a>
+#### Pixel Normalization
+
+Notice that pixels are represented using a single byte of data for each color channel, a `uint8_t`. Recall what we know about TF Lite models and quantized models. By default, TF Lite works with four byte floating point representations of data, `float_t`, unless the model is quantized, in which case the model works with single byte `uint8_t` representations of data. 
+
+Hm. It looks like pixel buffer data is already "quantized"! 
+
+In fact, when working with quantized models, you may pass pixel buffer data directly to input layers and read it directly from output layers without needing to transform the data. Those models already work on values in a range from 0 to 255, and pixel buffer data is exactly in this range.
+
+Models that are not quantized, however, expect pixel buffer data in a floating point representation, and they will typically want it in a *normalized* range of values, usually from 0 to 1 or from -1 to 1. The process of converting pixel values from a single byte representation to a floating point representation is called *normalization*, and TensorIO includes built-in support for it.
+
+**The Normalize Field**
+
+As always, you will need to update the description of an input layer to indicate what kind of normalization you want. Include the *normalize* field in the layer's entry. Like the *quantize* field it takes either two entries or a single entry: either *scale* and *bias*, or a *standard* field, with the difference that bias may be applied on a per channel basis.
+
+*scale*
+
+The *scale* field is a numeric value that specifies the scaling factor to apply to incoming pixel data.
+
+*bias*
+
+The *bias* field is a dictionari value that specifies the bias to apply to incoming pixel data, on a *per channel* basis, and itself includes three entries, *r*, *g*, and *b*.
+
+Together, a *scale* and *bias* entry might look like:
+
+```json
+"normalize": {
+  "scale": 0.004
+  "bias": {
+    "r": -0.485
+    "g": -0.457
+    "b": -0.408
+  }
+}
+```
+
+And together, TensorIO applies the following equation to any pixel data sent to this layer:
+
+```
+normalized_red_value   = scale * red_value   + red_bias
+normalized_green_value = scale * green_value + green_bias
+normalized_blue_value  = scale * blue_value  + blue_bias
+``` 
+
+*standard*
+
+The *standard* field is a string value corresponding to one of a number of commonly used normalizations. Its presence overrides the *scale* and *bias* fields.
+
+TensorIO currently supports two standard normalizations. The ranges tell TensorIO *what values you are normalizing to*:
+
+```json
+"normalize": {
+  "standard": "[0,1]"
+}
+
+"normalize": {
+  "standard": "[-1,1]"
+}
+```
+
+<a name="pixel-normalization"></a>
+#### Pixel Denormalization
+
+TensorIO can also read pixel data from output tensors and reconstruct pixel buffers from them. When reading pixel data from an unquantized model it will often be necessary to convert the values from a normalized floating point representation back to `uint8_t` values in the range of 0 to 255. This process is called *denormalization*, and once again TensorIO has built in support for it.
+
+To denormalize pixel data add a *denormalize* field to an output layer's description. Like the *normalize* field this field takes either *scale* and *bias* entries or a *standard* entry. The fields work as they do for normalization but as their inverses.
+
+For bias and scale, the following equation will be applied:
+
+```
+red_value   = (normalized_red_value   + red_bias)   * scale
+green_value = (normalized_green_value + green_bias) * scale
+blue_value  = (normalized_blue_value  + blue_bias)  * scale
+```
+
+Similarly, TensorIO supports two standard denormalizations. The ranges tell TensorIO *what values you are normalizing from*:
+
+```json
+"denormalize": {
+  "standard": "[0,1]"
+}
+
+"denormalize": {
+  "standard": "[-1,1]"
+}
+```
+
+<a name="pixel-buffer-complete-example"></a>
+#### A Complete Example
+
+Let's look at a complete example. This is the unquantized MobileNetV2 image classification model provided by TensorFlow. It takes a single input, image data of size 224x224x3 in RGB format, and produces a single output, a vector of 1000 softmax probabilities identifying the object in the image. It expects image data to be normalized to a range from -1 to 1, and we would like to label the output data.
+
+The model bundle folder might look something like:
+
+```
+mobilenet-model.tfbundle
+  - model.json
+  - model.tflite
+  - assets
+    - labels.txt
+```
+
+The *model.json* file might look like:
+
+```json
+{
+  "name": "MobileNet V2 1.0 224",
+  "details": "MobileNet V2 with a width multiplier of 1.0 and an input resolution of 224x224. \n\nMobileNets are based on a streamlined architecture that have depth-wise separable convolutions to build light weight deep neural networks. Trained on ImageNet with categories such as trees, animals, food, vehicles, person etc. MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications.",
+  "id": "mobilenet-v2-100-224-unquantized",
+  "version": "1",
+  "author": "Andrew G. Howard, Menglong Zhu, Bo Chen, Dmitry Kalenichenko, Weijun Wang, Tobias Weyand, Marco Andreetto, Hartwig Adam",
+  "license": "Apache License. Version 2.0 http://www.apache.org/licenses/LICENSE-2.0",
+  "model": {
+    "file": "model.tflite",
+    "quantized": false,
+  },
+  "inputs": [
+    {
+      "name": "image",
+      "type": "image",
+      "shape": [224,224,3],
+      "format": "RGB",
+      "normalize": {
+        "standard": "[-1,1]"
+      }
+    },
+  ],
+  "outputs": [
+    {
+      "name": "classification",
+      "type": "array",
+      "shape": [1,1000],
+      "labels": "labels.txt"
+    },
+  ]
+}
+```
+
+And we can use this model as follows:
+
+```objc
+UIImage *image = [UIImage imageNamed:@"example-image"];
+TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
+
+NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
+NSDictionary<NSString*,NSNumber*> *classification = inference[@"classification"];
+
+```
 
 <a name="advanced-usage"></a>
 ### Advanced Usage
