@@ -68,7 +68,7 @@ _Nullable TIODataQuantizer TIODataQuantizerNone();
  *
  * Data is dequantized according to the following equation:
  * @code
- * dequantized_value = value * scale + bias
+ * dequantized_value = (value + bias) * scale
  * @endcode
  */
 

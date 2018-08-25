@@ -36,9 +36,17 @@ See the **Usage** section below for important notes on adding TensorIO to your p
 		* [ The Model Field ](#model-field)
 		* [ The Inputs Field ](#inputs-field)
 		* [ The Outputs Field ](#outputs-field)
+		* [ A Complete Example ](#complete-example)
 	* [ Quantization and Dequantization ](#quantization)
+		* [ A basic Example ](#quantization-basic-example)
+		* [ The Quantization Field ](#quantization-field)
+		* [ The Dequantization Field ](#quantization-dequantization-field)
+		* [ Selecting the Scale and Bias Terms ](#selecting-scale-bias)
+		* [ A Complete Example ](#quantization-complete-example)
+		* [ Quantized Models without Quantization ](#quantization-without-quantization)
 	* [ Working with Image Data ](#images)
 	* [ Advanced Usage ](#advanced-usage)
+<!-- * [ Net Runner ](#netrunner) -->
 * [ FAQ ](#faq)
 
 <a name="overview"></a>
@@ -59,12 +67,12 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 See *MainViewController.mm* for sample code. See *TensorIOTFLiteModelIntegrationTests.mm* for examples on how to run inference on models with multiple kinds of inputs and outputs. iPython notebooks for the test models may be found in the *notebooks* directory in this repo.
 
- For more detailed information about using TensorIO, refer to the **Usag** section below.
+ For more detailed information about using TensorIO, refer to the **Usage** section below.
 
 <a name="requirements"></a>
 ## Requirements
 
-TensorIO works on iOS 9.3 or higher.
+TensorIO works on iOS 9.3 or higher. You must be using XCode 10.0 (beta) or higher.
 
 <a name="installation"></a>
 ## Installation
@@ -107,7 +115,7 @@ To use TensorIO as a module, make sure `use_frameworks!` is uncommented in your 
 -fcxx-modules
 ```
 
-Then wherever you'd lke to use TensorIO, add:
+Then wherever you'd like to use TensorIO, add:
 
 ```objc
 @import TensorIO;
@@ -211,6 +219,30 @@ The *assets* directory is optional and contains any additional assets required b
 
 Because image classification is such a common task, TensorIO includes built-in support for it, and no additional code is required. You'll simply need to specify a labels file in the model's json description, and that takes us to our next section.
 
+**Using Model Bundles**
+
+TensorIO provides the `TIOModelBundle` class to encapsulate information about a model, parse the metadata for a model from the *model.json* file, and manage access to files in the *assets* directory.
+
+You may load a bundle from a known path:
+
+```objc
+NSString *path = @"...";
+TIOModelBundle *bundle = [[TIOModelBundle alloc] initWithPath:path];
+```
+
+Model bundles may also be used to instantiate model instances with the `newModel` method. Model bundles effectively function as model factories, and each call to this method produces a new model instance:
+
+```objc
+id<TIOModel> model = [bundle newModel];
+```
+
+Classes that conform to the `TIOModel` protocol also implement a convenience method for instantiating models directly from a model bundle path:
+
+```objc
+NSString *path = @"...";
+TIOTFLiteModel *model = [TIOTFLiteModel modelWithBundleAtPath:path];
+```
+
 <a name="model-json"></a>
 ### The Model JSON File
 
@@ -218,13 +250,17 @@ One TensorIO's goals is to reduce the amount of new code required to integrate T
 
 The primary work of using a TF Lite model in an iOS application involves copying bytes of the right length to the right place. TF Lite is a C++ library, and the input and output tensors are exposed as C style buffers. In order to use a model we must copy byte representations of our input data into these buffers, ask TensorFlow to perform inference on those bytes, and then extract the byte representations back out of them.
 
-Models interfaces can vary widely. Some models may have a single intput and single output layer, others multiple inputs with a single output, or vice versa. The layers may be of varying shapes, with some layers taking single values, others an array of values, and yet others taking matrices or volumes of higher dimensions. Some models may work on four byte, floating point representations of data, while others use single byte, unsigned integer representations (these are called *quantized* models, more on them below).
+Model interfaces can vary widely. Some models may have a single input and single output layer, others multiple inputs with a single output, or vice versa. The layers may be of varying shapes, with some layers taking single values, others an array of values, and yet others taking matrices or volumes of higher dimensions. Some models may work on four byte, floating point representations of data, while others use single byte, unsigned integer representations (these are called *quantized* models, more on them below).
 
-Consequently, every time we want to try a different model, or even the same model with a slightly different interface, we must modify the code that moves bytes into and out of the buffers.
+Consequently, every time we want to try a different model, or even the same model with a slightly different interface, we must modify the code that moves bytes into and out of  buffers.
 
-TensorIO abstracts the work of copying bytes into and out of tensors and replaces that imperative code with a declarative language you're already familiar with: json.
+TensorIO abstracts the work of copying bytes into and out of tensors and replaces that imperative code with a declarative language you already know: json.
 
 The *model.json* file in a TensorIO bundle contains metadata about your underlying model as well as a description of the model's input and output layers. TensorIO parses those descriptions and then, when you perform inference with the model, internally handles all the byte copying operations, taking into account layer shapes, data sizes, data transformations, and even output labeling. All you have to do is provide data to the model and ask for the data out of it.
+
+The *model.json* file is the primary point of interaction with the TensorIO library. Any code you write for preparing data for a model and reading data from a model will depend on a description of the model's input and output layers that you provide in this file.
+
+Let's have a closer look.
 
 <a name="basic-structure"></a>
 #### Basic Structure
@@ -257,7 +293,7 @@ The *model.json* file has the following basic structure:
 
 ```
 
-In addition to the model's metadata, such as name, identifier, and version, all of which are required, the json file also includes three important entries, each of which is required as well:
+In addition to the model's metadata, such as name, identifier, version, etc, all of which are required, the json file also includes three important entries, each of which is required as well:
 
 1. The *model* field is a dictionary that contains information about the model itself
 2. The *inputs* field is an array of dictionaries that describe the model's input layers
@@ -274,7 +310,7 @@ The model field is a dictionary that itself supports three entries:
 "model": {
   "file": "model.tflite",
   "quantized": false,
-  "class": "MyCustomClass"
+  "class": "MyOptionalCustomClassName"
 }
 ```
 
@@ -292,7 +328,7 @@ This field is required.
 
 *class*
 
-The *class* field is a string value that contains the Objective-C class name of any custom class you would like to use as an interface to your model. It must conform to the `TIOModel` protocol and ship with your application. By default `TIOTFLiteModel` is used for TensorFlow lite models.
+The *class* field is a string value that contains the Objective-C class name of any custom class you would like to use as an interface to your model. It must conform to the `TIOModel` protocol and ship with your application. By default, if you do not specify a class, the provided  `TIOTFLiteModel` is used for TensorFlow lite models.
 
 This field is optional.
 
@@ -324,7 +360,7 @@ The *type* field specifies the kind of data this tensor expects. Only two types 
 - *array*
 - *image*
 
-Use the *array* type for inputs shapes of any dimension, including single values, vectors, matrices, and higher dimensional tensors. Use the *image* type for image inputs.
+Use the *array* type for shapes of any dimension, including single values, vectors, matrices, and higher dimensional tensors. Use the *image* type for image inputs.
 
 This field is required.
 
@@ -351,11 +387,11 @@ This field is required.
 
 **Unrolling Data**
 
-Although we describe the inputs to a layer in terms of a shape with multiple dimensions, and from the mathematical perspective work with vectors, matrices, and tensors, at a machine level, neither TensorIO nor TensorFlow Lite has a concept of a shape.
+Although we describe the inputs to a layer in terms of shapes with multiple dimensions, and from the mathematical perspective work with vectors, matrices, and tensors, at a machine level, neither TensorIO nor TensorFlow Lite has a concept of a shape.
 
 From a tensor's perspective all shapes are represented as an unrolled vector of numeric values and packed into a contiguous region of memory, i.e. a buffer. Similary, from an Objective-C perspective, all values passed as input to a TensorIO model must already be unrolled into an array of data, either an array of bytes when using `NSData` or an array of `NSNumber` if using `NSArray`.
 
-When you order your data into an array of bytes or an array of numbers in preparation for running a model on them, unroll the bytes using row major ordering. That is, traverse higher order dimensions before lower ones.
+When you order your data into an array of bytes or an array of numbers in preparation for running a model on it, unroll the bytes using row major ordering. That is, traverse higher order dimensions before lower ones.
 
 For example, a two dimensional matrix with the following values should be unrolled by columns first and then row. That is, start with the first row, traverse every column, move to the second row, traverse every column, and so on:
 
@@ -378,7 +414,7 @@ Input to a `TIOModel` may be organized by either index or name, so that both the
 
 **Example**
 
-Here's what the *inputs* field will look like for a model with two input layers, the first a vector with 8 values and the second a 10x10 matrix:
+Here's what the *inputs* field looks like for a model with two input layers, the first a vector with 8 values and the second a 10x10 matrix:
 
 ```json
 "inputs": [
@@ -426,7 +462,7 @@ NSDictionary *dictionaryInputs = @{
 <a name="outputs-field"></a>
 #### The Outputs Field
 
-The *outputs* field is an array of dictionaries that describe the output layers of your model. The *outputs* field is structured the same was as the *inputs* field, and the dictionary contains the same entries as those in the *inputs* field:
+The *outputs* field is an array of dictionaries that describe the output layers of your model. The *outputs* field is structured the same way as the *inputs* field, and the dictionaries contain the same entries as those in the *inputs* field:
 
 ```json
 "outputs": [
@@ -440,7 +476,7 @@ The *outputs* field is an array of dictionaries that describe the output layers 
 
 **The Labels Field**
 
-An *array* type output additionally supports the presence of a *labels* field for classification outputs:
+An *array* type output optionally supports the presence of a *labels* field for classification outputs:
 
 ```json
 "outputs": [
@@ -474,7 +510,7 @@ For example, a self-driving car model might classify three kinds of things in an
 After performing inference the underlying tensorflow model will produce an output with three values corresponding to the softmax probability that this item appears in the image. TensorIO extracts those bytes and packs them into an `NSArray` of `NSNumber`:
 
 ```objc
-NSDictionary *inference = [model runOn:input];
+NSDictionary *inference = (NSDictionary*)[model runOn:input];
 NSArray<NSNumber*> *classifications = inference[@"classification-output"];
 
 // classifications[0] == 0.25
@@ -508,7 +544,7 @@ motorcycle
 Now, the underlying tensorflow model still produces an output with three values corresponding to the softmax probability that this item appears in the image. However, TensorIO now maps labels to those probabilities and returns a dictionary of those mappings:
 
 ```objc
-NSDictionary *inference = [model runOn:input];
+NSDictionary *inference = (NSDictionary*)[model runOn:input];
 NSDictionary<NSString*, NSNumber*> *classifications = inference[@"classification-output"];
 
 // classifications[@"pedestrian"] == 0.25
@@ -540,17 +576,389 @@ Consider a model with two output layers. The first layer outputs a vector of fou
 After performing inference, access the first layer as an array of numbers and the second layer as a single number:
 
 ```objc
-NSDictionary *inference = [model runOn:input];
+NSDictionary *inference = (NSDictionary*)[model runOn:input];
 NSArray<NSNumber*> *vectorOutput = inference[@"vector-output"];
 NSNumber *realOutput = inference[@"real-output"];
 ```
 
 *Real-valued outputs are supported as a convenience. Model outputs may change in a later version of this library and so this convenience may be removed or modified.*
 
+<a name="complete-example"></a>
+#### A Complete Example
+
+Let's see a complete example of a model with two input layers and two output layers. The model takes two vectors, the first with 4 values and the second with 8 values, and outputs two vectors, the first with 3 values and the second with 6.
+
+Our *tfbundle* folder will have the following contents:
+
+```
+mymodel.tfbundle
+  - model.json
+  - model.tflite
+```
+
+The *model.json* file might look something like:
+
+```json
+{
+  "name": "Example Model",
+  "details": "This model takes two vector valued inputs and produces two vector valued outputs",
+  "id": "my-awesome-model",
+  "version": "1",
+  "author": "doc.ai",
+  "license": "Apache 2",
+  "model": {
+    "file": "model.tflite",
+    "quantized": false
+  },
+  "inputs": [
+    {
+      "name": "foo-features",
+      "type": "array",
+      "shape": [4],
+    },
+    {
+      "name": "bar-features",
+      "type": "array",
+      "shape": [8],
+    }
+  ],
+  "outputs": [
+    {
+      "name": "baz-outputs",
+      "type": "array",
+      "shape": [3],
+    },
+    {
+      "name": "qux-outputs",
+      "type": "array",
+      "shape": [6],
+    }
+  ]
+}
+```
+
+And we can perform inference with this model as follows:
+
+```objc
+NSArray *fooFeatures = @[ @(1), @(2), @(3), @(4) ]; 
+NSArray *barFeatures = @[ @(1), @(2), @(3), (@4), @(5), @(6), @(7), @(8) ]; 
+
+NSDictionary *features = @{
+	@"foo-features": fooFeatures,
+	@"bar-features": barFeatures
+};
+
+NSDictionary *inference = (NSDictionary*)[model runOn:features];
+
+NSArray *bazOutputs = inference[@"baz-outputs"]; // length 3
+NSArray *quxOutputs = inference[@"qux-outputs"]; // length 6
+```
+
 <a name="quantization"></a>
 ### Quantization and Dequantization
 
-...
+Quantization is a technique for reducing model sizes by representing weights with fewer bytes. Operations are then performed on these shorter byte representations. Accuracy is traded for size. A full account of quantization is beyond the scope of this README, but more information may be found at https://www.tensorflow.org/performance/quantization.
+
+In TF Lite, models represent weights with and perform operations on four byte floating point representations of data (`float_t`). These models receive floating point inputs and produce floating point outputs. Floating point models can represent numeric values in the range -3.4E+38 to +3.4E+38. Pretty sweet.
+
+A quantized TF Lite model works with single byte representations `(uint8_t)`. It expects single byte inputs and it produces single byte outputs. A single signed byte can represent numbers in the range of 0 to 255. Still pretty cool.
+
+When you use a quantized model but start with floating point data, you must first transform that four byte representation into one byte. This is called *quantization*. The model's single byte output must also be transformed back into a floating point representation, an inverse process called *dequantization*. TensorIO can do both for you.
+
+<i color="red">TensorIO 0.1.0 does not currently support quantization, if only because we haven't tested it against quantized models. What follows is how quantization will work. TensorIO does not support dequantization either, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1.</i>
+
+<a name="quantization-basic-example"></a>
+#### A basic example
+
+Let's perform a basic quantization and dequantization. 
+
+First, when working with a quantized TF Lite model, change the *model.quantized* field in the *model.json* file to `true`:
+
+```json
+"model": {
+  "file": "model.tflite",
+  "quantized": true
+},
+```
+
+For this example, the input data coming from application space will always be in a floating point range of 0 to 1. Our quantized model requires those values to be in the range of 0 to 255. Quantization in TF Lite uniformly distributes a floating point range over a single byte range, so all we need to do here is apply a scaling factor of 255:
+
+```
+quantized_value = unquantized_value * 255
+```
+
+We can perform a sanity check with a few values:
+
+```
+Unquantized Value	Quantized Value
+=================	===============
+0					0
+0.5					127
+1					255
+```
+
+Similarly, for this example the output values produced by inference are a softmax probability distribution. The quantized model necessarily produces outputs in a range from 0 to 255, and we want to convert those back to a valid probability distribution. This will again be a uniform redistribution of values, and all we need to do is apply a scaling factor of 1.0/255.0:
+
+```
+unquantized_value = quantized_value * 1.0/255.0
+```
+
+Note that the transformations are inverses of one anther, and a sanity check produces the values we expect.
+
+<a name="quantization-field"></a>
+#### The Quantization Field
+
+Instruct TensorIO to perform quantization by adding a *quantization* field to an input dictionary:
+
+```json
+"inputs": [
+  {
+    "name": "vector-input",
+    "type": "array",
+    "shape": [4],
+    "quantize": @{
+      "scale": 255
+      "bias": 0
+    }
+  },
+``` 
+
+The *quantization* field is a dictionary value that may appear on *array* inputs only (*image* inputs use pixel normalization, more below). It contains either one or two fields: either both *scale* and *bias*, or *standard*.
+
+*scale*
+
+The *scale* field is a numeric value that specifies the scaling factor to apply to unquantized, incoming data.
+
+*bias*
+
+The *bias* field is a numeric value that specifies the bias to apply to unquantized, incoming data.
+
+Together, TensorIO applies the following equation to any data sent to this layer:
+
+```
+quantized_value = scale * unquantized_value + bias
+``` 
+
+*standard*
+
+The *standard* is a string value corresponding to one of a number of commonly used quantization functions. Its presence overrides the *scale* and *bias* fields.
+
+TensorIO currently has support for two standard quantizations. The ranges tell TensorIO *what values you are quantizing from*:
+
+```json
+"quantize": {
+  "standard": "[0,1]"
+}
+
+"quantize": {
+  "standard": "[-1,1]"
+}
+```
+
+<i color="red">TensorIO 0.1.0 does not currently support quantization, if only because we haven't tested it against quantized models. What follows is how quantization will work.</i>
+
+<a name="quantization-dequantization-field"></a>
+#### The Dequantization Field
+
+Dequantization is the inverse of quantization and is specified for an output layer with the *dequantize* field. The same *scale* and *bias* or *standard* fields are used.
+
+For dequantization, scale and bias are applied in inverse order, where the bias values will be the negative equivalent of a quantization bias, and the scale will be the inverse of a quantization scale.
+
+```
+dequantized_value =  (quantized_value + bias) * scale 
+```
+
+For example, to dequantize from a range of 0 to 255 back to a range of 0 to 1, use a bias of 0 and a scale of 1.0/255.0:
+
+```json
+"outputs": [
+  {
+    "name": "vector-output",
+    "type": "array",
+    "shape": [4],
+    "dequantize": @{
+      "scale": 0.004
+      "bias": 0
+    }
+  }
+]
+```
+
+A standard set of dequantization functions is supported and describes the range you want to dequantize back to:
+
+```json
+"dequantize": {
+  "standard": "[0,1]"
+}
+
+"dequantize": {
+  "standard": "[-1,1]"
+}
+```
+
+<i color="red">TensorIO 0.1.0 does not support dequantization, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1. Use the "[0,1]" standard dequantization shown above</i>
+
+Once these fields have been specified in a *model.json* file, no additional change is required in the Objective-C code. Simply send floating point values in and get floating point values back
+
+```objc
+NSArray *vectorInput = @[ @(0.1f), @(0.2f), @(0.3f), @(0.4f) ]; // range in [0,1]
+
+NSDictionary *features = @{
+	@"vector-input": vectorInput
+};
+
+NSDictionary *inference = (NSDictionary*)[model runOn:features];
+
+NSArray *vectorOutput = inference[@"vector-output"];
+
+// vectorOutput[0] == 0.xx...
+// vectorOutput[1] == 0.xx...
+// vectorOutput[2] == 0.xx...
+// vectorOutput[3] == 0.xx...
+
+```
+
+<a name="selecting-scale-bias"></a>
+#### Selecting the Scale and Bias Terms
+
+Selecting the scale and bias terms for either quantization or dequantization is a matter of solving a system of linear equations. For quantization, for example, you must know the range of values that are being quantized and the range of values you are quantizing to. The latter is always [0,255], while the former is up to you.
+
+Then, given that the equation for quantizing a value is 
+
+```
+quantized_value = scale * unquantized_value + bias
+```
+
+You can form two equations:
+
+```
+scale * min + bias * 1 = 0
+scale * max + bias * 1 = 255
+```
+
+And solve for scale and bias using, say, numpy.
+
+```python
+import numpy as np
+
+min = 0 # your min input value
+max = 1 # your max input value
+
+a = np.array([[min,1], [max,1]])
+b = np.array([0,255])
+
+np.linalg.solve(a,b) # -> [scale,  bias]
+```
+
+<a name="quantization-complete-example"></a>
+#### A Complete Example
+
+Let's look a at a complete example. This model is quantized and has two input layers and two output layers, with standard but different quantizations and dequantizations.
+
+The model bundle will again have two files in it:
+
+```
+myquantizedmodel.tfbundle
+  - models.jsn
+  - model.tflite
+```
+
+The *model.json* file might look like: 
+
+(note the value of the *model.quantized* field and the presence of *quantize* and *dequantize* fields in the input and output descriptions)
+
+```json
+{
+  "name": "Example Quantized Model",
+  "details": "This model takes two vector valued inputs and produces two vector valued outputs",
+  "id": "my-awesome-quantized-model",
+  "version": "1",
+  "author": "doc.ai",
+  "license": "Apache 2",
+  "model": {
+    "file": "model.tflite",
+    "quantized": true
+  },
+  "inputs": [
+    {
+      "name": "foo-features",
+      "type": "array",
+      "shape": [4],
+      "quantize": {
+        "standard": "[0,1]"
+      }
+    },
+    {
+      "name": "bar-features",
+      "type": "array",
+      "shape": [8],
+      "quantize": {
+        "standard": "[-1,1]"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "baz-outputs",
+      "type": "array",
+      "shape": [3],
+      "dequantize": {
+        "standard": "[0,1]"
+      }
+    },
+    {
+      "name": "qux-outputs",
+      "type": "array",
+      "shape": [6],
+       "dequantize": {
+        "standard": "[-1,1]"
+      }
+    }
+  ]
+}
+```
+
+Perform inference with this model exactly as before, explicitly with floating point inputs and outputs:
+
+```objc
+NSArray *fooFeatures = @[ @(0.1f), @(0.2f), @(0.3f), @(0.4f) ]; // range in [0,1] 
+NSArray *barFeatures = @[ @(-0.1f), @(0.2f), @(0.3f), (@0.4f), @(-0.5f), @(0.6f), @(-0.7f), @(0.8f) ]; // range in [-1,1] 
+
+NSDictionary *features = @{
+	@"foo-features": fooFeatures,
+	@"bar-features": barFeatures
+};
+
+NSDictionary *inference = (NSDictionary*)[model runOn:features];
+
+NSArray *bazOutputs = inference[@"baz-outputs"]; // length 3 in range [0,1]
+NSArray *quxOutputs = inference[@"qux-outputs"]; // length 6 in range [-1,1]
+```
+
+
+<a name="quantization-without-quantization"></a>
+#### Quantized Models without Quantization
+
+The *quantized* field is optional for *array* input layers, even when the model is quantized. When you use a quantized model without including a *quantize* field, it is up to you to ensure that the data you send to TensorIO for inference is already quantized and that you treat output data as still quantized. 
+
+This could be because your input and output data is only ever in the range of [0,255], for example pixel data, or because you are quantizing the floating point inputs yourself before sending them to the model.
+
+For example:
+
+```objc
+NSArray<NSNumber*> *unquantizedInput = @[ @(0.1f), @(0.2f), @(0.3f), @(0.4f) ]; // range in [0,1] 
+NSArray<NSNumber*> *quantizedInput = [unquantizedVector map:^NSNumber * _Nonnull(NSNumber *  _Nonnull obj) {
+  return @(obj.floatValue * 255); // convert from [0,1] to [0,255]
+}];
+
+NSDictionary *features = @{
+	@"quantized-input": quantizedInput
+};
+
+NSDictionary *inference = (NSDictionary*)[model runOn:features];
+
+NSArray *quantizedOutput = inference[@"quantized-output"]; // in range [0,255]
+```
 
 <a name="images"></a>
 ### Working with Image Data
@@ -561,6 +969,13 @@ NSNumber *realOutput = inference[@"real-output"];
 ### Advanced Usage
 
 ...
+
+<!--
+<a name="netrunner"></a>
+### Net Runner
+
+...
+-->
 
 <a name="faq"></a>
 ### FAQ
