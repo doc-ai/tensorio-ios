@@ -39,8 +39,8 @@ See the **Usage** section below for important notes on adding TensorIO to your p
 		* [ A Complete Example ](#complete-example)
 	* [ Quantization and Dequantization ](#quantization)
 		* [ A Basic Example ](#quantization-basic-example)
-		* [ The Quantization Field ](#quantization-field)
-		* [ The Dequantization Field ](#quantization-dequantization-field)
+		* [ The Quantize Field ](#quantization-field)
+		* [ The Dequantize Field ](#quantization-dequantization-field)
 		* [ Selecting the Scale and Bias Terms ](#selecting-scale-bias)
 		* [ A Complete Example ](#quantization-complete-example)
 		* [ Quantized Models without Quantization ](#quantization-without-quantization)
@@ -51,7 +51,7 @@ See the **Usage** section below for important notes on adding TensorIO to your p
 		* [ Pixel Normalization ](#pixel-normalization)
 		* [ Pixel Denormalization ](#pixel-normalization)
 		* [ A Complete Example ](#pixel-buffer-complete-example)
-	* [ Advanced Usage ](#advanced-usage)
+* [ Advanced Usage ](#advanced-usage)
 <!-- * [ Net Runner ](#netrunner) -->
 * [ FAQ ](#faq)
 
@@ -1069,10 +1069,10 @@ Together, a *scale* and *bias* entry might look like:
 
 ```json
 "normalize": {
-  "scale": 0.004
+  "scale": 0.004,
   "bias": {
-    "r": -0.485
-    "g": -0.457
+    "r": -0.485,
+    "g": -0.457,
     "b": -0.408
   }
 }
