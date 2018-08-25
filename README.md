@@ -38,7 +38,7 @@ See the **Usage** section below for important notes on adding TensorIO to your p
 		* [ The Outputs Field ](#outputs-field)
 		* [ A Complete Example ](#complete-example)
 	* [ Quantization and Dequantization ](#quantization)
-		* [ A basic Example ](#quantization-basic-example)
+		* [ A Basic Example ](#quantization-basic-example)
 		* [ The Quantization Field ](#quantization-field)
 		* [ The Dequantization Field ](#quantization-dequantization-field)
 		* [ Selecting the Scale and Bias Terms ](#selecting-scale-bias)
@@ -644,8 +644,8 @@ NSArray *fooFeatures = @[ @(1), @(2), @(3), @(4) ];
 NSArray *barFeatures = @[ @(1), @(2), @(3), (@4), @(5), @(6), @(7), @(8) ]; 
 
 NSDictionary *features = @{
-	@"foo-features": fooFeatures,
-	@"bar-features": barFeatures
+  @"foo-features": fooFeatures,
+  @"bar-features": barFeatures
 };
 
 NSDictionary *inference = (NSDictionary*)[model runOn:features];
@@ -804,7 +804,7 @@ Once these fields have been specified in a *model.json* file, no additional chan
 NSArray *vectorInput = @[ @(0.1f), @(0.2f), @(0.3f), @(0.4f) ]; // range in [0,1]
 
 NSDictionary *features = @{
-	@"vector-input": vectorInput
+  @"vector-input": vectorInput
 };
 
 NSDictionary *inference = (NSDictionary*)[model runOn:features];
@@ -925,8 +925,8 @@ NSArray *fooFeatures = @[ @(0.1f), @(0.2f), @(0.3f), @(0.4f) ]; // range in [0,1
 NSArray *barFeatures = @[ @(-0.1f), @(0.2f), @(0.3f), (@0.4f), @(-0.5f), @(0.6f), @(-0.7f), @(0.8f) ]; // range in [-1,1] 
 
 NSDictionary *features = @{
-	@"foo-features": fooFeatures,
-	@"bar-features": barFeatures
+  @"foo-features": fooFeatures,
+  @"bar-features": barFeatures
 };
 
 NSDictionary *inference = (NSDictionary*)[model runOn:features];
@@ -952,7 +952,7 @@ NSArray<NSNumber*> *quantizedInput = [unquantizedVector map:^NSNumber * _Nonnull
 }];
 
 NSDictionary *features = @{
-	@"quantized-input": quantizedInput
+  @"quantized-input": quantizedInput
 };
 
 NSDictionary *inference = (NSDictionary*)[model runOn:features];
@@ -980,4 +980,4 @@ NSArray *quantizedOutput = inference[@"quantized-output"]; // in range [0,255]
 <a name="faq"></a>
 ### FAQ
 
-The FAQ is coming
+...
