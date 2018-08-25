@@ -8,7 +8,6 @@
 	"model": {
 		"file": "mobilenet_v2_1.4_224.tflite",
 		"quantized": false,
-		"labels": "labels.txt"
 	},
 	"inputs": [
 		{
