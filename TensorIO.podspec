@@ -9,11 +9,11 @@
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
   s.version          = '0.1.0'
-  s.summary          = 'An Objective-C wrapper to TensorFlow Lite.'
+  s.summary          = 'An Objective-C wrapper for TensorFlow Lite.'
   s.description      = 'Perform inference with TensorFlow Lite models using all the conveniences of Objective-C'
   s.homepage         = 'https://github.com/doc.ai/TensorIO'
   s.license          = { :type => 'Apache 2', :file => 'LICENSE' }
-  s.author           = { 'philip@doc.ai' => 'philip@doc.ai' }
+  s.authors          = { 'Philip Dow' => 'philip@doc.ai' }
   s.source           = { :git => 'https://github.com/doc-ai/TensorIO.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.3'
