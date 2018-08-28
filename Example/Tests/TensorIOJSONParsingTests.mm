@@ -44,9 +44,7 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"normalize": @{
-            @"standard": @"[0,1]"
-        }
+        @"standard": @"[0,1]"
     };
     
     TIOPixelNormalizer normalizer = TIOPixelNormalizerForDictionary(dict, &error);
@@ -70,9 +68,7 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"normalize": @{
-            @"standard": @"[-1,1]"
-        }
+        @"standard": @"[-1,1]"
     };
     
     TIOPixelNormalizer normalizer = TIOPixelNormalizerForDictionary(dict, &error);
@@ -90,15 +86,13 @@
     XCTAssertEqualWithAccuracy(normalizer(255, 2), 1.0, epsilon);
 }
 
-- (void)testPixelNormalizerForDictionaryReturnsError {
+- (void)testPixelNormalizerForDictionaryParsesInvalidStandardAndReturnsError {
     // it should return a nil pixel normalizer
     // it should return an error
     
     NSError *error;
     NSDictionary *dict = @{
-        @"normalize": @{
-            @"standard": @"[-10, 10]"
-        }
+        @"standard": @"[-10, 10]"
     };
     
     TIOPixelNormalizer normalizer = TIOPixelNormalizerForDictionary(dict, &error);
@@ -113,13 +107,11 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"normalize": @{
-            @"scale": @(1.0/255.0),
-            @"bias": @{
-                @"r": @(0),
-                @"g": @(0),
-                @"b": @(0)
-            }
+        @"scale": @(1.0/255.0),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
         }
     };
     
@@ -144,13 +136,11 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"normalize": @{
-            @"scale": @(1.0/255.0),
-            @"bias": @{
-                @"r": @(0.1),
-                @"g": @(0.2),
-                @"b": @(0.3)
-            }
+        @"scale": @(1.0/255.0),
+        @"bias": @{
+            @"r": @(0.1),
+            @"g": @(0.2),
+            @"b": @(0.3)
         }
     };
     
@@ -169,6 +159,17 @@
     XCTAssertEqualWithAccuracy(normalizer(255, 2), 1.0+0.3, epsilon);
 }
 
+- (void)testPixelNormalizerForDictionaryParsesNilAndReturnsNilAndNoError {
+    // it should return a nil pixel normalizer
+    // it should return no error
+    
+    NSError *error;
+    TIOPixelNormalizer normalizer = TIOPixelNormalizerForDictionary(nil, &error);
+    
+    XCTAssertNil(normalizer);
+    XCTAssertNil(error);
+}
+
 // MARK: - Pixel Denormalization
 
 - (void)testPixelDenormalizerForDictionaryParsesStandardZeroToOne {
@@ -177,9 +178,7 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"denormalize": @{
-            @"standard": @"[0,1]"
-        }
+        @"standard": @"[0,1]"
     };
     
     TIOPixelDenormalizer denormalizer = TIOPixelDenormalizerForDictionary(dict, &error);
@@ -203,9 +202,7 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"denormalize": @{
-            @"standard": @"[-1,1]"
-        }
+        @"standard": @"[-1,1]"
     };
     
     TIOPixelDenormalizer denormalizer = TIOPixelDenormalizerForDictionary(dict, &error);
@@ -223,15 +220,13 @@
     XCTAssertEqualWithAccuracy(denormalizer(1.0, 2), 255, epsilon);
 }
 
-- (void)testPixelDenormalizerForDictionaryReturnsError {
+- (void)testPixelDenormalizerForDictionaryParsesInvalidStandardAndReturnsError {
     // it should return a nil pixel normalizer
     // it should return an error
     
     NSError *error;
     NSDictionary *dict = @{
-        @"denormalize": @{
-            @"standard": @"[-10, 10]"
-        }
+        @"standard": @"[-10, 10]"
     };
     
     TIOPixelDenormalizer denormalizer = TIOPixelDenormalizerForDictionary(dict, &error);
@@ -246,13 +241,11 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"denormalize": @{
-            @"scale": @(255.0),
-            @"bias": @{
-                @"r": @(0),
-                @"g": @(0),
-                @"b": @(0)
-            }
+        @"scale": @(255.0),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
         }
     };
     
@@ -277,13 +270,11 @@
     
     NSError *error;
     NSDictionary *dict = @{
-        @"denormalize": @{
-            @"scale": @(255.0),
-            @"bias": @{
-                @"r": @(-0.1),
-                @"g": @(-0.2),
-                @"b": @(-0.3)
-            }
+        @"scale": @(255.0),
+        @"bias": @{
+            @"r": @(-0.1),
+            @"g": @(-0.2),
+            @"b": @(-0.3)
         }
     };
     
@@ -300,6 +291,17 @@
     XCTAssertEqualWithAccuracy(denormalizer(1.0+0.1, 0), 255, epsilon);
     XCTAssertEqualWithAccuracy(denormalizer(1.0+0.2, 1), 255, epsilon);
     XCTAssertEqualWithAccuracy(denormalizer(1.0+0.3, 2), 255, epsilon);
+}
+
+- (void)testPixelDenormalizerForDictionaryParsesNilAndReturnsNilAndNoError {
+    // it should return a nil pixel denormalizer
+    // it should return no error
+    
+    NSError *error;
+    TIOPixelDenormalizer denormalizer = TIOPixelDenormalizerForDictionary(nil, &error);
+    
+    XCTAssertNil(denormalizer);
+    XCTAssertNil(error);
 }
 
 // MARK: - Quantization

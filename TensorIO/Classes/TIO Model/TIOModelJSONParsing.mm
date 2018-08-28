@@ -141,9 +141,9 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     
     if ( isInput ) {
         NSError *error;
-        normalizer = TIOPixelNormalizerForDictionary(dict, &error);
+        normalizer = TIOPixelNormalizerForDictionary(dict[@"normalize"], &error);
         if ( error != nil ) {
-            NSLog(@"Expected dict.normalizer string to be '[0,1]' or '[-1,1]', or scale and bias values, found normalization: %@, scale: %@, bias: %@", dict[@"normalize"], dict[@"scale"], dict[@"bias"]);
+            NSLog(@"Expected normalize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict[@"normalize"]);
             return nil;
         }
     } else {
@@ -156,9 +156,9 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
 
     if ( isOutput ) {
         NSError *error;
-        denormalizer = TIOPixelDenormalizerForDictionary(dict, &error);
+        denormalizer = TIOPixelDenormalizerForDictionary(dict[@"denormalize"], &error);
         if ( error != nil ) {
-            NSLog(@"Expected dict.denormalizer string to be '[0,1]' or '[-1,1]', or scale and bias values, found denormalization: %@, scale: %@, bias: %@", dict[@"normalize"], dict[@"scale"], dict[@"bias"]);
+            NSLog(@"Expected denormalize string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict[@"normalize"]);
             return nil;
         }
     } else {
@@ -277,10 +277,14 @@ OSType TIOPixelFormatForString(NSString * _Nullable string) {
     }
 }
 
-TIOPixelNormalizer _Nullable TIOPixelNormalizerForDictionary(NSDictionary *dict, NSError **error) {
-    NSString *normalizerString = dict[@"normalize"][@"standard"];
-    NSNumber *scaleNumber = dict[@"normalize"][@"scale"];
-    NSDictionary *biases = dict[@"normalize"][@"bias"];
+TIOPixelNormalizer _Nullable TIOPixelNormalizerForDictionary(NSDictionary * _Nullable dict, NSError **error) {
+    NSString *normalizerString = dict[@"standard"];
+    NSNumber *scaleNumber = dict[@"scale"];
+    NSDictionary *biases = dict[@"bias"];
+    
+    if ( dict == nil ) {
+        return TIOPixelNormalizerNone();
+    }
     
     if ( normalizerString != nil ) {
         if ( [normalizerString isEqualToString:@"[0,1]"] ) {
@@ -327,10 +331,14 @@ TIOPixelNormalizer _Nullable TIOPixelNormalizerForDictionary(NSDictionary *dict,
     }
 }
 
-TIOPixelDenormalizer _Nullable TIOPixelDenormalizerForDictionary(NSDictionary *dict, NSError **error) {
-    NSString *normalizerString = dict[@"denormalize"][@"standard"];
-    NSNumber *scaleNumber = dict[@"denormalize"][@"scale"];
-    NSDictionary *biases = dict[@"denormalize"][@"bias"];
+TIOPixelDenormalizer _Nullable TIOPixelDenormalizerForDictionary(NSDictionary * _Nullable dict, NSError **error) {
+    NSString *normalizerString = dict[@"standard"];
+    NSNumber *scaleNumber = dict[@"scale"];
+    NSDictionary *biases = dict[@"bias"];
+    
+    if ( dict == nil ) {
+        return TIOPixelDenormalizerNone();
+    }
     
     if ( normalizerString != nil ) {
         if ( [normalizerString isEqualToString:@"[0,1]"] ) {

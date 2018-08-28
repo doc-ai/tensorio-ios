@@ -89,13 +89,13 @@ OSType TIOPixelFormatForString(NSString * _Nullable formatString);
  * Returns the TIOPixelNormalizer given an input dictionary.
  */
 
-TIOPixelNormalizer _Nullable TIOPixelNormalizerForDictionary(NSDictionary *input, NSError **error);
+TIOPixelNormalizer _Nullable TIOPixelNormalizerForDictionary(NSDictionary * _Nullable input, NSError **error);
 
 /**
  * Returns the denormalizer for a given input dictionary
  */
 
-TIOPixelDenormalizer _Nullable TIOPixelDenormalizerForDictionary(NSDictionary *input, NSError **error);
+TIOPixelDenormalizer _Nullable TIOPixelDenormalizerForDictionary(NSDictionary * _Nullable input, NSError **error);
 
 // MARK: - Pixel Format
 
