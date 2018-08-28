@@ -443,7 +443,7 @@ Here's what the *inputs* field looks like for a model with two input layers, the
 ],
 ```
 
-With this description I can pass either an array of arrays or a dictionary of arrays to my model's `runOn:` method. To pass an array, make sure the order of your inputs matches the order of their entries in the json file:
+With this description we can pass either an array of arrays or a dictionary of arrays to the model's `runOn:` method. To pass an array, make sure the order of your inputs matches the order of their entries in the json file:
 
 ```objc
 NSArray *vectorInput = @[ ... ]; // with 8 values
@@ -474,7 +474,7 @@ NSDictionary *dictionaryInputs = @{
 <a name="outputs-field"></a>
 #### The Outputs Field
 
-The *outputs* field is an array of dictionaries that describe the output layers of your model. The *outputs* field is structured the same way as the *inputs* field, and the dictionaries contain the same entries as those in the *inputs* field:
+The *outputs* field is an array of dictionaries that describe the output layers of your model. The *outputs* field is structured the same way as the *inputs* field, and the dictionaries contain the same basic entries as those in the *inputs* field:
 
 ```json
 "outputs": [
@@ -501,7 +501,17 @@ An *array* type output optionally supports the presence of a *labels* field for 
 ]
 ```
 
-The value of this field is a string which corresponds to the name of a text file in the bundle's *assets* directory. Each line of the text file contains the name of the classification for that line number index in the layer's output. When a *labels* field is present, TensorIO internally maps labels to their numeric outputs and returns an `NSDictionary` representation of that mapping, rather than a simple `NSArray` of values. Let's see what that looks like.
+The value of this field is a string which corresponds to the name of a text file in the bundle's *assets* directory.  The *.tfbundle* directory structure for this model might look like:
+
+```
+mymodel.tfbundle
+  - model.json
+  - model.tflite
+  - assets
+    - labels.txt
+```
+
+Each line of the *labels.txt *text file contains the name of the classification for that line number index in the layer's output. When a *labels* field is present, TensorIO internally maps labels to their numeric outputs and returns an `NSDictionary` representation of that mapping, rather than a simple `NSArray` of values. Let's see what that looks like.
 
 **Model Outputs**
 
@@ -530,7 +540,7 @@ NSArray<NSNumber*> *classifications = inference[@"classification-output"];
 // classifications[2] == 0.25
 ```
 
-However when a *labels* entry is present for a layer, the entry for that layer will itself be a dictionary mapping names to values.
+However, when a *labels* entry is present for a layer, the entry for that layer will itself be a dictionary mapping names to values.
 
 Our self-driving car model might for example add a *labels* field to the above description:
 
@@ -679,8 +689,6 @@ When you use a quantized model but start with floating point data, you must firs
 
 Let's see what a basic quantization and dequantization look like.
 
-<i color="red">TensorIO 0.1.0 does not currently support quantization, if only because we haven't tested it against quantized models. What follows is how quantization will work. TensorIO 0.1.0 does not support dequantization either, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1.</i>
-
 <a name="quantization-basic-example"></a>
 #### A basic example
 
@@ -748,14 +756,14 @@ The *bias* field is a numeric value that specifies the bias to apply to unquanti
 Together, TensorIO applies the following equation to any data sent to this layer:
 
 ```
-quantized_value = scale * unquantized_value + bias
+quantized_value = (unquantized_value + bias) * scale
 ``` 
 
 *standard*
 
 The *standard* field is a string value corresponding to one of a number of commonly used quantization functions. Its presence overrides the *scale* and *bias* fields.
 
-TensorIO currently has support for two standard quantizations. The ranges tell TensorIO *what values you are quantizing from*:
+TensorIO currently has support for two standard quantizations. The ranges tell TensorIO *what range of values you are quantizing from*:
 
 ```json
 "quantize": {
@@ -767,8 +775,6 @@ TensorIO currently has support for two standard quantizations. The ranges tell T
 }
 ```
 
-<i color="red">TensorIO 0.1.0 does not currently support quantization, if only because we haven't tested it against quantized models.</i>
-
 <a name="dequantize-field"></a>
 #### The Dequantize Field
 
@@ -777,7 +783,7 @@ Dequantization is the inverse of quantization and is specified for an output lay
 For dequantization, scale and bias are applied in inverse order, where the bias values will be the negative equivalent of a quantization bias, and the scale will be the inverse of a quantization scale.
 
 ```
-dequantized_value = (quantized_value + bias) * scale 
+unquantized_value = quantized_value * scale + bias
 ```
 
 For example, to dequantize from a range of 0 to 255 back to a range of 0 to 1, use a bias of 0 and a scale of 1.0/255.0:
@@ -796,7 +802,7 @@ For example, to dequantize from a range of 0 to 255 back to a range of 0 to 1, u
 ]
 ```
 
-A standard set of dequantization functions is supported and describes the range you want to dequantize back to:
+A standard set of dequantization functions is supported and describes *the range of values you want to dequantize back to*:
 
 ```json
 "dequantize": {
@@ -809,8 +815,6 @@ A standard set of dequantization functions is supported and describes the range 
 ```
 
 The *[0,1]* standard dequantization is particularly useful for softmax proability outputs with quantized models, when you must convert from a quantized range of [0,255] back to a valid probability distribution in the range of [0,1].
-
-<i color="red">TensorIO 0.1.0 does not support dequantization, except for a standard dequantization function that converts values from a range of 0 to 255 to a range of 0 to 1. Use the "[0,1]" standard dequantization shown above.</i>
 
 **Using Quantization and Dequantization**
 
@@ -837,34 +841,80 @@ NSArray *vectorOutput = inference[@"vector-output"];
 <a name="selecting-scale-bias"></a>
 #### Selecting the Scale and Bias Terms
 
-Selecting the scale and bias terms for either quantization or dequantization is a matter of solving a system of linear equations. For quantization, for example, you must know the range of values that are being quantized and the range of values you are quantizing to. The latter is always [0,255], while the former is up to you.
+Selecting the scale and bias terms for either quantization or dequantization is a matter of solving a system of linear equations. 
+
+**Quantization Scale and Bias**
+
+For quantization, for example, you must know the range of values that are being quantized and the range of values you are quantizing to. The latter is always [0,255], while the former is up to you.
 
 Then, given that the equation for quantizing a value is 
 
 ```
-quantized_value = scale * unquantized_value + bias
+quantized_value = (unquantized_value + bias) * scale
 ```
 
 You can form two equations:
 
 ```
-scale * min + bias * 1 = 0
-scale * max + bias * 1 = 255
+(min + bias) * scale = 0
+(max + bias) * scale = 255
 ```
 
-And solve for scale and bias using, say, numpy.
+And solve for scale and bias. Because the first equation is always set equal to zero, it is trivial to solve for bias, and then use that result to solve for scale in the second equation:
 
-```python
-import numpy as np
-
-min = 0 # your min input value
-max = 1 # your max input value
-
-a = np.array([[min,1], [max,1]])
-b = np.array([0,255])
-
-np.linalg.solve(a,b) # -> [scale,  bias]
 ```
+bias  = -min
+scale = 255 / (max - min)
+```
+
+For example, if you are quantizing from a range of values in [-1,1], then the scale and bias terms are:
+
+```
+bias  = -(-1) 
+      = 1
+      
+scale = 255 / (1-(-1)) 
+      = 255/2
+      = 127.5
+```
+
+Which are exactly the values TensorIO uses when you specify a standard quantize string *"[-1,1]"*.
+
+**Dequantization Scale and Bias**
+
+For dequantiation we do the same, using the equation:
+
+```
+unquantized_value = quantized_value * scale + bias
+```
+
+Form two equations:
+
+```
+min = 0 * scale   + bias
+max = 255 * scale + bias
+```
+
+And solve for scale and bias:
+
+```
+bias  = min
+scale = (max-bias) / 255
+```
+
+For example, if you are dequantizing from a range of values in [-1,1], then the scale and bias terms are:
+
+```
+bias  = -1
+
+scale = (1-(-1)) / 255
+      = 2/255
+      = 0.0078
+```
+
+Which once again are the values TensorIO uses when you specify the standard dequantize string *"[-1,1]"*.
+
+In both cases, you will need to know what the maximum and minimum values are that you are quantizing from and dequantizing to, and these must match the values you have used for your model.
 
 <a name="quantization-complete-example"></a>
 #### A Complete Example
