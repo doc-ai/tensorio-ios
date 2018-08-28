@@ -310,9 +310,7 @@
     const uint8_t epsilon = 1;
     NSError *error;
     TIODataQuantizer quantizer = TIODataQuantizerForDict(@{
-        @"quantize": @{
-            @"standard": @"[0,1]"
-        }
+        @"standard": @"[0,1]"
     }, &error);
     
     XCTAssertNil(error);
@@ -327,9 +325,7 @@
     const float epsilon = 1;
     NSError *error;
     TIODataQuantizer quantizer = TIODataQuantizerForDict(@{
-        @"quantize": @{
-            @"standard": @"[-1,1]"
-        }
+        @"standard": @"[-1,1]"
     }, &error);
     
     XCTAssertNil(error);
@@ -338,16 +334,24 @@
     XCTAssertEqualWithAccuracy(quantizer(0), 127, epsilon);
 }
 
+- (void)testDataQuantizerForDictParsesUnavailableStandardAndReturnsError {
+    NSError *error;
+    TIODataQuantizer quantizer = TIODataQuantizerForDict(@{
+        @"standard": @"[-10,10]"
+    }, &error);
+    
+    XCTAssertNil(quantizer);
+    XCTAssertNotNil(error);
+}
+
 -(void)testDataQuantizerForDictParsesScaleAndBias {
     // it should return a valid quantizer and no error
     
     const uint8_t epsilon = 1;
     NSError *error;
     TIODataQuantizer quantizer = TIODataQuantizerForDict(@{
-        @"quantize": @{
-            @"scale": @(255.0),
-            @"bias": @(0)
-        }
+        @"scale": @(255.0),
+        @"bias": @(0)
     }, &error);
     
     XCTAssertNil(error);
@@ -356,14 +360,26 @@
     XCTAssertEqualWithAccuracy(quantizer(0.5), 127, epsilon);
 }
 
-- (void)testDataQuantizerForDictReturnsError {
+- (void)testDataQuantizerForDictParsesBadScaleAndBiasAndReturnsError {
+    // it should return an invalid quantizer and and error
+    
     NSError *error;
     TIODataQuantizer quantizer = TIODataQuantizerForDict(@{
-        @"quantize": @{}
+        @"scale": @(255.0)
     }, &error);
     
     XCTAssertNil(quantizer);
     XCTAssertNotNil(error);
+}
+
+- (void)testDataQuantizerForDictParsesNilAndReturnsNilAndNoError {
+    // it should return a nil quantizer and no error
+    
+    NSError *error;
+    TIODataQuantizer quantizer = TIODataQuantizerForDict(nil, &error);
+    
+    XCTAssertNil(quantizer);
+    XCTAssertNil(error);
 }
 
 // MARK: - Dequantization
@@ -374,9 +390,7 @@
     const float epsilon = 0.01;
     NSError *error;
     TIODataDequantizer dequantizer = TIODataDequantizerForDict(@{
-        @"dequantize": @{
-            @"standard": @"[0,1]"
-        }
+        @"standard": @"[0,1]"
     }, &error);
     
     XCTAssertNil(error);
@@ -391,9 +405,7 @@
     const float epsilon = 0.01;
     NSError *error;
     TIODataDequantizer dequantizer = TIODataDequantizerForDict(@{
-        @"dequantize": @{
-            @"standard": @"[-1,1]"
-        }
+        @"standard": @"[-1,1]"
     }, &error);
     
     XCTAssertNil(error);
@@ -402,14 +414,34 @@
     XCTAssertEqualWithAccuracy(dequantizer(127), 0, epsilon);
 }
 
+- (void)testDataDequantizerForDictParsesUnavailableStandardAndReturnsError {
+    NSError *error;
+    TIODataDequantizer dequantizer = TIODataDequantizerForDict(@{
+        @"standard": @"[-10,10]"
+    }, &error);
+    
+    XCTAssertNil(dequantizer);
+    XCTAssertNotNil(error);
+}
+
+- (void)testDataDequantizerForDictParsesBadScaleAndBiasAndReturnsError {
+    // it should return an invalid quantizer and and error
+    
+    NSError *error;
+    TIODataDequantizer dequantizer = TIODataDequantizerForDict(@{
+        @"scale": @(255.0)
+    }, &error);
+    
+    XCTAssertNil(dequantizer);
+    XCTAssertNotNil(error);
+}
+
 - (void)testDataDequantizerForDictParsesScaleAndBias {
     const float epsilon = 0.01;
     NSError *error;
     TIODataDequantizer dequantizer = TIODataDequantizerForDict(@{
-        @"dequantize": @{
-            @"scale": @(1.0/255.0),
-            @"bias": @(0)
-        }
+        @"scale": @(1.0/255.0),
+        @"bias": @(0)
     }, &error);
     
     XCTAssertNil(error);
@@ -418,13 +450,14 @@
     XCTAssertEqualWithAccuracy(dequantizer(127), 0.5, epsilon);
 }
 
-- (void)testDataDequantizerForDictReturnsError {
+- (void)testDataDequantizerForDictReturnParsesNilAndReturnsNilAndNoError {
     // it should return a nil quantizer and an error
     
     NSError *error;
-    TIODataDequantizer dequantizer = TIODataDequantizerForDict(@{}, &error);
+    TIODataDequantizer dequantizer = TIODataDequantizerForDict(nil, &error);
+    
     XCTAssertNil(dequantizer);
-    XCTAssertNotNil(error);
+    XCTAssertNil(error);
 }
 
 // MARK: - Pixel Format

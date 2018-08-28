@@ -68,13 +68,16 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     }
     
     // Quantization
-    // TODO: support quantization for inputs
     
     TIODataQuantizer quantizer;
-    NSError *quantizerError;
     
     if ( isInput ) {
-        quantizer = TIODataQuantizerNone();
+        NSError *error;
+        quantizer = TIODataQuantizerForDict(dict[@"quantize"], &error);
+        if ( error != nil ) {
+            NSLog(@"Expected quantize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict);
+            return nil;
+        }
     } else {
         quantizer = TIODataQuantizerNone();
     }
@@ -82,10 +85,14 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     // Dequantization
     
     TIODataDequantizer dequantizer;
-    NSError *dequantizerError;
     
     if ( isOutput ) {
-        dequantizer = TIODataDequantizerForDict(dict, &quantizerError);
+        NSError *error;
+        dequantizer = TIODataDequantizerForDict(dict[@"dequantize"], &error);
+        if ( error != nil ) {
+            NSLog(@"Expected dequantize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict);
+            return nil;
+        }
     } else {
         dequantizer = TIODataDequantizerNone();
     }
@@ -128,6 +135,8 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     
     // Normalization
     
+    // TODO: only pass part of dict that is needed for parsing
+    
     TIOPixelNormalizer normalizer;
     
     if ( isInput ) {
@@ -169,16 +178,24 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     return interface;
 }
 
-_Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary *dict, NSError **error) {
-    NSString *standard = dict[@"quantize"][@"standard"];
-    NSNumber *scale = dict[@"quantize"][@"scale"];
-    NSNumber *bias = dict[@"quantize"][@"bias"];
+_Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary * _Nullable dict, NSError **error) {
+    if ( dict == nil ) {
+        return nil;
+    }
+    
+    NSString *standard = dict[@"standard"];
+    NSNumber *scale = dict[@"scale"];
+    NSNumber *bias = dict[@"bias"];
     
     if ( [standard isEqualToString:@"[0,1]"] ) {
         return TIODataQuantizerZeroToOne();
     }
     else if ( [standard isEqualToString:@"[-1,1]"] ) {
         return TIODataQuantizerNegativeOneToOne();
+    }
+    else if ( standard != nil ) {
+        *error = kTIOParserInvalidQuantizerError;
+        return nil;
     }
     else if ( scale != nil && bias != nil ) {
         return TIODataQuantizerWithQuantization({
@@ -192,16 +209,24 @@ _Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary *dict, NSError *
     }
 }
 
-_Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary *dict, NSError **error) {
-    NSString *standard = dict[@"dequantize"][@"standard"];
-    NSNumber *scale = dict[@"dequantize"][@"scale"];
-    NSNumber *bias = dict[@"dequantize"][@"bias"];
+_Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary * _Nullable dict, NSError **error) {
+    if ( dict == nil ) {
+        return nil;
+    }
+    
+    NSString *standard = dict[@"standard"];
+    NSNumber *scale = dict[@"scale"];
+    NSNumber *bias = dict[@"bias"];
     
     if ( [standard isEqualToString:@"[0,1]"] ) {
         return TIODataDequantizerZeroToOne();
     }
     else if ( [standard isEqualToString:@"[-1,1]"] ) {
         return TIODataDequantizerNegativeOneToOne();
+    }
+    else if ( standard != nil ) {
+        *error = kTIOParserInvalidQuantizerError;
+        return nil;
     }
     else if ( scale != nil && bias != nil ) {
         return TIODataDequantizerWithDequantization({

@@ -24,8 +24,6 @@
 
 @implementation NSData (TIOData)
 
-// TODO: quantize and dequantize bytes
-
 - (nullable instancetype)initWithBytes:(const void *)bytes length:(NSUInteger)length description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     

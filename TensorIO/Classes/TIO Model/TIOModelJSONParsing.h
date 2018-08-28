@@ -65,13 +65,13 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
  * Parses the `quantization` key of an input description and returns an associated data quantizer
  */
 
-_Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary *dict, NSError **error);
+_Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary * _Nullable dict, NSError **error);
 
 /**
  * Parses the `dequantization` key of an output description and returns an associated data quantizer
  */
 
-_Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary *dict, NSError **error);
+_Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary * _Nullable dict, NSError **error);
 
 /**
  * Converts an array of shape values to an `TIOImageVolume`.
