@@ -27,11 +27,19 @@
 #import "TIOVectorLayerDescription.h"
 
 static NSError * const kTIOParserInvalidPixelNormalizationError = [NSError errorWithDomain:@"doc.ai.tensorio" code:201 userInfo:@{
-    NSLocalizedDescriptionKey: @"Unable to parse normalization field in description of input or output layer"
+    NSLocalizedDescriptionKey: @"Unable to parse normalize field in description of input or output layer"
 }];
 
 static NSError * const kTIOParserInvalidPixelDenormalizationError = [NSError errorWithDomain:@"doc.ai.tensorio" code:202 userInfo:@{
-    NSLocalizedDescriptionKey: @"Unable to parse the denormalization field in description of input or output layer"
+    NSLocalizedDescriptionKey: @"Unable to parse the denormalize field in description of input or output layer"
+}];
+
+static NSError * const kTIOParserInvalidQuantizerError = [NSError errorWithDomain:@"doc.ai.tensorio" code:203 userInfo:@{
+    NSLocalizedDescriptionKey: @"Unable to parse the quantize field in description of input or output layer"
+}];
+
+static NSError * const kTIOParserInvalidDequantizerError = [NSError errorWithDomain:@"doc.ai.tensorio" code:204 userInfo:@{
+    NSLocalizedDescriptionKey: @"Unable to parse the dequantize field in description of input or output layer"
 }];
 
 // MARK: -
@@ -63,6 +71,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     // TODO: support quantization for inputs
     
     TIODataQuantizer quantizer;
+    NSError *quantizerError;
     
     if ( isInput ) {
         quantizer = TIODataQuantizerNone();
@@ -73,9 +82,10 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     // Dequantization
     
     TIODataDequantizer dequantizer;
+    NSError *dequantizerError;
     
     if ( isOutput ) {
-        dequantizer = TIODataDequantizerForDict(dict);
+        dequantizer = TIODataDequantizerForDict(dict, &quantizerError);
     } else {
         dequantizer = TIODataDequantizerNone();
     }
@@ -159,22 +169,50 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     return interface;
 }
 
-_Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary *dict) {
-    // TODO: support data quantization
-    return nil;
+_Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary *dict, NSError **error) {
+    NSString *standard = dict[@"quantize"][@"standard"];
+    NSNumber *scale = dict[@"quantize"][@"scale"];
+    NSNumber *bias = dict[@"quantize"][@"bias"];
+    
+    if ( [standard isEqualToString:@"[0,1]"] ) {
+        return TIODataQuantizerZeroToOne();
+    }
+    else if ( [standard isEqualToString:@"[-1,1]"] ) {
+        return TIODataQuantizerNegativeOneToOne();
+    }
+    else if ( scale != nil && bias != nil ) {
+        return TIODataQuantizerWithQuantization({
+            .scale = scale.floatValue,
+            .bias = bias.floatValue
+        });
+    }
+    else {
+        *error = kTIOParserInvalidQuantizerError;
+        return nil;
+    }
 }
 
-_Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary *dict) {
+_Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary *dict, NSError **error) {
     NSString *standard = dict[@"dequantize"][@"standard"];
-    // TODO: support scale and bias
-    // NSNumber *scale = dict[@"dequantize"][@"scale"];
-    // NSNumber *bias = dict[@"dequantize"][@"bias"];
+    NSNumber *scale = dict[@"dequantize"][@"scale"];
+    NSNumber *bias = dict[@"dequantize"][@"bias"];
     
     if ( [standard isEqualToString:@"[0,1]"] ) {
         return TIODataDequantizerZeroToOne();
     }
-    
-    return nil;
+    else if ( [standard isEqualToString:@"[-1,1]"] ) {
+        return TIODataDequantizerNegativeOneToOne();
+    }
+    else if ( scale != nil && bias != nil ) {
+        return TIODataDequantizerWithDequantization({
+            .scale = scale.floatValue,
+            .bias = bias.floatValue
+        });
+    }
+    else {
+        *error = kTIOParserInvalidQuantizerError;
+        return nil;
+    }
 }
 
 TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> * _Nullable shape) {
