@@ -292,6 +292,7 @@ The *model.json* file has the following basic structure:
   "model": {
     "file": "model.tflite",
     "quantized": false,
+    "type": "image.classification.imagenet"
   },
   "inputs": [
     {
@@ -316,12 +317,13 @@ In addition to the model's metadata, such as name, identifier, version, etc, all
 <a name="model-field"></a>
 #### The Model Field
 
-The model field is a dictionary that itself contains three entries:
+The model field is a dictionary that itself contains two to four entries:
 
 ```json
 "model": {
   "file": "model.tflite",
   "quantized": false,
+  "type": "image.classification.imagenet",
   "class": "MyOptionalCustomClassName"
 }
 ```
@@ -337,6 +339,12 @@ This field is required.
 The *quantized* field is a boolean value that is `true` when your model is quantized and `false` when it is not. Quantized models perform inference on single byte, unsigned integer representations of your data (`uint8_t`). Quantized models involve additional considerations which are discussed below.
 
 This field is required.
+
+*type*
+
+The *type* field is a string value that describes the class of models your model belongs to. Currently the field supports arbitrary strings with no formal hierarchy.
+
+This field is optional.
 
 *class*
 
