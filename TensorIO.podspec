@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.1.0'
+  s.version          = '0.2.1'
   s.summary          = 'An Objective-C wrapper for TensorFlow Lite.'
   s.description      = 'Perform inference with TensorFlow Lite models using all the conveniences of Objective-C'
   s.homepage         = 'https://github.com/doc.ai/TensorIO'
