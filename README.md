@@ -1037,7 +1037,7 @@ TensorIO works with pixel buffers and includes a wrapper for the native `CVPixel
 <a name="images-basic-example"></a>
 #### A Basic Example
 
-As always, inform TensorIO that an input layer expects pixel buffer data by modifying that layer's description in *model.json*. Set its *type* to *image*. You must also specify the *shape* and additionally the *format* of the image as either *RGB* or *BGR*. More on image formats below. 
+As always, inform TensorIO that an input layer expects pixel buffer data by modifying that layer's description in *model.json*. Set its *type* to *image*. You must specify the *shape* as an array of *[height, width, channels]* and the *format* of the image as either *RGB* or *BGR*. More on image formats below. 
 
 For now let's assume the tensor takes image volumes of size 224x224x3 with RGB byte ordering:
 

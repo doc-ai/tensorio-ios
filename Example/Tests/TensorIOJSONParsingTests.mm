@@ -520,8 +520,23 @@
     NSDictionary *dict = @{  @"shape": @[ @(224), @(224), @(3) ] };
     NSArray<NSNumber*> *shape = dict[@"shape"];
     TIOImageVolume expectedVolume = {
-        .width = 224,
         .height = 224,
+        .width = 224,
+        .channels = 3
+    };
+    
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    XCTAssertTrue(TIOImageVolumesEqual(volume, expectedVolume));
+}
+
+- (void)testImageVolumeForShapeParsesVolumeInHeightWidthChannelsOrder {
+    // it should return an image volume
+    
+    NSDictionary *dict = @{  @"shape": @[ @(200), @(100), @(3) ] };
+    NSArray<NSNumber*> *shape = dict[@"shape"];
+    TIOImageVolume expectedVolume = {
+        .height = 200,
+        .width = 100,
         .channels = 3
     };
     

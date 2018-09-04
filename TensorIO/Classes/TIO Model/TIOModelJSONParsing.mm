@@ -135,8 +135,6 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     
     // Normalization
     
-    // TODO: only pass part of dict that is needed for parsing
-    
     TIOPixelNormalizer normalizer;
     
     if ( isInput ) {
@@ -253,8 +251,8 @@ TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> * _Nullable shape) {
     }
 
     return {
-        .width = (int)shape[0].integerValue,
-        .height = (int)shape[1].integerValue,
+        .height = (int)shape[0].integerValue,
+        .width = (int)shape[1].integerValue,
         .channels = (int)shape[2].integerValue
     };
 }
