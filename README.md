@@ -13,7 +13,7 @@ With TensorIO you can perform inference in just a few lines of code:
 UIImage *image = [UIImage imageNamed:@"example-image"];
 TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
 
-id<TIOModel> model = [TIOTFLiteModel modelWithBundleAtPath:path];
+TIOTFLiteModel *model = [TIOTFLiteModel modelWithBundleAtPath:path];
 
 NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
 NSDictionary *classification = [inference[@"classification"] topN:5 threshold:0.1];
@@ -167,7 +167,7 @@ Consider a model that predicts the price of a house given a feacture vector that
 With TensorIO you construct an `NSArray` of numeric values for these features, pass the array to your model, and extract the price from the results.
 
 ```objc
-id<TIOModel> model = ...
+TIOTFLiteModel *model = ...
 NSArray *input = @[ @(1890), @(3), @(2), @(1.6) ];
 NSDictionary *output = (NSDictionary*)[model runOn:input];
 NSNumber *price = output[@"price"];
@@ -262,7 +262,7 @@ TIOTFLiteModel *model = [TIOTFLiteModel modelWithBundleAtPath:path];
 
 One of TensorIO's goals is to reduce the amount of new code required to integrate TF Lite models into an application.
 
-The primary work of using a TF Lite on iOS involves copying bytes of the right length to the right place. TF Lite is a C++ library, and the input and output tensors are exposed as C style buffers. In order to use a model we must copy byte representations of our input data into these buffers, ask TensorFlow to perform inference on those bytes, and then extract the byte representations back out of them.
+The primary work of using a TF Lite model on iOS involves copying bytes of the right length to the right place. TF Lite is a C++ library, and the input and output tensors are exposed as C style buffers. In order to use a model we must copy byte representations of our input data into these buffers, ask TensorFlow to perform inference on those bytes, and then extract the byte representations back out of them.
 
 Model interfaces can vary widely. Some models may have a single input and single output layer, others multiple inputs with a single output, or vice versa. The layers may be of varying shapes, with some layers taking single values, others an array of values, and yet others taking matrices or volumes of higher dimensions. Some models may work on four byte, floating point representations of data, while others use single byte, unsigned integer representations (these are called *quantized* models, more on them below).
 
@@ -882,7 +882,7 @@ Which are exactly the values TensorIO uses when you specify a standard quantize 
 
 **Dequantization Scale and Bias**
 
-For dequantiation we do the same, using the equation:
+For dequantization we do the same, using the equation:
 
 ```
 unquantized_value = quantized_value * scale + bias
@@ -919,7 +919,7 @@ In both cases, you will need to know what the maximum and minimum values are tha
 <a name="quantization-complete-example"></a>
 #### A Complete Example
 
-Let's look a at a complete example. This model is quantized and has two input layers and two output layers, with standard but different quantizations and dequantizations.
+Let's look at a complete example. This model is quantized and has two input layers and two output layers, with standard but different quantizations and dequantizations.
 
 The model bundle will again have two files in it:
 
@@ -974,7 +974,7 @@ Noting the value of the *model.quantized* field and the presence of *quantize* a
       "name": "qux-outputs",
       "type": "array",
       "shape": [6],
-       "dequantize": {
+      "dequantize": {
         "standard": "[-1,1]"
       }
     }
@@ -982,7 +982,7 @@ Noting the value of the *model.quantized* field and the presence of *quantize* a
 }
 ```
 
-Perform inference with this model exactly as before, explicitly with floating point inputs and outputs:
+Perform inference with this model as before:
 
 ```objc
 NSArray *fooFeatures = @[ @(0.1f), @(0.2f), @(0.3f), @(0.4f) ]; // range in [0,1] 
@@ -1090,7 +1090,7 @@ The byte ordering, which is to say, the format of the pixel buffer, definitely m
 
 You must let TensorIO know what kind of byte ordering an input layer expects via the *format* field. Consequently you must know what kind of byte ordering your model expects.
 
-TensorIO supports two byte orderings, *RGB* and *BGR*. Models ignore the alpha channel and don't expect it to be present, so TensorIO internally skips it when copying ARGB or BGRA pixel buffer bytes into  tensors that expect RGB or BGR data.
+TensorIO supports two byte orderings, *RGB* and *BGR*. Models ignore the alpha channel and don't expect it to be present, so TensorIO internally skips it when copying ARGB or BGRA pixel buffer bytes into tensors.
 
 ```json
 {
