@@ -87,11 +87,13 @@ TensorIO requires iOS 9.3+
 <a name="installation"></a>
 ## Installation
 
-<!-- TensorIO is available through [CocoaPods](https://cocoapods.org).  --> Until TensorIO is listed with CocoaPods, to instal it, simply add the following line to your Podfile:
+TensorIO is available through [CocoaPods](https://cocoapods.org). Add the following to your Podfile:
 
 ```ruby
-pod 'TensorIO', :git => 'https://github.com/doc-ai/TensorIO'
+pod 'TensorIO'
 ```
+
+And run `pod install`.
 
 <a name="author"></a>
 ## Author
