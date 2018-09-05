@@ -54,7 +54,7 @@ See the <a href="#usage">Usage</a> section below for important notes on adding T
 		* [ Pixel Denormalization ](#pixel-normalization)
 		* [ A Complete Example ](#pixel-buffer-complete-example)
 * [ Advanced Usage ](#advanced-usage)
-<!-- * [ Net Runner ](#netrunner) -->
+* [ Net Runner ](#netrunner)
 * [ FAQ ](#faq)
 
 <a name="overview"></a>
@@ -1271,12 +1271,10 @@ TensorIO includes a number of additional utilities, especially for working with 
 - TIOModelOptions
 - TIOVisionPipeline
 
-<!--
 <a name="netrunner"></a>
 ### Net Runner
 
-...
--->
+For an example of TensorIO in action check out [Net Runner](https://github.com/doc-ai/net-runner-ios), our iOS environment for evaluating computer vision machine learning models.
 
 <a name="faq"></a>
 ### FAQ
