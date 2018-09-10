@@ -194,7 +194,7 @@ In the above example, we're passing a single `NSArray` to the model. The model e
 
 Why is the resulting price not returned directly, and how do we know that the value is keyed to `@"price"` in the returned dictionary?
 
-Because models may have multiple inputs and outputs, TensorIO tries to make no assumptions about how many input and output layers a model actually has. This gives it some flexiblity in what kinds of inputs it can take, for example a single numeric value, arrays of arrays, or a dictionary, and it intelligently matches those inputs to the underlying tensor buffers, but a model consequently always returns a dictionary of outputs. 
+Because models may have multiple inputs and outputs, TensorIO tries to make no assumptions about how many input and output layers a model actually has. This gives it some flexiblity in what kinds of inputs it can take, for example a single numeric value, arrays of numeric arrays, or a dictionary, and it intelligently matches those inputs to the underlying tensor buffers, but a model consequently always returns a dictionary of outputs. 
 
 (*Note: this may change in a future implementation, and single outputs may be returned directly*)
 
@@ -206,7 +206,7 @@ To understand why the output value is keyed to a specific entry, we must underst
 
 TensorIO currently includes support for TensorFlow Lite (TF Lite) models. Although the library is built with support for other machine learning frameworks in mind, we'll focus on TF Lite models here.
 
-A TF Lite model is contained in a single, *.tflite* file. All the operations and weights required to perform inference with a model are included in this file.
+A TF Lite model is contained in a single *.tflite* file. All the operations and weights required to perform inference with a model are included in this file.
 
 However, a model may have other assets that are required to interpret the resulting inference. For example, an MNIST image classification model will output 1000 values corresponding to the softmax probability that a particular object has been recognized in an image. The model doesn't match probabilities to their labels, for example "rocking chair" or "lakeside", it only outputs numeric values. It is left to us to associate the numeric values with their labels.
 
@@ -350,7 +350,7 @@ This field is optional.
 
 *class*
 
-The *class* field is a string value that contains the Objective-C class name of the custom class you would like to use with your model. It must conform to the `TIOModel` protocol and ship with your application. By default no custom classis required, and TensorIO will use `TIOTFLiteModel` TensorFlow Lite models.
+The *class* field is a string value that contains the Objective-C class name of the custom class you would like to use with your model. It must conform to the `TIOModel` protocol and ship with your application. A custom class is not required, and TensorIO will use `TIOTFLiteModel` for TensorFlow Lite models if you do not provide one.
 
 This field is optional.
 
@@ -371,7 +371,7 @@ A basic entry in this array will have the following fields:
 
 *name*
 
-The *name* field is a string value that names this input tensor. It does not have to match the name of a tensor in the underlying model but is rather a reference for the developer in case you would like to pass an `NSDictionary` as input to a model's `runOn:` method.
+The *name* field is a string value that names this input tensor. It does not have to match the name of a tensor in the underlying model but is rather a reference in application space in case you would like to pass an `NSDictionary` as input to a model's `runOn:` method.
 
 This field is required.
 
@@ -598,7 +598,7 @@ Consider a model with two output layers. The first layer outputs a vector of fou
     "shape": [4]
   },
   {
-    "name": "real-output",
+    "name": "scalar-output",
     "type": "array",
     "shape": [1]
   }
@@ -610,10 +610,10 @@ After performing inference, access the first layer as an array of numbers and th
 ```objc
 NSDictionary *inference = (NSDictionary*)[model runOn:input];
 NSArray<NSNumber*> *vectorOutput = inference[@"vector-output"];
-NSNumber *realOutput = inference[@"real-output"];
+NSNumber *scalarOutput = inference[@"scalar-output"];
 ```
 
-*Real-valued outputs are supported as a convenience. Model outputs may change in a later version of this library and so this convenience may be removed or modified.*
+*Scalar outputs are supported as a convenience. Model outputs may change in a later version of this library and so this convenience may be removed or modified.*
 
 <a name="complete-example"></a>
 #### A Complete Example
@@ -790,7 +790,7 @@ TensorIO currently has support for two standard quantizations. The ranges tell T
 
 Dequantization is the inverse of quantization and is specified for an output layer with the *dequantize* field. The same *scale* and *bias* or *standard* fields are used.
 
-For dequantization, scale and bias are applied in inverse order, where the bias values will be the negative equivalent of a quantization bias, and the scale will be the inverse of a quantization scale.
+For dequantization, scale and bias are applied in inverse order, where the bias value will be the negative equivalent of a quantization bias, and the scale will be the inverse of a quantization scale.
 
 ```
 unquantized_value = quantized_value * scale + bias
@@ -870,7 +870,7 @@ You can form two equations:
 (max + bias) * scale = 255
 ```
 
-And solve for scale and bias. Because the first equation is always set equal to zero, it is trivial to solve for bias, and then use that result to solve for scale in the second equation:
+And solve for scale and bias. Because the first equation is always set equal to zero, it is trivial to solve for bias. Use that result to solve for scale in the second equation:
 
 ```
 bias  = -min
@@ -909,7 +909,7 @@ And solve for scale and bias:
 
 ```
 bias  = min
-scale = (max-bias) / 255
+scale = (max - bias) / 255
 ```
 
 For example, if you are dequantizing from a range of values in [-1,1], then the scale and bias terms are:
@@ -1015,7 +1015,7 @@ NSArray *quxOutputs = inference[@"qux-outputs"]; // length 6 in range [-1,1]
 
 The *quantize* field is optional for *array* input layers, even when the model is quantized. When you use a quantized model without including a *quantize* field, it is up to you to ensure that the data you send to TensorIO for inference is already quantized and that you treat output data as still quantized. 
 
-This could be because your input and output data is only ever in the range of [0,255], for example pixel data, or because you are quantizing the floating point inputs yourself before sending them to the model.
+This may be the case when your input and output data is only ever in the range of [0,255], for example pixel data, or when you are quantizing the floating point inputs yourself before sending them to the model.
 
 For example:
 
@@ -1075,7 +1075,7 @@ NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
 <a name="pixel-buffer"></a>
 #### Pixel Buffers
 
-A pixel buffer is a pixel by pixel representation of image data laid out in a contiguous block of memory. On iOS some APIs provide raw pixel buffers by default, such as some of the AVFoundation APIs, while in other cases we must construct pixel buffers ourselves.
+A pixel buffer is a pixel by pixel representation of image data laid out in a contiguous block of memory. On iOS some APIs provide raw pixel buffers by default, such the AVFoundation APIs, while in other cases we must construct pixel buffers ourselves.
 
 A pixel buffer always has a size, which includes the width and height, as well as a format, such as ARGB or BGRA, which lets the buffer know how many *channels* of data there are for each pixel and in what order those bytes appear. In the case of ARGB and BGRA, there are four channels of data arranged in alpha-red-green-blue or blue-green-red-alpha order respectively.
 
@@ -1098,7 +1098,7 @@ Now imagine what that same image looks like to the tensor in BGRA format:
 
 The byte ordering, which is to say, the format of the pixel buffer, definitely matters! 
 
-You must let TensorIO know what kind of byte ordering an input layer expects via the *format* field. Consequently you must know what kind of byte ordering your model expects.
+You must let TensorIO know what byte ordering an input layer expects via the *format* field. Consequently you must know what byte ordering your model expects.
 
 TensorIO supports two byte orderings, *RGB* and *BGR*. Models ignore the alpha channel and don't expect it to be present, so TensorIO internally skips it when copying ARGB or BGRA pixel buffer bytes into tensors.
 
@@ -1115,7 +1115,7 @@ TensorIO supports two byte orderings, *RGB* and *BGR*. Models ignore the alpha c
 <a name="pixel-normalization"></a>
 #### Pixel Normalization
 
-Notice that pixels are represented using a single byte of data for each color channel, a `uint8_t`. Recall what we know about TF Lite models and quantized models. By default, TF Lite works with four byte floating point representations of data, `float_t`, unless the model is quantized, in which case the model works with single byte `uint8_t` representations of data. 
+Notice that pixels are represented using a single byte of data for each color channel, a `uint8_t`. Recall what we know about quantized models. By default, TF Lite works with four byte floating point representations of data, `float_t`, but when the model is quantized it uses single byte `uint8_t` representations of data. 
 
 Hm. It looks like pixel buffer data is already "quantized"! 
 
