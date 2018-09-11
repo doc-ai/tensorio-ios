@@ -23,6 +23,7 @@
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		C6A623CD666F33788F53E77B /* Pods_TensorIO_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DEB73666B28A8768C3C61A2 /* Pods_TensorIO_Example.framework */; };
 		C79E6B65B317F57F9B4EEAB5 /* Pods_TensorIO_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14DDF9B6ED3857EF2310039E /* Pods_TensorIO_Tests.framework */; };
+		E30DF2D3214862A0008DBCB7 /* TensorIOModelBundleManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E30DF2D2214862A0008DBCB7 /* TensorIOModelBundleManagerTests.mm */; };
 		E31C7987212CB75700139C90 /* models in Resources */ = {isa = PBXBuildFile; fileRef = E31C7986212CB75700139C90 /* models */; };
 		E31C798C212CB85500139C90 /* ResultInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E31C7988212CB85400139C90 /* ResultInfoView.m */; };
 		E31C798D212CB85500139C90 /* ImageInputPreviewView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31C7989212CB85400139C90 /* ImageInputPreviewView.mm */; };
@@ -72,6 +73,7 @@
 		BEBECF8D1A08516F518E69E5 /* Pods-TensorIO_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorIO_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-TensorIO_Example/Pods-TensorIO_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C372FA5E0FA24FD8C83A1D34 /* Pods-TensorIO_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorIO_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TensorIO_Example/Pods-TensorIO_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D1579456E256DCF716202489 /* Pods-TensorIO_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorIO_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TensorIO_Tests/Pods-TensorIO_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		E30DF2D2214862A0008DBCB7 /* TensorIOModelBundleManagerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOModelBundleManagerTests.mm; sourceTree = "<group>"; };
 		E31C7986212CB75700139C90 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = SOURCE_ROOT; };
 		E31C7988212CB85400139C90 /* ResultInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultInfoView.m; sourceTree = "<group>"; };
 		E31C7989212CB85400139C90 /* ImageInputPreviewView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageInputPreviewView.mm; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				E31C7995212DF38300139C90 /* TensorIOJSONParsingTests.mm */,
 				E31C79DE212F63AC00139C90 /* TensorIODataTests.mm */,
 				E31C7999212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm */,
+				E30DF2D2214862A0008DBCB7 /* TensorIOModelBundleManagerTests.mm */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -375,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E30DF2D3214862A0008DBCB7 /* TensorIOModelBundleManagerTests.mm in Sources */,
 				E31C7996212DF38300139C90 /* TensorIOJSONParsingTests.mm in Sources */,
 				E31C79DF212F63AC00139C90 /* TensorIODataTests.mm in Sources */,
 				E31C799A212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm in Sources */,
