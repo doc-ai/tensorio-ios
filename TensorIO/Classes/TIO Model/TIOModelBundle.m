@@ -63,20 +63,6 @@ NSString * const kTFModelAssetsDirectory = @"assets";
             return nil;
         }
         
-        // Required properties
-        
-        assert(json[@"id"] != nil);
-        assert(json[@"name"] != nil);
-        assert(json[@"version"] != nil);
-        assert(json[@"details"] != nil);
-        assert(json[@"author"] != nil);
-        assert(json[@"license"] != nil);
-        
-        assert(json[@"model"] != nil);
-        assert(json[@"model"][@"quantized"] != nil);
-        assert(json[@"model"][@"file"] != nil);
-        // assert(json[@"model"][@"type"] != nil);
-        
         // Initialize
         
         _path = path;
