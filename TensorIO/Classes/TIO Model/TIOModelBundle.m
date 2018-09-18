@@ -26,7 +26,7 @@
 NSString * const kTFModelBundleExtension = @"tfbundle";
 NSString * const kTFModelInfoFile = @"model.json";
 NSString * const kTFLiteModelClassName = @"TIOTFLiteModel";
-NSString * const kAssetsDirectory = @"assets";
+NSString * const kTFModelAssetsDirectory = @"assets";
 
 @interface TIOModelBundle ()
 
@@ -125,7 +125,7 @@ NSString * const kAssetsDirectory = @"assets";
 }
 
 - (NSString*)pathToAsset:(NSString*)filename {
-    return [[_path stringByAppendingPathComponent:kAssetsDirectory] stringByAppendingPathComponent:filename];
+    return [[_path stringByAppendingPathComponent:kTFModelAssetsDirectory] stringByAppendingPathComponent:filename];
 }
 
 @end
