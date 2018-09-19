@@ -250,6 +250,8 @@
 
 // MARK: - Model Properties Validation
 
+// ...
+
 // MARK: - Inputs Validation
 
 - (void)testZeroInputsDoesNotValidate {
@@ -438,6 +440,7 @@
     
     // it should not validate
     
+    input = self.basicInput.mutableCopy;
     input[@"type"] = @"foo";
     error = nil;
     
@@ -448,7 +451,9 @@
     
     // it should validate
     
+    input = self.basicInput.mutableCopy;
     input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     error = nil;
     
     valid = [self.modelValidator validateInputs:@[input] error:&error];
@@ -458,6 +463,7 @@
     
     // it should validate
     
+    input = self.basicInput.mutableCopy;
     input[@"type"] = @"array";
     error = nil;
     
@@ -727,6 +733,7 @@
     input = self.basicInput.mutableCopy;
     
     input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"standard": @"[0,1]"
     };
@@ -742,6 +749,53 @@
     input = self.basicInput.mutableCopy;
     
     input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeImageFormatIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"format"] = @"foo";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"format"] = @(1);
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"format"] = @"RGB";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"format"] = @"BGR";
     error = nil;
     
     valid = [self.modelValidator validateInputs:@[input] error:&error];
@@ -775,6 +829,7 @@
     NSMutableDictionary *input = self.basicInput.mutableCopy;
     
     input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{};
     error = nil;
     
@@ -879,6 +934,7 @@
     NSMutableDictionary *input = self.basicInput.mutableCopy;
     
     input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"standard": @"foo"
     };
@@ -891,6 +947,9 @@
     
     // it should validate
     
+    input = self.basicInput.mutableCopy;
+    input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"standard": @"[0,1]"
     };
@@ -903,6 +962,9 @@
     
     // it should validate
     
+    input = self.basicInput.mutableCopy;
+    input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"standard": @"[-1,1]"
     };
@@ -914,13 +976,14 @@
     XCTAssertNil(error);
 }
 
-- (void)testInputTypeImageQuantizeScaleIsValid {
+- (void)testInputTypeImageDenormalizeScaleIsValid {
     // it should not validate
     
     NSError *error;
     NSMutableDictionary *input = self.basicInput.mutableCopy;
     
     input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"scale": @"",
         @"bias": @{
@@ -938,6 +1001,9 @@
     
     // it should validate
     
+    input = self.basicInput.mutableCopy;
+    input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"scale": @(1),
         @"bias": @{
@@ -954,13 +1020,14 @@
     XCTAssertNil(error);
 }
 
-- (void)testInputTypeImageQuantizeBiasIsValid {
+- (void)testInputTypeImageDenormalizeBiasIsValid {
     // it should not validate
     
     NSError *error;
     NSMutableDictionary *input = self.basicInput.mutableCopy;
     
     input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"scale": @(1),
         @"bias": @(0)
@@ -974,6 +1041,9 @@
     
     // it should not validate
     
+    input = self.basicInput.mutableCopy;
+    input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"scale": @(1),
         @"bias": @{}
@@ -987,6 +1057,9 @@
     
     // it should not validate
     
+    input = self.basicInput.mutableCopy;
+    input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"scale": @(1),
         @"bias": @{
@@ -1002,6 +1075,9 @@
     
     // it should not validate
     
+    input = self.basicInput.mutableCopy;
+    input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"scale": @(1),
         @"bias": @{
@@ -1019,6 +1095,9 @@
     
     // it should validate
     
+    input = self.basicInput.mutableCopy;
+    input[@"type"] = @"image";
+    input[@"format"] = @"RGB";
     input[@"normalize"] = @{
         @"scale": @(1),
         @"bias": @{
@@ -1053,11 +1132,11 @@
     // it should not validate
     
     NSError *error;
-    NSMutableDictionary *outputs = self.basicOutput.mutableCopy;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
     
-    [outputs removeObjectForKey:@"name"];
+    [output removeObjectForKey:@"name"];
     
-    BOOL valid = [self.modelValidator validateOutputs:@[outputs] error:&error];
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
     
     XCTAssertFalse(valid);
     XCTAssertNotNil(error);
@@ -1067,11 +1146,11 @@
     // it should not validate
     
     NSError *error;
-    NSMutableDictionary *outputs = self.basicOutput.mutableCopy;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
     
-    [outputs removeObjectForKey:@"shape"];
+    [output removeObjectForKey:@"shape"];
     
-    BOOL valid = [self.modelValidator validateOutputs:@[outputs] error:&error];
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
     
     XCTAssertFalse(valid);
     XCTAssertNotNil(error);
@@ -1081,14 +1160,801 @@
     // it should not validate
     
     NSError *error;
-    NSMutableDictionary *outputs = self.basicOutput.mutableCopy;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
     
-    [outputs removeObjectForKey:@"type"];
+    [output removeObjectForKey:@"type"];
     
-    BOOL valid = [self.modelValidator validateInputs:@[outputs] error:&error];
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
     
     XCTAssertFalse(valid);
     XCTAssertNotNil(error);
+}
+
+- (void)testOutputShapeMustBeArrayToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"shape"] = @{};
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"shape"] = @(0);
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"shape"] = @"";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"shape"] = @[@(1)];
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputshapeMustHaveOneOrMoreEntriesToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"shape"] = @[];
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    output[@"shape"] = @[@(1)];
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputshapeMustHaveNumericEntriesToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"shape"] = @[@""];
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"shape"] = @[@{}];
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"shape"] = @[@[]];
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"shape"] = @[@(1)];
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeMustBeArrayOrImageToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output = self.basicOutput.mutableCopy;
+    output[@"type"] = @"foo";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output = self.basicOutput.mutableCopy;
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output = self.basicOutput.mutableCopy;
+    output[@"type"] = @"array";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeArrayHasCorrectKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"foo"] = @"";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"labels"] = @"labels.txt";
+    output[@"dequantize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+     // it should validate
+    
+    output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeArrayDequantizeHasNoUnusedKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"quantize"] = @{
+        @"foo": @""
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testOutputTypeArrayDequantizeHasEitherStandardOrScaleAndBiasKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"dequantize"] = @{};
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"dequantize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1),
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should not validate
+    
+    output[@"dequantize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"dequantize"] = @{
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"dequantize"] = @{
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should validate
+    
+    output[@"dequantize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"dequantize"] = @{
+        @"scale": @(1),
+        @"bias": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeArrayDequantizeStandardIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"dequantize"] = @{
+        @"standard": @"foo"
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"dequantize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"dequantize"] = @{
+        @"standard": @"[-1,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeArrayDequantizeScaleAndBiasAreValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"dequantize"] = @{
+        @"scale": @"",
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"dequantize"] = @{
+        @"scale": @(1),
+        @"bias": @""
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"dequantize"] = @{
+        @"scale": @(1),
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeImageHasCorrectKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    output[@"foo"] = @"";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    output[@"denormalize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+     // it should validate
+    
+    output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeImageFormatIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"foo";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"format"] = @(1);
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"format"] = @"RGB";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"format"] = @"BGR";
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeImageDenormalizeHasNoUnusedKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"normalize"] = @{
+        @"foo": @""
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testOutputTypeImageDenormalizeHasEitherStandardOrScaleAndBiasKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    output[@"denormalize"] = @{};
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"denormalize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should not validate
+    
+    output[@"denormalize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"denormalize"] = @{
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"denormalize"] = @{
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should validate
+    
+    output[@"denormalize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"denormalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeImageDenormalizeStandardIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    output[@"denormalize"] = @{
+        @"standard": @"foo"
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"denormalize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"denormalize"] = @{
+        @"standard": @"[-1,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeImageDenormalizeScaleIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    output[@"denormalize"] = @{
+        @"scale": @"",
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"denormalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeImageDenormalizeBiasIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"image";
+    output[@"format"] = @"RGB";
+    output[@"denormalize"] = @{
+        @"scale": @(1),
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"denormalize"] = @{
+        @"scale": @(1),
+        @"bias": @{}
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"denormalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    output[@"denormalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @"",
+            @"g": @"",
+            @"b": @""
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    output[@"denormalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
 }
 
 // MARK: - Custom Validation

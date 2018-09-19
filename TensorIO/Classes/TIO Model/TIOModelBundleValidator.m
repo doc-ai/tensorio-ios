@@ -3,6 +3,19 @@
 //  TensorIO
 //
 //  Created by Philip Dow on 9/12/18.
+//  Copyright © 2018 doc.ai (http://doc.ai)
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //
 
 #import "TIOModelBundleValidator.h"
@@ -47,6 +60,8 @@
         NSLocalizedRecoverySuggestionErrorKey: @"Ensure that model.json contains the %@ property and that it is a valid value"
     }];
 }
+
+// MARK: - Input Errors
 
 - (NSError*)zeroInputsError {
     return [NSError errorWithDomain:@"doc.ai.tensorio" code:305 userInfo:@{
@@ -93,7 +108,7 @@
 - (NSError*)arrayInputHasUnusedKeysError {
     return [NSError errorWithDomain:@"doc.ai.tensorio" code:311 userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An inputs array type field in the model.json file has unused keys"],
-        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every inputs array type field in model.json has only name, type, shape, and quantize keys"
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every inputs array type field in model.json has only name, type, shape, and and optional quantize keys"
     }];
 }
 
@@ -234,6 +249,211 @@
     return [NSError errorWithDomain:@"doc.ai.tensorio" code:329 userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An inputs.quantize.bias field has incorrect values"],
         NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every inputs.quantize.bias field in model.json is a dictionary with r, g, and b numeric values"
+    }];
+}
+
+- (NSError*)imageInputFormatNotValidError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:330 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An image type inputs.format field is missing or has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every image type inputs.format field in model.json is either \"RGB\" or \"BRG\""
+    }];
+}
+
+// MARK: - Output Errors
+
+- (NSError*)zeroOutputsError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:350 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model.json file has zero outputs"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that model.json contains at least one output and that it is a valid value"
+    }];
+}
+
+- (NSError*)missingOutputPropertyError:(NSString*)property {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:351 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs fields in the model.json file is missing the %@ property", property],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs field in model.json contains the %@ property and that it is a valid value"
+    }];
+}
+
+- (NSError*)outputShapeMustBeArrayError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:352 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.shape field in the model.json file is not an array"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.shape field in model.json is an array with one or more numeric values"
+    }];
+}
+
+- (NSError*)outputShapeMustHaveEntriesError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:353 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.shape field in the model.json file is empty"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.shape field in model.json is an array with one or more numeric values"
+    }];
+}
+
+- (NSError*)outputShapeMustHaveNumericEntriesError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:354 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.shape field in the model.json file contains non-numeric values"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.shape field in model.json is an array with only numeric values"
+    }];
+}
+
+- (NSError*)outputTypeMustConformError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:355 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.type field in the model.json file is invalid"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.type field in model.json is either \"array\" or \"image\""
+    }];
+}
+
+- (NSError*)arrayOutputHasUnusedKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:356 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs array type field in the model.json file has unused keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs array type field in model.json has only name, type, shape, and a labels key with an optional dequantize key"
+    }];
+}
+
+- (NSError*)arrayOutputDequantizeIsEmptyError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:357 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize field in the model.json file is empty"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize field in model.json has a standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)arrayOutputDequantizeHasUnusedKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:358 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize field in the model.json file has unused keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize field in model.json has only standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)arrayOutputDequantizeMustHaveCorectKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:359 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize field is missing valid keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize field in model.json has only standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)arrayOutputDequantizeMustHaveStandardOrScaleAndBiasKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:360 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize field is missing the valid keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize field in model.json has only standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)arrayOutputStandardDequantizeMustConformError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:361 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.standard field has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.standard field in model.json is either \"[0,1]\" or \"[-1,1]\""
+    }];
+}
+
+- (NSError*)arrayOutputDequantizeScaleAndBiasMustBeNumericError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:362 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.scale or outputs.quantize.bias field has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.scale and outputs.quantize.bias fields in model.json is a numeric value"
+    }];
+}
+
+- (NSError*)arrayOutputDequantizeMustHaveBothScaleAndBiasKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:363 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize field has either standard or bias keys but not both"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize field in model.json has either standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)imageOutputHasUnusedKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:364 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs image type field in the model.json file has unused keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs image type field in model.json has only name, type, shape, and normalize keys"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeIsEmptyError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:365 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.normalize field in the model.json file is empty"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.normalize field in model.json has a standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeHasUnusedKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:366 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.normalize image type field in the model.json file has unused keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.normalize image type field in model.json has only name, type, shape, and normalize keys"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeMustHaveCorectKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:367 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.normalize field is missing valid keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.normalize field in model.json has only standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeMustHaveStandardOrScaleAndBiasKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:368 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.normalize field is missing the valid keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.normalize field in model.json has only standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)imageOutputStandardDenormalizeMustConformError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:369 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.normalize.standard field has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.normalize.standard field in model.json is either \"[0,1]\" or \"[-1,1]\""
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeMustHaveBothScaleAndBiasKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:370 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.normalize field has either standard or bias keys but not both"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.normalize field in model.json has either standard or scale and bias keys"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeScaleMustBeNumericError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:371 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.scale field has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.scale field in model.json is a numeric value"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeBiasMustBeDictionaryError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:372 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.bias field has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.bias field in model.json is a dictionary with r, g, and b numeric values"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeBiasHasUnusedKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:373 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.bias field has unused keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.bias field in model.json is a dictionary with r, g, and b numeric values"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeBiasIsEmptyError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:374 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.bias field is empty"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.bias field in model.json is a dictionary with r, g, and b numeric values"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeBiasMustHaveCorectKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:375 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.bias field has incorrect values"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.bias field in model.json is a dictionary with r, g, and b numeric values"
+    }];
+}
+
+- (NSError*)imageOutputDenormalizeBiasMustBeNumericValuesError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:376 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize.bias field has incorrect values"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize.bias field in model.json is a dictionary with r, g, and b numeric values"
+    }];
+}
+
+- (NSError*)imageOutputFormatNotValidError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:377 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An image type outputs.format field is missing or has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every image type outputs.format field in model.json is either \"RGB\" or \"BRG\""
     }];
 }
 
@@ -427,8 +647,9 @@
             return NO;
         }
         
+        // type:array validation
+        
         if ( [input[@"type"] isEqualToString:@"array"] ) {
-            // type:array validation
             
             // keys validation
             
@@ -508,11 +729,14 @@
                     *error = [self arrayInputQuantizeScaleAndBiasMustBeNumericError];
                     return NO;
                 }
-            }
-        }
+                
+            } // end quantize validation
+            
+        } // end type:array validation
+        
+        // type:image validation
         
         if ( [input[@"type"] isEqualToString:@"image"] ) {
-            // type:image validate
             
             // keys validation
             
@@ -521,9 +745,22 @@
             [keys removeObject:@"type"];
             [keys removeObject:@"shape"];
             [keys removeObject:@"normalize"];
+            [keys removeObject:@"format"];
             
             if ( keys.count != 0 ) {
                 *error = [self imageInputHasUnusedKeysError];
+                return NO;
+            }
+            
+            // format validation
+            
+            NSArray *formats = @[
+                @"RGB",
+                @"BGR"
+            ];
+            
+            if ( input[@"format"] == nil  || ![input[@"format"] isKindOfClass:[NSString class]] || ![formats containsObject:input[@"format"]] ) {
+                *error = [self imageInputFormatNotValidError];
                 return NO;
             }
             
@@ -625,11 +862,14 @@
                         *error = [self imageInputNormalizeBiasMustBeNumericValuesError];
                         return NO;
                     }
-                }
-            }
-        }
+                    
+                } // end bias validation
+                
+            } // end normalize validation
         
-    }
+        } // end type:image validation
+        
+    } // end for loop
     
     return YES;
 }
@@ -641,56 +881,275 @@
         return NO;
     }
     
-    for ( NSDictionary *input in JSON ) {
+    for ( NSDictionary *output in JSON ) {
         
         // basic properties
         
-        if ( input[@"name"] == nil ) {
-            *error = [self missingInputPropertyError:@"name"];
+        if ( output[@"name"] == nil ) {
+            *error = [self missingOutputPropertyError:@"name"];
             return NO;
         }
         
-        if ( input[@"shape"] == nil ) {
-            *error = [self missingInputPropertyError:@"shape"];
+        if ( output[@"shape"] == nil ) {
+            *error = [self missingOutputPropertyError:@"shape"];
             return NO;
         }
         
-        if ( input[@"type"] == nil ) {
-            *error = [self missingInputPropertyError:@"type"];
+        if ( output[@"type"] == nil ) {
+            *error = [self missingOutputPropertyError:@"type"];
             return NO;
         }
         
         // shape validation
         
-        if ( ![input[@"shape"] isKindOfClass:[NSArray class]] ) {
-        
+        if ( ![output[@"shape"] isKindOfClass:[NSArray class]] ) {
+            *error = [self outputShapeMustBeArrayError];
+            return NO;
         }
         
-        if ( ((NSArray*)input[@"shape"]).count == 0 ) {
-        
+        if ( ((NSArray*)output[@"shape"]).count == 0 ) {
+            *error = [self outputShapeMustHaveEntriesError];
+            return NO;
         }
         
-        for ( id el in (NSArray*)input[@"shape"] ) {
+        for ( id el in (NSArray*)output[@"shape"] ) {
             if ( ![el isKindOfClass:[NSNumber class]] ) {
-            
+                *error = [self outputShapeMustHaveNumericEntriesError];
+                return NO;
             }
         }
         
         // type validation
         
-        if ( ![input[@"type"] isEqualToString:@"array"] && ![input[@"type"] isEqualToString:@"image"] ) {
+        if ( ![output[@"type"] isKindOfClass:[NSString class]] || !([output[@"type"] isEqualToString:@"array"] || [output[@"type"] isEqualToString:@"image"]) ) {
+            *error = [self outputTypeMustConformError];
+            return NO;
+        }
+        
+        if ( [output[@"type"] isEqualToString:@"array"] ) {
+            // type:array validation
             
-        }
+            // keys validation
+            
+            NSMutableSet *keys = [NSMutableSet setWithArray:output.allKeys];
+            [keys removeObject:@"name"];
+            [keys removeObject:@"type"];
+            [keys removeObject:@"shape"];
+            [keys removeObject:@"dequantize"];
+            [keys removeObject:@"labels"];
+            
+            if ( keys.count != 0 ) {
+                *error = [self arrayOutputHasUnusedKeysError];
+                return NO;
+            }
+            
+            // dequantize validation
+            
+            if ( output[@"dequantize"] != nil ) {
+                
+                // keys validation
+                
+                {
+                    NSMutableSet *keys = [NSMutableSet setWithArray:[output[@"dequantize"] allKeys]];
+                    [keys removeObject:@"standard"];
+                    [keys removeObject:@"scale"];
+                    [keys removeObject:@"bias"];
+                    
+                    if ( keys.count != 0 ) {
+                        *error = [self arrayOutputDequantizeHasUnusedKeysError];
+                        return NO;
+                    }
+                }
+                
+                NSSet *keys = [NSSet setWithArray:[output[@"dequantize"] allKeys]];
+                
+                if ( keys.count == 0 ) {
+                    *error = [self arrayOutputDequantizeIsEmptyError];
+                    return NO;
+                }
+                
+                if ( ![keys containsObject:@"standard"] && ![keys containsObject:@"scale"] && ![keys containsObject:@"bias"] ) {
+                    *error = [self arrayOutputDequantizeMustHaveCorectKeysError];
+                    return NO;
+                }
+                
+                // standard validation
+                
+                if ( [keys containsObject:@"standard"] && ([keys containsObject:@"scale"] || [keys containsObject:@"bias"]) ) {
+                    *error = [self arrayOutputDequantizeMustHaveStandardOrScaleAndBiasKeysError];
+                    return NO;
+                }
+                
+                if ( [keys containsObject:@"standard"] ) {
+                    NSArray *values = @[
+                        @"[-1,1]",
+                        @"[0,1]"
+                    ];
+                    
+                    if ( ![output[@"dequantize"][@"standard"] isKindOfClass:[NSString class]] || ![values containsObject:output[@"dequantize"][@"standard"]] ) {
+                        *error = [self arrayOutputStandardDequantizeMustConformError];
+                        return NO;
+                    }
+                }
+                
+                // scale and bias validation
+                
+                if ( ([keys containsObject:@"scale"] && ![keys containsObject:@"bias"]) || ([keys containsObject:@"bias"] && ![keys containsObject:@"scale"]) ) {
+                    *error = [self arrayOutputDequantizeMustHaveBothScaleAndBiasKeysError];
+                    return NO;
+                }
+                
+                if ( [keys containsObject:@"scale"] && ![output[@"dequantize"][@"scale"] isKindOfClass:[NSNumber class]] ) {
+                    *error = [self arrayOutputDequantizeScaleAndBiasMustBeNumericError];
+                    return NO;
+                }
+                
+                if ( [keys containsObject:@"bias"] && ![output[@"dequantize"][@"bias"] isKindOfClass:[NSNumber class]] ) {
+                    *error = [self arrayOutputDequantizeScaleAndBiasMustBeNumericError];
+                    return NO;
+                }
+                
+            } // end dequantize validation
+            
+        } // end type:array validation
         
-        if ( [input[@"type"] isEqualToString:@"array"] ) {
+        // type:image validation
         
-        }
+        if ( [output[@"type"] isEqualToString:@"image"] ) {
+            
+            // keys validation
+            
+            NSMutableSet *keys = [NSMutableSet setWithArray:output.allKeys];
+            [keys removeObject:@"name"];
+            [keys removeObject:@"type"];
+            [keys removeObject:@"shape"];
+            [keys removeObject:@"denormalize"];
+            [keys removeObject:@"format"];
+            [keys removeObject:@"labels"];
+            
+            if ( keys.count != 0 ) {
+                *error = [self imageOutputHasUnusedKeysError];
+                return NO;
+            }
+            
+            // format validation
+            
+            NSArray *formats = @[
+                @"RGB",
+                @"BGR"
+            ];
+            
+            if ( output[@"format"] == nil  || ![output[@"format"] isKindOfClass:[NSString class]] || ![formats containsObject:output[@"format"]] ) {
+                *error = [self imageOutputFormatNotValidError];
+                return NO;
+            }
+            
+            // normalize validation
+            
+            if ( output[@"denormalize"] != nil ) {
+                
+                // keys validation
+                
+                {
+                    NSMutableSet *keys = [NSMutableSet setWithArray:[output[@"denormalize"] allKeys]];
+                    [keys removeObject:@"standard"];
+                    [keys removeObject:@"scale"];
+                    [keys removeObject:@"bias"];
+                    
+                    if ( keys.count != 0 ) {
+                        *error = [self imageOutputDenormalizeHasUnusedKeysError];
+                        return NO;
+                    }
+                }
+                
+                NSSet *keys = [NSSet setWithArray:[output[@"denormalize"] allKeys]];
+                
+                if ( keys.count == 0 ) {
+                    *error = [self imageOutputDenormalizeIsEmptyError];
+                    return NO;
+                }
+                
+                if ( ![keys containsObject:@"standard"] && ![keys containsObject:@"scale"] && ![keys containsObject:@"bias"] ) {
+                    *error = [self imageOutputDenormalizeMustHaveCorectKeysError];
+                    return NO;
+                }
+                
+                // standard validation
+                
+                if ( [keys containsObject:@"standard"] && ([keys containsObject:@"scale"] || [keys containsObject:@"bias"]) ) {
+                    *error = [self imageOutputDenormalizeMustHaveStandardOrScaleAndBiasKeysError];
+                    return NO;
+                }
+                
+                if ( [keys containsObject:@"standard"] ) {
+                    NSArray *values = @[
+                        @"[-1,1]",
+                        @"[0,1]"
+                    ];
+                    
+                    if ( ![output[@"denormalize"][@"standard"] isKindOfClass:[NSString class]] || ![values containsObject:output[@"denormalize"][@"standard"]] ) {
+                        *error = [self imageOutputStandardDenormalizeMustConformError];
+                        return NO;
+                    }
+                }
+                
+                // scale and bias validation
+                
+                if ( ([keys containsObject:@"scale"] && ![keys containsObject:@"bias"]) || ([keys containsObject:@"bias"] && ![keys containsObject:@"scale"]) ) {
+                    *error = [self imageOutputDenormalizeMustHaveBothScaleAndBiasKeysError];
+                    return NO;
+                }
+                
+                if ( [keys containsObject:@"scale"] && ![output[@"denormalize"][@"scale"] isKindOfClass:[NSNumber class]] ) {
+                    *error = [self imageOutputDenormalizeScaleMustBeNumericError];
+                    return NO;
+                }
+                
+                if ( [keys containsObject:@"bias"] ) {
+                    
+                    if ( ![output[@"denormalize"][@"bias"] isKindOfClass:[NSDictionary class]] ) {
+                        *error = [self imageOutputDenormalizeBiasMustBeDictionaryError];
+                        return NO;
+                    }
+                    
+                    {
+                        NSMutableSet *biasKeys = [NSMutableSet setWithArray:[output[@"denormalize"][@"bias"] allKeys]];
+                        [biasKeys removeObject:@"r"];
+                        [biasKeys removeObject:@"g"];
+                        [biasKeys removeObject:@"b"];
+                        
+                        if ( biasKeys.count != 0 ) {
+                            *error = [self imageOutputDenormalizeBiasHasUnusedKeysError];
+                            return NO;
+                        }
+                    }
+                    
+                    NSSet *biasKeys = [NSSet setWithArray:[output[@"denormalize"][@"bias"] allKeys]];
+                
+                    if ( biasKeys.count == 0 ) {
+                        *error = [self imageOutputDenormalizeBiasIsEmptyError];
+                        return NO;
+                    }
+                    
+                    if ( ![biasKeys containsObject:@"r"] || ![biasKeys containsObject:@"g"] || ![biasKeys containsObject:@"g"] ) {
+                        *error = [self imageOutputDenormalizeBiasMustHaveCorectKeysError];
+                        return NO;
+                    }
+                    
+                    if (   ![output[@"denormalize"][@"bias"][@"r"] isKindOfClass:[NSNumber class]]
+                        || ![output[@"denormalize"][@"bias"][@"g"] isKindOfClass:[NSNumber class]]
+                        || ![output[@"denormalize"][@"bias"][@"g"] isKindOfClass:[NSNumber class]] ) {
+                        *error = [self imageOutputDenormalizeBiasMustBeNumericValuesError];
+                        return NO;
+                    }
+                    
+                } // end bias validation
+                
+            } // end normalize validation
         
-        if ( [input[@"type"] isEqualToString:@"image"] ) {
+        } // end type:image validation
         
-        }
-        
-    }
+    } // end for loop
     
     return YES;
 }
