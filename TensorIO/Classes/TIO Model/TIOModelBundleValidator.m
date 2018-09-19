@@ -54,6 +54,13 @@
     }];
 }
 
+- (NSError*)malformedJSONError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:300 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model.json file could not be read"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Make sure that model.json contains valid json"
+    }];
+}
+
 - (NSError*)missingPropertyError:(NSString*)property {
     return [NSError errorWithDomain:@"doc.ai.tensorio" code:304 userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model.json file is missing the %@ property", property],
@@ -487,30 +494,29 @@
     // Validate path
     
     if ( ![fm fileExistsAtPath:self.path isDirectory:&isDirectory] || !isDirectory ) {
-        *error = self.invalidFilepathError;
+        *error = [self invalidFilepathError];
         return NO;
     }
     
     // Validate bundle structure
     
     if ( ![self.path.pathExtension isEqualToString:kTFModelBundleExtension] ) {
-        *error = self.invalidExtensionError;
+        *error = [self invalidExtensionError];
         return NO;
     }
     
     if ( ![fm fileExistsAtPath:[self JSONPath] isDirectory:&isDirectory] || isDirectory ) {
-        *error = self.noModelJSONFileError;
+        *error = [self noModelJSONFileError];
         return NO;
     }
     
     // Validate if JSON can be read
     
-    // TODO: error if json can't be read
-    
     NSDictionary *JSON = [self loadJSON];
     
     if ( JSON == nil ) {
-    
+        *error = [self malformedJSONError];
+        return NO;
     }
     
     // Validate basic bundle properties
@@ -527,7 +533,9 @@
     
     // Validate assets
     
-    // TODO: validate assets
+    if ( ![self validateAssets:JSON error:error] ) {
+        return NO;
+    }
     
     // Validate inputs
     
@@ -634,6 +642,11 @@
         return NO;
     }
     
+    return YES;
+}
+
+- (BOOL)validateAssets:(NSDictionary*)JSON error:(NSError**)error {
+    // TODO: validate assets
     return YES;
 }
 
