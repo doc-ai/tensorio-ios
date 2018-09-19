@@ -250,7 +250,90 @@
 
 // MARK: - Model Properties Validation
 
-// ...
+- (void)testModelPropertiesValidates {
+    
+    NSDictionary *properties;
+    NSError *error;
+    BOOL valid;
+    
+    // it should not validate if model properties is empty
+    
+    properties = @{};
+    error = nil;
+    
+    valid = [self.modelValidator validateModelProperties:properties error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate if model properties has extraneous keys
+    
+    properties = @{
+        @"file": @"models.json",
+        @"quantized": @(YES),
+        @"foo": @""
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateModelProperties:properties error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate if file is not a string
+    
+    properties = @{
+        @"file": @(0),
+        @"quantized": @(YES),
+        @"foo": @""
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateModelProperties:properties error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate if quantized is not a bool
+    
+    properties = @{
+        @"file": @"model.json",
+        @"quantized": @"",
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateModelProperties:properties error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    properties = @{
+        @"file": @"model.json",
+        @"quantized": @(YES)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateModelProperties:properties error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    properties = @{
+        @"file": @"model.json",
+        @"quantized": @(YES),
+        @"type": @""
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateModelProperties:properties error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
 
 // MARK: - Inputs Validation
 
