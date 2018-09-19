@@ -457,6 +457,22 @@
     }];
 }
 
+// MARK: - Model Errors
+
+- (NSError*)modelHasUnusedKeysError {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:390 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model field has unused keys"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that the model field in model.json has a file and quantized entry and optionally a class and type entry"
+    }];
+}
+
+- (NSError*)modelMissingPropertyError:(NSString*)property {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:391 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model field is missing the %@ property", property],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that the model field in model.json contains the %@ property and that it is a valid value"
+    }];
+}
+
 // MARK: - Validation
 
 - (BOOL)validate:(NSError**)error {
@@ -515,21 +531,19 @@
     
     // Validate inputs
     
-    if ( ![self validateModelProperties:JSON[@"inputs"] error:error] ) {
+    if ( ![self validateInputs:JSON[@"inputs"] error:error] ) {
         return NO;
     }
     
     // Validate outputs
     
-    if ( ![self validateModelProperties:JSON[@"outputs"] error:error] ) {
+    if ( ![self validateOutputs:JSON[@"outputs"] error:error] ) {
         return NO;
     }
     
     // Custom validator
     
-    [self validateCustomValidator:JSON validator:customValidator error:error];
-    
-    if ( customValidator && !customValidator(self.path, JSON, error) ) {
+    if ( ![self validateCustomValidator:JSON validator:customValidator error:error] ) {
         return NO;
     }
     
@@ -589,6 +603,36 @@
 }
 
 - (BOOL)validateModelProperties:(NSDictionary*)JSON error:(NSError**)error {
+    
+    NSArray *validKeys = @[
+        @"quantized",
+        @"file",
+        @"class",
+        @"type"
+    ];
+    
+    NSArray *allKeys = JSON.allKeys;
+    NSMutableSet *actualKeys = [NSMutableSet setWithArray:allKeys];
+    
+    for ( NSString *key in validKeys ) {
+        [actualKeys removeObject:key];
+    }
+    
+    if ( actualKeys.count != 0 ) {
+        // unused keys error
+        *error = [self modelHasUnusedKeysError];
+        return NO;
+    }
+    
+    if ( ![allKeys containsObject:@"file"] || ![JSON[@"file"] isKindOfClass:[NSString class]] || [JSON[@"file"] length] == 0 ) {
+        *error = [self modelMissingPropertyError:@"file"];
+        return NO;
+    }
+    
+    if ( ![allKeys containsObject:@"quantized"] || ![JSON[@"quantized"] isKindOfClass:[NSNumber class]] ) {
+        *error = [self modelMissingPropertyError:@"quantized"];
+        return NO;
+    }
     
     return YES;
 }
