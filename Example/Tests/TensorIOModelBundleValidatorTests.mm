@@ -25,8 +25,11 @@
 @interface TensorIOModelBundleValidatorTests : XCTestCase
 
 @property NSString *modelsPath;
-@property NSDictionary *basicProperties;
 @property TIOModelBundleValidator *modelValidator;
+
+@property NSDictionary *basicProperties;
+@property NSDictionary *basicInput;
+@property NSDictionary *basicOutput;
 
 @end
 
@@ -50,6 +53,16 @@
             @{ }
         ]
     };
+    self.basicInput = @{
+        @"name": @"",
+        @"type": @"",
+        @"shape": @[@(1)]
+    };
+    self.basicOutput = @{
+        @"name": @"",
+        @"type": @"",
+        @"shape": @[@(1)]
+    };
 }
 
 - (void)tearDown {
@@ -62,7 +75,7 @@
     return validator;
 }
 
-// MARK: -
+// MARK: - Path and Bundle Validation
 
 - (void)testBundleAtInvalidPathDoesNotValidate {
     // it should not validate
@@ -96,6 +109,8 @@
     XCTAssertFalse(valid);
     XCTAssertNotNil(error);
 }
+
+// MARK: - Basic Property Validation
 
 - (void)testBundleWithoutNameDoesNotValidate {
     // it should not validate
@@ -222,5 +237,909 @@
     XCTAssertFalse(valid);
     XCTAssertNotNil(error);
 }
+
+- (void)testBundleWithValidPropertiesValidates {
+    NSError *error;
+    NSMutableDictionary *properties = self.basicProperties.mutableCopy;
+    
+    BOOL valid = [self.modelValidator validateBundleProperties:properties error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+// MARK: - Model Properties Validation
+
+// MARK: - Inputs Validation
+
+- (void)testZeroInputsDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSArray *inputs = @[];
+    
+    BOOL valid = [self.modelValidator validateInputs:inputs error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testInputWithoutNameDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    [input removeObjectForKey:@"name"];
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testInputWithoutShapeDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    [input removeObjectForKey:@"shape"];
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testInputWithoutTypeDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    [input removeObjectForKey:@"type"];
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testInputShapeMustBeArrayToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"shape"] = @{};
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"shape"] = @(0);
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"shape"] = @"";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"shape"] = @[@(1)];
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputShapeMustHaveOneOrMoreEntriesToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"shape"] = @[];
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    input[@"shape"] = @[@(1)];
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputShapeMustHaveNumericEntriesToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"shape"] = @[@""];
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"shape"] = @[@{}];
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"shape"] = @[@[]];
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"shape"] = @[@(1)];
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeMustBeArrayOrImageToValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"type"] = @"foo";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"type"] = @"image";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"type"] = @"array";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeArrayHasCorrectKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"foo"] = @"";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"quantize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+     // it should validate
+    
+    input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeArrayQuantizeHasNoUnusedKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"quantize"] = @{
+        @"foo": @""
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testInputTypeArrayQuantizeHasEitherStandardOrScaleAndBiasKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"quantize"] = @{};
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"quantize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1),
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should not validate
+    
+    input[@"quantize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"quantize"] = @{
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"quantize"] = @{
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should validate
+    
+    input[@"quantize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"quantize"] = @{
+        @"scale": @(1),
+        @"bias": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeArrayQuantizeStandardIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"quantize"] = @{
+        @"standard": @"foo"
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"quantize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"quantize"] = @{
+        @"standard": @"[-1,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeArrayQuantizeScaleAndBiasAreValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"quantize"] = @{
+        @"scale": @"",
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"quantize"] = @{
+        @"scale": @(1),
+        @"bias": @""
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"quantize"] = @{
+        @"scale": @(1),
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeImageHasCorrectKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"foo"] = @"";
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"normalize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+     // it should validate
+    
+    input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeImageNormalizeHasNoUnusedKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"normalize"] = @{
+        @"foo": @""
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testInputTypeImageNormalizeHasEitherStandardOrScaleAndBiasKeys {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"normalize"] = @{};
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"normalize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should not validate
+    
+    input[@"normalize"] = @{
+        @"standard": @"[0,1]",
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"normalize"] = @{
+        @"scale": @(1)
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"normalize"] = @{
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+     // it should validate
+    
+    input[@"normalize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"normalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeImageNormalizeStandardIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"normalize"] = @{
+        @"standard": @"foo"
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"normalize"] = @{
+        @"standard": @"[0,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"normalize"] = @{
+        @"standard": @"[-1,1]"
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeImageQuantizeScaleIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"normalize"] = @{
+        @"scale": @"",
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"normalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeImageQuantizeBiasIsValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"normalize"] = @{
+        @"scale": @(1),
+        @"bias": @(0)
+    };
+    error = nil;
+    
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"normalize"] = @{
+        @"scale": @(1),
+        @"bias": @{}
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"normalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should not validate
+    
+    input[@"normalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @"",
+            @"g": @"",
+            @"b": @""
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+    
+    // it should validate
+    
+    input[@"normalize"] = @{
+        @"scale": @(1),
+        @"bias": @{
+            @"r": @(0),
+            @"g": @(0),
+            @"b": @(0)
+        }
+    };
+    error = nil;
+    
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+// MARK: - Outputs Validation
+
+- (void)testZeroOutputsDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSArray *outputs = @[];
+    
+    BOOL valid = [self.modelValidator validateOutputs:outputs error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testOutputWithoutNameDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *outputs = self.basicOutput.mutableCopy;
+    
+    [outputs removeObjectForKey:@"name"];
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[outputs] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testOutputWithoutShapeDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *outputs = self.basicOutput.mutableCopy;
+    
+    [outputs removeObjectForKey:@"shape"];
+    
+    BOOL valid = [self.modelValidator validateOutputs:@[outputs] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testOutputWithoutTypeDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *outputs = self.basicOutput.mutableCopy;
+    
+    [outputs removeObjectForKey:@"type"];
+    
+    BOOL valid = [self.modelValidator validateInputs:@[outputs] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+// MARK: - Custom Validation
+
+- (void)testInvalidCustomValidationDoesNotValidate {
+    // it should not validate
+    
+    NSError *error;
+    NSDictionary *properties = self.basicProperties;
+    BOOL (^block)(NSString *path, NSDictionary *JSON, NSError **error) = ^BOOL(NSString *path, NSDictionary *JSON, NSError **error) {
+        return NO;
+    };
+    
+    BOOL valid = [self.modelValidator validateCustomValidator:properties validator:block error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInvalidCustomValidationReturnsError {
+    // it should return an error
+    
+    NSError *error;
+    NSError *blockError = [NSError errorWithDomain:@"" code:0 userInfo:nil];
+    NSDictionary *properties = self.basicProperties;
+    BOOL (^block)(NSString *path, NSDictionary *JSON, NSError **error) = ^BOOL(NSString *path, NSDictionary *JSON, NSError **error) {
+        *error = blockError;
+        return NO;
+    };
+    
+    BOOL valid = [self.modelValidator validateCustomValidator:properties validator:block error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertEqualObjects(error, blockError);
+}
+
+- (void)testValidCustomValidatorValidates {
+    // it should validate
+    
+    NSError *error;
+    NSDictionary *properties = self.basicProperties;
+    BOOL (^block)(NSString *path, NSDictionary *JSON, NSError **error) = ^BOOL(NSString *path, NSDictionary *JSON, NSError **error) {
+        return YES;
+    };
+    
+    BOOL valid = [self.modelValidator validateCustomValidator:properties validator:block error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+// MARK: - Valid Models
 
 @end

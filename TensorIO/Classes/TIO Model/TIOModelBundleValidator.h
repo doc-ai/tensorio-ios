@@ -70,6 +70,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
 - (BOOL)validateModelProperties:(NSDictionary*)JSON error:(NSError**)error;
 - (BOOL)validateInputs:(NSArray*)JSON error:(NSError**)error;
 - (BOOL)validateOutputs:(NSArray*)JSON error:(NSError**)error;
+- (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error;
 
 @end
 
