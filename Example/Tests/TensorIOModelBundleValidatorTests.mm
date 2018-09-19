@@ -110,6 +110,17 @@
     XCTAssertNotNil(error);
 }
 
+- (void)testBundleWithBadJSONDoesNotValidate {
+    // it should not validate is model.json is invalid json
+    
+    NSError *error;
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-bad-json.tfbundle"];
+    BOOL valid = [validator validate:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
 // MARK: - Basic Property Validation
 
 - (void)testBundleWithoutNameDoesNotValidate {
