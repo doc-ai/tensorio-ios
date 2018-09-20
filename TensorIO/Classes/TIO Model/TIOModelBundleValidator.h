@@ -46,7 +46,13 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * The path to the bundle which is being evaluated.
  */
 
-@property (readonly) NSString *path;
+@property(readonly) NSString *path;
+
+/**
+ * The JSON in the model.json file for which the bundle is being evaluated
+ */
+
+@property(readonly) NSDictionary *JSON;
 
 /**
  * Validates the bundle which was provided at initialization.
@@ -81,8 +87,13 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
 - (BOOL)validateBundleProperties:(NSDictionary*)JSON error:(NSError**)error;
 
 - (BOOL)validateModelProperties:(NSDictionary*)JSON error:(NSError**)error;
+
+- (BOOL)validateAssets:(NSDictionary*)JSON error:(NSError**)error;
+
 - (BOOL)validateInputs:(NSArray*)JSON error:(NSError**)error;
+
 - (BOOL)validateOutputs:(NSArray*)JSON error:(NSError**)error;
+
 - (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error;
 
 @end

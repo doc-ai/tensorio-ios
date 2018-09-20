@@ -346,6 +346,32 @@
     XCTAssertNil(error);
 }
 
+// MARK: - Assets Validation
+
+- (void)testAnIncorrectlyNamedModelFileDoesNotValidate {
+    // it should not validate if the model.file does not exist
+    
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-incorrect-model-file.tfbundle"];
+    NSError *error;
+    
+    BOOL valid = [validator validate:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testAnIncorrectNamedLabelsFileDoesNotValidate {
+    // it should not validate if a labels file does not exist
+    
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-incorrect-labels-file.tfbundle"];
+    NSError *error;
+    
+    BOOL valid = [validator validate:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
 // MARK: - Inputs Validation
 
 - (void)testZeroInputsDoesNotValidate {
