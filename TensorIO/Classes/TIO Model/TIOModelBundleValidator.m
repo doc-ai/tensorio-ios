@@ -480,6 +480,22 @@
     }];
 }
 
+// MARK: - Assets Errors
+
+- (NSError*)modelFileDoesNotExistsError:(NSString*)filename {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:392 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model.file \"%@\" could not be found", filename],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that the model.file value is the name of a file in the root bundle directory"
+    }];
+}
+
+- (NSError*)labelsFileDoesNotExistError:(NSString*)filename {
+    return [NSError errorWithDomain:@"doc.ai.tensorio" code:393 userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The outputs.label file \"%@\" could not be found", filename],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that the outputs.label file is the name of a file in the assets directory"
+    }];
+}
+
 // MARK: - Validation
 
 - (BOOL)validate:(NSError**)error {
@@ -519,6 +535,10 @@
         return NO;
     }
     
+    // Cache the JSON
+    
+    _JSON = JSON;
+    
     // Validate basic bundle properties
     
     if ( ![self validateBundleProperties:JSON error:error] ) {
@@ -531,12 +551,6 @@
         return NO;
     }
     
-    // Validate assets
-    
-    if ( ![self validateAssets:JSON error:error] ) {
-        return NO;
-    }
-    
     // Validate inputs
     
     if ( ![self validateInputs:JSON[@"inputs"] error:error] ) {
@@ -546,6 +560,12 @@
     // Validate outputs
     
     if ( ![self validateOutputs:JSON[@"outputs"] error:error] ) {
+        return NO;
+    }
+    
+    // Validate assets
+    
+    if ( ![self validateAssets:JSON error:error] ) {
         return NO;
     }
     
@@ -646,7 +666,34 @@
 }
 
 - (BOOL)validateAssets:(NSDictionary*)JSON error:(NSError**)error {
-    // TODO: validate assets
+    NSFileManager *fm = NSFileManager.defaultManager;
+    
+    // validate model file
+    
+    NSString *modelFilename = JSON[@"model"][@"file"];
+    NSString *modelFilepath = [self.path stringByAppendingPathComponent:modelFilename];
+    
+    if ( ![fm fileExistsAtPath:modelFilepath] ) {
+        *error = [self modelFileDoesNotExistsError:modelFilename];
+        return NO;
+    }
+    
+    // validate any labels that appear in outputs
+    
+    for ( NSDictionary *output in JSON[@"outputs"] ) {
+        NSString *labelsFilename = output[@"labels"];
+        if ( labelsFilename == nil ) {
+            break;
+        }
+        
+        NSString *labelsFilepath = [[self.path stringByAppendingPathComponent:kTFModelAssetsDirectory] stringByAppendingPathComponent:labelsFilename];
+        
+        if ( ![fm fileExistsAtPath:labelsFilepath] ) {
+            *error = [self labelsFileDoesNotExistError:labelsFilename];
+            return NO;
+        }
+    }
+    
     return YES;
 }
 
