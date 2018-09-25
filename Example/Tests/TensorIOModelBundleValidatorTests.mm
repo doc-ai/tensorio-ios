@@ -69,6 +69,10 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+/**
+ * Creates a validator from a model bundle at filename
+ */
+
 - (TIOModelBundleValidator*)validatorForFilename:(NSString*)filename {
     NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
     TIOModelBundleValidator *validator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:path];
@@ -2127,5 +2131,44 @@
 }
 
 // MARK: - Valid Models
+
+- (void)testValidModelsValidate {
+    TIOModelBundleValidator *validator;
+    NSError *error;
+    BOOL valid;
+    
+    // it should validate
+    
+    error = nil;
+    valid = NO;
+    
+    validator = [self validatorForFilename:@"1_in_1_out_number_test.tfbundle"];
+    valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    error = nil;
+    valid = NO;
+    
+    validator = [self validatorForFilename:@"2_in_2_out_matrices_test.tfbundle"];
+    valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    error = nil;
+    valid = NO;
+    
+    validator = [self validatorForFilename:@"mobilenet_v2_1.4_224.tfbundle"];
+    valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
 
 @end
