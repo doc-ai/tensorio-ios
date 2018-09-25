@@ -1,0 +1,27 @@
+{
+	"name": "Invalid model incorrect labels filename",
+	"details": "",
+	"id": "invalid-model-incorrect-labels-filename",
+	"version": "1",
+	"author": "doc.ai",
+	"license": "",
+	"model": {
+		"file": "model.tflite",
+		"quantized": false,
+	},
+	"inputs": [
+		{
+			"name": "input_x",
+			"type": "array",
+			"shape": [1],
+		}
+	],
+	"outputs": [
+		{
+			"name": "output_z",
+			"type": "array",
+			"shape": [1],
+			"labels": "not-labels.txt"
+		}
+	]
+}

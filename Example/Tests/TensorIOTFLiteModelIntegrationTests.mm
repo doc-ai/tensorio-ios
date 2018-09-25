@@ -24,9 +24,25 @@
 
 @interface TIOTFLiteModelTests : XCTestCase
 
+@property NSString *modelsPath;
+
 @end
 
 @implementation TIOTFLiteModelTests
+
+- (void)setUp {
+    assert( sizeof(float_t) == 4 );
+    self.modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
+}
+
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
+}
+
+- (TIOModelBundle*)bundleWithName:(NSString*)filename {
+    NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
+    return [[TIOModelBundle alloc] initWithPath:path];
+}
 
 - (id<TIOModel>)loadModelFromBundle:(nonnull TIOModelBundle*)bundle {
     
@@ -48,28 +64,10 @@
     return model;
 }
 
-- (void)setUp {
-    
-    assert( sizeof(float_t) == 4 );
-    
-    // Load model bundles
-    
-    NSString *modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
-    NSError *error;
-    
-    if ( ![TIOModelBundleManager.sharedManager loadModelBundlesAtPath:modelsPath error:&error] ) {
-        NSLog(@"Unable to load model bundles at path %@", modelsPath);
-    }
-}
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-}
-
 // MARK: - Single Valued Tests
 
 - (void)test1In1OutNumberModel {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"1_in_1_out_number_test"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -104,7 +102,7 @@
 // MARK: - Vector, Matrix, Tensor Tests
 
 - (void)test1x1VectorsModel {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"1_in_1_out_vectors_test"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_vectors_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -131,7 +129,7 @@
 }
 
 - (void)test2x2VectorsModel {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"2_in_2_out_vectors_test"];
+    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_vectors_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -164,7 +162,7 @@
 }
 
 - (void)test2x2MatricesModel {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"2_in_2_out_matrices_test"];
+    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_matrices_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -230,7 +228,7 @@
 }
 
 - (void)test3x3MatricesModel {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"1_in_1_out_tensors_test"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_tensors_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -271,7 +269,7 @@
 - (void)testPixelBufferIdentityModel {
     self.continueAfterFailure = NO;
     
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"1_in_1_out_pixelbuffer_identity_test"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     const int width = 224;
@@ -353,7 +351,7 @@
 - (void)testPixelBufferNormalizationTransformationModel {
     self.continueAfterFailure = NO;
     
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"1_in_1_out_pixelbuffer_normalization_test"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     const int width = 224;
@@ -436,7 +434,7 @@
 // MARK: - Tensor Flow Classification Models
 
 - (void)testMobileNetClassificationModel {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"mobilenet-v2-100-224-unquantized"];
+    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -471,7 +469,7 @@
 }
 
 - (void)testMobileNetClassificationModelPreprocessing {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"mobilenet-v2-100-224-unquantized"];
+    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -509,7 +507,7 @@
 }
 
 - (void)testQuantizedMobileNetClassificationModel {
-    TIOModelBundle *bundle = [TIOModelBundleManager.sharedManager bundleWithId:@"mobilenet-v1-100-224-quantized"];
+    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v1_1.0_224_quant.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
