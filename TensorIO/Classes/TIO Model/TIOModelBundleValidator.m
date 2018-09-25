@@ -660,7 +660,7 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
 - (BOOL)validateOutputs:(NSArray*)JSON error:(NSError**)error {
     
     if ( JSON.count == 0 ) {
-        *error = TIOZeroInputsError();
+        *error = TIOZeroOutputsError();
         return NO;
     }
     
