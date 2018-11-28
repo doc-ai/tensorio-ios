@@ -1,0 +1,17 @@
+# jazzy doc generation config
+# https://github.com/realm/jazzy
+#
+# to generate the docs:
+# $ gem install jazzy
+# $ jazzy
+
+objc: true
+sdk: iphonesimulator
+clean: true
+
+framework_root: TensorIO/Classes
+umbrella_header: TensorIO/Classes/TensorIO.h
+
+author: doc.ai
+author_url: https://www.doc.ai
+github_url: https://github.com/doc-ai/TensorIO
