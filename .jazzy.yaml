@@ -1,3 +1,10 @@
+# jazzy doc generation config
+# https://github.com/realm/jazzy
+#
+# to generate the docs:
+# $ gem install jazzy
+# $ jazzy
+
 objc: true
 sdk: iphonesimulator
 clean: true
