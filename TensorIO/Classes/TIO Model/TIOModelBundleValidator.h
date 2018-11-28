@@ -23,7 +23,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * A validation that allows clients of the validator to add custom validation as a final step.
+ * A validation block that allows clients of the validator to add custom validation as a final step.
  *
  * For example, Net Runner currrently only works with models that take a single image input,
  * so it verifies that model inputs conform to that requirement in its custom validation block.
@@ -36,6 +36,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON, NSError **error);
+
+/**
+ * `TIOModelBundleValidator` is responsible for ensuring that the contents of a TensorIO bundle
+ * are valid.
+ *
+ * The bundle validator will commonly be used to validate bundles that are deployed after release of
+ * an app rather than those that are packaged with it. It validates each part of the TensorIO model
+ * spec, and also allows the client to provide a custom validation block.
+ */
 
 @interface TIOModelBundleValidator : NSObject
 
@@ -164,7 +173,6 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  *
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
-
 
 - (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error;
 
