@@ -30,4 +30,4 @@ deploy:
   local_dir: docs
   region: "us-west-1"
   on:
-    branch: docs-ci
+    branch: master
