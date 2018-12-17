@@ -73,6 +73,11 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
     // Run the model on a number
     
     NSNumber *numericInput = @(2);
@@ -108,6 +113,13 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Expected output
+    
     TIOVector *expectedZ = @[@(2),@(2),@(4),@(4)];
     
     // Run the model on a vector
@@ -134,6 +146,13 @@
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 2);
+    XCTAssert(model.outputs.count == 2);
+    
+    // Run model on number
     
     NSArray *vectorInputs = @[
         @[@1,  @2,  @3,  @4],
@@ -168,6 +187,13 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 2);
+    XCTAssert(model.outputs.count == 2);
+    
+    // Expected outputs
+    
     TIOVector *expectedS = @[
         @(18),   @(18),   @(18),   @(18),
         @(180),  @(180),  @(180),  @(180),
@@ -180,6 +206,8 @@
         @(560000),  @(720000),  @(560000),  @(720000),
         @(56000000),@(72000000),@(56000000),@(72000000)
     ];
+    
+    // Run model on numbers
     
     NSArray *matrixInput = @[
         @[
@@ -234,11 +262,20 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Expected outputs
+    
     TIOVector *expectedZ = @[
         @(2),  @(3),  @(4),  @(5),  @(6),  @(7),  @(8),  @(9),  @(10),
         @(12), @(22), @(32), @(42), @(52), @(62), @(72), @(82), @(92),
         @(103),@(203),@(303),@(403),@(503),@(603),@(703),@(803),@(903)
     ];
+    
+    // Run model on numbers
     
     TIOVector *vectorInput = @[
         @(1),  @(2),  @(3),  @(4),  @(5),  @(6),  @(7),  @(8),  @(9),
@@ -250,6 +287,8 @@
     
     XCTAssert(vectorResults.count == 1);
     XCTAssert([vectorResults[@"output_z"] isEqualToArray:expectedZ]);
+    
+    // Run model on bytes
     
     float_t byteInput[27] = {
         1,  2,  3,  4,  5,  6,  7,  8,  9,
@@ -272,11 +311,16 @@
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Create ARGB bytes
+    
     const int width = 224;
     const int height = 224;
     const int channels = 4;
-    
-    // Create ARGB bytes
     
     uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
     
@@ -354,11 +398,16 @@
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tfbundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Create ARGB bytes
+    
     const int width = 224;
     const int height = 224;
     const int channels = 4;
-    
-    // Create ARGB bytes
     
     uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
     
@@ -440,6 +489,13 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Prepare image input
+    
     UIImage *image = [UIImage imageNamed:@"example-image"];
     TIOPixelBuffer *imageFeature = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
@@ -474,6 +530,13 @@
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Prepare image input
     
     UIImage *image = [UIImage imageNamed:@"example-image"];
     TIOPixelBufferLayerDescription *description = (TIOPixelBufferLayerDescription*)[model descriptionOfInputAtIndex:0];
@@ -512,6 +575,13 @@
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Prepare image input
     
     UIImage *image = [UIImage imageNamed:@"example-image"];
     TIOPixelBuffer *imageFeature = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
