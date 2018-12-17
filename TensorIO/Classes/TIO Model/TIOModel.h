@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol TIOData;
 @protocol TIOLayerDescription;
+@class TIOLayerInterface;
 @class TIOModelBundle;
 @class TIOModelOptions;
 
@@ -129,6 +130,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) BOOL loaded;
+
+/**
+ * Returns descriptions of the model's inputs indexed to the order they appear in model.json.
+ */
+
+@property (readonly) NSArray<TIOLayerInterface*> *inputs;
+
+/**
+ * Returns descriptions of the model's outputs indexed to the order they appear in model.json.
+ */
+
+@property (readonly) NSArray<TIOLayerInterface*> *outputs;
 
 /**
  * The designated initializer for conforming classes.
