@@ -50,6 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *type;
 @property (readonly) BOOL loaded;
 
+@property (readonly) NSArray<TIOLayerInterface*> *inputs;
+@property (readonly) NSArray<TIOLayerInterface*> *outputs;
+
 // Model Protocol Methods
 
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle NS_DESIGNATED_INITIALIZER;
