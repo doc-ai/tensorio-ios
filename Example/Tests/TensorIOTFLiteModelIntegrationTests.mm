@@ -611,4 +611,16 @@
     }
 }
 
+// MARK: - Placeholder Model
+
+- (void)testPlaceholderModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"placeholder.tfbundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    XCTAssert([model isKindOfClass:TIOPlaceholderModel.class]);
+}
+
 @end
