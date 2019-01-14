@@ -2171,4 +2171,23 @@
     XCTAssertNil(error);
 }
 
+//MARK: - Placeholder Models
+
+- (void)testPlaceholderModelValidates {
+    TIOModelBundleValidator *validator;
+    NSError *error;
+    BOOL valid;
+    
+    // it should validate
+    
+    error = nil;
+    valid = NO;
+    
+    validator = [self validatorForFilename:@"placeholder.tfbundle"];
+    valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
 @end

@@ -68,6 +68,8 @@
 		DF4D5DC63A3A51A173FA808753699D05 /* UIImage+TIOCVPixelBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D420CC27E3A311E8832054E8B98AB7E /* UIImage+TIOCVPixelBufferExtensions.mm */; };
 		E32FB5DF2149CC0800367B11 /* TIOModelBundleValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = E32FB5DD2149CC0800367B11 /* TIOModelBundleValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E32FB5E02149CC0800367B11 /* TIOModelBundleValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = E32FB5DE2149CC0800367B11 /* TIOModelBundleValidator.m */; };
+		E344014121E924A600B6E9CC /* TIOPlaceholderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E344013E21E9245D00B6E9CC /* TIOPlaceholderModel.mm */; };
+		E344014221E924AD00B6E9CC /* TIOPlaceholderModel.h in Headers */ = {isa = PBXBuildFile; fileRef = E344013D21E9245D00B6E9CC /* TIOPlaceholderModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E7B1A6475E134933EB482E4AEBAEDDEE /* NSDictionary+TIOData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B4570021DC3C331403416F57DB24619 /* NSDictionary+TIOData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EF9E829E1021FC48C6BE990A8A46859C /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3315DA7D67E67293373873794FE04C74 /* VideoToolbox.framework */; };
 		EFDEC9485484C1653116E3CA97A35759 /* NSData+TIOData.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEAAE2BFA02BE24C3AA1F487580E4F2F /* NSData+TIOData.mm */; };
@@ -173,6 +175,8 @@
 		E1719288A270235757DF95735F26F8D9 /* TIOVisionPipeline.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOVisionPipeline.mm; sourceTree = "<group>"; };
 		E32FB5DD2149CC0800367B11 /* TIOModelBundleValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleValidator.h; sourceTree = "<group>"; };
 		E32FB5DE2149CC0800367B11 /* TIOModelBundleValidator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundleValidator.m; sourceTree = "<group>"; };
+		E344013D21E9245D00B6E9CC /* TIOPlaceholderModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TIOPlaceholderModel.h; sourceTree = "<group>"; };
+		E344013E21E9245D00B6E9CC /* TIOPlaceholderModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOPlaceholderModel.mm; sourceTree = "<group>"; };
 		E45E4691AB2B6AE43E352379478EE64B /* Pods-TensorIO_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TensorIO_Example-resources.sh"; sourceTree = "<group>"; };
 		E6C72F557AB0C40BA79C5E8CD40023D3 /* TIOCVPixelBufferHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOCVPixelBufferHelpers.h; sourceTree = "<group>"; };
 		E82B320CF8BB8268AD84702361873CDB /* TIOVisionModelHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVisionModelHelpers.h; sourceTree = "<group>"; };
@@ -291,6 +295,8 @@
 			isa = PBXGroup;
 			children = (
 				73BE0F74C7334D110B782D7C7A4E0DFC /* TIOModel.h */,
+				E344013D21E9245D00B6E9CC /* TIOPlaceholderModel.h */,
+				E344013E21E9245D00B6E9CC /* TIOPlaceholderModel.mm */,
 				CFC24433C0A45E38F0B4649F7182C4CE /* TIOModelBundle.h */,
 				288F5DB80F9E97CB674ECEB00CC07F2C /* TIOModelBundle.m */,
 				E32FB5DD2149CC0800367B11 /* TIOModelBundleValidator.h */,
@@ -486,6 +492,7 @@
 				545EDE019CE44C00572B0086139F41B6 /* TIOCVPixelBufferHelpers.h in Headers */,
 				D76984970AB5B0F6F271F3CE7327DA76 /* TIOData.h in Headers */,
 				A3F0BD9D17EB8964E71DC50183D47B2C /* TIOLayerDescription.h in Headers */,
+				E344014221E924AD00B6E9CC /* TIOPlaceholderModel.h in Headers */,
 				86EFDA26026B31BA7209F88C27155422 /* TIOLayerInterface.h in Headers */,
 				7F582188E2CCC327745920EAAF5DC652 /* TIOModel.h in Headers */,
 				3F73AC7CCB445FFB9F2E68F05854D9DB /* TIOModelBundle.h in Headers */,
@@ -621,6 +628,7 @@
 				4143E262C08E599467216A4A0ED19A7E /* NSDictionary+TIOExtensions.m in Sources */,
 				F5BFED1B23A022214065F640E118FD1B /* NSNumber+TIOData.mm in Sources */,
 				4C03110535890CABA70AB71BB5747619 /* TensorIO-dummy.m in Sources */,
+				E344014121E924A600B6E9CC /* TIOPlaceholderModel.mm in Sources */,
 				2F43E4D0B98979098DC29A8FB9ADD7DC /* TIOCVPixelBufferHelpers.mm in Sources */,
 				50D67B27B6E47234E408740CD1E7D7B2 /* TIOLayerInterface.mm in Sources */,
 				E32FB5E02149CC0800367B11 /* TIOModelBundleValidator.m in Sources */,
