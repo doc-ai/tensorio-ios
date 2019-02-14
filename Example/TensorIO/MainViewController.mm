@@ -20,7 +20,7 @@
 
 #import "MainViewController.h"
 
-#import "TensorIO.h"
+#import <TensorIO/TensorIO-umbrella.h>
 #import "ResultInfoView.h"
 
 @interface MainViewController ()

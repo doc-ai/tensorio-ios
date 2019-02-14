@@ -10,7 +10,6 @@
 #endif
 #endif
 
-#import "TensorIO.h"
 #import "NSArray+TIOData.h"
 #import "NSData+TIOData.h"
 #import "NSDictionary+TIOData.h"
@@ -26,9 +25,11 @@
 #import "TIOModelBundle.h"
 #import "TIOModelBundleJSONSchema.h"
 #import "TIOModelBundleManager.h"
+#import "TIOModelBundleValidator.h"
 #import "TIOModelJSONParsing.h"
 #import "TIOModelOptions.h"
 #import "TIOPixelNormalization.h"
+#import "TIOPlaceholderModel.h"
 #import "TIOQuantization.h"
 #import "TIOVisionModelHelpers.h"
 #import "TIOVisionPipeline.h"
