@@ -7,20 +7,20 @@
 	"license": "",
 	"model": {
 		"file": "model.tflite",
-		"quantized": false,
+		"quantized": false
 	},
 	"inputs": [
 		{
 			"name": "input_x",
 			"type": "array",
-			"shape": [3,3,3],
-		},
+			"shape": [3,3,3]
+		}
 	],
 	"outputs": [
 		{
 			"name": "output_z",
 			"type": "array",
-			"shape": [3,3,3],
+			"shape": [3,3,3]
 		}
 	]
 }

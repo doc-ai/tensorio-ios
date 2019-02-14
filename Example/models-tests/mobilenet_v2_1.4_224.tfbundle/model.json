@@ -7,7 +7,7 @@
 	"license": "Apache License. Version 2.0 http://www.apache.org/licenses/LICENSE-2.0",
 	"model": {
 		"file": "mobilenet_v2_1.4_224.tflite",
-		"quantized": false,
+		"quantized": false
 	},
 	"inputs": [
 		{
@@ -18,7 +18,7 @@
 			"normalize": {
 				"standard": "[-1,1]"
 			}
-		},
+		}
 	],
 	"outputs": [
 		{
@@ -26,7 +26,7 @@
 			"type": "array",
 			"shape": [1,1000],
 			"labels": "labels.txt"
-		},
+		}
 	],
 	"options": {
 		"device_position": "back"
