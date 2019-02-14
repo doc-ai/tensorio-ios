@@ -22,7 +22,7 @@
 
 // MARK: - Quantization
 
-TIODataQuantizer TIODataQuantizerWithQuantization(const TIODataQuantization& quantization) {
+TIODataQuantizer TIODataQuantizerWithQuantization(TIODataQuantization quantization) {
     const float scale = quantization.scale;
     const float bias = quantization.bias;
     
@@ -54,7 +54,7 @@ _Nullable TIODataQuantizer TIODataQuantizerNone() {
 
 // MARK: - Dequantization
 
-TIODataDequantizer TIODataDequantizerWithDequantization(const TIODataDequantization& dequantization) {
+TIODataDequantizer TIODataDequantizerWithDequantization(TIODataDequantization dequantization) {
     const float scale = dequantization.scale;
     const float bias = dequantization.bias;
     
