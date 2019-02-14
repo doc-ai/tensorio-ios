@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "TensorIO.h"
+#import <TensorIO/TensorIO-umbrella.h>
 
 @interface TensorIODataTests : XCTestCase
 
@@ -77,7 +77,7 @@
 - (void)testNumberGetBytesUInt8QuantizedWithQuantizer {
     // It should convert the float_t numeric value to a uint8_t value
     
-    TIODataQuantizer quantizer = ^uint8_t(const float_t &value) {
+    TIODataQuantizer quantizer = ^uint8_t(float_t value) {
         return (uint8_t)value;
     };
     
@@ -154,7 +154,7 @@
 - (void)testNumberInitWithBytesUInt8QuantizedWithDequantizer {
     // It should return a number by converting a uint8_t value to a float_t value
     
-    TIODataDequantizer dequantizer = ^float_t(const uint8_t &value) {
+    TIODataDequantizer dequantizer = ^float_t(uint8_t value) {
         return (float_t)value;
     };
     
@@ -230,7 +230,7 @@
 - (void)testArrayGetBytesUInt8QuantizedWithQuantizer {
     // It should convert the float_t numeric values to uint8_t values
     
-    TIODataQuantizer quantizer = ^uint8_t(const float_t &value) {
+    TIODataQuantizer quantizer = ^uint8_t(float_t value) {
         return (uint8_t)value;
     };
     
@@ -294,7 +294,7 @@
 - (void)testArrayInitWithBytesUInt8QuantizedWithDequantizer {
     // It should return an array of numbers by converting uint8_t values to float_t values
     
-    TIODataDequantizer dequantizer = ^float_t(const uint8_t &value) {
+    TIODataDequantizer dequantizer = ^float_t(uint8_t value) {
         return (float_t)value;
     };
     
@@ -367,7 +367,7 @@
 - (void)testDataGetBytesUInt8QuantizedWithQuantizer {
     // It should convert the float_t numeric values to uint8_t values
     
-    TIODataQuantizer quantizer = ^uint8_t(const float_t &value) {
+    TIODataQuantizer quantizer = ^uint8_t(float_t value) {
         return (uint8_t)value;
     };
     
@@ -436,7 +436,7 @@
 - (void)testDataInitWithBytesUInt8QuantizedWithDequantizer {
     // It should return an array of numbers by converting uint8_t values to float_t values
     
-    TIODataDequantizer dequantizer = ^float_t(const uint8_t &value) {
+    TIODataDequantizer dequantizer = ^float_t(uint8_t value) {
         return (float_t)value;
     };
     
