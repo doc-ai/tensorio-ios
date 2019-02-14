@@ -6,6 +6,5 @@ target 'TensorIO_Example' do
   target 'TensorIO_Tests' do
     inherit! :search_paths
 
-    
   end
 end

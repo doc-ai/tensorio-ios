@@ -1,0 +1,23 @@
+PODS:
+  - TensorFlowLite (1.12.0)
+  - TensorIO (0.3.3):
+    - TensorFlowLite
+
+DEPENDENCIES:
+  - TensorIO (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - TensorFlowLite
+
+EXTERNAL SOURCES:
+  TensorIO:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  TensorFlowLite: e81aef029750aa46b42ad16553fa4cddd81498cc
+  TensorIO: 15cd12f397ee8164064ee3111dd83892df9b9004
+
+PODFILE CHECKSUM: 1cb98e1719e44fa3f98b49899189c071e9f678fb
+
+COCOAPODS: 1.6.0
