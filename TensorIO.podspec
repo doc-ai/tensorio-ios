@@ -8,9 +8,9 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.3.3'
-  s.summary          = 'An Objective-C wrapper for TensorFlow Lite.'
-  s.description      = 'Perform inference with TensorFlow Lite models using all the conveniences of Objective-C'
+  s.version          = '0.4'
+  s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite.'
+  s.description      = 'Perform inference with TensorFlow Lite models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
   s.license          = { :type => 'Apache 2', :file => 'LICENSE' }
   s.authors          = { 'Philip Dow' => 'philip@doc.ai' }
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.library = 'c++'
   
-  s.frameworks = 'Foundation', 'AVFoundation', 'CoreMedia', 'Accelerate', 'VideoToolbox'
+  s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreMedia', 'Accelerate', 'VideoToolbox'
   s.dependency 'TensorFlowLite'
   
   s.source_files = 'TensorIO/Classes/**/*'
