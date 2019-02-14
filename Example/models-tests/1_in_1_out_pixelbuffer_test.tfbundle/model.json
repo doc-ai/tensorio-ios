@@ -7,7 +7,7 @@
 	"license": "",
 	"model": {
 		"file": "model.tflite",
-		"quantized": false,
+		"quantized": false
 	},
 	"inputs": [
 		{
@@ -27,7 +27,7 @@
 			"normalize": {
 				"standard": "[0,1]"
 			}
-		},
+		}
 	],
 	"outputs": [
 		{

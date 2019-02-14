@@ -7,7 +7,7 @@
 	"license": "",
 	"model": {
 		"file": "model.tflite",
-		"quantized": false,
+		"quantized": false
 	},
 	"inputs": [
 		{
