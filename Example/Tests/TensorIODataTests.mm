@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import "TensorIO.h"
+#import <TensorIO/TensorIO-umbrella.h>
 
 @interface TensorIODataTests : XCTestCase
 
