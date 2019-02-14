@@ -17,11 +17,16 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/doc-ai/tensorio-ios.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.3'
-  s.source_files = 'TensorIO/Classes/**/*'
   s.static_framework = true
+  s.library = 'c++'
+  
   s.frameworks = 'Foundation', 'AVFoundation', 'CoreMedia', 'Accelerate', 'VideoToolbox'
   s.dependency 'TensorFlowLite'
-  s.library = 'c++'
+  
+  s.source_files = 'TensorIO/Classes/**/*'
+  s.private_header_files = [
+    'TensorIO/Classes/TIO Model/TIOPixelBufferToTensorHelpers.h'
+  ]
   
   s.xcconfig = {
     'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers"',

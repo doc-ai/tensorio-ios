@@ -18,8 +18,8 @@
   "platforms": {
     "ios": "9.3"
   },
-  "source_files": "TensorIO/Classes/**/*",
   "static_framework": true,
+  "libraries": "c++",
   "frameworks": [
     "Foundation",
     "AVFoundation",
@@ -32,7 +32,10 @@
 
     ]
   },
-  "libraries": "c++",
+  "source_files": "TensorIO/Classes/**/*",
+  "private_header_files": [
+    "TensorIO/Classes/TIO Model/TIOPixelBufferToTensorHelpers.h"
+  ],
   "xcconfig": {
     "USER_HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers\""
   }
