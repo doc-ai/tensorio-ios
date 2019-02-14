@@ -64,7 +64,7 @@ typedef uint8_t (^TIODataQuantizer)(float_t value);
  * @return TIODataQuantizer The quantizing function,
  */
 
-TIODataQuantizer TIODataQuantizerWithQuantization(const TIODataQuantization& quantization);
+TIODataQuantizer TIODataQuantizerWithQuantization(TIODataQuantization quantization);
 
 /**
  * A standard quantization function that converts values from a range of `[0,1]` to `[0,255]`.
@@ -126,7 +126,7 @@ typedef float_t (^TIODataDequantizer)(uint8_t value);
  * @return TIODataQuantizer The quantizing function.
  */
 
-TIODataDequantizer TIODataDequantizerWithDequantization(const TIODataDequantization& dequantization);
+TIODataDequantizer TIODataDequantizerWithDequantization(TIODataDequantization dequantization);
 
 /**
  * A standard dequantizing function that converts values from a range of `[0,255]` to `[0,1]`.

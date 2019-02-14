@@ -56,7 +56,7 @@ extern const TIOImageVolume kTIOImageVolumeInvalid;
  * @return BOOL `YES` if two image volumes are equal, `NO` otherwise.
  */
 
-BOOL TIOImageVolumesEqual(const TIOImageVolume& a, const TIOImageVolume& b);
+BOOL TIOImageVolumesEqual(TIOImageVolume a, TIOImageVolume b);
 
 NS_ASSUME_NONNULL_END
 
