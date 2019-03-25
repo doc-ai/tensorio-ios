@@ -1,5 +1,5 @@
 PODS:
-  - TensorFlowLite (1.12.0)
+  - TensorFlowLite (1.13.1)
   - TensorIO (0.4.1):
     - TensorFlowLite
 
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  TensorFlowLite: e81aef029750aa46b42ad16553fa4cddd81498cc
+  TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
   TensorIO: 25588fee92d13804133012019d174d6e47d38fdb
 
 PODFILE CHECKSUM: 1cb98e1719e44fa3f98b49899189c071e9f678fb
