@@ -3,13 +3,14 @@
 # * https://github.com/supermarin/xcpretty#usage
 
 os: osx
-osx_image: xcode10
+osx_image: xcode10.1
 language: objective-c
 
 cache: cocoapods
 podfile: Example/Podfile
 
 before_install:
+- brew update
 - gem install cocoapods # Since Travis is not always on latest version
 - pod repo update
 - pod install --project-directory=Example
