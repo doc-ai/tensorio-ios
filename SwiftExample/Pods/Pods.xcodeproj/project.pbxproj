@@ -19,70 +19,73 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		05D19A6F09A6C0209DD58C6A85CD6605 /* TIOTFLiteErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BDB54681CDD353E3C39D15F517F7996 /* TIOTFLiteErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0FD3EC48029B49A4E5D931E63E2394F9 /* TIOPixelBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E60C738B5F7707328CF576A899F9D3FA /* TIOPixelBuffer.mm */; };
-		10F10B549647F9459CADCB364F4F05AF /* TIOCVPixelBufferHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C069A300D614CE5131DBF587A2CA9DA /* TIOCVPixelBufferHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		142F300410E6C0C402319CFD7E9C17EA /* TIOModelBundleValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BEC613EF3BEDA7BCD5C2BE3D0B70C30 /* TIOModelBundleValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		14587B9969FA4429F50339450FE0E06E /* NSDictionary+TIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E3DF3C3BCCD0651A328370C186E2F287 /* NSDictionary+TIOExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		053BC09EE17CFCF9BCB5D4E2323511A7 /* NSDictionary+TIOTFLiteData.h in Headers */ = {isa = PBXBuildFile; fileRef = BC9E5747BFA42893E6A865FF0DE844FA /* NSDictionary+TIOTFLiteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0723A6169A4DAE1B8F8E7AF385D7AA97 /* TIOLayerInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = D15DCC6FB0A6C9C60A8499D776977486 /* TIOLayerInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		086E3E058DEA4D6A56914AA31A941931 /* TIOPlaceholderModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD0A31EF5FF45A26EDFB8208885E4E2 /* TIOPlaceholderModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0FA288BA0E9F8880719D1BE31640AC5B /* UIImage+TIOCVPixelBufferExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F0A373021489126C302575B818DE1DB4 /* UIImage+TIOCVPixelBufferExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		11A60ADCB6765964C9DF83D08C9E53C8 /* NSData+TIOTFLiteData.h in Headers */ = {isa = PBXBuildFile; fileRef = 15E121BC0AC61807F6786137B54ADA1C /* NSData+TIOTFLiteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		142DD2C2EB9A26F5E05A17473D059D72 /* TIOModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D80CB221B9317BC003FE86883C45085 /* TIOModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1534C7D6CDBCBF29EE12323568A5D7F2 /* TIOTFLiteModel.h in Headers */ = {isa = PBXBuildFile; fileRef = EA2520AA0FDD753A0F84309D26BA7328 /* TIOTFLiteModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		175BBCE24BD6F87F0E4BD0BB177F06D8 /* Pods-SwiftExample-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D82C0F0CE52EA22BD158D485CFA00811 /* Pods-SwiftExample-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1984BC158DC380845B0478385F73EFAB /* TIOModelBundleJSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 5AB6E746D1B7E42E2E7FC364C45A4CF7 /* TIOModelBundleJSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1C19003B344905DF31D250AEE5C78F8C /* NSArray+TIOData.h in Headers */ = {isa = PBXBuildFile; fileRef = 47FFCDE464FC1DC43976834ABC8CAD0E /* NSArray+TIOData.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		224B6772D2771793D5496097D6204F11 /* TIOVectorLayerDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 979FF876B22D55B46CD80C8CE783E626 /* TIOVectorLayerDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		23BC91EB509F17D996D7290BF89A36D1 /* TIOModelBundleManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7DAAA2BE47D650DFBC71186F2CEAE7B6 /* TIOModelBundleManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		249456ED36F47678BE11521A5413C5AE /* TIOPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AD3E2992B15DA044ACDB6FEBA5F291B /* TIOPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		271840ED081427168893132A748A6877 /* TIOPlaceholderModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D31F6344A972B00B87A549AF4A715AC /* TIOPlaceholderModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		36830197AB5AF69E9D1DBE69E5A77590 /* TIOPixelBufferLayerDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 934803C0DC2248388FD23056299306AE /* TIOPixelBufferLayerDescription.mm */; };
-		38CB1149051DC37BA78D52475DF14127 /* TIOPixelNormalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85DBCB07C0DF3EE27770B7B5AF4BB6B1 /* TIOPixelNormalization.mm */; };
-		3E3146A2998D161562E3BE3AF7841D54 /* NSArray+TIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CD177BBE881D8495C8141E9CB6FF942 /* NSArray+TIOExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3F316B3246230DF3F658F4024AEBB79C /* TIOVisionPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = F08D64AB8B27F0A9608312A2F15BA2A1 /* TIOVisionPipeline.mm */; };
-		3F969E5AFF50626447089EFC2391A884 /* NSDictionary+TIOData.h in Headers */ = {isa = PBXBuildFile; fileRef = FB14C5E7DDE026DE7337CD95F2A84F0D /* NSDictionary+TIOData.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3FCB511C414AB043711D914612A8184C /* UIImage+TIOCVPixelBufferExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D112594033600688D4212F4684D8BA83 /* UIImage+TIOCVPixelBufferExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4C3D21890E190AD109F58DFAA79341FA /* TIOModelBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B9B56554B88A998BE3464F939DDF39 /* TIOModelBundleManager.m */; };
+		25B4078C616071DBD4574166F58EE288 /* NSNumber+TIOTFLiteData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4233B73CCB3248B0F0A4EAD39B84FED4 /* NSNumber+TIOTFLiteData.mm */; };
+		26145312736BBD73F5AABA674C13FC46 /* NSArray+TIOTFLiteData.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D3E9F2F50A6C7E6FA43360FAB0EB56E /* NSArray+TIOTFLiteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2C0E81AEF298622A77D5ED1793489D34 /* TIOVisionModelHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D5D88FDD42AC95DDC3B14A7A7A4E49 /* TIOVisionModelHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		312D80A783C7114BC5E2B91D39774DFD /* TIOPixelBufferToTensorHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = AE0F88962C94CFCFF7BCCA7238398F60 /* TIOPixelBufferToTensorHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		3B77D14E2A8E14360EB727D4251D88F3 /* TIOPixelBuffer+TIOTFLiteData.h in Headers */ = {isa = PBXBuildFile; fileRef = F22BB06E1DB7E88F965FF1857E276965 /* TIOPixelBuffer+TIOTFLiteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D590472763B9A7FD0A278015B4BBB4F /* TIOCVPixelBufferHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 54B7709BB9019CAA79DFCF70E2A9F245 /* TIOCVPixelBufferHelpers.mm */; };
+		3E224B1096F71B9830583EA46B457429 /* TIOPixelBufferLayerDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A489D7560D5F304507D2077AF8E8F1D /* TIOPixelBufferLayerDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		45575A2AD60F3CA33018AA18A3D8CC52 /* TIOPixelNormalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1EDA462DF500E9A973F31766B35C9B53 /* TIOPixelNormalization.mm */; };
+		4CF5FDD8D9612D06DC1083A9F90DF8D5 /* TIOObjcDefer.h in Headers */ = {isa = PBXBuildFile; fileRef = 970275C4A6B1FC52FAD37271F9D57BD1 /* TIOObjcDefer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E15FDC315538201EC9817230DEC95B2 /* TIOVisionPipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = CF0279AF96CDB7EB54E2966440A14F1C /* TIOVisionPipeline.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F405B13025F086972B1FC00A28700FA /* NSDictionary+TIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = C54FD26F84035AAA6A1A9E421A106978 /* NSDictionary+TIOExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5097C399A62433C6D6935F4DF2D9D463 /* Pods-SwiftExample-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E61873E7C0A2668ACCF6B19C7FBDB523 /* Pods-SwiftExample-dummy.m */; };
-		551EEA0D36F5C6ABFF2CE07B910907A9 /* TIOData.h in Headers */ = {isa = PBXBuildFile; fileRef = 36CCC76486E2772E4917C5FFE7BA7C4D /* TIOData.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		60F742A469F5ACD5617E43C9926F41BC /* NSArray+TIOExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29796688BA4FBB9ED577F4E30A353817 /* NSArray+TIOExtensions.m */; };
-		625B3C337DF422344D71D01AA595D7DB /* TIOModelJSONParsing.mm in Sources */ = {isa = PBXBuildFile; fileRef = 29889F6EABBEB93DAB3A15C4C0BE7EE3 /* TIOModelJSONParsing.mm */; };
-		63CF5AD479F1A122E4A59B2C377A0712 /* TIOLayerDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = D9C106CB79DB8286BAECFE3FF9FE686E /* TIOLayerDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		65E43EE4372260A3688774F55024C26A /* TIOQuantization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2CC70163B33AC6CCAF7087FA33E88699 /* TIOQuantization.mm */; };
-		65FE2110FD70E387E2DC06548136F66C /* NSNumber+TIOData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9DE4775E7DA6E950A73B00CBE95C12BB /* NSNumber+TIOData.mm */; };
-		6659C96898D9014F6758A1CC0EF6FE75 /* TensorIO-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C4236AE0E3337F955FEC3F7D4F67CE9A /* TensorIO-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		687502673A615A104069CC8CB7EC1EA2 /* NSDictionary+TIOExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BB76C620121C0782F426E6D0DBDEF0EB /* NSDictionary+TIOExtensions.m */; };
+		556D7D9390D2662E65CF440320DB5499 /* TIOPixelNormalization.h in Headers */ = {isa = PBXBuildFile; fileRef = 3BE8F9DF0FF171CC7050AA2D5EC02875 /* TIOPixelNormalization.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5ACCC802480251A0E4DE5969FDAD4CAB /* TIOModelJSONParsing.h in Headers */ = {isa = PBXBuildFile; fileRef = A8CDF17FCF8795A626DA45F4CAF9ABB8 /* TIOModelJSONParsing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5E7EF6C4D5E13CD78979652387143319 /* TIOPixelBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D806EC82AF7E47926378DDB2B02F954 /* TIOPixelBuffer.mm */; };
+		5F33DE4D6C6E0C97826D99A578633378 /* TIOTFLiteErrors.mm in Sources */ = {isa = PBXBuildFile; fileRef = FF91C71B87A56982FCF376A2DA6762D7 /* TIOTFLiteErrors.mm */; };
 		6AC5B37A4F064EDD0C3A02CBA9BAFF57 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
-		6F9B0A4A5D0EB6124CA59CBEEC706B23 /* TIOModelOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = A878F160B58288906147D79E21B1C5D0 /* TIOModelOptions.mm */; };
-		77D495CA0B5DF3F7E330ACD6DFC2053A /* TIOPixelBufferToTensorHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 483AF44F7A2784DD81015A0075D0362C /* TIOPixelBufferToTensorHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		7EF7323222C7A557210B25E3413926FE /* TIOQuantization.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CEF9DD271E5BA05231E93ACA2C774CF /* TIOQuantization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		85764C85B87EFAB5A1B7A3D40A9074D4 /* NSDictionary+TIOData.mm in Sources */ = {isa = PBXBuildFile; fileRef = F5E9DC47DE04CFB7DB1A440BF2A7D6E1 /* NSDictionary+TIOData.mm */; };
-		8804E373053FD8274F523772B1DC3B15 /* UIImage+TIOCVPixelBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 855E980B6E7594FC309BB5E22BE445C5 /* UIImage+TIOCVPixelBufferExtensions.mm */; };
-		8906C46F620E0FA3FAA38D4E41E56823 /* TIOModelJSONParsing.h in Headers */ = {isa = PBXBuildFile; fileRef = E956D3153654E8BFEC37C833E7B94BA8 /* TIOModelJSONParsing.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8C9DF16E078F2E2FD8AF50782EF86BDD /* TIOLayerInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = 17322E98CBA5FD626AC1D70F4DCFA115 /* TIOLayerInterface.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		911ADA9DF46F02E820DCD5721E8F6F9A /* TIOModelBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = A79614A5F97C1BF0D4DFA2899E722739 /* TIOModelBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6DB57C810A502E65C8BB3CA85D997956 /* TIOModelOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2ABEE364D54974BA101A5850CC2BE637 /* TIOModelOptions.mm */; };
+		70DEC50FDAC83B550B8B3E5ECCB2BD98 /* TIOModelBundleValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B1564AA29FC7A60B866C3B5EA1EBECA /* TIOModelBundleValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		71CC371520E1FAE888CA733963F1F37D /* TensorIO-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B0F3A69C3CEAC3146207014B2A085176 /* TensorIO-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7A6AF64A1047E746D457C57093FC7DC1 /* TIOTFLiteModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2C0E3466F38F77F5F0B11E4D30A8CA0E /* TIOTFLiteModel.mm */; };
+		7E96FA8C545F3D99D29645118480D3CA /* NSData+TIOTFLiteData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02D7913BA1882D1CCA32D2D830A2E7D9 /* NSData+TIOTFLiteData.mm */; };
+		8400113883045EE0BD07CD3E7EA4BB33 /* TIOVector.h in Headers */ = {isa = PBXBuildFile; fileRef = 293D3D24A122FC82243F65B6AE5AA84F /* TIOVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86A8D1C9A39C40DC0BF320B49C22F743 /* TIOModelBundleManager.h in Headers */ = {isa = PBXBuildFile; fileRef = ED3D82B74F77AFE3291943B7AB72BEC3 /* TIOModelBundleManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		86C6A6F0B4F2877D7A3FE8B041F3AE6D /* TIOQuantization.mm in Sources */ = {isa = PBXBuildFile; fileRef = C3856CE9F8811296FA9D0B833D90DC4C /* TIOQuantization.mm */; };
 		92CF2DF5627628262B09AA222F21DCC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
-		9AD2D2D40246687A4FB0961754EE68A8 /* TIOPixelBufferLayerDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = AEADD77C55CEEA64D03ED3635A709B8C /* TIOPixelBufferLayerDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9B80E9F9B328E2B300E53A13A778F6EB /* TIOVisionModelHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BA1BBEB8AA708040B488D5D648C6B43 /* TIOVisionModelHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9C2F3BEBDCF2CE4D2929EE297C069D2B /* TIOCVPixelBufferHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 350DEF09CEEDBB2A41FB6A4DDBCA12C8 /* TIOCVPixelBufferHelpers.mm */; };
-		A866D6E22C14DF252118CE3032089FA7 /* TIOModelBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2600C84C904206705FE14E7C97E5CF6C /* TIOModelBundle.m */; };
-		AA42F65CF7F185BE1BABC272A31CDAE6 /* TIOModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BA7677690E9694D4E1848DD686BA2E3 /* TIOModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AEF065A164827EDD2A2FE473A81FB4BB /* NSData+TIOData.mm in Sources */ = {isa = PBXBuildFile; fileRef = A4CCB7A53C2EAA2C8F51947DDD274143 /* NSData+TIOData.mm */; };
-		B6EA0F40CA06CAD1B10EC386E396C7BE /* TIOTFLiteModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = DF0C51C2DFDD2EE1D1669AF4CD010586 /* TIOTFLiteModel.mm */; };
-		BBE7B3D98BFF1D3DF3A9F27588FDB497 /* TIOTFLiteModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FE15C1E18C58A811D541B3BAA9BC0C0 /* TIOTFLiteModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C77B0FF4706C2787F56FCBB8C87F05E5 /* NSArray+TIOData.mm in Sources */ = {isa = PBXBuildFile; fileRef = E1B0636F2C79D0FF0A473E6E281E16AD /* NSArray+TIOData.mm */; };
-		C9EF6EA061A7BC23E7280F1C158E9EA9 /* TIOVisionModelHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 821B9C6285F81416BA1DB5342E4C9168 /* TIOVisionModelHelpers.mm */; };
-		CDBF7315415853D4B58CF89B95389851 /* TIOObjcDefer.h in Headers */ = {isa = PBXBuildFile; fileRef = FA325EF20735E395A7D07DF9D5796005 /* TIOObjcDefer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CFDC84CDC02C57A57565AABF556B62E6 /* TIOPlaceholderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A15CD738F30883ACCEC14B2369E1DD2 /* TIOPlaceholderModel.mm */; };
-		D07C57AFD83A11E4250CB8CE95534FA9 /* NSData+TIOData.h in Headers */ = {isa = PBXBuildFile; fileRef = 44F5AFACE772211C13B134C83FCDF14A /* NSData+TIOData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9FC6F0D01A065CD14C613A153FB12805 /* TIOVectorLayerDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE9140D51B495B2C885D0D73DD65C92 /* TIOVectorLayerDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A36ED47E2B24DA27EFCC52F03D35E048 /* TIOModelBundleValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 41908832229DDA947E2BE020691B1922 /* TIOModelBundleValidator.m */; };
+		A5E899DA4CE3DCDCD31B8CF2797CB90A /* TIOPixelBuffer+TIOTFLiteData.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9525E471F8AD66B79E97A7CAD0C8C0B /* TIOPixelBuffer+TIOTFLiteData.mm */; };
+		A7518A2BB2A316550B39D72011F60F40 /* TIOModelBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FAD8B67765A6869A992F6A3FF0018B6 /* TIOModelBundle.m */; };
+		AA9F43B91FEA855513C01F29B312B2AD /* UIImage+TIOCVPixelBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = B698C9654C83052C70771D8972797D1E /* UIImage+TIOCVPixelBufferExtensions.mm */; };
+		ADB62F6D66A411AF406D64DA35F3D3CB /* TensorIO-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7507664D6CF65B88EC5A4AB7FDE63B /* TensorIO-dummy.m */; };
+		B03FEA70AB67131971669A9234A72840 /* TIOPixelBufferLayerDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14749AB92A94763804B54708B0EB4EF0 /* TIOPixelBufferLayerDescription.mm */; };
+		B05E1EE49A11DA4C523760F888EA934A /* TIOPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 15EF4D1BF9CC4071D8731626EAD80732 /* TIOPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BDD888C2EC5CC45E5831798D73E65A27 /* TIOVisionPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = E81DF320AE69A6BBB73CE0869C820832 /* TIOVisionPipeline.mm */; };
+		C2A86DB828890FB20461D811DFBC1552 /* NSArray+TIOTFLiteData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 23276F71C578ED4277145C9BD2FACE7C /* NSArray+TIOTFLiteData.mm */; };
+		C3CED28F71AA3E1F5FE82FECBF48C7F5 /* TIOVectorLayerDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A958DEFAC80C6BAE39D57FCD2BBD307 /* TIOVectorLayerDescription.mm */; };
+		CA3F8B57A29C53F5B1F7B10DFEE28AEA /* NSDictionary+TIOTFLiteData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4912CCC98B0015277B007DD2E855F56C /* NSDictionary+TIOTFLiteData.mm */; };
+		CC5E7F40072ABEBFEE869B37719370D3 /* NSArray+TIOExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = EC6DD1FADBAB25BAF48C735F0D117046 /* NSArray+TIOExtensions.m */; };
+		D09E654F65ECB6594FE22B839E684FB5 /* TIOLayerDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 36AA5C52E77588FBFA8D459269A5374E /* TIOLayerDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1289FB1113BD584986A72107A15B63F /* Pods-SwiftExampleTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECCF87F5B7DD3187FA51B7095CD7F06 /* Pods-SwiftExampleTests-dummy.m */; };
-		D131D506A9F3066FC712AF547BF32359 /* TensorIO-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 072F895B29870401D36A1D653A1D9A2C /* TensorIO-dummy.m */; };
-		D54E5A41D09D94E16B4B50DADE05EC67 /* TIOTFLiteErrors.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6C63BAE349C9617171F34C54532716F4 /* TIOTFLiteErrors.mm */; };
-		D6BCA4AD7DAB8A8A1313E1A4780A11C7 /* TIOModelBundleValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AD040150C475DFDFC75154FEC929643 /* TIOModelBundleValidator.m */; };
-		DA57E546D2CD604C5F410E8ADED0B705 /* TIOVectorLayerDescription.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE60FD67DE355139B568EDAB0C78FA9A /* TIOVectorLayerDescription.mm */; };
-		DDCDB978D28009C6F9FFCCE8B65C25DE /* NSNumber+TIOData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A7A41406FEEF67102B38C004D84BE5B /* NSNumber+TIOData.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E65B8868B28565C202963C1E9E64C989 /* TIOPixelNormalization.h in Headers */ = {isa = PBXBuildFile; fileRef = CA7AB16EC8EDDF54E8F2F61B3995FBA5 /* TIOPixelNormalization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EAA53341CAA2408905B174569DFE1482 /* TIOModelOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 894DE331F21B1846366A16C95B56FC40 /* TIOModelOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EE0C8E7F2E280F88BE09A73844A0F94A /* TIOVisionPipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = E39A9BB0D117A6979B1B57D5D4CEDCEF /* TIOVisionPipeline.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D5FF51A5227A3D0E2077064466883A22 /* TIOPlaceholderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = FF21959CE2E4AFCC4C41E122C3D3D4A4 /* TIOPlaceholderModel.mm */; };
+		DB6E0A7E58735E09DA6BEF28354D6695 /* TIOModelOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 87B496E6B9DE2E6AC53B0CCC7A4D64C5 /* TIOModelOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBE8B27EAC462C51DBC31D6BE5FF25A2 /* TIOModelJSONParsing.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0A454AE1B7ACAD43FDC459E972EED43C /* TIOModelJSONParsing.mm */; };
+		E3C255001E60172D566D35345BA42E10 /* NSNumber+TIOTFLiteData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A7B6049F81F7FB611967D38E42B2345 /* NSNumber+TIOTFLiteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E450C6B7308F53450E1E08D2AB8551A5 /* TIOVisionModelHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 934175B48067D0754B884FAA93EA8EE0 /* TIOVisionModelHelpers.mm */; };
+		E95421395C3E837B66428B0BE549C5F2 /* TIOCVPixelBufferHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 3608D0632A34C92E7723D4D9584C4257 /* TIOCVPixelBufferHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E99D37F8CBDFE9BC31BE93D35B8595D2 /* NSArray+TIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F5729CF67EE0E44AEB994E97F98FC2D4 /* NSArray+TIOExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED62251ADCAA0770C8257B62FDD552DC /* TIOModelBundleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6811A9D356625BCE2BB2211A2070D1AD /* TIOModelBundleManager.m */; };
+		EDEF01B6568A03CEC3252AEFA5711B15 /* NSDictionary+TIOExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 961CD1471011F36D1A076E575C9EC87A /* NSDictionary+TIOExtensions.m */; };
+		EE1D1646901F8D7FF53CF891608CE1DD /* TIOData.h in Headers */ = {isa = PBXBuildFile; fileRef = 33CC4205BAC59F4CC11A93937AB54964 /* TIOData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EE96F27522AB0DB9DAB6B5A27C74A20A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
-		F5D0901E332C7008206704DBA728F7C3 /* TIOLayerInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31B6FD9A3C454F811D75F52FCF1A50E /* TIOLayerInterface.mm */; };
+		F2B93DC4C047DDECEB4B1B88FCCD0A58 /* TIOTFLiteData.h in Headers */ = {isa = PBXBuildFile; fileRef = 821C0EB2479646DF43B84F9A772DD9D4 /* TIOTFLiteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F43C8A5E0A589310E79DF2ACAB384284 /* TIOModelBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C729B259996B853F3224090BCAB3124 /* TIOModelBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F7E3FB77999FC3DDD9C9C146BC63FC0D /* TIOTFLiteErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = EE8C91A6A197D3A34D4A47A45035E143 /* TIOTFLiteErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F8363CF39AB674CAD9D82CD6AAB24013 /* TIOModelBundleJSONSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = F0BBE64714ABA12220499A8ED2D0B249 /* TIOModelBundleJSONSchema.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F836A0C6BE211D1E3514E811DD1B6542 /* Pods-SwiftExampleTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E66207D364F950DA215CD4E30B433FF /* Pods-SwiftExampleTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F9F506D3E68DCF91C932A833284DB797 /* TIOVector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E7DC3FFD9474FA1E8A5140337A58040 /* TIOVector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F9C0B18E5E8AFB1B734A9AB65CDDEFC7 /* TIOQuantization.h in Headers */ = {isa = PBXBuildFile; fileRef = 043EBB066E088FC4ADEEBE77559BB64E /* TIOQuantization.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F9E5E16B6446B25DFA75140D432C7371 /* TIOLayerInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2FB71D8C080D871AC641DEE1C4B9C02 /* TIOLayerInterface.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,92 +121,95 @@
 
 /* Begin PBXFileReference section */
 		00CAFA6F9BAB8C8C965A2D9E097133EE /* TensorFlowLite.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TensorFlowLite.xcconfig; sourceTree = "<group>"; };
-		072F895B29870401D36A1D653A1D9A2C /* TensorIO-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TensorIO-dummy.m"; sourceTree = "<group>"; };
+		02D7913BA1882D1CCA32D2D830A2E7D9 /* NSData+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSData+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		043EBB066E088FC4ADEEBE77559BB64E /* TIOQuantization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOQuantization.h; sourceTree = "<group>"; };
 		098EFCBF994E05299780CE20CA74EBE8 /* Pods-SwiftExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SwiftExample-acknowledgements.markdown"; sourceTree = "<group>"; };
-		0FE15C1E18C58A811D541B3BAA9BC0C0 /* TIOTFLiteModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteModel.h; sourceTree = "<group>"; };
+		0A454AE1B7ACAD43FDC459E972EED43C /* TIOModelJSONParsing.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelJSONParsing.mm; sourceTree = "<group>"; };
 		1142A4426C2D573712A025C25095E128 /* Pods-SwiftExampleTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftExampleTests-Info.plist"; sourceTree = "<group>"; };
-		17322E98CBA5FD626AC1D70F4DCFA115 /* TIOLayerInterface.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOLayerInterface.h; sourceTree = "<group>"; };
-		2600C84C904206705FE14E7C97E5CF6C /* TIOModelBundle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundle.m; sourceTree = "<group>"; };
-		2840C2664159862FD59852F0EF45EA18 /* TensorIO.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TensorIO.xcconfig; sourceTree = "<group>"; };
-		29796688BA4FBB9ED577F4E30A353817 /* NSArray+TIOExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TIOExtensions.m"; sourceTree = "<group>"; };
-		29889F6EABBEB93DAB3A15C4C0BE7EE3 /* TIOModelJSONParsing.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelJSONParsing.mm; sourceTree = "<group>"; };
-		2BDB54681CDD353E3C39D15F517F7996 /* TIOTFLiteErrors.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteErrors.h; sourceTree = "<group>"; };
-		2CC70163B33AC6CCAF7087FA33E88699 /* TIOQuantization.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOQuantization.mm; sourceTree = "<group>"; };
-		2CEF9DD271E5BA05231E93ACA2C774CF /* TIOQuantization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOQuantization.h; sourceTree = "<group>"; };
-		2D31F6344A972B00B87A549AF4A715AC /* TIOPlaceholderModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPlaceholderModel.h; sourceTree = "<group>"; };
-		350DEF09CEEDBB2A41FB6A4DDBCA12C8 /* TIOCVPixelBufferHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOCVPixelBufferHelpers.mm; sourceTree = "<group>"; };
-		36CCC76486E2772E4917C5FFE7BA7C4D /* TIOData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOData.h; sourceTree = "<group>"; };
+		14749AB92A94763804B54708B0EB4EF0 /* TIOPixelBufferLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelBufferLayerDescription.mm; sourceTree = "<group>"; };
+		15E121BC0AC61807F6786137B54ADA1C /* NSData+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSData+TIOTFLiteData.h"; sourceTree = "<group>"; };
+		15EF4D1BF9CC4071D8731626EAD80732 /* TIOPixelBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelBuffer.h; sourceTree = "<group>"; };
+		1D3E9F2F50A6C7E6FA43360FAB0EB56E /* NSArray+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSArray+TIOTFLiteData.h"; sourceTree = "<group>"; };
+		1EDA462DF500E9A973F31766B35C9B53 /* TIOPixelNormalization.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelNormalization.mm; sourceTree = "<group>"; };
+		23276F71C578ED4277145C9BD2FACE7C /* NSArray+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSArray+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		274373E48DBBCDF8A9114EB808808B20 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		293D3D24A122FC82243F65B6AE5AA84F /* TIOVector.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVector.h; sourceTree = "<group>"; };
+		2ABEE364D54974BA101A5850CC2BE637 /* TIOModelOptions.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelOptions.mm; sourceTree = "<group>"; };
+		2C0E3466F38F77F5F0B11E4D30A8CA0E /* TIOTFLiteModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOTFLiteModel.mm; sourceTree = "<group>"; };
+		33CC4205BAC59F4CC11A93937AB54964 /* TIOData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOData.h; sourceTree = "<group>"; };
+		3608D0632A34C92E7723D4D9584C4257 /* TIOCVPixelBufferHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOCVPixelBufferHelpers.h; sourceTree = "<group>"; };
+		36AA5C52E77588FBFA8D459269A5374E /* TIOLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOLayerDescription.h; sourceTree = "<group>"; };
+		3BE8F9DF0FF171CC7050AA2D5EC02875 /* TIOPixelNormalization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelNormalization.h; sourceTree = "<group>"; };
+		3C729B259996B853F3224090BCAB3124 /* TIOModelBundle.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundle.h; sourceTree = "<group>"; };
+		3CF88B64FCF81C250294C585B02DD81E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		41908832229DDA947E2BE020691B1922 /* TIOModelBundleValidator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundleValidator.m; sourceTree = "<group>"; };
+		4233B73CCB3248B0F0A4EAD39B84FED4 /* NSNumber+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSNumber+TIOTFLiteData.mm"; sourceTree = "<group>"; };
 		433DC970D51757CCD71528592919ECFC /* Pods-SwiftExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftExample-acknowledgements.plist"; sourceTree = "<group>"; };
-		44F5AFACE772211C13B134C83FCDF14A /* NSData+TIOData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSData+TIOData.h"; sourceTree = "<group>"; };
-		47FFCDE464FC1DC43976834ABC8CAD0E /* NSArray+TIOData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSArray+TIOData.h"; sourceTree = "<group>"; };
-		483AF44F7A2784DD81015A0075D0362C /* TIOPixelBufferToTensorHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelBufferToTensorHelpers.h; sourceTree = "<group>"; };
-		4A7A41406FEEF67102B38C004D84BE5B /* NSNumber+TIOData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSNumber+TIOData.h"; sourceTree = "<group>"; };
+		4912CCC98B0015277B007DD2E855F56C /* NSDictionary+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSDictionary+TIOTFLiteData.mm"; sourceTree = "<group>"; };
 		4E66207D364F950DA215CD4E30B433FF /* Pods-SwiftExampleTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftExampleTests-umbrella.h"; sourceTree = "<group>"; };
+		4FD0A31EF5FF45A26EDFB8208885E4E2 /* TIOPlaceholderModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPlaceholderModel.h; sourceTree = "<group>"; };
 		52AD265CFAACC4054C6240C0A21702A4 /* Pods-SwiftExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftExample.debug.xcconfig"; sourceTree = "<group>"; };
-		5AB6E746D1B7E42E2E7FC364C45A4CF7 /* TIOModelBundleJSONSchema.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleJSONSchema.h; sourceTree = "<group>"; };
-		5BA1BBEB8AA708040B488D5D648C6B43 /* TIOVisionModelHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVisionModelHelpers.h; sourceTree = "<group>"; };
-		5BEC613EF3BEDA7BCD5C2BE3D0B70C30 /* TIOModelBundleValidator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleValidator.h; sourceTree = "<group>"; };
+		54B7709BB9019CAA79DFCF70E2A9F245 /* TIOCVPixelBufferHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOCVPixelBufferHelpers.mm; sourceTree = "<group>"; };
 		5CF597D688231337D514C5D71232BA5A /* Pods_SwiftExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_SwiftExampleTests.framework; path = "Pods-SwiftExampleTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D23466D43402BCC7B92D7A18F71D0AC /* Pods-SwiftExampleTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftExampleTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		5D806EC82AF7E47926378DDB2B02F954 /* TIOPixelBuffer.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelBuffer.mm; sourceTree = "<group>"; };
 		60D30F4D44FF60F5BAFF23B3490DB79A /* Pods-SwiftExampleTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SwiftExampleTests.modulemap"; sourceTree = "<group>"; };
 		66353969436B13AB1AFF299484FBFD6E /* Pods_SwiftExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_SwiftExample.framework; path = "Pods-SwiftExample.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C63BAE349C9617171F34C54532716F4 /* TIOTFLiteErrors.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOTFLiteErrors.mm; sourceTree = "<group>"; };
-		6CD177BBE881D8495C8141E9CB6FF942 /* NSArray+TIOExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSArray+TIOExtensions.h"; sourceTree = "<group>"; };
-		6E7DC3FFD9474FA1E8A5140337A58040 /* TIOVector.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVector.h; sourceTree = "<group>"; };
-		6F71F7B3B39BC7B5B3DF4124C46DD478 /* TensorIO.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = TensorIO.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		7129EB11A0A9D2246302A6B323CF1719 /* TensorIO.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = TensorIO.modulemap; sourceTree = "<group>"; };
+		6811A9D356625BCE2BB2211A2070D1AD /* TIOModelBundleManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundleManager.m; sourceTree = "<group>"; };
+		6A7B6049F81F7FB611967D38E42B2345 /* NSNumber+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSNumber+TIOTFLiteData.h"; sourceTree = "<group>"; };
+		6D80CB221B9317BC003FE86883C45085 /* TIOModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModel.h; sourceTree = "<group>"; };
 		767D6FD34A5EB4D981B6D7D991C4C522 /* tensorflow_lite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = tensorflow_lite.framework; path = Frameworks/tensorflow_lite.framework; sourceTree = "<group>"; };
-		7BA7677690E9694D4E1848DD686BA2E3 /* TIOModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModel.h; sourceTree = "<group>"; };
-		7CECA3FD7197629D74A3203ACB0069A3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		7DAAA2BE47D650DFBC71186F2CEAE7B6 /* TIOModelBundleManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleManager.h; sourceTree = "<group>"; };
+		7A489D7560D5F304507D2077AF8E8F1D /* TIOPixelBufferLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelBufferLayerDescription.h; sourceTree = "<group>"; };
 		80802DEE782F9830865CE442BAB8F1A8 /* Pods-SwiftExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-SwiftExample.modulemap"; sourceTree = "<group>"; };
-		821B9C6285F81416BA1DB5342E4C9168 /* TIOVisionModelHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVisionModelHelpers.mm; sourceTree = "<group>"; };
-		855E980B6E7594FC309BB5E22BE445C5 /* UIImage+TIOCVPixelBufferExtensions.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "UIImage+TIOCVPixelBufferExtensions.mm"; sourceTree = "<group>"; };
-		85DBCB07C0DF3EE27770B7B5AF4BB6B1 /* TIOPixelNormalization.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelNormalization.mm; sourceTree = "<group>"; };
-		894DE331F21B1846366A16C95B56FC40 /* TIOModelOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelOptions.h; sourceTree = "<group>"; };
-		8AD040150C475DFDFC75154FEC929643 /* TIOModelBundleValidator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundleValidator.m; sourceTree = "<group>"; };
+		821C0EB2479646DF43B84F9A772DD9D4 /* TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteData.h; sourceTree = "<group>"; };
+		87B496E6B9DE2E6AC53B0CCC7A4D64C5 /* TIOModelOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelOptions.h; sourceTree = "<group>"; };
 		8ECCF87F5B7DD3187FA51B7095CD7F06 /* Pods-SwiftExampleTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftExampleTests-dummy.m"; sourceTree = "<group>"; };
-		934803C0DC2248388FD23056299306AE /* TIOPixelBufferLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelBufferLayerDescription.mm; sourceTree = "<group>"; };
-		979FF876B22D55B46CD80C8CE783E626 /* TIOVectorLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVectorLayerDescription.h; sourceTree = "<group>"; };
-		9A15CD738F30883ACCEC14B2369E1DD2 /* TIOPlaceholderModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPlaceholderModel.mm; sourceTree = "<group>"; };
-		9AD3E2992B15DA044ACDB6FEBA5F291B /* TIOPixelBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelBuffer.h; sourceTree = "<group>"; };
-		9C069A300D614CE5131DBF587A2CA9DA /* TIOCVPixelBufferHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOCVPixelBufferHelpers.h; sourceTree = "<group>"; };
+		900D9C24487D846854701A841E6BF562 /* TensorIO-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TensorIO-prefix.pch"; sourceTree = "<group>"; };
+		934175B48067D0754B884FAA93EA8EE0 /* TIOVisionModelHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVisionModelHelpers.mm; sourceTree = "<group>"; };
+		961CD1471011F36D1A076E575C9EC87A /* NSDictionary+TIOExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TIOExtensions.m"; sourceTree = "<group>"; };
+		970275C4A6B1FC52FAD37271F9D57BD1 /* TIOObjcDefer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOObjcDefer.h; sourceTree = "<group>"; };
+		9A958DEFAC80C6BAE39D57FCD2BBD307 /* TIOVectorLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVectorLayerDescription.mm; sourceTree = "<group>"; };
+		9B1564AA29FC7A60B866C3B5EA1EBECA /* TIOModelBundleValidator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleValidator.h; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9DE4775E7DA6E950A73B00CBE95C12BB /* NSNumber+TIOData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSNumber+TIOData.mm"; sourceTree = "<group>"; };
-		A4CCB7A53C2EAA2C8F51947DDD274143 /* NSData+TIOData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSData+TIOData.mm"; sourceTree = "<group>"; };
-		A79614A5F97C1BF0D4DFA2899E722739 /* TIOModelBundle.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundle.h; sourceTree = "<group>"; };
-		A878F160B58288906147D79E21B1C5D0 /* TIOModelOptions.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelOptions.mm; sourceTree = "<group>"; };
+		9FAD8B67765A6869A992F6A3FF0018B6 /* TIOModelBundle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundle.m; sourceTree = "<group>"; };
+		9FE9140D51B495B2C885D0D73DD65C92 /* TIOVectorLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVectorLayerDescription.h; sourceTree = "<group>"; };
+		A8CDF17FCF8795A626DA45F4CAF9ABB8 /* TIOModelJSONParsing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelJSONParsing.h; sourceTree = "<group>"; };
 		AA9CFF8128F64078B3E375715E571DED /* Pods-SwiftExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		AC7756D6FFFCBF0BB4E6058859BD2729 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		AEADD77C55CEEA64D03ED3635A709B8C /* TIOPixelBufferLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelBufferLayerDescription.h; sourceTree = "<group>"; };
-		B8B9B56554B88A998BE3464F939DDF39 /* TIOModelBundleManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundleManager.m; sourceTree = "<group>"; };
-		BB76C620121C0782F426E6D0DBDEF0EB /* NSDictionary+TIOExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TIOExtensions.m"; sourceTree = "<group>"; };
+		AE0F88962C94CFCFF7BCCA7238398F60 /* TIOPixelBufferToTensorHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelBufferToTensorHelpers.h; sourceTree = "<group>"; };
+		B0F3A69C3CEAC3146207014B2A085176 /* TensorIO-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TensorIO-umbrella.h"; sourceTree = "<group>"; };
+		B2FB71D8C080D871AC641DEE1C4B9C02 /* TIOLayerInterface.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOLayerInterface.mm; sourceTree = "<group>"; };
+		B698C9654C83052C70771D8972797D1E /* UIImage+TIOCVPixelBufferExtensions.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "UIImage+TIOCVPixelBufferExtensions.mm"; sourceTree = "<group>"; };
+		BAC9B1196B3C9B7868A12A866CC3738A /* TensorIO.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TensorIO.xcconfig; sourceTree = "<group>"; };
 		BBC7124CE396A79A9FF9512A726E634D /* Pods-SwiftExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftExample.release.xcconfig"; sourceTree = "<group>"; };
-		BC5EC3E29CB87B50968B16F2D710B5FA /* TensorIO-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TensorIO-prefix.pch"; sourceTree = "<group>"; };
-		C4236AE0E3337F955FEC3F7D4F67CE9A /* TensorIO-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TensorIO-umbrella.h"; sourceTree = "<group>"; };
+		BC9E5747BFA42893E6A865FF0DE844FA /* NSDictionary+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TIOTFLiteData.h"; sourceTree = "<group>"; };
+		C160B6036A6A7320799F1A48CB6970D6 /* TensorIO.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = TensorIO.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C3856CE9F8811296FA9D0B833D90DC4C /* TIOQuantization.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOQuantization.mm; sourceTree = "<group>"; };
+		C54FD26F84035AAA6A1A9E421A106978 /* NSDictionary+TIOExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TIOExtensions.h"; sourceTree = "<group>"; };
 		C6E07BE3A4A4ABFA26695A1B295ACF6D /* Pods-SwiftExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		C9F7BDFCD316230A13E27522E6C3606E /* TensorIO-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "TensorIO-Info.plist"; sourceTree = "<group>"; };
-		CA7AB16EC8EDDF54E8F2F61B3995FBA5 /* TIOPixelNormalization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelNormalization.h; sourceTree = "<group>"; };
+		C7D5D88FDD42AC95DDC3B14A7A7A4E49 /* TIOVisionModelHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVisionModelHelpers.h; sourceTree = "<group>"; };
+		CA7E3A1183AC6A5BE9F1235AE120746E /* TensorIO-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "TensorIO-Info.plist"; sourceTree = "<group>"; };
 		CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		CB684E66B0158CD08056648172052ECE /* Pods-SwiftExample-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SwiftExample-Info.plist"; sourceTree = "<group>"; };
-		D112594033600688D4212F4684D8BA83 /* UIImage+TIOCVPixelBufferExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImage+TIOCVPixelBufferExtensions.h"; sourceTree = "<group>"; };
+		CF0279AF96CDB7EB54E2966440A14F1C /* TIOVisionPipeline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVisionPipeline.h; sourceTree = "<group>"; };
+		D15DCC6FB0A6C9C60A8499D776977486 /* TIOLayerInterface.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOLayerInterface.h; sourceTree = "<group>"; };
 		D82C0F0CE52EA22BD158D485CFA00811 /* Pods-SwiftExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SwiftExample-umbrella.h"; sourceTree = "<group>"; };
-		D9C106CB79DB8286BAECFE3FF9FE686E /* TIOLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOLayerDescription.h; sourceTree = "<group>"; };
-		DF0C51C2DFDD2EE1D1669AF4CD010586 /* TIOTFLiteModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOTFLiteModel.mm; sourceTree = "<group>"; };
-		E1B0636F2C79D0FF0A473E6E281E16AD /* NSArray+TIOData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSArray+TIOData.mm"; sourceTree = "<group>"; };
-		E31B6FD9A3C454F811D75F52FCF1A50E /* TIOLayerInterface.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOLayerInterface.mm; sourceTree = "<group>"; };
-		E39A9BB0D117A6979B1B57D5D4CEDCEF /* TIOVisionPipeline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVisionPipeline.h; sourceTree = "<group>"; };
-		E3DF3C3BCCD0651A328370C186E2F287 /* NSDictionary+TIOExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TIOExtensions.h"; sourceTree = "<group>"; };
-		E60C738B5F7707328CF576A899F9D3FA /* TIOPixelBuffer.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelBuffer.mm; sourceTree = "<group>"; };
 		E61873E7C0A2668ACCF6B19C7FBDB523 /* Pods-SwiftExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SwiftExample-dummy.m"; sourceTree = "<group>"; };
-		E956D3153654E8BFEC37C833E7B94BA8 /* TIOModelJSONParsing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelJSONParsing.h; sourceTree = "<group>"; };
-		EE60FD67DE355139B568EDAB0C78FA9A /* TIOVectorLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVectorLayerDescription.mm; sourceTree = "<group>"; };
-		F08D64AB8B27F0A9608312A2F15BA2A1 /* TIOVisionPipeline.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVisionPipeline.mm; sourceTree = "<group>"; };
+		E7CEA095398A1FD78FA8849A75AAFA28 /* TensorIO.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = TensorIO.modulemap; sourceTree = "<group>"; };
+		E81DF320AE69A6BBB73CE0869C820832 /* TIOVisionPipeline.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVisionPipeline.mm; sourceTree = "<group>"; };
+		E9525E471F8AD66B79E97A7CAD0C8C0B /* TIOPixelBuffer+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "TIOPixelBuffer+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		EA2520AA0FDD753A0F84309D26BA7328 /* TIOTFLiteModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteModel.h; sourceTree = "<group>"; };
+		EC6DD1FADBAB25BAF48C735F0D117046 /* NSArray+TIOExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TIOExtensions.m"; sourceTree = "<group>"; };
+		ED3D82B74F77AFE3291943B7AB72BEC3 /* TIOModelBundleManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleManager.h; sourceTree = "<group>"; };
+		EE8C91A6A197D3A34D4A47A45035E143 /* TIOTFLiteErrors.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteErrors.h; sourceTree = "<group>"; };
+		F0A373021489126C302575B818DE1DB4 /* UIImage+TIOCVPixelBufferExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImage+TIOCVPixelBufferExtensions.h"; sourceTree = "<group>"; };
+		F0BBE64714ABA12220499A8ED2D0B249 /* TIOModelBundleJSONSchema.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleJSONSchema.h; sourceTree = "<group>"; };
+		F22BB06E1DB7E88F965FF1857E276965 /* TIOPixelBuffer+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TIOPixelBuffer+TIOTFLiteData.h"; sourceTree = "<group>"; };
 		F2FE10278D133CDFE12CC346469D4E2E /* Pods-SwiftExampleTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SwiftExampleTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		F5E9DC47DE04CFB7DB1A440BF2A7D6E1 /* NSDictionary+TIOData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSDictionary+TIOData.mm"; sourceTree = "<group>"; };
+		F5729CF67EE0E44AEB994E97F98FC2D4 /* NSArray+TIOExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSArray+TIOExtensions.h"; sourceTree = "<group>"; };
 		F67EBE377F11CC41BA37AB48F02A2656 /* TensorIO.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TensorIO.framework; path = TensorIO.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA325EF20735E395A7D07DF9D5796005 /* TIOObjcDefer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOObjcDefer.h; sourceTree = "<group>"; };
-		FB14C5E7DDE026DE7337CD95F2A84F0D /* NSDictionary+TIOData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TIOData.h"; sourceTree = "<group>"; };
+		FC7507664D6CF65B88EC5A4AB7FDE63B /* TensorIO-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TensorIO-dummy.m"; sourceTree = "<group>"; };
+		FF21959CE2E4AFCC4C41E122C3D3D4A4 /* TIOPlaceholderModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPlaceholderModel.mm; sourceTree = "<group>"; };
+		FF91C71B87A56982FCF376A2DA6762D7 /* TIOTFLiteErrors.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOTFLiteErrors.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,28 +240,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0789D223B5C714EBD4157E1270CE225F /* Pod */ = {
+		065D0EF08ED538D46F6E3DC3D39B70B2 /* TensorIO */ = {
 			isa = PBXGroup;
 			children = (
-				7CECA3FD7197629D74A3203ACB0069A3 /* LICENSE */,
-				AC7756D6FFFCBF0BB4E6058859BD2729 /* README.md */,
-				6F71F7B3B39BC7B5B3DF4124C46DD478 /* TensorIO.podspec */,
+				7E93631B9B4D5FF272ED7C0E5731844A /* Core */,
+				255893BD8396B6ECA27F9594C459220E /* Pod */,
+				C81661185612080F1ABDB01EEDD7B517 /* Support Files */,
+				0C110A1E4DBB84221DB9D82B59829311 /* TFLite */,
 			);
-			name = Pod;
+			name = TensorIO;
+			path = ../..;
 			sourceTree = "<group>";
 		};
-		10AABA5BCFDB660ABB4A6F9962211E7D /* Support Files */ = {
+		0C110A1E4DBB84221DB9D82B59829311 /* TFLite */ = {
 			isa = PBXGroup;
 			children = (
-				7129EB11A0A9D2246302A6B323CF1719 /* TensorIO.modulemap */,
-				2840C2664159862FD59852F0EF45EA18 /* TensorIO.xcconfig */,
-				072F895B29870401D36A1D653A1D9A2C /* TensorIO-dummy.m */,
-				C9F7BDFCD316230A13E27522E6C3606E /* TensorIO-Info.plist */,
-				BC5EC3E29CB87B50968B16F2D710B5FA /* TensorIO-prefix.pch */,
-				C4236AE0E3337F955FEC3F7D4F67CE9A /* TensorIO-umbrella.h */,
+				1C3B5ED488BB788C1F556C8CF1ADF374 /* TIOTFLiteData */,
+				46C6FC645C3E9EBABE432E91EFC89FD8 /* TIOTFLiteModel */,
 			);
-			name = "Support Files";
-			path = "SwiftExample/Pods/Target Support Files/TensorIO";
+			name = TFLite;
 			sourceTree = "<group>";
 		};
 		179C088AF10B439578B197D2F9D17B7C /* Support Files */ = {
@@ -267,12 +270,64 @@
 			path = "../Target Support Files/TensorFlowLite";
 			sourceTree = "<group>";
 		};
-		24DDE2D689047A559DB5A6BA7DAFBF67 /* Development Pods */ = {
+		1BB22CF97C36DB0E321435EF01347ADE /* TIOModel */ = {
 			isa = PBXGroup;
 			children = (
-				A6F27B96B2D5407456B37663E8B16C60 /* TensorIO */,
+				6D80CB221B9317BC003FE86883C45085 /* TIOModel.h */,
+				3C729B259996B853F3224090BCAB3124 /* TIOModelBundle.h */,
+				9FAD8B67765A6869A992F6A3FF0018B6 /* TIOModelBundle.m */,
+				F0BBE64714ABA12220499A8ED2D0B249 /* TIOModelBundleJSONSchema.h */,
+				ED3D82B74F77AFE3291943B7AB72BEC3 /* TIOModelBundleManager.h */,
+				6811A9D356625BCE2BB2211A2070D1AD /* TIOModelBundleManager.m */,
+				9B1564AA29FC7A60B866C3B5EA1EBECA /* TIOModelBundleValidator.h */,
+				41908832229DDA947E2BE020691B1922 /* TIOModelBundleValidator.m */,
+				A8CDF17FCF8795A626DA45F4CAF9ABB8 /* TIOModelJSONParsing.h */,
+				0A454AE1B7ACAD43FDC459E972EED43C /* TIOModelJSONParsing.mm */,
+				87B496E6B9DE2E6AC53B0CCC7A4D64C5 /* TIOModelOptions.h */,
+				2ABEE364D54974BA101A5850CC2BE637 /* TIOModelOptions.mm */,
+				AE0F88962C94CFCFF7BCCA7238398F60 /* TIOPixelBufferToTensorHelpers.h */,
+				3BE8F9DF0FF171CC7050AA2D5EC02875 /* TIOPixelNormalization.h */,
+				1EDA462DF500E9A973F31766B35C9B53 /* TIOPixelNormalization.mm */,
+				4FD0A31EF5FF45A26EDFB8208885E4E2 /* TIOPlaceholderModel.h */,
+				FF21959CE2E4AFCC4C41E122C3D3D4A4 /* TIOPlaceholderModel.mm */,
+				043EBB066E088FC4ADEEBE77559BB64E /* TIOQuantization.h */,
+				C3856CE9F8811296FA9D0B833D90DC4C /* TIOQuantization.mm */,
+				C7D5D88FDD42AC95DDC3B14A7A7A4E49 /* TIOVisionModelHelpers.h */,
+				934175B48067D0754B884FAA93EA8EE0 /* TIOVisionModelHelpers.mm */,
+				CF0279AF96CDB7EB54E2966440A14F1C /* TIOVisionPipeline.h */,
+				E81DF320AE69A6BBB73CE0869C820832 /* TIOVisionPipeline.mm */,
 			);
-			name = "Development Pods";
+			name = TIOModel;
+			path = TensorIO/Classes/Core/TIOModel;
+			sourceTree = "<group>";
+		};
+		1C3B5ED488BB788C1F556C8CF1ADF374 /* TIOTFLiteData */ = {
+			isa = PBXGroup;
+			children = (
+				1D3E9F2F50A6C7E6FA43360FAB0EB56E /* NSArray+TIOTFLiteData.h */,
+				23276F71C578ED4277145C9BD2FACE7C /* NSArray+TIOTFLiteData.mm */,
+				15E121BC0AC61807F6786137B54ADA1C /* NSData+TIOTFLiteData.h */,
+				02D7913BA1882D1CCA32D2D830A2E7D9 /* NSData+TIOTFLiteData.mm */,
+				BC9E5747BFA42893E6A865FF0DE844FA /* NSDictionary+TIOTFLiteData.h */,
+				4912CCC98B0015277B007DD2E855F56C /* NSDictionary+TIOTFLiteData.mm */,
+				6A7B6049F81F7FB611967D38E42B2345 /* NSNumber+TIOTFLiteData.h */,
+				4233B73CCB3248B0F0A4EAD39B84FED4 /* NSNumber+TIOTFLiteData.mm */,
+				F22BB06E1DB7E88F965FF1857E276965 /* TIOPixelBuffer+TIOTFLiteData.h */,
+				E9525E471F8AD66B79E97A7CAD0C8C0B /* TIOPixelBuffer+TIOTFLiteData.mm */,
+				821C0EB2479646DF43B84F9A772DD9D4 /* TIOTFLiteData.h */,
+			);
+			name = TIOTFLiteData;
+			path = TensorIO/Classes/TFLite/TIOTFLiteData;
+			sourceTree = "<group>";
+		};
+		255893BD8396B6ECA27F9594C459220E /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				274373E48DBBCDF8A9114EB808808B20 /* LICENSE */,
+				3CF88B64FCF81C250294C585B02DD81E /* README.md */,
+				C160B6036A6A7320799F1A48CB6970D6 /* TensorIO.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		396223B0D59967D7E1F044F9CEACB6FC /* Products */ = {
@@ -285,19 +340,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		43068E3EA9C937D4CD292DA77B7FA4C5 /* TIOLayerInterface */ = {
+		46C6FC645C3E9EBABE432E91EFC89FD8 /* TIOTFLiteModel */ = {
 			isa = PBXGroup;
 			children = (
-				D9C106CB79DB8286BAECFE3FF9FE686E /* TIOLayerDescription.h */,
-				17322E98CBA5FD626AC1D70F4DCFA115 /* TIOLayerInterface.h */,
-				E31B6FD9A3C454F811D75F52FCF1A50E /* TIOLayerInterface.mm */,
-				AEADD77C55CEEA64D03ED3635A709B8C /* TIOPixelBufferLayerDescription.h */,
-				934803C0DC2248388FD23056299306AE /* TIOPixelBufferLayerDescription.mm */,
-				979FF876B22D55B46CD80C8CE783E626 /* TIOVectorLayerDescription.h */,
-				EE60FD67DE355139B568EDAB0C78FA9A /* TIOVectorLayerDescription.mm */,
+				EE8C91A6A197D3A34D4A47A45035E143 /* TIOTFLiteErrors.h */,
+				FF91C71B87A56982FCF376A2DA6762D7 /* TIOTFLiteErrors.mm */,
+				EA2520AA0FDD753A0F84309D26BA7328 /* TIOTFLiteModel.h */,
+				2C0E3466F38F77F5F0B11E4D30A8CA0E /* TIOTFLiteModel.mm */,
 			);
-			name = TIOLayerInterface;
-			path = TensorIO/Classes/Core/TIOLayerInterface;
+			name = TIOTFLiteModel;
+			path = TensorIO/Classes/TFLite/TIOTFLiteModel;
 			sourceTree = "<group>";
 		};
 		522A2521DF574D702562491B8DEBE153 /* Pods-SwiftExampleTests */ = {
@@ -316,6 +368,14 @@
 			path = "Target Support Files/Pods-SwiftExampleTests";
 			sourceTree = "<group>";
 		};
+		5A325B21B1884A31F863F76B4ABB6445 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				065D0EF08ED538D46F6E3DC3D39B70B2 /* TensorIO */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
 		691FE3FF1F1BB01A3BC019277FE56231 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,72 +384,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		85E9AD77CA629B6AC573E1314B02BFF7 /* TIOData */ = {
+		7E93631B9B4D5FF272ED7C0E5731844A /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				47FFCDE464FC1DC43976834ABC8CAD0E /* NSArray+TIOData.h */,
-				E1B0636F2C79D0FF0A473E6E281E16AD /* NSArray+TIOData.mm */,
-				44F5AFACE772211C13B134C83FCDF14A /* NSData+TIOData.h */,
-				A4CCB7A53C2EAA2C8F51947DDD274143 /* NSData+TIOData.mm */,
-				FB14C5E7DDE026DE7337CD95F2A84F0D /* NSDictionary+TIOData.h */,
-				F5E9DC47DE04CFB7DB1A440BF2A7D6E1 /* NSDictionary+TIOData.mm */,
-				4A7A41406FEEF67102B38C004D84BE5B /* NSNumber+TIOData.h */,
-				9DE4775E7DA6E950A73B00CBE95C12BB /* NSNumber+TIOData.mm */,
-				36CCC76486E2772E4917C5FFE7BA7C4D /* TIOData.h */,
-				9AD3E2992B15DA044ACDB6FEBA5F291B /* TIOPixelBuffer.h */,
-				E60C738B5F7707328CF576A899F9D3FA /* TIOPixelBuffer.mm */,
-				6E7DC3FFD9474FA1E8A5140337A58040 /* TIOVector.h */,
+				F4AE411EE05455DDE462A0B58D6C634A /* TIOData */,
+				B10E3FCC247BE3A662CF09550876886B /* TIOLayerInterface */,
+				1BB22CF97C36DB0E321435EF01347ADE /* TIOModel */,
+				BDF221762739F4C26000A5992BF9F714 /* TIOUtilities */,
 			);
-			name = TIOData;
-			path = TensorIO/Classes/Core/TIOData;
-			sourceTree = "<group>";
-		};
-		903EB59AC482A28F24B7E992400BF617 /* TIOUtilities */ = {
-			isa = PBXGroup;
-			children = (
-				6CD177BBE881D8495C8141E9CB6FF942 /* NSArray+TIOExtensions.h */,
-				29796688BA4FBB9ED577F4E30A353817 /* NSArray+TIOExtensions.m */,
-				E3DF3C3BCCD0651A328370C186E2F287 /* NSDictionary+TIOExtensions.h */,
-				BB76C620121C0782F426E6D0DBDEF0EB /* NSDictionary+TIOExtensions.m */,
-				9C069A300D614CE5131DBF587A2CA9DA /* TIOCVPixelBufferHelpers.h */,
-				350DEF09CEEDBB2A41FB6A4DDBCA12C8 /* TIOCVPixelBufferHelpers.mm */,
-				FA325EF20735E395A7D07DF9D5796005 /* TIOObjcDefer.h */,
-				D112594033600688D4212F4684D8BA83 /* UIImage+TIOCVPixelBufferExtensions.h */,
-				855E980B6E7594FC309BB5E22BE445C5 /* UIImage+TIOCVPixelBufferExtensions.mm */,
-			);
-			name = TIOUtilities;
-			path = TensorIO/Classes/Core/TIOUtilities;
-			sourceTree = "<group>";
-		};
-		96D16EDFF0F62445B0E5909DAE560FC9 /* TIOModel */ = {
-			isa = PBXGroup;
-			children = (
-				7BA7677690E9694D4E1848DD686BA2E3 /* TIOModel.h */,
-				A79614A5F97C1BF0D4DFA2899E722739 /* TIOModelBundle.h */,
-				2600C84C904206705FE14E7C97E5CF6C /* TIOModelBundle.m */,
-				5AB6E746D1B7E42E2E7FC364C45A4CF7 /* TIOModelBundleJSONSchema.h */,
-				7DAAA2BE47D650DFBC71186F2CEAE7B6 /* TIOModelBundleManager.h */,
-				B8B9B56554B88A998BE3464F939DDF39 /* TIOModelBundleManager.m */,
-				5BEC613EF3BEDA7BCD5C2BE3D0B70C30 /* TIOModelBundleValidator.h */,
-				8AD040150C475DFDFC75154FEC929643 /* TIOModelBundleValidator.m */,
-				E956D3153654E8BFEC37C833E7B94BA8 /* TIOModelJSONParsing.h */,
-				29889F6EABBEB93DAB3A15C4C0BE7EE3 /* TIOModelJSONParsing.mm */,
-				894DE331F21B1846366A16C95B56FC40 /* TIOModelOptions.h */,
-				A878F160B58288906147D79E21B1C5D0 /* TIOModelOptions.mm */,
-				483AF44F7A2784DD81015A0075D0362C /* TIOPixelBufferToTensorHelpers.h */,
-				CA7AB16EC8EDDF54E8F2F61B3995FBA5 /* TIOPixelNormalization.h */,
-				85DBCB07C0DF3EE27770B7B5AF4BB6B1 /* TIOPixelNormalization.mm */,
-				2D31F6344A972B00B87A549AF4A715AC /* TIOPlaceholderModel.h */,
-				9A15CD738F30883ACCEC14B2369E1DD2 /* TIOPlaceholderModel.mm */,
-				2CEF9DD271E5BA05231E93ACA2C774CF /* TIOQuantization.h */,
-				2CC70163B33AC6CCAF7087FA33E88699 /* TIOQuantization.mm */,
-				5BA1BBEB8AA708040B488D5D648C6B43 /* TIOVisionModelHelpers.h */,
-				821B9C6285F81416BA1DB5342E4C9168 /* TIOVisionModelHelpers.mm */,
-				E39A9BB0D117A6979B1B57D5D4CEDCEF /* TIOVisionPipeline.h */,
-				F08D64AB8B27F0A9608312A2F15BA2A1 /* TIOVisionPipeline.mm */,
-			);
-			name = TIOModel;
-			path = TensorIO/Classes/Core/TIOModel;
+			name = Core;
 			sourceTree = "<group>";
 		};
 		9B055D0CFEA43187E72B03DED11F5662 /* iOS */ = {
@@ -409,19 +412,19 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		A6F27B96B2D5407456B37663E8B16C60 /* TensorIO */ = {
+		B10E3FCC247BE3A662CF09550876886B /* TIOLayerInterface */ = {
 			isa = PBXGroup;
 			children = (
-				0789D223B5C714EBD4157E1270CE225F /* Pod */,
-				10AABA5BCFDB660ABB4A6F9962211E7D /* Support Files */,
-				85E9AD77CA629B6AC573E1314B02BFF7 /* TIOData */,
-				43068E3EA9C937D4CD292DA77B7FA4C5 /* TIOLayerInterface */,
-				96D16EDFF0F62445B0E5909DAE560FC9 /* TIOModel */,
-				DCC141CA9A7F8ACB116C4B5D113A3AC1 /* TIOTensorFlowLiteModel */,
-				903EB59AC482A28F24B7E992400BF617 /* TIOUtilities */,
+				36AA5C52E77588FBFA8D459269A5374E /* TIOLayerDescription.h */,
+				D15DCC6FB0A6C9C60A8499D776977486 /* TIOLayerInterface.h */,
+				B2FB71D8C080D871AC641DEE1C4B9C02 /* TIOLayerInterface.mm */,
+				7A489D7560D5F304507D2077AF8E8F1D /* TIOPixelBufferLayerDescription.h */,
+				14749AB92A94763804B54708B0EB4EF0 /* TIOPixelBufferLayerDescription.mm */,
+				9FE9140D51B495B2C885D0D73DD65C92 /* TIOVectorLayerDescription.h */,
+				9A958DEFAC80C6BAE39D57FCD2BBD307 /* TIOVectorLayerDescription.mm */,
 			);
-			name = TensorIO;
-			path = ../..;
+			name = TIOLayerInterface;
+			path = TensorIO/Classes/Core/TIOLayerInterface;
 			sourceTree = "<group>";
 		};
 		B208A658E9FB014DC73129903A219BD0 /* Pods-SwiftExample */ = {
@@ -440,6 +443,37 @@
 			path = "Target Support Files/Pods-SwiftExample";
 			sourceTree = "<group>";
 		};
+		BDF221762739F4C26000A5992BF9F714 /* TIOUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				F5729CF67EE0E44AEB994E97F98FC2D4 /* NSArray+TIOExtensions.h */,
+				EC6DD1FADBAB25BAF48C735F0D117046 /* NSArray+TIOExtensions.m */,
+				C54FD26F84035AAA6A1A9E421A106978 /* NSDictionary+TIOExtensions.h */,
+				961CD1471011F36D1A076E575C9EC87A /* NSDictionary+TIOExtensions.m */,
+				3608D0632A34C92E7723D4D9584C4257 /* TIOCVPixelBufferHelpers.h */,
+				54B7709BB9019CAA79DFCF70E2A9F245 /* TIOCVPixelBufferHelpers.mm */,
+				970275C4A6B1FC52FAD37271F9D57BD1 /* TIOObjcDefer.h */,
+				F0A373021489126C302575B818DE1DB4 /* UIImage+TIOCVPixelBufferExtensions.h */,
+				B698C9654C83052C70771D8972797D1E /* UIImage+TIOCVPixelBufferExtensions.mm */,
+			);
+			name = TIOUtilities;
+			path = TensorIO/Classes/Core/TIOUtilities;
+			sourceTree = "<group>";
+		};
+		C81661185612080F1ABDB01EEDD7B517 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E7CEA095398A1FD78FA8849A75AAFA28 /* TensorIO.modulemap */,
+				BAC9B1196B3C9B7868A12A866CC3738A /* TensorIO.xcconfig */,
+				FC7507664D6CF65B88EC5A4AB7FDE63B /* TensorIO-dummy.m */,
+				CA7E3A1183AC6A5BE9F1235AE120746E /* TensorIO-Info.plist */,
+				900D9C24487D846854701A841E6BF562 /* TensorIO-prefix.pch */,
+				B0F3A69C3CEAC3146207014B2A085176 /* TensorIO-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "SwiftExample/Pods/Target Support Files/TensorIO";
+			sourceTree = "<group>";
+		};
 		CEED6A090261C5E39DA0D2F290F11841 /* TensorFlowLite */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,7 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				24DDE2D689047A559DB5A6BA7DAFBF67 /* Development Pods */,
+				5A325B21B1884A31F863F76B4ABB6445 /* Development Pods */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
 				691FE3FF1F1BB01A3BC019277FE56231 /* Pods */,
 				396223B0D59967D7E1F044F9CEACB6FC /* Products */,
@@ -478,57 +512,59 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		DCC141CA9A7F8ACB116C4B5D113A3AC1 /* TIOTensorFlowLiteModel */ = {
+		F4AE411EE05455DDE462A0B58D6C634A /* TIOData */ = {
 			isa = PBXGroup;
 			children = (
-				2BDB54681CDD353E3C39D15F517F7996 /* TIOTFLiteErrors.h */,
-				6C63BAE349C9617171F34C54532716F4 /* TIOTFLiteErrors.mm */,
-				0FE15C1E18C58A811D541B3BAA9BC0C0 /* TIOTFLiteModel.h */,
-				DF0C51C2DFDD2EE1D1669AF4CD010586 /* TIOTFLiteModel.mm */,
+				33CC4205BAC59F4CC11A93937AB54964 /* TIOData.h */,
+				15EF4D1BF9CC4071D8731626EAD80732 /* TIOPixelBuffer.h */,
+				5D806EC82AF7E47926378DDB2B02F954 /* TIOPixelBuffer.mm */,
+				293D3D24A122FC82243F65B6AE5AA84F /* TIOVector.h */,
 			);
-			name = TIOTensorFlowLiteModel;
-			path = TensorIO/Classes/Core/TIOTensorFlowLiteModel;
+			name = TIOData;
+			path = TensorIO/Classes/Core/TIOData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		6FB4D017B2A7B42ADDDAA6C1228D9CF8 /* Headers */ = {
+		8AE10E2CEFD85A48EEA8255731AFA573 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C19003B344905DF31D250AEE5C78F8C /* NSArray+TIOData.h in Headers */,
-				3E3146A2998D161562E3BE3AF7841D54 /* NSArray+TIOExtensions.h in Headers */,
-				D07C57AFD83A11E4250CB8CE95534FA9 /* NSData+TIOData.h in Headers */,
-				3F969E5AFF50626447089EFC2391A884 /* NSDictionary+TIOData.h in Headers */,
-				14587B9969FA4429F50339450FE0E06E /* NSDictionary+TIOExtensions.h in Headers */,
-				DDCDB978D28009C6F9FFCCE8B65C25DE /* NSNumber+TIOData.h in Headers */,
-				6659C96898D9014F6758A1CC0EF6FE75 /* TensorIO-umbrella.h in Headers */,
-				10F10B549647F9459CADCB364F4F05AF /* TIOCVPixelBufferHelpers.h in Headers */,
-				551EEA0D36F5C6ABFF2CE07B910907A9 /* TIOData.h in Headers */,
-				63CF5AD479F1A122E4A59B2C377A0712 /* TIOLayerDescription.h in Headers */,
-				8C9DF16E078F2E2FD8AF50782EF86BDD /* TIOLayerInterface.h in Headers */,
-				AA42F65CF7F185BE1BABC272A31CDAE6 /* TIOModel.h in Headers */,
-				911ADA9DF46F02E820DCD5721E8F6F9A /* TIOModelBundle.h in Headers */,
-				1984BC158DC380845B0478385F73EFAB /* TIOModelBundleJSONSchema.h in Headers */,
-				23BC91EB509F17D996D7290BF89A36D1 /* TIOModelBundleManager.h in Headers */,
-				142F300410E6C0C402319CFD7E9C17EA /* TIOModelBundleValidator.h in Headers */,
-				8906C46F620E0FA3FAA38D4E41E56823 /* TIOModelJSONParsing.h in Headers */,
-				EAA53341CAA2408905B174569DFE1482 /* TIOModelOptions.h in Headers */,
-				CDBF7315415853D4B58CF89B95389851 /* TIOObjcDefer.h in Headers */,
-				249456ED36F47678BE11521A5413C5AE /* TIOPixelBuffer.h in Headers */,
-				9AD2D2D40246687A4FB0961754EE68A8 /* TIOPixelBufferLayerDescription.h in Headers */,
-				77D495CA0B5DF3F7E330ACD6DFC2053A /* TIOPixelBufferToTensorHelpers.h in Headers */,
-				E65B8868B28565C202963C1E9E64C989 /* TIOPixelNormalization.h in Headers */,
-				271840ED081427168893132A748A6877 /* TIOPlaceholderModel.h in Headers */,
-				7EF7323222C7A557210B25E3413926FE /* TIOQuantization.h in Headers */,
-				05D19A6F09A6C0209DD58C6A85CD6605 /* TIOTFLiteErrors.h in Headers */,
-				BBE7B3D98BFF1D3DF3A9F27588FDB497 /* TIOTFLiteModel.h in Headers */,
-				F9F506D3E68DCF91C932A833284DB797 /* TIOVector.h in Headers */,
-				224B6772D2771793D5496097D6204F11 /* TIOVectorLayerDescription.h in Headers */,
-				9B80E9F9B328E2B300E53A13A778F6EB /* TIOVisionModelHelpers.h in Headers */,
-				EE0C8E7F2E280F88BE09A73844A0F94A /* TIOVisionPipeline.h in Headers */,
-				3FCB511C414AB043711D914612A8184C /* UIImage+TIOCVPixelBufferExtensions.h in Headers */,
+				E99D37F8CBDFE9BC31BE93D35B8595D2 /* NSArray+TIOExtensions.h in Headers */,
+				26145312736BBD73F5AABA674C13FC46 /* NSArray+TIOTFLiteData.h in Headers */,
+				11A60ADCB6765964C9DF83D08C9E53C8 /* NSData+TIOTFLiteData.h in Headers */,
+				4F405B13025F086972B1FC00A28700FA /* NSDictionary+TIOExtensions.h in Headers */,
+				053BC09EE17CFCF9BCB5D4E2323511A7 /* NSDictionary+TIOTFLiteData.h in Headers */,
+				E3C255001E60172D566D35345BA42E10 /* NSNumber+TIOTFLiteData.h in Headers */,
+				71CC371520E1FAE888CA733963F1F37D /* TensorIO-umbrella.h in Headers */,
+				E95421395C3E837B66428B0BE549C5F2 /* TIOCVPixelBufferHelpers.h in Headers */,
+				EE1D1646901F8D7FF53CF891608CE1DD /* TIOData.h in Headers */,
+				D09E654F65ECB6594FE22B839E684FB5 /* TIOLayerDescription.h in Headers */,
+				0723A6169A4DAE1B8F8E7AF385D7AA97 /* TIOLayerInterface.h in Headers */,
+				142DD2C2EB9A26F5E05A17473D059D72 /* TIOModel.h in Headers */,
+				F43C8A5E0A589310E79DF2ACAB384284 /* TIOModelBundle.h in Headers */,
+				F8363CF39AB674CAD9D82CD6AAB24013 /* TIOModelBundleJSONSchema.h in Headers */,
+				86A8D1C9A39C40DC0BF320B49C22F743 /* TIOModelBundleManager.h in Headers */,
+				70DEC50FDAC83B550B8B3E5ECCB2BD98 /* TIOModelBundleValidator.h in Headers */,
+				5ACCC802480251A0E4DE5969FDAD4CAB /* TIOModelJSONParsing.h in Headers */,
+				DB6E0A7E58735E09DA6BEF28354D6695 /* TIOModelOptions.h in Headers */,
+				4CF5FDD8D9612D06DC1083A9F90DF8D5 /* TIOObjcDefer.h in Headers */,
+				3B77D14E2A8E14360EB727D4251D88F3 /* TIOPixelBuffer+TIOTFLiteData.h in Headers */,
+				B05E1EE49A11DA4C523760F888EA934A /* TIOPixelBuffer.h in Headers */,
+				3E224B1096F71B9830583EA46B457429 /* TIOPixelBufferLayerDescription.h in Headers */,
+				312D80A783C7114BC5E2B91D39774DFD /* TIOPixelBufferToTensorHelpers.h in Headers */,
+				556D7D9390D2662E65CF440320DB5499 /* TIOPixelNormalization.h in Headers */,
+				086E3E058DEA4D6A56914AA31A941931 /* TIOPlaceholderModel.h in Headers */,
+				F9C0B18E5E8AFB1B734A9AB65CDDEFC7 /* TIOQuantization.h in Headers */,
+				F2B93DC4C047DDECEB4B1B88FCCD0A58 /* TIOTFLiteData.h in Headers */,
+				F7E3FB77999FC3DDD9C9C146BC63FC0D /* TIOTFLiteErrors.h in Headers */,
+				1534C7D6CDBCBF29EE12323568A5D7F2 /* TIOTFLiteModel.h in Headers */,
+				8400113883045EE0BD07CD3E7EA4BB33 /* TIOVector.h in Headers */,
+				9FC6F0D01A065CD14C613A153FB12805 /* TIOVectorLayerDescription.h in Headers */,
+				2C0E81AEF298622A77D5ED1793489D34 /* TIOVisionModelHelpers.h in Headers */,
+				4E15FDC315538201EC9817230DEC95B2 /* TIOVisionPipeline.h in Headers */,
+				0FA288BA0E9F8880719D1BE31640AC5B /* UIImage+TIOCVPixelBufferExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,8 +591,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D28A10CE31370928CAE016B9312C4B0 /* Build configuration list for PBXNativeTarget "TensorIO" */;
 			buildPhases = (
-				6FB4D017B2A7B42ADDDAA6C1228D9CF8 /* Headers */,
-				0F771CD4F32FA3526DC388816E81FAC6 /* Sources */,
+				8AE10E2CEFD85A48EEA8255731AFA573 /* Headers */,
+				11E365354DBDD9E78B1FD43044F51B8A /* Sources */,
 				F6B041B370F511F382E52F62D927238D /* Frameworks */,
 				0AFD6BD54DAF98ECB4E1B29EACF9E75A /* Resources */,
 			);
@@ -663,35 +699,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		0F771CD4F32FA3526DC388816E81FAC6 /* Sources */ = {
+		11E365354DBDD9E78B1FD43044F51B8A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C77B0FF4706C2787F56FCBB8C87F05E5 /* NSArray+TIOData.mm in Sources */,
-				60F742A469F5ACD5617E43C9926F41BC /* NSArray+TIOExtensions.m in Sources */,
-				AEF065A164827EDD2A2FE473A81FB4BB /* NSData+TIOData.mm in Sources */,
-				85764C85B87EFAB5A1B7A3D40A9074D4 /* NSDictionary+TIOData.mm in Sources */,
-				687502673A615A104069CC8CB7EC1EA2 /* NSDictionary+TIOExtensions.m in Sources */,
-				65FE2110FD70E387E2DC06548136F66C /* NSNumber+TIOData.mm in Sources */,
-				D131D506A9F3066FC712AF547BF32359 /* TensorIO-dummy.m in Sources */,
-				9C2F3BEBDCF2CE4D2929EE297C069D2B /* TIOCVPixelBufferHelpers.mm in Sources */,
-				F5D0901E332C7008206704DBA728F7C3 /* TIOLayerInterface.mm in Sources */,
-				A866D6E22C14DF252118CE3032089FA7 /* TIOModelBundle.m in Sources */,
-				4C3D21890E190AD109F58DFAA79341FA /* TIOModelBundleManager.m in Sources */,
-				D6BCA4AD7DAB8A8A1313E1A4780A11C7 /* TIOModelBundleValidator.m in Sources */,
-				625B3C337DF422344D71D01AA595D7DB /* TIOModelJSONParsing.mm in Sources */,
-				6F9B0A4A5D0EB6124CA59CBEEC706B23 /* TIOModelOptions.mm in Sources */,
-				0FD3EC48029B49A4E5D931E63E2394F9 /* TIOPixelBuffer.mm in Sources */,
-				36830197AB5AF69E9D1DBE69E5A77590 /* TIOPixelBufferLayerDescription.mm in Sources */,
-				38CB1149051DC37BA78D52475DF14127 /* TIOPixelNormalization.mm in Sources */,
-				CFDC84CDC02C57A57565AABF556B62E6 /* TIOPlaceholderModel.mm in Sources */,
-				65E43EE4372260A3688774F55024C26A /* TIOQuantization.mm in Sources */,
-				D54E5A41D09D94E16B4B50DADE05EC67 /* TIOTFLiteErrors.mm in Sources */,
-				B6EA0F40CA06CAD1B10EC386E396C7BE /* TIOTFLiteModel.mm in Sources */,
-				DA57E546D2CD604C5F410E8ADED0B705 /* TIOVectorLayerDescription.mm in Sources */,
-				C9EF6EA061A7BC23E7280F1C158E9EA9 /* TIOVisionModelHelpers.mm in Sources */,
-				3F316B3246230DF3F658F4024AEBB79C /* TIOVisionPipeline.mm in Sources */,
-				8804E373053FD8274F523772B1DC3B15 /* UIImage+TIOCVPixelBufferExtensions.mm in Sources */,
+				CC5E7F40072ABEBFEE869B37719370D3 /* NSArray+TIOExtensions.m in Sources */,
+				C2A86DB828890FB20461D811DFBC1552 /* NSArray+TIOTFLiteData.mm in Sources */,
+				7E96FA8C545F3D99D29645118480D3CA /* NSData+TIOTFLiteData.mm in Sources */,
+				EDEF01B6568A03CEC3252AEFA5711B15 /* NSDictionary+TIOExtensions.m in Sources */,
+				CA3F8B57A29C53F5B1F7B10DFEE28AEA /* NSDictionary+TIOTFLiteData.mm in Sources */,
+				25B4078C616071DBD4574166F58EE288 /* NSNumber+TIOTFLiteData.mm in Sources */,
+				ADB62F6D66A411AF406D64DA35F3D3CB /* TensorIO-dummy.m in Sources */,
+				3D590472763B9A7FD0A278015B4BBB4F /* TIOCVPixelBufferHelpers.mm in Sources */,
+				F9E5E16B6446B25DFA75140D432C7371 /* TIOLayerInterface.mm in Sources */,
+				A7518A2BB2A316550B39D72011F60F40 /* TIOModelBundle.m in Sources */,
+				ED62251ADCAA0770C8257B62FDD552DC /* TIOModelBundleManager.m in Sources */,
+				A36ED47E2B24DA27EFCC52F03D35E048 /* TIOModelBundleValidator.m in Sources */,
+				DBE8B27EAC462C51DBC31D6BE5FF25A2 /* TIOModelJSONParsing.mm in Sources */,
+				6DB57C810A502E65C8BB3CA85D997956 /* TIOModelOptions.mm in Sources */,
+				A5E899DA4CE3DCDCD31B8CF2797CB90A /* TIOPixelBuffer+TIOTFLiteData.mm in Sources */,
+				5E7EF6C4D5E13CD78979652387143319 /* TIOPixelBuffer.mm in Sources */,
+				B03FEA70AB67131971669A9234A72840 /* TIOPixelBufferLayerDescription.mm in Sources */,
+				45575A2AD60F3CA33018AA18A3D8CC52 /* TIOPixelNormalization.mm in Sources */,
+				D5FF51A5227A3D0E2077064466883A22 /* TIOPlaceholderModel.mm in Sources */,
+				86C6A6F0B4F2877D7A3FE8B041F3AE6D /* TIOQuantization.mm in Sources */,
+				5F33DE4D6C6E0C97826D99A578633378 /* TIOTFLiteErrors.mm in Sources */,
+				7A6AF64A1047E746D457C57093FC7DC1 /* TIOTFLiteModel.mm in Sources */,
+				C3CED28F71AA3E1F5FE82FECBF48C7F5 /* TIOVectorLayerDescription.mm in Sources */,
+				E450C6B7308F53450E1E08D2AB8551A5 /* TIOVisionModelHelpers.mm in Sources */,
+				BDD888C2EC5CC45E5831798D73E65A27 /* TIOVisionPipeline.mm in Sources */,
+				AA9F43B91FEA855513C01F29B312B2AD /* UIImage+TIOCVPixelBufferExtensions.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,7 +818,7 @@
 		};
 		39241B01D9AB60A982A8816878454CDB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2840C2664159862FD59852F0EF45EA18 /* TensorIO.xcconfig */;
+			baseConfigurationReference = BAC9B1196B3C9B7868A12A866CC3738A /* TensorIO.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -972,7 +1009,7 @@
 		};
 		B4BFC53B6CAB5AFADFE50EA6C6F97EE4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2840C2664159862FD59852F0EF45EA18 /* TensorIO.xcconfig */;
+			baseConfigurationReference = BAC9B1196B3C9B7868A12A866CC3738A /* TensorIO.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";

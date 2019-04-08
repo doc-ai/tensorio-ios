@@ -25,34 +25,40 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * A `TIOData` is any data type that knows how to provide bytes to a input tensor and how to
- * read bytes from an output tensor.
+ * A `TIOData` is any data type that knows how to provide bytes to an input tensor
+ * and how to read bytes from an output tensor. The concrete extension of
+ * conforming classes is left to submodules.
  */
 
 @protocol TIOData <NSObject>
+@end
 
 /**
- * Initializes a conforming object with bytes from a tensor.
- *
- * @param bytes The output buffer to read from.
- * @param length The length of the buffer.
- * @param description A description of the data this buffer produces.
- *
- * @return instancetype An instance of the conforming data type.
+ * `NSArray` conforms to `TIOData`.
  */
 
-- (nullable instancetype)initWithBytes:(const void *)bytes length:(NSUInteger)length description:(id<TIOLayerDescription>)description;
+@interface NSArray (TIOData) <TIOData>
+@end
 
 /**
- * Requests that a conforming object fill the tensor with bytes.
- *
- * @param buffer The input buffer to copy bytes to.
- * @param length The length of the input buffer.
- * @param description A description of the data this buffer expects.
+ * `NSData` conforms to `TIOData`.
  */
 
-- (void)getBytes:(void *)buffer length:(NSUInteger)length description:(id<TIOLayerDescription>)description;
+@interface NSData (TIOData) <TIOData>
+@end
 
+/**
+ * `NSDictionary` conforms to `TIOData`.
+ */
+
+@interface NSDictionary (TIOData) <TIOData>
+@end
+
+/**
+ * `NSNumber` conforms to `TIOData`.
+ */
+
+@interface NSNumber (TIOData) <TIOData>
 @end
 
 NS_ASSUME_NONNULL_END

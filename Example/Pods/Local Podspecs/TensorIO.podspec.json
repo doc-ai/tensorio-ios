@@ -32,20 +32,27 @@
   "subspecs": [
     {
       "name": "Core",
+      "source_files": "TensorIO/Classes/Core/**/*",
+      "private_header_files": [
+        "TensorIO/Classes/Core/TIOModel/TIOPixelBufferToTensorHelpers.h"
+      ],
+      "pod_target_xcconfig": {
+        "GCC_PREPROCESSOR_DEFINITIONS": "TIO_CORE=1"
+      }
+    },
+    {
+      "name": "TFLite",
       "dependencies": {
         "TensorFlowLite": [
 
         ]
       },
-      "source_files": "TensorIO/Classes/Core/**/*",
-      "private_header_files": [
-        "TensorIO/Classes/Core/TIOModel/TIOPixelBufferToTensorHelpers.h"
-      ],
+      "source_files": "TensorIO/Classes/TFLite/**/*",
       "xcconfig": {
         "USER_HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers\""
       },
       "pod_target_xcconfig": {
-        "GCC_PREPROCESSOR_DEFINITIONS": "TIO_CORE=1"
+        "GCC_PREPROCESSOR_DEFINITIONS": "TIO_TFLITE=1"
       }
     }
   ]

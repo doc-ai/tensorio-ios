@@ -4,6 +4,7 @@ target 'SwiftExample' do
   use_frameworks!
   
   pod 'TensorIO', :path => '../'
+  pod 'TensorIO/TFLite', :path => '../'
 
   target 'SwiftExampleTests' do
     inherit! :search_paths

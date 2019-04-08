@@ -3,6 +3,7 @@ use_frameworks!
 
 target 'TensorIO_Example' do
   pod 'TensorIO', :path => '../'
+  pod 'TensorIO/TFLite', :path => '../'
 
   target 'TensorIO_Tests' do
     inherit! :search_paths

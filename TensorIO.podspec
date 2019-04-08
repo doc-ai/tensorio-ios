@@ -27,15 +27,10 @@ Pod::Spec.new do |s|
   # Core subspec contains base classes and protocol definitions but no model implementation
   
   s.subspec 'Core' do |ss|
-    ss.dependency 'TensorFlowLite'
-    
     ss.source_files = 'TensorIO/Classes/Core/**/*'
     ss.private_header_files = [
       'TensorIO/Classes/Core/TIOModel/TIOPixelBufferToTensorHelpers.h'
     ]
-    ss.xcconfig = {
-      'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers"'
-    }
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_CORE=1'
     }
@@ -43,8 +38,16 @@ Pod::Spec.new do |s|
   
   # TFLite subspec contains the TensorFlow Lite implementation
   
-  # s.subspec 'TFLite' do |ss|
-  # 
-  # end
+  s.subspec 'TFLite' do |ss|
+    ss.dependency 'TensorFlowLite'
+    
+    ss.source_files = 'TensorIO/Classes/TFLite/**/*'
+    ss.xcconfig = {
+      'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers"'
+    }
+    ss.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_TFLITE=1'
+    }
+  end
   
 end
