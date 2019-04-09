@@ -40,6 +40,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'TFLite' do |ss|
     ss.dependency 'TensorFlowLite'
+    ss.dependency 'TensorIO/Core'
     
     ss.source_files = 'TensorIO/Classes/TFLite/**/*'
     ss.xcconfig = {
