@@ -1,10 +1,15 @@
 PODS:
   - TensorFlowLite (1.13.1)
-  - TensorIO (0.4.1):
+  - TensorIO (0.5.0):
+    - TensorIO/Core (= 0.5.0)
+  - TensorIO/Core (0.5.0)
+  - TensorIO/TFLite (0.5.0):
     - TensorFlowLite
+    - TensorIO/Core
 
 DEPENDENCIES:
   - TensorIO (from `../`)
+  - TensorIO/TFLite (from `../`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -16,8 +21,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
-  TensorIO: 25588fee92d13804133012019d174d6e47d38fdb
+  TensorIO: d0f8036476a2a1555e3c903f7011e2bc98bc0975
 
-PODFILE CHECKSUM: 1cb98e1719e44fa3f98b49899189c071e9f678fb
+PODFILE CHECKSUM: 676397fecd319c04490c087a8ba57af58a89def1
 
 COCOAPODS: 1.6.0
