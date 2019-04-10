@@ -21,8 +21,59 @@
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
 
 #import "TIOPixelBufferLayerDescription.h"
-#import "TIOPixelBufferToTensorHelpers.h"
 #import "TIOVisionPipeline.h"
+
+template <typename T>
+void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensorflow::Tensor tensor, TIOImageVolume shape, _Nullable TIOPixelNormalizer normalizer) {
+    auto image_mapped = tensor.tensor<T, 4>();
+    
+    CFRetain(pixelBuffer);
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    
+    OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+    const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixelBuffer);
+    const int image_width = (int)CVPixelBufferGetWidth(pixelBuffer);
+    const int image_height = (int)CVPixelBufferGetHeight(pixelBuffer);
+    const int image_channels = 4; // by definition (ARGB, BGRA)
+    const int tensor_channels = shape.channels; // should be 3 by definition (ARG, BGR)
+    const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
+        ? 1
+        : 0;
+    
+    assert(sourcePixelFormat == kCVPixelFormatType_32ARGB
+        || sourcePixelFormat == kCVPixelFormatType_32BGRA);
+    
+    assert(image_width == shape.width);
+    assert(image_height == shape.height);
+    assert(image_channels >= shape.channels);
+    
+    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixelBuffer);
+    
+    if ( normalizer == nil ) {
+        for (int y = 0; y < image_height; y++) {
+            for (int x = 0; x < image_width; x++) {
+                auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+                for (int c = 0; c < tensor_channels; ++c) {
+                    image_mapped(0, y, x, c) = in_pixel[c+channel_offset];
+                }
+            }
+        }
+    } else {
+        for (int y = 0; y < image_height; y++) {
+            for (int x = 0; x < image_width; x++) {
+                auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+                for (int c = 0; c < tensor_channels; ++c) {
+                    image_mapped(0, y, x, c) = normalizer(in_pixel[c+channel_offset],c);
+                }
+            }
+        }
+    }
+    
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    CFRelease(pixelBuffer);
+}
+
+// MARK: -
 
 @interface TIOPixelBuffer (TIOTensorFlowData_Protected)
 
@@ -49,6 +100,8 @@
     int height = (int)CVPixelBufferGetHeight(pixelBuffer);
     OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
     
+    // Transform image using vision pipeline
+    
     if ( width == pixelBufferDescription.shape.width
         && height == pixelBufferDescription.shape.height
         && pixelFormat == pixelBufferDescription.pixelFormat
@@ -62,56 +115,36 @@
     CVPixelBufferRetain(transformedPixelBuffer);
     self.transformedPixelBuffer = transformedPixelBuffer;
     
-    // TODO: helpers for copying a pixel buffer to a TensorFlow Tensor
-    
-//    if ( description.isQuantized ) {
-//        TIOCopyCVPixelBufferToTensor(
-//            transformedPixelBuffer,
-//            (uint8_t *)buffer,
-//            pixelBufferDescription.shape,
-//            pixelBufferDescription.normalizer
-//        );
-//    } else {
-//        TIOCopyCVPixelBufferToTensor(
-//            transformedPixelBuffer,
-//            (float_t *)buffer,
-//            pixelBufferDescription.shape,
-//            pixelBufferDescription.normalizer
-//        );
-//    }
+    // Tensor shape
 
-    tensorflow::Tensor image(tensorflow::DT_FLOAT, tensorflow::TensorShape({1, 128, 128, 3})); // {1, ... zeroeth index is batch size
-    auto image_mapped = image.tensor<float, 4>();
+    const int t_channels = pixelBufferDescription.shape.channels;
+    const int t_width = pixelBufferDescription.shape.width;
+    const int t_height = pixelBufferDescription.shape.height;
+    const int t_batch_size = 1;
+    
+    tensorflow::TensorShape shape = tensorflow::TensorShape({t_batch_size, t_height, t_width, t_channels});
 
-{
-    CVPixelBufferRef pixelBuffer = transformedPixelBuffer;
-    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
-    
-    OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
-    const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixelBuffer);
-    const int image_width = (int)CVPixelBufferGetWidth(pixelBuffer);
-    const int image_height = (int)CVPixelBufferGetHeight(pixelBuffer);
-    const int image_channels = 4; // by definition (ARGB, BGRA)
-    const int tensor_channels = 3; // by definition (ARG, BGR)
-    const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
-        ? 1
-        : 0;
-    
-    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixelBuffer);
-    
-    for (int y = 0; y < image_height; y++) {
-        for (int x = 0; x < image_width; x++) {
-            auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
-            for (int c = 0; c < tensor_channels; ++c) {
-                image_mapped(0, y, x, c) = in_pixel[c+channel_offset] / 255.0;
-            }
-        }
+    // Copy pixels to tensor
+
+    if ( description.isQuantized ) {
+        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
+        TIOCopyCVPixelBufferToTensorFlowTensor<uint8_t>(
+            transformedPixelBuffer,
+            tensor,
+            pixelBufferDescription.shape,
+            pixelBufferDescription.normalizer
+            );
+        return tensor;
+    } else {
+        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
+        TIOCopyCVPixelBufferToTensorFlowTensor<float_t>(
+            transformedPixelBuffer,
+            tensor,
+            pixelBufferDescription.shape,
+            pixelBufferDescription.normalizer
+            );
+        return tensor;
     }
-    
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
-}
-    
-    return image;
 }
 
 @end

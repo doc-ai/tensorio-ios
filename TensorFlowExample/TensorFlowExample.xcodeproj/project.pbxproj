@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7D40D2E275669BA1692FF75F /* Pods_TensorFlowExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB2356484CED97CD15F97E3 /* Pods_TensorFlowExample.framework */; };
-		E3C9DDAA225E804600691A07 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDA1225E757500691A07 /* cat.jpg */; };
-		E3C9DDAB225E804800691A07 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDA2225E757500691A07 /* dog.jpg */; };
+		E3C9DDAD225EA09700691A07 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAC225EA07B00691A07 /* cat.jpg */; };
+		E3C9DDAF225EA12B00691A07 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAE225EA12B00691A07 /* dog.jpg */; };
 		E3CDE4BD225D3EC100C6A558 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E3CDE4BC225D3EC100C6A558 /* AppDelegate.m */; };
 		E3CDE4C0225D3EC100C6A558 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3CDE4BF225D3EC100C6A558 /* ViewController.mm */; };
 		E3CDE4C3225D3EC100C6A558 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3CDE4C1225D3EC100C6A558 /* Main.storyboard */; };
@@ -38,8 +38,8 @@
 		4CB2356484CED97CD15F97E3 /* Pods_TensorFlowExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorFlowExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93850338F3045F00D66AB394 /* Pods-TensorFlowExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TensorFlowExampleTests/Pods-TensorFlowExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B2CD577F2F15843D10516781 /* Pods_TensorFlowExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorFlowExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E3C9DDA1225E757500691A07 /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
-		E3C9DDA2225E757500691A07 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
+		E3C9DDAC225EA07B00691A07 /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
+		E3C9DDAE225EA12B00691A07 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
 		E3CDE4B8225D3EC100C6A558 /* TensorFlowExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TensorFlowExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3CDE4BB225D3EC100C6A558 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E3CDE4BC225D3EC100C6A558 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -123,8 +123,8 @@
 				E3CDE4BC225D3EC100C6A558 /* AppDelegate.m */,
 				E3CDE4BE225D3EC100C6A558 /* ViewController.h */,
 				E3CDE4BF225D3EC100C6A558 /* ViewController.mm */,
-				E3C9DDA1225E757500691A07 /* cat.jpg */,
-				E3C9DDA2225E757500691A07 /* dog.jpg */,
+				E3C9DDAC225EA07B00691A07 /* cat.jpg */,
+				E3C9DDAE225EA12B00691A07 /* dog.jpg */,
 				E3CDE509225D5ACD00C6A558 /* models */,
 				E3CDE4C1225D3EC100C6A558 /* Main.storyboard */,
 				E3CDE4C4225D3EC200C6A558 /* Assets.xcassets */,
@@ -226,11 +226,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3C9DDAB225E804800691A07 /* dog.jpg in Resources */,
-				E3C9DDAA225E804600691A07 /* cat.jpg in Resources */,
 				E3CDE4C8225D3EC200C6A558 /* LaunchScreen.storyboard in Resources */,
 				E3CDE4C5225D3EC200C6A558 /* Assets.xcassets in Resources */,
 				E3CDE50A225D5ACD00C6A558 /* models in Resources */,
+				E3C9DDAF225EA12B00691A07 /* dog.jpg in Resources */,
+				E3C9DDAD225EA09700691A07 /* cat.jpg in Resources */,
 				E3CDE4C3225D3EC100C6A558 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
