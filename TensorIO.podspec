@@ -58,6 +58,9 @@ Pod::Spec.new do |s|
     ss.dependency 'TensorIO/Core'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
+    ss.private_header_files = [
+      'TensorIO/Classes/TensorFlow/SavedModel/**/*'
+    ]
     s.xcconfig = {
       'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers"',
       'OTHER_LDFLAGS' => '-force_load "${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow" "-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework"'

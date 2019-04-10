@@ -18,6 +18,9 @@
 //  limitations under the License.
 //
 
+//  TODO: Using class string to identity tensorflow model in model.json, identify some other way
+//  TODO: Overloading model.file in model.json to point to predict directory, must also point to train and eval dirs
+
 #import "TIOTensorFlowModel.h"
 
 #include <string>
@@ -33,8 +36,14 @@
 #pragma clang diagnostic pop
 
 #import "TIOModelBundle.h"
+#import "TIOModelBundle+TensorFlowModel.h"
 
-@implementation TIOTensorFlowModel
+typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
+
+@implementation TIOTensorFlowModel {
+    tensorflow::MetaGraphDef _meta_graph_def;
+    tensorflow::Session* _session;
+}
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
     return [[[TIOModelBundle alloc] initWithPath:path] newModel];
@@ -49,8 +58,8 @@
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle {
     if (self = [super init]) {
         _bundle = bundle;
-        _options = bundle.options;
         
+        _options = bundle.options;
         _identifier = bundle.identifier;
         _name = bundle.name;
         _details = bundle.details;
@@ -85,7 +94,18 @@
         return YES;
     }
     
-    return NO;
+    std::string model_dir = self.bundle.modelPredictPath.UTF8String;
+    const std::unordered_set<std::string> tags = {tensorflow::kSavedModelTagServe};
+    
+    tensorflow::SavedModelBundle bundle;
+    tensorflow::SessionOptions session_opts;
+    tensorflow::RunOptions run_opts;
+    
+    TF_CHECK_OK(LoadSavedModel(session_opts, run_opts, model_dir, tags, &bundle));
+    _meta_graph_def = bundle.meta_graph_def;
+    _session = bundle.session.get();
+    
+    return YES;
 }
 
 /**
@@ -93,6 +113,9 @@
  */
 
 - (void)unload {
+    TF_CHECK_OK(_session->Close());
+    delete _session;
+    
     _loaded = NO;
 }
 

@@ -20,6 +20,8 @@
 
 #import "ViewController.h"
 
+#import <TensorIO/TensorIO-umbrella.h>
+
 @interface ViewController ()
 
 @end
@@ -29,6 +31,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"cats-vs-dogs" ofType:@"tfbundle" inDirectory:@"models"];
+    id<TIOModel> model = [TIOTensorFlowModel modelWithBundleAtPath:path];
+    
+    NSLog(@"%@", model.name);
+    
+    [model load:nil];
 }
 
 
