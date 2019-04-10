@@ -1,0 +1,28 @@
+PODS:
+  - TensorIO (0.5.0):
+    - TensorIO/Core (= 0.5.0)
+  - TensorIO/Core (0.5.0)
+  - TensorIO/TensorFlow (0.5.0):
+    - TensorIO/Core
+    - TensorIOTensorFlow
+  - TensorIOTensorFlow (0.1.0)
+
+DEPENDENCIES:
+  - TensorIO (from `../`)
+  - TensorIO/TensorFlow (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - TensorIOTensorFlow
+
+EXTERNAL SOURCES:
+  TensorIO:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  TensorIO: e459460321a4c482b675e34e3e4d79b4b26880f3
+  TensorIOTensorFlow: 31f473f6a9e0cd9457f3c842fcdea83070e9e5fb
+
+PODFILE CHECKSUM: ccf272cde197932817bdf42271dac93482107a16
+
+COCOAPODS: 1.6.0

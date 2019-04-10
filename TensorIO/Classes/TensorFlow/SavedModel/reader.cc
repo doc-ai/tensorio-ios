@@ -13,6 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include "tensorflow/cc/saved_model/reader.h"
 
 #include <unordered_set>
@@ -23,6 +26,8 @@ limitations under the License.
 #include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/platform/env.h"
 #include "saved_model.pb.h" // "tensorflow/core/protobuf/saved_model.pb.h"
+
+#pragma clang diagnostic pop
 
 namespace tensorflow {
 namespace {

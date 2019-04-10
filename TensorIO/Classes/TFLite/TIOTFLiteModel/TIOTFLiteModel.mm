@@ -31,7 +31,6 @@
 
 #import "TIOModelBundle.h"
 #import "TIOTFLiteErrors.h"
-#import "TIOData.h"
 #import "TIOTFLiteData.h"
 #import "TIOLayerInterface.h"
 #import "TIOLayerDescription.h"

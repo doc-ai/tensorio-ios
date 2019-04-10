@@ -13,6 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include "tensorflow/cc/saved_model/loader.h"
 
 #include <unordered_set>
@@ -30,6 +33,8 @@ limitations under the License.
 #include "tensorflow/core/public/session.h"
 #include "tensorflow/core/public/session_options.h"
 #include "tensorflow/core/util/tensor_bundle/naming.h"
+
+#pragma clang diagnostic pop
 
 namespace tensorflow {
 namespace {

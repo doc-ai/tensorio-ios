@@ -21,8 +21,13 @@ limitations under the License.
 #include <string>
 #include <unordered_set>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include "tensorflow/core/lib/core/status.h"
 #include "tensorflow/core/protobuf/meta_graph.pb.h"
+
+#pragma clang diagnostic pop
 
 namespace tensorflow {
 

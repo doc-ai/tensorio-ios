@@ -6,6 +6,9 @@
 
 #include <string>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include <google/protobuf/stubs/common.h>
 
 #if GOOGLE_PROTOBUF_VERSION < 3006001
@@ -32,7 +35,9 @@
 #include <google/protobuf/unknown_field_set.h>
 #include "tensorflow/core/protobuf/meta_graph.pb.h"
 // @@protoc_insertion_point(includes)
-#define PROTOBUF_INTERNAL_EXPORT_protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto 
+#define PROTOBUF_INTERNAL_EXPORT_protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto
+
+#pragma clang diagnostic pop
 
 namespace protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto {
 // Internal implementation detail -- do not use these members.
