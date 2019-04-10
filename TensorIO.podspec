@@ -51,4 +51,20 @@ Pod::Spec.new do |s|
     }
   end
   
+  # TensorFlow subspect contains a full TensorFlow implementation
+
+  s.subspec 'TensorFlow' do |ss|
+    ss.dependency 'TensorIOTensorFlow'
+    ss.dependency 'TensorIO/Core'
+
+    ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
+    s.xcconfig = {
+      'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers"',
+      'OTHER_LDFLAGS' => '-force_load "${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow" "-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework"'
+    }
+    ss.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_TENSORFLOW=1'
+    }
+  end
+
 end
