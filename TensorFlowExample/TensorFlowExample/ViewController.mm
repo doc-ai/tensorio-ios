@@ -30,14 +30,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    UIImage *image = [UIImage imageNamed:@"cat.jpg"];
+    TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"cats-vs-dogs" ofType:@"tfbundle" inDirectory:@"models"];
     id<TIOModel> model = [TIOTensorFlowModel modelWithBundleAtPath:path];
     
-    NSLog(@"%@", model.name);
-    
     [model load:nil];
+    
+    NSDictionary *inputs = @{
+        @"image": buffer
+    };
+    
+    NSNumber *sigmoid = ((NSDictionary*)[model runOn:inputs])[@"sigmoid"];
+    
+    NSLog(@"%@", sigmoid);
+    
+    if (sigmoid.floatValue < 0.5) {
+        NSLog(@"*** It's a cat! ***)");
+    } else {
+        NSLog(@"*** It's a dog! ***)");
+    }
 }
 
 

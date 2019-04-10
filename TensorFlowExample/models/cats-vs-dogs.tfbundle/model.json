@@ -15,23 +15,18 @@
 		{
 			"name": "image",
 			"type": "image",
-			"shape": [224,224,3],
+			"shape": [128,128,3],
 			"format": "RGB",
 			"normalize": {
-				"scale": 0.0078,
-				"bias": {
-					"r": -1,
-					"g": -1,
-					"b": -1
-				}
+				"standard": "[0,1]"
 			}
 		}
 	],
 	"outputs": [
 		{
-			"name": "classification",
+			"name": "sigmoid",
 			"type": "array",
-			"shape": [1,1000],
+			"shape": [1],
 			"labels": "labels.txt"
 		}
 	],

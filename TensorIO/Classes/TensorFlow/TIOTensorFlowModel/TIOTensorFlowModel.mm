@@ -20,11 +20,16 @@
 
 //  TODO: Using class string to identity tensorflow model in model.json, identify some other way
 //  TODO: Overloading model.file in model.json to point to predict directory, must also point to train and eval dirs
+//  TODO: Duplicating input/output parsing but may need backend specific parsing as well
+//  TODO: Duplicated TensorType defines, should be defined elsewhere
+//  TODO: Typedefs are used elsewhere, define in shared file
 
 #import "TIOTensorFlowModel.h"
 
+#include <utility>
 #include <string>
 #include <unordered_set>
+#include <vector>
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
@@ -37,12 +42,39 @@
 
 #import "TIOModelBundle.h"
 #import "TIOModelBundle+TensorFlowModel.h"
+#import "TIOLayerInterface.h"
+#import "TIOLayerDescription.h"
+#import "TIOPixelBufferLayerDescription.h"
+#import "TIOVectorLayerDescription.h"
+#import "TIOPixelBuffer.h"
+#import "TIOModelJSONParsing.h"
+#import "TIOTensorFlowData.h"
 
-typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
+static NSString * const kTensorTypeVector = @"array";
+static NSString * const kTensorTypeImage = @"image";
+
+typedef std::pair<std::string, tensorflow::Tensor> NamedTensor;
+typedef std::vector<NamedTensor> NamedTensors;
+typedef std::vector<tensorflow::Tensor> Tensors;
+typedef std::vector<std::string> TensorNames;
 
 @implementation TIOTensorFlowModel {
-    tensorflow::MetaGraphDef _meta_graph_def;
-    tensorflow::Session* _session;
+    @protected
+    tensorflow::SavedModelBundle _saved_model_bundle;
+    // tensorflow::MetaGraphDef _meta_graph_def;
+    // std::unique_ptr<tensorflow::Session> _session;
+    
+    // Index to Interface Description
+    NSArray<TIOLayerInterface*> *_indexedInputInterfaces;
+    NSArray<TIOLayerInterface*> *_indexedOutputInterfaces;
+    
+    // Name to Interface Description
+    NSDictionary<NSString*,TIOLayerInterface*> *_namedInputInterfaces;
+    NSDictionary<NSString*,TIOLayerInterface*> *_namedOutputInterfaces;
+    
+    // Name to Index
+    NSDictionary<NSString*,NSNumber*> *_namedInputToIndex;
+    NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
@@ -68,6 +100,31 @@ typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
         _placeholder = bundle.placeholder;
         _quantized = bundle.quantized;
         _type = bundle.type;
+        
+        // Input and output parsing
+        
+        NSArray<NSDictionary<NSString*,id>*> *inputs = bundle.info[@"inputs"];
+        NSArray<NSDictionary<NSString*,id>*> *outputs = bundle.info[@"outputs"];
+        
+        if ( inputs == nil ) {
+            NSLog(@"Expected input array field in model.json, none found");
+            return nil;
+        }
+        
+        if ( outputs == nil ) {
+            NSLog(@"Expected output array field in model.json, none found");
+            return nil;
+        }
+        
+        if ( ![self _parseInputs:inputs] ) {
+            NSLog(@"Unable to parse input field in model.json");
+            return nil;
+        }
+        
+        if ( ![self _parseOutputs:outputs] ) {
+            NSLog(@"Unable to parse output field in model.json");
+            return nil;
+        }
     }
     
     return self;
@@ -77,6 +134,108 @@ typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
     self = [self initWithBundle:[[TIOModelBundle alloc] initWithPath:@""]];
     NSAssert(NO, @"Use the designated initializer initWithBundle:");
     return self;
+}
+
+// MARK: - JSON Parsing
+
+/**
+ * Enumerates through the json described inputs and constructs a `TIOLayerInterface` for each one.
+ *
+ * @param inputs An array of dictionaries describing the model's input layers
+ *
+ * @return BOOL `YES` if the json descriptions were successfully parsed, `NO` otherwise
+ */
+
+- (BOOL)_parseInputs:(NSArray<NSDictionary<NSString*,id>*>*)inputs {
+    
+    auto *indexedInputInterfaces = [NSMutableArray<TIOLayerInterface*> array];
+    auto *namedInputInterfaces = [NSMutableDictionary<NSString*,TIOLayerInterface*> dictionary];
+    auto *namedInputToIndex = [NSMutableDictionary<NSString*,NSNumber*> dictionary];
+    
+    auto isQuantized = self.quantized;
+    auto isInput = YES;
+    
+    __block BOOL error = NO;
+    
+    [inputs enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull input, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        NSString *type = input[@"type"];
+        NSString *name = input[@"name"];
+        
+        TIOLayerInterface *interface;
+        
+        if ( [type isEqualToString:kTensorTypeVector] ) {
+            interface = TIOTFLiteModelParseTIOVectorDescription(input, isInput, isQuantized, self->_bundle);
+        } else if ( [type isEqualToString:kTensorTypeImage] ) {
+            interface = TIOTFLiteModelParseTIOPixelBufferDescription(input, isInput, isQuantized);
+        }
+        
+        if ( interface == nil ) {
+            error = YES;
+            *stop = YES;
+            return;
+        }
+        
+        [indexedInputInterfaces addObject:interface];
+        namedInputInterfaces[name] = interface;
+        namedInputToIndex[name] = @(idx);
+    }];
+    
+    _indexedInputInterfaces = indexedInputInterfaces.copy;
+    _namedInputInterfaces = namedInputInterfaces.copy;
+    _namedInputToIndex = namedInputToIndex.copy;
+    
+    return !error;
+}
+
+/**
+ * Enumerates through the json described outputs and constructs a `TIOLayerInterface` for each one.
+ *
+ * @param outputs An array of dictionaries describing the model's output layers
+ *
+ * @return BOOL `YES` if the json descriptions were successfully parsed, `NO` otherwise
+ */
+
+- (BOOL)_parseOutputs:(NSArray<NSDictionary<NSString*,id>*>*)outputs {
+    
+    auto *indexedOutputInterfaces = [NSMutableArray<TIOLayerInterface*> array];
+    auto *namedOutputInterfaces = [NSMutableDictionary<NSString*,TIOLayerInterface*> dictionary];
+    auto *namedOutputToIndex = [NSMutableDictionary<NSString*,NSNumber*> dictionary];
+    
+    auto isQuantized = self.quantized;
+    auto isInput = NO;
+    
+    __block BOOL error = NO;
+    
+    [outputs enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull output, NSUInteger idx, BOOL * _Nonnull stop) {
+    
+        NSString *type = output[@"type"];
+        NSString *name = output[@"name"];
+        
+        TIOLayerInterface *interface;
+        
+        if ( [type isEqualToString:kTensorTypeVector] ) {
+            interface = TIOTFLiteModelParseTIOVectorDescription(output, isInput, isQuantized, self->_bundle);
+        } else if ( [type isEqualToString:kTensorTypeImage] ) {
+            interface = TIOTFLiteModelParseTIOPixelBufferDescription(output, isInput, isQuantized);
+        }
+        
+        if ( interface == nil ) {
+            error = YES;
+            *stop = YES;
+            return;
+        }
+        
+        [indexedOutputInterfaces addObject:interface];
+        namedOutputInterfaces[name] = interface;
+        namedOutputToIndex[name] = @(idx);
+    }];
+    
+    _indexedOutputInterfaces = indexedOutputInterfaces.copy;
+    _namedOutputInterfaces = namedOutputInterfaces.copy;
+    _namedOutputToIndex = namedOutputToIndex.copy;
+    
+    return !error;
 }
 
 // MARK: - Model Memory Management
@@ -97,13 +256,15 @@ typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
     std::string model_dir = self.bundle.modelPredictPath.UTF8String;
     const std::unordered_set<std::string> tags = {tensorflow::kSavedModelTagServe};
     
-    tensorflow::SavedModelBundle bundle;
+    // tensorflow::SavedModelBundle bundle;
     tensorflow::SessionOptions session_opts;
     tensorflow::RunOptions run_opts;
     
-    TF_CHECK_OK(LoadSavedModel(session_opts, run_opts, model_dir, tags, &bundle));
-    _meta_graph_def = bundle.meta_graph_def;
-    _session = bundle.session.get();
+    TF_CHECK_OK(LoadSavedModel(session_opts, run_opts, model_dir, tags, &_saved_model_bundle));
+    //_meta_graph_def = bundle.meta_graph_def;
+    //_session = bundle.session.get();
+    
+    _loaded = YES;
     
     return YES;
 }
@@ -113,8 +274,7 @@ typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
  */
 
 - (void)unload {
-    TF_CHECK_OK(_session->Close());
-    delete _session;
+    TF_CHECK_OK(_saved_model_bundle.session.get()->Close());
     
     _loaded = NO;
 }
@@ -131,9 +291,9 @@ typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
     [self load:nil];
-    [self _prepareInput:input];
-    [self _runInference];
-    return [self _captureOutput];
+    const NamedTensors inputs = [self _prepareInput:input];
+    const Tensors outputs = [self _runInference:inputs];
+    return [self _captureOutput:outputs];
 }
 
 /**
@@ -143,28 +303,88 @@ typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
  * @param data Any class conforming to the `TIOData` protocol
  */
 
-- (void)_prepareInput:(id<TIOData>)data  {
-
+- (NamedTensors)_prepareInput:(id<TIOData>)data  {
+    NamedTensors inputs;
+    
+    // Assuming data is a dictionary, which I may enforce in an api change
+    
+    NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
+    
+    for ( NSString *name in dictionaryData ) {
+        assert([_namedInputInterfaces.allKeys containsObject:name]);
+    
+        TIOLayerInterface *interface = _namedInputInterfaces[name];
+        id<TIOData> inputData = dictionaryData[name];
+    
+        NamedTensor input = [self _prepareInput:inputData interface:interface];
+        inputs.push_back(input);
+    }
+    
+    return inputs;
 }
 
 /**
  * Requests the input to copy its bytes to the tensor
  *
  * @param input The data whose bytes will be copied to the tensor
- * @param tensor A pointer to the tensor which will receive those bytes
  * @param interface A description of the data which the tensor expects
  */
 
-- (void)_prepareInput:(id<TIOData>)input tensor:(void *)tensor interface:(TIOLayerInterface*)interface {
+- (NamedTensor)_prepareInput:(id<TIOData>)input interface:(TIOLayerInterface*)interface {
+    __block NamedTensor named_tensor;
+    
+    // size_t byteSize = self.quantized ? sizeof(uint8_t) : sizeof(float_t);
 
+    [interface
+        matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
+            
+            assert( [input isKindOfClass:TIOPixelBuffer.class] );
+            
+            // size_t byteCount
+            //     = pixelBufferDescription.shape.width
+            //     * pixelBufferDescription.shape.height
+            //     * pixelBufferDescription.shape.channels
+            //     * byteSize;
+            
+            // [(id<TIOTFLiteData>)input getBytes:tensor length:byteCount description:pixelBufferDescription];
+            
+            tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:pixelBufferDescription];
+            std::string name = interface.name.UTF8String;
+            
+            named_tensor = NamedTensor(name, tensor);
+            
+        } caseVector:^(TIOVectorLayerDescription *vectorDescription) {
+            
+            assert( [input isKindOfClass:NSArray.class]
+                ||  [input isKindOfClass:NSData.class]
+                ||  [input isKindOfClass:NSNumber.class] );
+            
+            // size_t byteCount
+            //     = vectorDescription.length
+            //     * byteSize;
+            
+            // [(id<TIOTFLiteData>)input getBytes:tensor length:byteCount description:vectorDescription];
+        }];
+    
+    return named_tensor;
 }
 
 /**
  * Runs inference on the model. Inputs must be copied to the input tensors prior to calling this method
  */
 
-- (void)_runInference {
+- (Tensors)_runInference:(NamedTensors)inputs {
+    TensorNames output_names;
+    Tensors outputs;
     
+    // TODO: Construct output names from json names
+    
+    output_names.push_back("sigmoid");
+    
+    tensorflow::Session *session = _saved_model_bundle.session.get();
+    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs));
+    
+    return outputs;
 }
 
 /**
@@ -175,8 +395,15 @@ typedef std::vector<std::pair<std::string, tensorflow::Tensor>> TensorDict;
  * model outputs.
  */
 
-- (id<TIOData>)_captureOutput {
-    return nil;
+- (id<TIOData>)_captureOutput:(Tensors)outputs {
+    
+    // TODO: Properly capture outputs, supporting quantization
+    
+    float sigmoid = outputs[0].scalar<float>()(0);
+    
+    return @{
+        @"sigmoid": @(sigmoid)
+    };
 }
 
 /**
