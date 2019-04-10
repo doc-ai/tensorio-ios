@@ -377,9 +377,9 @@ typedef std::vector<std::string> TensorNames;
     TensorNames output_names;
     Tensors outputs;
     
-    // TODO: Construct output names from json names
-    
-    output_names.push_back("sigmoid");
+    for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
+        output_names.push_back(interface.name.UTF8String);
+    }
     
     tensorflow::Session *session = _saved_model_bundle.session.get();
     TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs));
