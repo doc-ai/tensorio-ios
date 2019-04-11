@@ -282,6 +282,32 @@ typedef std::vector<std::string> TensorNames;
     _loaded = NO;
 }
 
+// MARK: - Input and Output Features
+
+- (NSArray<TIOLayerInterface*>*)inputs {
+    return _indexedInputInterfaces;
+}
+
+- (NSArray<TIOLayerInterface*>*)outputs {
+    return _indexedOutputInterfaces;
+}
+
+- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index {
+    return _indexedInputInterfaces[index].dataDescription;
+}
+
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name {
+    return _namedInputInterfaces[name].dataDescription;
+}
+
+- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index {
+    return _indexedOutputInterfaces[index].dataDescription;
+}
+
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name {
+    return _namedOutputInterfaces[name].dataDescription;
+}
+
 // MARK: - Perform Inference
 
 /**
