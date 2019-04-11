@@ -35,7 +35,9 @@
         for ( NSInteger i = 0; i < length; i++ ) {
             ((float_t *)buffer)[i] = dequantizer(((uint8_t *)bytes)[i]);
         }
-        return [[NSData alloc] initWithBytes:buffer length:float_length];
+        NSData *data = [[NSData alloc] initWithBytes:buffer length:float_length];
+        free(buffer);
+        return data;
     } else if ( description.isQuantized && dequantizer == nil ) {
         return [[NSData alloc] initWithBytes:bytes length:length];
     } else {
