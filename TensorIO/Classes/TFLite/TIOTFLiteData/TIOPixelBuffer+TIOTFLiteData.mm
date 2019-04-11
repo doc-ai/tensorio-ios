@@ -32,7 +32,7 @@
 
 @implementation TIOPixelBuffer (TIOTFLiteData)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes length:(NSUInteger)length description:(id<TIOLayerDescription>)description {
+- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
     CVPixelBufferRef pixelBuffer = NULL;
@@ -64,7 +64,7 @@
     return [self initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
 }
 
-- (void)getBytes:(void *)buffer length:(NSUInteger)length description:(id<TIOLayerDescription>)description {
+- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
