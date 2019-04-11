@@ -39,6 +39,21 @@
     
     [model load:nil];
     
+{   // Single input
+    
+    NSNumber *sigmoid = ((NSDictionary*)[model runOn:buffer])[@"sigmoid"];
+    
+    NSLog(@"%@", sigmoid);
+    
+    if (sigmoid.floatValue < 0.5) {
+        NSLog(@"*** It's a cat! ***)");
+    } else {
+        NSLog(@"*** It's a dog! ***)");
+    }
+}
+    
+{   // Dictionary input
+    
     NSDictionary *inputs = @{
         @"image": buffer
     };
@@ -52,6 +67,8 @@
     } else {
         NSLog(@"*** It's a dog! ***)");
     }
+}
+
 }
 
 

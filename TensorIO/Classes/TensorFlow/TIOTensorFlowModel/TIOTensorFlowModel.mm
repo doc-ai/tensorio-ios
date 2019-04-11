@@ -335,19 +335,51 @@ typedef std::vector<std::string> TensorNames;
 - (NamedTensors)_prepareInput:(id<TIOData>)data  {
     NamedTensors inputs;
     
-    // Assuming data is a dictionary, which I may enforce in an api change
-    // TODO: support single and array inputs
+    // When preparing inputs we take into account the type of input provided
+    // and the number of inputs that are available
     
-    NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
+    if ( [data isKindOfClass:NSDictionary.class] ) {
+        
+        // With a dictionary input, regardless the count, iterate through the keys and values, mapping them to indices,
+        // and prepare the indexed tensors with the values
     
-    for ( NSString *name in dictionaryData ) {
-        assert([_namedInputInterfaces.allKeys containsObject:name]);
+        NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
+        
+        for ( NSString *name in dictionaryData ) {
+            assert([_namedInputInterfaces.allKeys containsObject:name]);
+        
+            TIOLayerInterface *interface = _namedInputInterfaces[name];
+            id<TIOData> inputData = dictionaryData[name];
+        
+            NamedTensor input = [self _prepareInput:inputData interface:interface];
+            inputs.push_back(input);
+        }
+    } else if ( _indexedInputInterfaces.count == 1 ) {
     
-        TIOLayerInterface *interface = _namedInputInterfaces[name];
-        id<TIOData> inputData = dictionaryData[name];
-    
+        // If there is a single input available, simply take the input as it is
+        
+        TIOLayerInterface *interface = _indexedInputInterfaces[0];
+        id<TIOData> inputData = data;
+        
         NamedTensor input = [self _prepareInput:inputData interface:interface];
         inputs.push_back(input);
+    } else {
+        
+        // With more than one input, we must accept an array
+        
+        assert( [data isKindOfClass:NSArray.class] );
+        
+        // With an array input, iterate through its entries, preparing the indexed tensors with their values
+        
+        NSArray<id<TIOData>> *arrayData = (NSArray*)data;
+        assert(arrayData.count == _indexedInputInterfaces.count);
+        
+        for ( NSUInteger index = 0; index < arrayData.count; index++ ) {
+            TIOLayerInterface *interface = _indexedInputInterfaces[index];
+            id<TIOData> inputData = arrayData[index];
+            NamedTensor input = [self _prepareInput:inputData interface:interface];
+            inputs.push_back(input);
+        }
     }
     
     return inputs;
