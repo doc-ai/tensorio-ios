@@ -485,7 +485,7 @@ static NSString * const kTensorTypeImage = @"image";
 }
 
 /**
- * Copies bytes from the tensor to an appropricate class that conforms to `TIOData`
+ * Copies bytes from the tensor to an appropriate class that conforms to `TIOData`
  *
  * @param tensor The output tensor whose bytes will be captured
  * @param interface A description of the data which this tensor contains

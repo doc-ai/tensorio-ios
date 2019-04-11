@@ -19,7 +19,6 @@
 //
 
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
-
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 

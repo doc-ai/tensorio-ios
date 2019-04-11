@@ -23,6 +23,7 @@
 //  TODO: Duplicating input/output parsing but may need backend specific parsing as well
 //  TODO: Duplicated TensorType defines, should be defined elsewhere
 //  TODO: Typedefs are used elsewhere, define in shared file
+//  TODO: Tests for TensorFlow models
 
 #import "TIOTensorFlowModel.h"
 
@@ -298,7 +299,7 @@ typedef std::vector<std::string> TensorNames;
 
 /**
  * Iterates through the provided `TIOData` inputs, matching them to the model's input layers, and
- * copies their bytes to those input layers.
+ * prepares tensors with them.
  *
  * @param data Any class conforming to the `TIOData` protocol
  */
@@ -307,6 +308,7 @@ typedef std::vector<std::string> TensorNames;
     NamedTensors inputs;
     
     // Assuming data is a dictionary, which I may enforce in an api change
+    // TODO: support single and array inputs
     
     NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
     
@@ -324,7 +326,7 @@ typedef std::vector<std::string> TensorNames;
 }
 
 /**
- * Requests the input to copy its bytes to the tensor
+ * Prepares a tensor from an input
  *
  * @param input The data whose bytes will be copied to the tensor
  * @param interface A description of the data which the tensor expects
@@ -333,20 +335,10 @@ typedef std::vector<std::string> TensorNames;
 - (NamedTensor)_prepareInput:(id<TIOData>)input interface:(TIOLayerInterface*)interface {
     __block NamedTensor named_tensor;
     
-    // size_t byteSize = self.quantized ? sizeof(uint8_t) : sizeof(float_t);
-
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
             
             assert( [input isKindOfClass:TIOPixelBuffer.class] );
-            
-            // size_t byteCount
-            //     = pixelBufferDescription.shape.width
-            //     * pixelBufferDescription.shape.height
-            //     * pixelBufferDescription.shape.channels
-            //     * byteSize;
-            
-            // [(id<TIOTFLiteData>)input getBytes:tensor length:byteCount description:pixelBufferDescription];
             
             tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:pixelBufferDescription];
             std::string name = interface.name.UTF8String;
@@ -359,18 +351,17 @@ typedef std::vector<std::string> TensorNames;
                 ||  [input isKindOfClass:NSData.class]
                 ||  [input isKindOfClass:NSNumber.class] );
             
-            // size_t byteCount
-            //     = vectorDescription.length
-            //     * byteSize;
+            tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:vectorDescription];
+            std::string name = interface.name.UTF8String;
             
-            // [(id<TIOTFLiteData>)input getBytes:tensor length:byteCount description:vectorDescription];
+            named_tensor = NamedTensor(name, tensor);
         }];
     
     return named_tensor;
 }
 
 /**
- * Runs inference on the model. Inputs must be copied to the input tensors prior to calling this method
+ * Runs inference on the model with prepared inputs.
  */
 
 - (Tensors)_runInference:(NamedTensors)inputs {
@@ -407,7 +398,7 @@ typedef std::vector<std::string> TensorNames;
 }
 
 /**
- * Copies bytes from the tensor to an appropricate class that conforms to `TIOData`
+ * Copies bytes from the tensor to an appropriate class that conforms to `TIOData`
  *
  * @param tensor The output tensor whose bytes will be captured
  * @param interface A description of the data which this tensor contains

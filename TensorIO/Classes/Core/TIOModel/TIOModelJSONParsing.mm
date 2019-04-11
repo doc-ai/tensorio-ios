@@ -101,7 +101,8 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
 
     TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name isInput:isInput vectorDescription:
         [[TIOVectorLayerDescription alloc]
-            initWithLength:length
+            initWithShape:shape
+            length:length
             labels:labels
             quantized:quantized
             quantizer:quantizer

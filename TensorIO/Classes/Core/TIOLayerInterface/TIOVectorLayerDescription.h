@@ -68,6 +68,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, getter=isQuantized) BOOL quantized;
 
 /**
+ * The shape of the underlying tensor.
+ */
+
+@property (readonly) NSArray<NSNumber*> *shape;
+
+/**
  * The length of the vector in terms of its number of elements.
  */
 
@@ -104,6 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Designated initializer. Creates a vector description from the properties parsed in a model.json
  * file.
  *
+ * @param shape The shape of the underlying tensor
  * @param length The total number of elements in this layer.
  * @param labels The indexed labels associated with the outputs of this layer. May be `nil`.
  * @param quantizer A function that transforms unquantized values to quantized input
@@ -112,7 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype A read-only instance of `TIOVectorLayerDescription`
  */
 
-- (instancetype)initWithLength:(NSUInteger)length labels:(nullable NSArray<NSString*>*)labels quantized:(BOOL)quantized quantizer:(nullable TIODataQuantizer)quantizer dequantizer:(nullable TIODataDequantizer)dequantizer NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithShape:(NSArray<NSNumber*>*)shape length:(NSUInteger)length labels:(nullable NSArray<NSString*>*)labels quantized:(BOOL)quantized quantizer:(nullable TIODataQuantizer)quantizer dequantizer:(nullable TIODataDequantizer)dequantizer NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
