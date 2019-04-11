@@ -22,11 +22,49 @@
 
 #import "TIOTensorFlowData.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include "tensorflow/core/framework/tensor.h"
+
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * `NSDictionary` conforms to `TIOTensorFlowData` so that it may be passed as input to a
+ * model and returned as output from a model.
+ *
+ * @warning
+ * A dictionary can neither provide bytes directly to nor capture bytes directly
+ * from a TensorFlow tensor. Instead the named entries of the dictionary must be able
+ * to do so.
+ */
+
 @interface NSDictionary (TIOTensorFlowData)
+
+/**
+ * Initializes an `NSDictionary` object with bytes from a TensorFlow tensor.
+ *
+ * @param tensor The tensor to read from.
+ * @param description A description of the data this tensor produces.
+ *
+ * @return instancetype An empty dictionary.
+ *
+ * @warning This method is unimplemented. A dictionary cannot be constructed directly from a tensor.
+ */
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+
+/**
+ * Request to fill a TensorFlow tensor with bytes.
+ *
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from the dictionary.
+ *
+ * @warning This method is unimplemented. A dictionary cannot provide bytes directly to a tensor.
+ */
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
 

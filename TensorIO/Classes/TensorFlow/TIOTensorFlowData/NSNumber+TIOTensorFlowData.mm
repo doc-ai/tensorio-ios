@@ -27,6 +27,23 @@
 
 @implementation NSNumber (TIOTensorFlowData)
 
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    
+    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
+    
+    if ( description.isQuantized && dequantizer != nil ) {
+        uint8_t value = tensor.scalar<uint8_t>()(0);
+        return [self initWithFloat:dequantizer(value)];
+    } else if ( description.isQuantized && dequantizer == nil ) {
+        uint8_t value = tensor.scalar<uint8_t>()(0);
+        return [self initWithUnsignedChar:value];
+    } else {
+        float value = tensor.scalar<float>()(0);
+        return [self initWithFloat:value];
+    }
+}
+
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     

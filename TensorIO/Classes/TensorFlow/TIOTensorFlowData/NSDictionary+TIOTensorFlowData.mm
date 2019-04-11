@@ -22,6 +22,11 @@
 
 @implementation NSDictionary (TIOTensorFlowData)
 
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
+    NSAssert(NO, @"This method is unimplemented. A dictionary cannot be constructed directly from a tensor.");
+    return [self init];
+}
+
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
     NSAssert(NO, @"This method is unimplemented. Tensor bytes cannot be captured from a dictionary.");
     return tensorflow::Tensor(tensorflow::DT_FLOAT, {});

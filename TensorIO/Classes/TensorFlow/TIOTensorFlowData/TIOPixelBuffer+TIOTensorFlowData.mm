@@ -82,6 +82,12 @@ void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensor
 
 @implementation TIOPixelBuffer (TIOTensorFlowData)
 
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
+    #warning implement
+    return nil;
+}
+
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     

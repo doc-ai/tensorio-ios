@@ -23,11 +23,40 @@
 #import "TIOTensorFlowData.h"
 #import "TIOPixelBuffer.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include "tensorflow/core/framework/tensor.h"
+
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * An `TIOPixelBuffer` can provide pixel buffers to a TensorFlow tensor or read
+ * pixel values from one.
+ */
+
 @interface TIOPixelBuffer (TIOTensorFlowData)
+
+/**
+ * Initializes `TIOPixelBuffer` with bytes from a TFLite tensor.
+ *
+ * @param tensor The tensor to read from.
+ * @param description A description of the data this tensor produces.
+ *
+ * @return instancetype An instance of `TIOPixelBuffer`
+ */
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+
+/**
+ * Request to fill a TFLite tensor with bytes.
+ *
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from this pixel buffer.
+ */
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
 

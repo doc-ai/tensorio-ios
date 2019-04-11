@@ -23,7 +23,7 @@
 //  TODO: Duplicating input/output parsing but may need backend specific parsing as well
 //  TODO: Duplicated TensorType defines, should be defined elsewhere
 //  TODO: Typedefs are used elsewhere, define in shared file
-//  TODO: Tests for TensorFlow models
+//  TODO: Tests for TensorFlow models and the TIOTensorFlowData operations
 
 #import "TIOTensorFlowModel.h"
 
@@ -50,6 +50,8 @@
 #import "TIOPixelBuffer.h"
 #import "TIOModelJSONParsing.h"
 #import "TIOTensorFlowData.h"
+#import "NSArray+TIOTensorFlowData.h"
+#import "TIOPixelBuffer+TIOTensorFlowData.h"
 
 static NSString * const kTensorTypeVector = @"array";
 static NSString * const kTensorTypeImage = @"image";
@@ -386,15 +388,19 @@ typedef std::vector<std::string> TensorNames;
  * model outputs.
  */
 
-- (id<TIOData>)_captureOutput:(Tensors)outputs {
+- (id<TIOData>)_captureOutput:(Tensors)outputTensors {
+   
+    NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
+
+    for ( int index = 0; index < _indexedOutputInterfaces.count; index++ ) {
+        TIOLayerInterface *interface = _indexedOutputInterfaces[index];
+        tensorflow::Tensor tensor = outputTensors[index];
+        
+        id<TIOData> data = [self _captureOutput:tensor interface:interface];
+        outputs[interface.name] = data;
+    }
     
-    // TODO: Properly capture outputs, supporting quantization
-    
-    float sigmoid = outputs[0].scalar<float>()(0);
-    
-    return @{
-        @"sigmoid": @(sigmoid)
-    };
+    return outputs.copy;
 }
 
 /**
@@ -404,8 +410,30 @@ typedef std::vector<std::string> TensorNames;
  * @param interface A description of the data which this tensor contains
  */
 
-- (id<TIOData>)_captureOutput:(void *)tensor interface:(TIOLayerInterface*)interface {
-    return nil;
+- (id<TIOData>)_captureOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface*)interface {
+    __block id<TIOData> data;
+    
+    [interface
+        matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
+            
+            data = [[TIOPixelBuffer alloc] initWithTensor:tensor description:pixelBufferDescription];
+        
+        } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+            
+            TIOVector *vector = [[TIOVector alloc] initWithTensor:tensor description:vectorDescription];
+            
+            if ( vectorDescription.isLabeled ) {
+                // If the vector's output is labeled, return a dictionary mapping labels to values
+                data = [vectorDescription labeledValues:vector];
+            } else {
+                // If the vector's output is single-valued just return that value
+                data = vector.count == 1
+                    ? vector[0]
+                    : vector;
+            }
+        }];
+    
+    return data;
 }
 
 @end

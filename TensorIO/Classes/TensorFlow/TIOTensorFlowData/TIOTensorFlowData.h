@@ -22,12 +22,18 @@
 
 #import "TIOData.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include "tensorflow/core/framework/tensor.h"
+
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol TIOTensorFlowData <NSObject, TIOData>
 
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
 
 @end

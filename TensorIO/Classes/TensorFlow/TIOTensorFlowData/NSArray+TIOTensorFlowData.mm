@@ -27,6 +27,36 @@
 
 @implementation NSArray (TIOTensorFlowData)
 
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    
+    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
+    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    NSMutableArray *array = NSMutableArray.array;
+    
+    if ( description.isQuantized && dequantizer != nil ) {
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto tensor_data = flat_tensor.data();
+        for ( NSUInteger i = 0; i < length; i++ ) {
+            [array addObject:@(dequantizer(((uint8_t *)tensor_data)[i]))];
+        }
+    } else if ( description.isQuantized && dequantizer == nil ) {
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto tensor_data = flat_tensor.data();
+        for ( NSUInteger i = 0; i < length; i++ ) {
+            [array addObject:@(((uint8_t *)tensor_data)[i])];
+        }
+    } else {
+        auto flat_tensor = tensor.flat<float_t>();
+        auto tensor_data = flat_tensor.data();
+        for ( NSUInteger i = 0; i < length; i++ ) {
+            [array addObject:@(((float_t *)tensor_data)[i])];
+        }
+    }
+    
+    return [self initWithArray:array];
+}
+
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
 

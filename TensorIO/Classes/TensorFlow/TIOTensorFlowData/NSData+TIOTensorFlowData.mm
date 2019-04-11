@@ -25,6 +25,36 @@
 
 @implementation NSData (TIOTensorFlowData)
 
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    
+    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
+    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    
+    if ( description.isQuantized && dequantizer != nil ) {
+        size_t byte_count = length * sizeof(float_t);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto tensor_data = flat_tensor.data();
+        float_t *buffer = (float_t *)malloc(byte_count);
+        for ( NSInteger i = 0; i < length; i++ ) {
+            ((float_t *)buffer)[i] = dequantizer(((uint8_t *)tensor_data)[i]);
+        }
+        NSData *data = [[NSData alloc] initWithBytes:buffer length:byte_count];
+        free(buffer);
+        return data;
+    } else if ( description.isQuantized && dequantizer == nil ) {
+        size_t tensor_byte_count = length * sizeof(uint8_t);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto tensor_data = flat_tensor.data();
+        return [[NSData alloc] initWithBytes:tensor_data length:tensor_byte_count];
+    } else {
+        size_t tensor_byte_count = length * sizeof(float_t);
+        auto flat_tensor = tensor.flat<float_t>();
+        auto tensor_data = flat_tensor.data();
+        return [[NSData alloc] initWithBytes:tensor_data length:tensor_byte_count];
+    }
+}
+
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
@@ -33,8 +63,8 @@
     
     // Determine number of bytes
     
-    size_t byteSize = description.quantized ? sizeof(uint8_t) : sizeof(float_t);
-    NSUInteger length = ((TIOVectorLayerDescription*)description).length * byteSize;
+    size_t byte_size = description.quantized ? sizeof(uint8_t) : sizeof(float_t);
+    NSUInteger length = ((TIOVectorLayerDescription*)description).length * byte_size;
     
     // Establish shape
     

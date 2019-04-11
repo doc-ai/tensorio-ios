@@ -22,11 +22,78 @@
 
 #import "TIOTensorFlowData.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
 #include "tensorflow/core/framework/tensor.h"
+
+#pragma clang diagnostic pop
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * An `NSData` object may be an input to a TensorFlow tensor or an output from a
+ * TensorFlow tensor.
+ *
+ * The underlying bytes will be supplied directly to or accepted directly from a
+ * TFLite tensor. NSData already implements both:
+ *
+ * @code
+ * - (instancetype)initWithBytes:(const void *)bytes length:(NSUInteger)length
+ * - (void)getBytes:(void *)buffer length:(NSUInteger)length`.
+ * @endcode
+ *
+ * So we just pass initialization to those methods without making any assumptions about the type
+ * of the data (`float_t` or `uint8_t`).
+ */
+
+
 @interface NSData (TIOTensorFlowData)
+
+/**
+ * Initializes an `NSData` object with bytes from a TensorFlow tensor.
+ *
+ * Bytes are copied according to the following rules, with information about quantization taken
+ * from the description:
+ *
+ * - If the layer is unquantized, the tensor's bytes are copied directly into a data object
+ *   (the bytes are implicitly interpreted as `float_t` values).
+ *
+ * - If the layer is quantized and no dequantizer block is provided, the tensor's bytes are copied
+ *   directly into a data object (the bytes are implicitly interpreted as `uint8_t` values).
+ *
+ * - If the layer is quantized and a dequantizer block is provided, the tensor's bytes are
+ *   interpreted as `uint8_t` values, passed to the dequantizer block, and the resulting `float_t`
+ *   bytes are copied into a data object.
+ *
+ * @param tensor The tensor to read from.
+ * @param description A description of the data this tensor produces.
+ *
+ * @return instancetype An instance of `NSData`.
+ */
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+
+/**
+ * Request to fill a TensorFlow tensor with bytes.
+ *
+ * Bytes are copied according to the following rules, with information about quantization taken
+ * from the description:
+ *
+ * - If the layer is unquantized, the data's bytes are copied directly to the buffer (and
+ *   implicitly interpreted as `float_t` values).
+ *
+ * - If the layer is quantized and no quantizer block is provided, the data's bytes are copied
+ *   directly to the buffer (and implicitly interpreted as `uint8_t` values).
+ *
+ * - If the layer is quantized and a quantizer block is provided, the data's bytes are interpreted
+ *   as `float_t` values, passed to the quantizer block, and the `uint8_t` values returned from it
+ *   are copied to the buffer.
+ *
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from the dictionary.
+ */
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
 
