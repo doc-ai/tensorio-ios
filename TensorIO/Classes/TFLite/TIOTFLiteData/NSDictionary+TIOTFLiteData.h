@@ -26,7 +26,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * `NSDictionary` conforms to `TIOData` so that it may be passed as input to a
+ * `NSDictionary` conforms to `TIOTFLiteData` so that it may be passed as input to a
  * model and returned as output from a model.
  *
  * @warning

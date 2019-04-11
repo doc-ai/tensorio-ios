@@ -27,6 +27,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * An `TIOPixelBuffer` can provide pixel buffers to a TFLite tensor or read
+ * pixel values from one.
+ */
+
 @interface TIOPixelBuffer (TIOTFLiteData) <TIOTFLiteData>
 
 /**
