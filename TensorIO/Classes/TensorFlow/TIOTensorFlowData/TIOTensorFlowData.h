@@ -33,7 +33,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol TIOTensorFlowData <NSObject, TIOData>
 
+/**
+ * Initializes a conforming object with bytes from a TensorFlow tensor.
+ *
+ * @param tensor The output tensor to read from.
+ * @param description A description of the data this buffer produces.
+ *
+ * @return instancetype An instance of the conforming data type.
+ */
+
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+
+/**
+ * Requests that a conforming object create a TensorFlow tensor from its data.
+ *
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from this pixel buffer.
+ */
+
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
 
 @end

@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TIOPixelBuffer (TIOTensorFlowData)
 
 /**
- * Initializes `TIOPixelBuffer` with bytes from a TFLite tensor.
+ * Initializes `TIOPixelBuffer` with bytes from a TensorFlow tensor.
  *
  * @param tensor The tensor to read from.
  * @param description A description of the data this tensor produces.
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
 
 /**
- * Request to fill a TFLite tensor with bytes.
+ * Request to fill a TensorFlow tensor with bytes.
  *
  * @param description A description of the data this tensor expects.
  *
