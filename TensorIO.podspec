@@ -28,9 +28,6 @@ Pod::Spec.new do |s|
   
   s.subspec 'Core' do |ss|
     ss.source_files = 'TensorIO/Classes/Core/**/*'
-    ss.private_header_files = [
-      'TensorIO/Classes/Core/TIOModel/TIOPixelBufferToTensorHelpers.h'
-    ]
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_CORE=1'
     }
