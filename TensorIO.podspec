@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.5.0'
+  s.version          = '0.5.1'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite.'
   s.description      = 'Perform inference with TensorFlow Lite models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -28,9 +28,6 @@ Pod::Spec.new do |s|
   
   s.subspec 'Core' do |ss|
     ss.source_files = 'TensorIO/Classes/Core/**/*'
-    ss.private_header_files = [
-      'TensorIO/Classes/Core/TIOModel/TIOPixelBufferToTensorHelpers.h'
-    ]
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_CORE=1'
     }
