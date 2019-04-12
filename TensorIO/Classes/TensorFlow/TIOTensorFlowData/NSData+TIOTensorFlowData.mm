@@ -96,7 +96,7 @@
         [self getBytes:buffer length:length];
         return tensor;
     } else {
-        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
+        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
         auto flat_tensor = tensor.flat<float>();
         auto buffer = flat_tensor.data();
         [self getBytes:buffer length:length];

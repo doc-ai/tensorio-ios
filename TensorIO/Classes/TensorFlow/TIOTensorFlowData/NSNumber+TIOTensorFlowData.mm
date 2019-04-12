@@ -52,12 +52,12 @@
     
     if ( description.isQuantized && quantizer != nil ) {
         tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto labels_mapped = tensor.tensor<tensorflow::int8, 2>();
+        auto labels_mapped = tensor.tensor<uint8_t, 2>();
         labels_mapped(0,0) = quantizer(self.floatValue);
         return tensor;
     } else if ( description.isQuantized && quantizer == nil ) {
         tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto labels_mapped = tensor.tensor<tensorflow::int8, 2>();
+        auto labels_mapped = tensor.tensor<uint8_t, 2>();
         labels_mapped(0,0) = self.unsignedCharValue;
         return tensor;
     } else {
