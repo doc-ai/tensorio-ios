@@ -423,20 +423,12 @@ static NSString * const kTensorTypeImage = @"image";
 
 - (void)_prepareInput:(id<TIOData>)input tensor:(void *)tensor interface:(TIOLayerInterface*)interface {
 
-    size_t byteSize = self.quantized ? sizeof(uint8_t) : sizeof(float_t);
-
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
             
             assert( [input isKindOfClass:TIOPixelBuffer.class] );
             
-            size_t byteCount
-                = pixelBufferDescription.shape.width
-                * pixelBufferDescription.shape.height
-                * pixelBufferDescription.shape.channels
-                * byteSize;
-            
-            [(id<TIOTFLiteData>)input getBytes:tensor length:byteCount description:pixelBufferDescription];
+            [(id<TIOTFLiteData>)input getBytes:tensor description:pixelBufferDescription];
             
         } caseVector:^(TIOVectorLayerDescription *vectorDescription) {
             
@@ -444,11 +436,7 @@ static NSString * const kTensorTypeImage = @"image";
                 ||  [input isKindOfClass:NSData.class]
                 ||  [input isKindOfClass:NSNumber.class] );
             
-            size_t byteCount
-                = vectorDescription.length
-                * byteSize;
-            
-            [(id<TIOTFLiteData>)input getBytes:tensor length:byteCount description:vectorDescription];
+            [(id<TIOTFLiteData>)input getBytes:tensor description:vectorDescription];
         }];
 }
 
@@ -498,11 +486,11 @@ static NSString * const kTensorTypeImage = @"image";
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
             
-            data = [[TIOPixelBuffer alloc] initWithBytes:tensor length:0 description:pixelBufferDescription];
+            data = [[TIOPixelBuffer alloc] initWithBytes:tensor description:pixelBufferDescription];
         
         } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
             
-            TIOVector *vector = [[TIOVector alloc] initWithBytes:tensor length:vectorDescription.length description:vectorDescription];
+            TIOVector *vector = [[TIOVector alloc] initWithBytes:tensor description:vectorDescription];
             
             if ( vectorDescription.isLabeled ) {
                 // If the vector's output is labeled, return a dictionary mapping labels to values
