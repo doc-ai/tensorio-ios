@@ -267,6 +267,8 @@
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
+    
+    free(bytes);
 }
 
 // MARK: - NSArray + TIOTFLiteData Init with Bytes
@@ -410,6 +412,8 @@
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
+    
+    free(bytes);
 }
 
 // MARK: - NSData + TIOTFLiteData Init with Bytes
