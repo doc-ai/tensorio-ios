@@ -1,8 +1,8 @@
 PODS:
-  - TensorIO (0.5.0):
-    - TensorIO/Core (= 0.5.0)
-  - TensorIO/Core (0.5.0)
-  - TensorIO/TensorFlow (0.5.0):
+  - TensorIO (0.5.1):
+    - TensorIO/Core (= 0.5.1)
+  - TensorIO/Core (0.5.1)
+  - TensorIO/TensorFlow (0.5.1):
     - TensorIO/Core
     - TensorIOTensorFlow
   - TensorIOTensorFlow (0.1.0)
@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  TensorIO: 12100bfc66ff4b62042e0c1442a7da8721b2dd7e
+  TensorIO: ca5681393f78a73534f06f2810904245a213f35d
   TensorIOTensorFlow: 31f473f6a9e0cd9457f3c842fcdea83070e9e5fb
 
 PODFILE CHECKSUM: ccf272cde197932817bdf42271dac93482107a16
