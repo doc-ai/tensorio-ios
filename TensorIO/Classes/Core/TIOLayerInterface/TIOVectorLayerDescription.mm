@@ -18,6 +18,8 @@
 //  limitations under the License.
 //
 
+//  TODO: Remove length from init and calculate here
+
 #import "TIOVectorLayerDescription.h"
 
 @implementation TIOVectorLayerDescription
