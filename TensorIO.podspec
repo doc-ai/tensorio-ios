@@ -48,7 +48,7 @@ Pod::Spec.new do |s|
     }
   end
   
-  # TensorFlow subspect contains a full TensorFlow implementation
+  # TensorFlow subspec contains a full TensorFlow implementation
 
   s.subspec 'TensorFlow' do |ss|
     ss.dependency 'TensorIOTensorFlow'
@@ -58,7 +58,7 @@ Pod::Spec.new do |s|
     ss.private_header_files = [
       'TensorIO/Classes/TensorFlow/SavedModel/**/*'
     ]
-    s.xcconfig = {
+    ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers"',
       'OTHER_LDFLAGS' => '-force_load "${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow" "-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework"'
     }
