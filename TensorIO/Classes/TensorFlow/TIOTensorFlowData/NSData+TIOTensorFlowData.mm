@@ -69,10 +69,16 @@
     // Establish shape
     
     std::vector<tensorflow::int64> dims;
-    dims.push_back(1); // batch size
+    
+    // When the zeroeth dimension is -1 then this model expects a batch size to be included in its dimensions
+    // Inference batch size is 1 by default
     
     for (NSNumber *dim in dshape) {
-        dims.push_back(dim.integerValue);
+        if ( dim.integerValue == -1 ) {
+            dims.push_back(1); // batch size of 1
+        } else {
+            dims.push_back(dim.integerValue);
+        }
     }
     
     tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);

@@ -33,13 +33,19 @@
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
     
     if ( description.isQuantized && dequantizer != nil ) {
-        uint8_t value = tensor.scalar<uint8_t>()(0);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto tensor_data = flat_tensor.data();
+        uint8_t value = tensor_data[0];
         return [self initWithFloat:dequantizer(value)];
     } else if ( description.isQuantized && dequantizer == nil ) {
-        uint8_t value = tensor.scalar<uint8_t>()(0);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto tensor_data = flat_tensor.data();
+        uint8_t value = tensor_data[0];
         return [self initWithUnsignedChar:value];
     } else {
-        float value = tensor.scalar<float>()(0);
+        auto flat_tensor = tensor.flat<float_t>();
+        auto tensor_data = flat_tensor.data();
+        float_t value = tensor_data[0];
         return [self initWithFloat:value];
     }
 }
@@ -47,23 +53,46 @@
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
+    // TODO: verify that the shape is either [1] or [-1,1] if batched
+    
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
-    tensorflow::TensorShape shape = tensorflow::TensorShape({1,1});
+    NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
+    
+    // Establish shape
+    
+    std::vector<tensorflow::int64> dims;
+    
+    // When the zeroeth dimension is -1 then this model expects a batch size to be included in its dimensions
+    // Inference batch size is 1 by default
+    
+    for (NSNumber *dim in dshape) {
+        if ( dim.integerValue == -1 ) {
+            dims.push_back(1); // batch size of 1
+        } else {
+            dims.push_back(dim.integerValue);
+        }
+    }
+    
+    tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);
+    tensorflow::TensorShape shape = tensorflow::TensorShape(dim_sizes);
     
     if ( description.isQuantized && quantizer != nil ) {
         tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto labels_mapped = tensor.tensor<uint8_t, 2>();
-        labels_mapped(0,0) = quantizer(self.floatValue);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto buffer = flat_tensor.data();
+        buffer[0] = quantizer(self.floatValue);
         return tensor;
     } else if ( description.isQuantized && quantizer == nil ) {
         tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto labels_mapped = tensor.tensor<uint8_t, 2>();
-        labels_mapped(0,0) = self.unsignedCharValue;
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto buffer = flat_tensor.data();
+        buffer[0] = self.unsignedCharValue;
         return tensor;
     } else {
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto labels_mapped = tensor.tensor<float, 2>();
-        labels_mapped(0,0) = self.floatValue;
+        auto flat_tensor = tensor.flat<float>();
+        auto buffer = flat_tensor.data();
+        buffer[0] = self.floatValue;
         return tensor;
     }
 }

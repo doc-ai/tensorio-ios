@@ -22,6 +22,9 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 
+//  TODO: switch to .flat mapping and copy bytes the same way they are for TFLite
+//  TODO: support batched and unbatched pixel buffers
+
 /**
  * Copies a pixel buffer in ARGB or BGRA format to a tensor.
  *
