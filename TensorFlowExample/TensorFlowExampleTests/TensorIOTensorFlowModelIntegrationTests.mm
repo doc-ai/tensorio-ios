@@ -290,4 +290,181 @@
     XCTAssert([byteResults[@"output_z"] isEqualToArray:expectedZ]);
 }
 
+// MARK: - Pixel Buffer Tests
+
+- (void)testPixelBufferIdentityModel {
+    self.continueAfterFailure = NO;
+    
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tfbundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Create ARGB bytes
+    
+    const int width = 224;
+    const int height = 224;
+    const int channels = 4;
+    
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+        
+        pixel[0] = 255; // A
+        pixel[1] = 255; // R
+        pixel[2] = 0;   // G
+        pixel[3] = 0;   // B
+    }
+    
+    // Create a pixel buffer for those bytes (could blast bytes directly into pixel buffer)
+    
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+    
+    // Error handling
+    
+    if ( status != kCVReturnSuccess ) {
+        NSLog(@"Couldn't create pixel buffer");
+    }
+    
+    // Copy bytes to pixel buffer
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    
+    // Run model on pixel buffer
+    
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper];
+    
+    // Capture output
+    
+    TIOPixelBuffer *outputPixelBufferWrapper = output[@"output_z"];
+    CVPixelBufferRef outputPixelBuffer = outputPixelBufferWrapper.pixelBuffer;
+    
+    // Inspect pixel buffer bytes
+    
+    uint8_t espilon = 1;
+    CVPixelBufferLockBaseAddress(outputPixelBuffer, kNilOptions);
+    uint8_t *outAddr = (uint8_t *)CVPixelBufferGetBaseAddress(outputPixelBuffer);
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = outAddr + (i * channels);
+        
+        XCTAssertEqualWithAccuracy(pixel[0], 255, espilon);
+        XCTAssertEqualWithAccuracy(pixel[1], 255, espilon);
+        XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);
+        XCTAssertEqualWithAccuracy(pixel[3], 0, espilon);
+    }
+    
+    CVPixelBufferUnlockBaseAddress(outputPixelBuffer, kNilOptions);
+    
+    // Cleanup
+    
+    CVPixelBufferRelease(pixelBuffer);
+    free(bytes);
+}
+
+- (void)testPixelBufferNormalizationTransformationModel {
+    self.continueAfterFailure = NO;
+    
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tfbundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Create ARGB bytes
+    
+    const int width = 224;
+    const int height = 224;
+    const int channels = 4;
+    
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+        
+        pixel[0] = 255; // A
+        pixel[1] = 0;   // R
+        pixel[2] = 255; // G
+        pixel[3] = 0;   // B
+    }
+    
+    // Create a pixel buffer for those bytes (could blast bytes directly into pixel buffer)
+    
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+    
+    // Error handling
+    
+    if ( status != kCVReturnSuccess ) {
+        NSLog(@"Couldn't create pixel buffer");
+    }
+    
+    // Copy bytes to pixel buffer
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    
+    // Run model on pixel buffer
+    
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper];
+    
+    // Capture output
+    
+    TIOPixelBuffer *outputPixelBufferWrapper = output[@"output_z"];
+    CVPixelBufferRef outputPixelBuffer = outputPixelBufferWrapper.pixelBuffer;
+    
+    // Inspect pixel buffer bytes
+    
+    uint8_t espilon = 1;
+    CVPixelBufferLockBaseAddress(outputPixelBuffer, kNilOptions);
+    uint8_t *outAddr = (uint8_t *)CVPixelBufferGetBaseAddress(outputPixelBuffer);
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = outAddr + (i * channels);
+        
+        XCTAssertEqualWithAccuracy(pixel[0], 255, espilon);
+        XCTAssertEqualWithAccuracy(pixel[1], 0, espilon);
+        XCTAssertEqualWithAccuracy(pixel[2], 255, espilon);
+        XCTAssertEqualWithAccuracy(pixel[3], 0, espilon);
+    }
+    
+    CVPixelBufferUnlockBaseAddress(outputPixelBuffer, kNilOptions);
+    
+    // Cleanup
+    
+    CVPixelBufferRelease(pixelBuffer);
+    free(bytes);
+}
+
 @end

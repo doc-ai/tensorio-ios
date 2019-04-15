@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.3'
   s.static_framework = true
   
-  s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreMedia', 'Accelerate', 'VideoToolbox'
+  s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'Accelerate', 'VideoToolbox'
   s.library = 'c++'
   
   s.default_subspec = 'Core'
