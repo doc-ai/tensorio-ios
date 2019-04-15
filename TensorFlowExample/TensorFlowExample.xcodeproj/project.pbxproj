@@ -20,6 +20,8 @@
 		E3CDE4C8225D3EC200C6A558 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3CDE4C6225D3EC200C6A558 /* LaunchScreen.storyboard */; };
 		E3CDE4CB225D3EC200C6A558 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E3CDE4CA225D3EC200C6A558 /* main.m */; };
 		E3CDE50A225D5ACD00C6A558 /* models in Resources */ = {isa = PBXBuildFile; fileRef = E3CDE509225D5ACD00C6A558 /* models */; };
+		E3F9576A22653C8700D51FE9 /* ImageInputPreviewView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3F9576622653C8600D51FE9 /* ImageInputPreviewView.mm */; };
+		E3F9576B22653C8700D51FE9 /* ResultInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3F9576922653C8600D51FE9 /* ResultInfoView.m */; };
 		F3A7F51E6DDA5619F6C0CBC4 /* Pods_TensorFlowExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2CD577F2F15843D10516781 /* Pods_TensorFlowExampleTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +60,10 @@
 		E3CDE4D0225D3EC200C6A558 /* TensorFlowExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TensorFlowExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3CDE4D6225D3EC200C6A558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3CDE509225D5ACD00C6A558 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = SOURCE_ROOT; };
+		E3F9576622653C8600D51FE9 /* ImageInputPreviewView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageInputPreviewView.mm; sourceTree = "<group>"; };
+		E3F9576722653C8600D51FE9 /* ImageInputPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageInputPreviewView.h; sourceTree = "<group>"; };
+		E3F9576822653C8600D51FE9 /* ResultInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultInfoView.h; sourceTree = "<group>"; };
+		E3F9576922653C8600D51FE9 /* ResultInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultInfoView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,17 +129,21 @@
 		E3CDE4BA225D3EC100C6A558 /* TensorFlowExample */ = {
 			isa = PBXGroup;
 			children = (
+				E3CDE4C6225D3EC200C6A558 /* LaunchScreen.storyboard */,
+				E3CDE4C1225D3EC100C6A558 /* Main.storyboard */,
+				E3CDE4C4225D3EC200C6A558 /* Assets.xcassets */,
 				E3CDE4BB225D3EC100C6A558 /* AppDelegate.h */,
 				E3CDE4BC225D3EC100C6A558 /* AppDelegate.m */,
 				E3CDE4BE225D3EC100C6A558 /* ViewController.h */,
 				E3CDE4BF225D3EC100C6A558 /* ViewController.mm */,
+				E3F9576722653C8600D51FE9 /* ImageInputPreviewView.h */,
+				E3F9576622653C8600D51FE9 /* ImageInputPreviewView.mm */,
+				E3F9576822653C8600D51FE9 /* ResultInfoView.h */,
+				E3F9576922653C8600D51FE9 /* ResultInfoView.m */,
 				E3C9DDAC225EA07B00691A07 /* cat.jpg */,
 				E3C9DDAE225EA12B00691A07 /* dog.jpg */,
 				E3CDE509225D5ACD00C6A558 /* models */,
 				E31524D62264F8E5007F594D /* models-tests */,
-				E3CDE4C1225D3EC100C6A558 /* Main.storyboard */,
-				E3CDE4C4225D3EC200C6A558 /* Assets.xcassets */,
-				E3CDE4C6225D3EC200C6A558 /* LaunchScreen.storyboard */,
 				E3CDE4C9225D3EC200C6A558 /* Info.plist */,
 				E3CDE4CA225D3EC200C6A558 /* main.m */,
 			);
@@ -303,6 +313,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3F9576B22653C8700D51FE9 /* ResultInfoView.m in Sources */,
+				E3F9576A22653C8700D51FE9 /* ImageInputPreviewView.mm in Sources */,
 				E3CDE4C0225D3EC100C6A558 /* ViewController.mm in Sources */,
 				E3CDE4CB225D3EC200C6A558 /* main.m in Sources */,
 				E3CDE4BD225D3EC100C6A558 /* AppDelegate.m in Sources */,

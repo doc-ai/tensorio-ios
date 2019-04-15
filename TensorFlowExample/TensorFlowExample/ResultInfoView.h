@@ -1,8 +1,8 @@
 //
-//  ViewController.h
-//  TensorFlowExample
+//  ResultInfoView.h
+//  Net Runner
 //
-//  Created by Phil Dow on 4/9/19.
+//  Created by Philip Dow on 7/26/18.
 //  Copyright © 2018 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +20,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class ResultInfoView;
+NS_ASSUME_NONNULL_BEGIN
 
-@interface ViewController : UIViewController
+@interface ResultInfoView : UIView
 
-@property (weak) IBOutlet UIImageView *imageView;
-@property (weak) IBOutlet ResultInfoView *infoView;
+@property (nonatomic) NSString *classifications;
+@property (nonatomic) NSString *stats;
 
 @end
 
+NS_ASSUME_NONNULL_END

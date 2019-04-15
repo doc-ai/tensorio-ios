@@ -1,8 +1,8 @@
 //
-//  ViewController.h
-//  TensorFlowExample
+//  ImageInputPreviewView.h
+//  Net Runner
 //
-//  Created by Phil Dow on 4/9/19.
+//  Created by Philip Dow on 7/16/18.
 //  Copyright © 2018 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,13 +19,31 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
-@class ResultInfoView;
+NS_ASSUME_NONNULL_BEGIN
 
-@interface ViewController : UIViewController
+@interface ImageInputPreviewView : UIView
 
-@property (weak) IBOutlet UIImageView *imageView;
-@property (weak) IBOutlet ResultInfoView *infoView;
+/**
+ * You may set the pixelBuffer on a thread other than the main thread
+ */
+
+@property (nonatomic) CVPixelBufferRef pixelBuffer;
+
+/**
+ * Determines if the alpha channel is displayed alongside the RGB buffers
+ */
+
+@property (nonatomic) BOOL showsAlphaChannel;
+
+/**
+ * The pixel format of the channes being previewed.
+ * Must be `kCVPixelFormatType_32BGRA` or `kCVPixelFormatType_32ARGB`
+ */
+
+@property (nonatomic) OSType pixelFormat;
 
 @end
 
+NS_ASSUME_NONNULL_END

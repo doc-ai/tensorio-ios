@@ -21,6 +21,7 @@
 #import "ViewController.h"
 
 #import <TensorIO/TensorIO-umbrella.h>
+#import "ResultInfoView.h"
 
 @interface ViewController ()
 
@@ -31,34 +32,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Prepare the image
+    
     UIImage *image = [UIImage imageNamed:@"cat.jpg"];
     TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    // Load the model
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"cats-vs-dogs" ofType:@"tfbundle" inDirectory:@"models"];
     id<TIOModel> model = [TIOTensorFlowModel modelWithBundleAtPath:path];
     
     [model load:nil];
     
-{   // Single input
-    
-    NSNumber *sigmoid = ((NSDictionary*)[model runOn:buffer])[@"sigmoid"];
-    
-    NSLog(@"%@", sigmoid);
-    
-    if (sigmoid.floatValue < 0.5) {
-        NSLog(@"*** It's a cat! ***)");
-    } else {
-        NSLog(@"*** It's a dog! ***)");
-    }
-}
-    
-{   // Dictionary input
+    // Run the model
     
     NSDictionary *inputs = @{
         @"image": buffer
     };
     
-    NSNumber *sigmoid = ((NSDictionary*)[model runOn:inputs])[@"sigmoid"];
+    NSDictionary *classification = (NSDictionary*)[model runOn:inputs];
+    NSNumber *sigmoid = classification[@"sigmoid"];
+    
+    // Show the results
+    
+    self.imageView.image = image;
+    self.infoView.classifications = classification.description;
+    
+    // Log the results
     
     NSLog(@"%@", sigmoid);
     
@@ -67,8 +67,6 @@
     } else {
         NSLog(@"*** It's a dog! ***)");
     }
-}
-
 }
 
 
