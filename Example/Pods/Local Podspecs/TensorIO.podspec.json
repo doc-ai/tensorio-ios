@@ -54,6 +54,28 @@
       "pod_target_xcconfig": {
         "GCC_PREPROCESSOR_DEFINITIONS": "TIO_TFLITE=1"
       }
+    },
+    {
+      "name": "TensorFlow",
+      "dependencies": {
+        "TensorIOTensorFlow": [
+
+        ],
+        "TensorIO/Core": [
+
+        ]
+      },
+      "source_files": "TensorIO/Classes/TensorFlow/**/*",
+      "private_header_files": [
+        "TensorIO/Classes/TensorFlow/SavedModel/**/*"
+      ],
+      "xcconfig": {
+        "HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers\"",
+        "OTHER_LDFLAGS": "-force_load \"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow\" \"-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework\""
+      },
+      "pod_target_xcconfig": {
+        "GCC_PREPROCESSOR_DEFINITIONS": "TIO_TENSORFLOW=1"
+      }
     }
   ]
 }
