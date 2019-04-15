@@ -23,7 +23,9 @@
     "Foundation",
     "UIKit",
     "AVFoundation",
+    "CoreGraphics",
     "CoreMedia",
+    "CoreVideo",
     "Accelerate",
     "VideoToolbox"
   ],

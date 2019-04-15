@@ -23,7 +23,6 @@
 //  TODO: Duplicating input/output parsing but may need backend specific parsing as well
 //  TODO: Duplicated TensorType defines, should be defined elsewhere
 //  TODO: Typedefs are used elsewhere, define in shared file
-//  TODO: Tests for TensorFlow models and the TIOTensorFlowData operations
 
 #import "TIOTensorFlowModel.h"
 
