@@ -22,8 +22,6 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 
-//  TODO: support batched and unbatched pixel buffers
-
 /**
  * Copies a pixel buffer in ARGB or BGRA format to a tensor.
  *
@@ -271,13 +269,19 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     self.transformedPixelBuffer = transformedPixelBuffer;
     
     // Tensor shape
-
+    
     const int t_channels = pixelBufferDescription.shape.channels;
     const int t_width = pixelBufferDescription.shape.width;
     const int t_height = pixelBufferDescription.shape.height;
-    const int t_batch_size = 1;
     
-    tensorflow::TensorShape shape = tensorflow::TensorShape({t_batch_size, t_height, t_width, t_channels});
+    tensorflow::TensorShape shape;
+    
+    if ( pixelBufferDescription.isBatched ) {
+        const int t_batch_size = 1;
+        shape = tensorflow::TensorShape({t_batch_size, t_height, t_width, t_channels});
+    } else {
+        shape = tensorflow::TensorShape({t_height, t_width, t_channels});
+    }
 
     // Copy pixels to tensor
 

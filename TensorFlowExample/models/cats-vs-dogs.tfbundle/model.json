@@ -15,7 +15,7 @@
 		{
 			"name": "image",
 			"type": "image",
-			"shape": [128,128,3],
+			"shape": [-1,128,128,3],
 			"format": "RGB",
 			"normalize": {
 				"standard": "[0,1]"
