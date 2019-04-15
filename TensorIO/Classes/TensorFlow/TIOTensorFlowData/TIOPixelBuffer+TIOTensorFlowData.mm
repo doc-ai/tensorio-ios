@@ -22,7 +22,6 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 
-//  TODO: switch to .flat mapping and copy bytes the same way they are for TFLite
 //  TODO: support batched and unbatched pixel buffers
 
 /**
@@ -46,7 +45,6 @@
 
 template <typename T>
 void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensorflow::Tensor tensor, TIOImageVolume shape, _Nullable TIOPixelNormalizer normalizer) {
-    auto image_mapped = tensor.tensor<T, 4>();
     
     CFRetain(pixelBuffer);
     CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
@@ -57,6 +55,7 @@ void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensor
     const int image_height = (int)CVPixelBufferGetHeight(pixelBuffer);
     const int image_channels = 4; // by definition (ARGB, BGRA)
     const int tensor_channels = shape.channels; // should be 3 by definition (ARG, BGR)
+    const int tensor_bytes_per_row = shape.width * tensor_channels;
     const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
         ? 1
         : 0;
@@ -69,13 +68,15 @@ void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensor
     assert(image_channels >= shape.channels);
     
     uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixelBuffer);
+    T* out = tensor.flat<T>().data();
     
     if ( normalizer == nil ) {
         for (int y = 0; y < image_height; y++) {
             for (int x = 0; x < image_width; x++) {
                 auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+                auto* out_pixel = out + (y * tensor_bytes_per_row) + (x * tensor_channels);
                 for (int c = 0; c < tensor_channels; ++c) {
-                    image_mapped(0, y, x, c) = in_pixel[c+channel_offset];
+                    out_pixel[c] = in_pixel[c+channel_offset];
                 }
             }
         }
@@ -83,8 +84,9 @@ void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensor
         for (int y = 0; y < image_height; y++) {
             for (int x = 0; x < image_width; x++) {
                 auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+                auto* out_pixel = out + (y * tensor_bytes_per_row) + (x * tensor_channels);
                 for (int c = 0; c < tensor_channels; ++c) {
-                    image_mapped(0, y, x, c) = normalizer(in_pixel[c+channel_offset],c);
+                    out_pixel[c] = normalizer(in_pixel[c+channel_offset], c);
                 }
             }
         }
@@ -120,6 +122,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     assert( shape.width % 16 == 0);
     
     const int tensor_channels = shape.channels;
+    const int tensor_bytes_per_row = shape.width * tensor_channels;
     const int image_width = shape.width;
     const int image_height = shape.height;
     const int bytes_per_row = shape.width * 4;
@@ -157,15 +160,16 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         ? 0
         : 3;
     
-    auto image_mapped = tensor.tensor<T, 4>();
+    T* in_addr = tensor.flat<T>().data();
     uint8_t* out_addr = (uint8_t*)CVPixelBufferGetBaseAddress(outputBuffer);
     
     if ( denormalizer == nil ) {
         for (int y = 0; y < image_height; y++) {
             for (int x = 0; x < image_width; x++) {
+                auto* in_pixel = in_addr + (y * tensor_bytes_per_row) + (x * tensor_channels);
                 auto* out_pixel = out_addr + (y * bytes_per_row) + (x * image_channels);
                 for (int c = 0; c < tensor_channels; ++c) {
-                    out_pixel[c+channel_offset] = image_mapped(0, y, x, c);
+                    out_pixel[c+channel_offset] = in_pixel[c];
                 }
                 out_pixel[alpha_channel] = 255;
             }
@@ -174,8 +178,9 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         for (int y = 0; y < image_height; y++) {
             for (int x = 0; x < image_width; x++) {
                 auto* out_pixel = out_addr + (y * bytes_per_row) + (x * image_channels);
+                auto* in_pixel = in_addr + (y * tensor_bytes_per_row) + (x * tensor_channels);
                 for (int c = 0; c < tensor_channels; ++c) {
-                    out_pixel[c+channel_offset] = denormalizer(image_mapped(0, y, x, c), c);
+                    out_pixel[c+channel_offset] = denormalizer(in_pixel[c], c);
                 }
                 out_pixel[alpha_channel] = 255;
             }
