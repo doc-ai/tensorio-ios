@@ -71,7 +71,7 @@
     NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput];
     
     XCTAssert(numericResults.count == 1);
-    XCTAssert([numericResults[@"output_z"] isEqualToNumber:@(25)]);
+    XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
     
     // Run the model on bytes
     
@@ -80,7 +80,7 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput];
     
     XCTAssert(byteResults.count == 1);
-    XCTAssert([byteResults[@"output_z"] isEqualToNumber:@(25)]);
+    XCTAssert([byteResults[@"output"] isEqualToNumber:@(25)]);
     
     // Run the model on a vector
     
@@ -88,7 +88,7 @@
     NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
     
     XCTAssert(vectorResults.count == 1);
-    XCTAssert([vectorResults[@"output_z"] isEqualToNumber:@(25)]);
+    XCTAssert([vectorResults[@"output"] isEqualToNumber:@(25)]);
 }
 
 // MARK: - Vector, Matrix, Tensor Tests
