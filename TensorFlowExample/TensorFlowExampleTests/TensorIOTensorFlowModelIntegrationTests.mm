@@ -213,8 +213,8 @@
     NSDictionary *matrixResults = (NSDictionary*)[model runOn:matrixInput];
     
     XCTAssert(matrixResults.count == 2);
-    XCTAssert([matrixResults[@"output_S"] isEqualToArray:expectedS]);
-    XCTAssert([matrixResults[@"output_Z"] isEqualToArray:expectedZ]);
+    XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedZ]);
+    XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedS]);
     
     // Byte input
     
@@ -238,8 +238,8 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs];
     
     XCTAssert(byteResults.count == 2);
-    XCTAssert([matrixResults[@"output_S"] isEqualToArray:expectedS]);
-    XCTAssert([matrixResults[@"output_Z"] isEqualToArray:expectedZ]);
+    XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedZ]);
+    XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedS]);
 }
 
 - (void)test3x3MatricesModel {
