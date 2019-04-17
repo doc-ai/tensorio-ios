@@ -161,8 +161,8 @@
     NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInputs];
     
     XCTAssert(vectorResults.count == 2);
-    XCTAssert([vectorResults[@"output_s"] isEqualToNumber:@(64)]);
-    XCTAssert([vectorResults[@"output_z"] isEqualToNumber:@(240)]);
+    XCTAssert([vectorResults[@"output1"] isEqualToNumber:@(240)]);
+    XCTAssert([vectorResults[@"output2"] isEqualToNumber:@(64)]);
     
     // With bytes
     
@@ -176,8 +176,8 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs];
     
     XCTAssert(byteResults.count == 2);
-    XCTAssert([byteResults[@"output_s"] isEqualToNumber:@(64)]);
-    XCTAssert([byteResults[@"output_z"] isEqualToNumber:@(240)]);
+    XCTAssert([byteResults[@"output1"] isEqualToNumber:@(240)]);
+    XCTAssert([byteResults[@"output2"] isEqualToNumber:@(64)]);
 }
 
 - (void)test2x2MatricesModel {
