@@ -353,7 +353,7 @@
     
     // Capture output
     
-    TIOPixelBuffer *outputPixelBufferWrapper = output[@"output_z"];
+    TIOPixelBuffer *outputPixelBufferWrapper = output[@"output"];
     CVPixelBufferRef outputPixelBuffer = outputPixelBufferWrapper.pixelBuffer;
     
     // Inspect pixel buffer bytes
