@@ -120,7 +120,7 @@
     
     // Expected output
     
-    TIOVector *expectedZ = @[@(2),@(2),@(4),@(4)];
+    TIOVector *expectedOutput = @[@(2),@(2),@(4),@(4)];
     
     // Run the model on a vector
     
@@ -128,7 +128,7 @@
     NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
     
     XCTAssert(vectorResults.count == 1);
-    XCTAssert([vectorResults[@"output"] isEqualToArray:expectedZ]);
+    XCTAssert([vectorResults[@"output"] isEqualToArray:expectedOutput]);
     
     // Run the model on bytes
     
@@ -137,7 +137,7 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput];
     
     XCTAssert(byteResults.count == 1);
-    XCTAssert([byteResults[@"output"] isEqualToArray:expectedZ]);
+    XCTAssert([byteResults[@"output"] isEqualToArray:expectedOutput]);
 }
 
 - (void)test2x2VectorsModel {
@@ -194,17 +194,17 @@
     
     // Expected outputs
     
-    TIOVector *expectedS = @[
-        @(18),   @(18),   @(18),   @(18),
-        @(180),  @(180),  @(180),  @(180),
-        @(1800), @(1800), @(1800), @(1800),
-        @(18000),@(18000),@(18000),@(18000)
-    ];
-    TIOVector *expectedZ = @[
+    TIOVector *expectedOutput1 = @[
         @(56),      @(72),      @(56),      @(72),
         @(5600),    @(7200),    @(5600),    @(7200),
         @(560000),  @(720000),  @(560000),  @(720000),
         @(56000000),@(72000000),@(56000000),@(72000000)
+    ];
+    TIOVector *expectedOutput2 = @[
+        @(18),   @(18),   @(18),   @(18),
+        @(180),  @(180),  @(180),  @(180),
+        @(1800), @(1800), @(1800), @(1800),
+        @(18000),@(18000),@(18000),@(18000)
     ];
     
     // Run model on numbers
@@ -226,8 +226,8 @@
     NSDictionary *matrixResults = (NSDictionary*)[model runOn:matrixInput];
     
     XCTAssert(matrixResults.count == 2);
-    XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedZ]);
-    XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedS]);
+    XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedOutput1]);
+    XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedOutput2]);
     
     // Byte input
     
@@ -251,8 +251,8 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs];
     
     XCTAssert(byteResults.count == 2);
-    XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedZ]);
-    XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedS]);
+    XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedOutput1]);
+    XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedOutput2]);
 }
 
 - (void)test3x3MatricesModel {
@@ -269,7 +269,7 @@
     
     // Expected outputs
     
-    TIOVector *expectedZ = @[
+    TIOVector *expectedOutput = @[
         @(2),  @(3),  @(4),  @(5),  @(6),  @(7),  @(8),  @(9),  @(10),
         @(12), @(22), @(32), @(42), @(52), @(62), @(72), @(82), @(92),
         @(103),@(203),@(303),@(403),@(503),@(603),@(703),@(803),@(903)
@@ -286,7 +286,7 @@
     NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
     
     XCTAssert(vectorResults.count == 1);
-    XCTAssert([vectorResults[@"output"] isEqualToArray:expectedZ]);
+    XCTAssert([vectorResults[@"output"] isEqualToArray:expectedOutput]);
     
     // Run model on bytes
     
@@ -300,7 +300,7 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteData];
     
     XCTAssert(byteResults.count == 1);
-    XCTAssert([byteResults[@"output"] isEqualToArray:expectedZ]);
+    XCTAssert([byteResults[@"output"] isEqualToArray:expectedOutput]);
 }
 
 // MARK: - Pixel Buffer Tests
