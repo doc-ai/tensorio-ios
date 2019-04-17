@@ -11,14 +11,14 @@
 	},
 	"inputs": [
 		{
-			"name": "input_x",
+			"name": "input",
 			"type": "array",
 			"shape": [3,3,3]
 		}
 	],
 	"outputs": [
 		{
-			"name": "output_z",
+			"name": "output",
 			"type": "array",
 			"shape": [3,3,3]
 		}
