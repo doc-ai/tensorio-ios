@@ -48,10 +48,6 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     NSArray<NSNumber*> *shape = dict[@"shape"];
     NSString *name = dict[@"name"];
     BOOL isOutput = !isInput;
-    
-    // Total Volume
-    
-    NSUInteger length = shape.product;
 
     // Labels
 
@@ -102,7 +98,6 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name isInput:isInput vectorDescription:
         [[TIOVectorLayerDescription alloc]
             initWithShape:shape
-            length:length
             labels:labels
             quantized:quantized
             quantizer:quantizer
