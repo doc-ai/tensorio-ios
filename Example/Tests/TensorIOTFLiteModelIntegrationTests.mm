@@ -286,7 +286,7 @@
     NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
     
     XCTAssert(vectorResults.count == 1);
-    XCTAssert([vectorResults[@"output_z"] isEqualToArray:expectedZ]);
+    XCTAssert([vectorResults[@"output"] isEqualToArray:expectedZ]);
     
     // Run model on bytes
     
@@ -300,7 +300,7 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteData];
     
     XCTAssert(byteResults.count == 1);
-    XCTAssert([byteResults[@"output_z"] isEqualToArray:expectedZ]);
+    XCTAssert([byteResults[@"output"] isEqualToArray:expectedZ]);
 }
 
 // MARK: - Pixel Buffer Tests
