@@ -42,7 +42,8 @@
     // It should get the float_t numeric value
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:1
+        initWithShape:@[@(1)]
+        length:1
         labels:nil
         quantized:NO
         quantizer:nil
@@ -62,7 +63,8 @@
     // It should get the uint8_t numeric value
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:1
+        initWithShape:@[@(1)]
+        length:1
         labels:nil
         quantized:YES
         quantizer:nil
@@ -94,7 +96,8 @@
     };
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:1
+        initWithShape:@[@(1)]
+        length:1
         labels:nil
         quantized:YES
         quantizer:quantizer
@@ -124,7 +127,8 @@
     // It should return a number with the float_t numeric value
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:1
+        initWithShape:@[@(1)]
+        length:1
         labels:nil
         quantized:NO
         quantizer:nil
@@ -140,7 +144,8 @@
     // It should return a number with the uint8_t numeric value
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:1
+        initWithShape:@[@(1)]
+        length:1
         labels:nil
         quantized:YES
         quantizer:nil
@@ -169,7 +174,8 @@
     };
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:1
+        initWithShape:@[@(1)]
+        length:1
         labels:nil
         quantized:YES
         quantizer:nil
@@ -196,7 +202,8 @@
     // It should get the float_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:NO
         quantizer:nil
@@ -218,7 +225,8 @@
     // It should get the uint8_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:nil
@@ -244,7 +252,8 @@
     };
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:quantizer
@@ -258,6 +267,8 @@
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
+    
+    free(bytes);
 }
 
 // MARK: - NSArray + TIOTFLiteData Init with Bytes
@@ -266,7 +277,8 @@
     // It should return an array of numbers with the float_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:NO
         quantizer:nil
@@ -284,7 +296,8 @@
     // It should return an array of numbers with the uint8_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:nil
@@ -306,7 +319,8 @@
     };
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:nil
@@ -326,7 +340,8 @@
     // It should get the float_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:NO
         quantizer:nil
@@ -350,7 +365,8 @@
     // It should get the uint8_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:nil
@@ -378,7 +394,8 @@
     };
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:quantizer
@@ -395,6 +412,8 @@
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
+    
+    free(bytes);
 }
 
 // MARK: - NSData + TIOTFLiteData Init with Bytes
@@ -403,7 +422,8 @@
     // It should return an array of numbers with the float_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:NO
         quantizer:nil
@@ -422,7 +442,8 @@
     // It should return an array of numbers with the uint8_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:nil
@@ -445,7 +466,8 @@
     };
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithLength:3
+        initWithShape:@[@(3)]
+        length:3
         labels:nil
         quantized:YES
         quantizer:nil

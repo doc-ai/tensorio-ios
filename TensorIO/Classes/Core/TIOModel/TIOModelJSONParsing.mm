@@ -101,7 +101,8 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
 
     TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name isInput:isInput vectorDescription:
         [[TIOVectorLayerDescription alloc]
-            initWithLength:length
+            initWithShape:shape
+            length:length
             labels:labels
             quantized:quantized
             quantizer:quantizer
@@ -115,7 +116,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     NSString *name = dict[@"name"];
     BOOL isOutput = !isInput;
     
-    // Image Volume
+    // Image Volume and Batching
     
     TIOImageVolume imageVolume = TIOImageVolumeForShape(shape);
     
@@ -123,6 +124,8 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
         NSLog(@"Expected dict.shape array field with three elements in model.json, found %@", dict[@"shape"]);
         return nil;
     }
+    
+    BOOL batched = shape[0].integerValue == -1;
     
     // Pixel Format
 
@@ -169,6 +172,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
         [[TIOPixelBufferLayerDescription alloc]
             initWithPixelFormat:pixelFormat
             shape:imageVolume
+            batched:batched
             normalizer:normalizer
             denormalizer:denormalizer
             quantized:quantized]];
@@ -245,16 +249,40 @@ TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> * _Nullable shape) {
         return kTIOImageVolumeInvalid;
     }
 
-    if ( shape.count != 3 ) {
-        NSLog(@"Expected shape with three elements, actual count is %lu", (unsigned long)shape.count);
+    if ( !(shape.count == 3 || shape.count == 4) ) {
+        NSLog(@"Expected shape with three elements or four if there is a dimension for the batch size, actual count is %lu", (unsigned long)shape.count);
         return kTIOImageVolumeInvalid;
     }
 
-    return {
-        .height = (int)shape[0].integerValue,
-        .width = (int)shape[1].integerValue,
-        .channels = (int)shape[2].integerValue
-    };
+    if ( shape.count == 3 ) {
+        return {
+            .height = (int)shape[0].integerValue,
+            .width = (int)shape[1].integerValue,
+            .channels = (int)shape[2].integerValue
+        };
+    }
+    if ( shape.count == 4 ) {
+        // Batch is first dimension
+        if ( shape[0].integerValue == -1 ) {
+            return {
+                .height = (int)shape[1].integerValue,
+                .width = (int)shape[2].integerValue,
+                .channels = (int)shape[3].integerValue
+            };
+        // Batch is last dimension
+        } else if ( shape[3].integerValue == -1 ) {
+            return {
+                .height = (int)shape[0].integerValue,
+                .width = (int)shape[1].integerValue,
+                .channels = (int)shape[2].integerValue
+            };
+        } else {
+            NSLog(@"Shape has four dimenions, indicating there is a dimension for the batch size, but neither the zeroeth index or third index has a value of -1");
+            return kTIOImageVolumeInvalid;
+        }
+    }
+    
+    return kTIOImageVolumeInvalid;
 }
 
 OSType TIOPixelFormatForString(NSString * _Nullable string) {

@@ -8,9 +8,9 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.5.1'
-  s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite.'
-  s.description      = 'Perform inference with TensorFlow Lite models using all the conveniences of Objective-C or Swift'
+  s.version          = '0.6.0'
+  s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow.'
+  s.description      = 'Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
   s.license          = { :type => 'Apache 2', :file => 'LICENSE' }
   s.authors          = { 'doc.ai' => 'philip@doc.ai' }
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.3'
   s.static_framework = true
   
-  s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreMedia', 'Accelerate', 'VideoToolbox'
+  s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'Accelerate', 'VideoToolbox'
   s.library = 'c++'
   
   s.default_subspec = 'Core'
@@ -48,4 +48,23 @@ Pod::Spec.new do |s|
     }
   end
   
+  # TensorFlow subspec contains a full TensorFlow implementation
+
+  s.subspec 'TensorFlow' do |ss|
+    ss.dependency 'TensorIOTensorFlow'
+    ss.dependency 'TensorIO/Core'
+
+    ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
+    ss.private_header_files = [
+      'TensorIO/Classes/TensorFlow/SavedModel/**/*.h'
+    ]
+    ss.xcconfig = {
+      'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers"',
+      'OTHER_LDFLAGS' => '-force_load "${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow" "-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework"'
+    }
+    ss.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_TENSORFLOW=1'
+    }
+  end
+
 end

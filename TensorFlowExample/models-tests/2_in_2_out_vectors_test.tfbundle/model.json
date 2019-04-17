@@ -1,0 +1,37 @@
+{
+	"name": "2 in 2 out vectors test",
+	"details": "Simple model with two vector input nodes and two vector output nodes",
+	"id": "2_in_2_out_vectors_test",
+	"version": "1",
+	"author": "doc.ai",
+	"license": "",
+	"model": {
+		"file": "predict",
+		"quantized": false,
+		"class": "TIOTensorFlowModel"
+	},
+	"inputs": [
+		{
+			"name": "input_x",
+			"type": "array",
+			"shape": [1,4]
+		},
+		{
+			"name": "input_y",
+			"type": "array",
+			"shape": [1,4]
+		}
+	],
+	"outputs": [
+		{
+			"name": "output_z",
+			"type": "array",
+			"shape": [1,1]
+		},
+		{
+			"name": "output_s",
+			"type": "array",
+			"shape": [1,1]
+		}
+	]
+}
