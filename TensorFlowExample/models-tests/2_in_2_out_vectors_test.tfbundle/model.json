@@ -12,24 +12,24 @@
 	},
 	"inputs": [
 		{
-			"name": "input_x",
+			"name": "input1",
 			"type": "array",
 			"shape": [1,4]
 		},
 		{
-			"name": "input_y",
+			"name": "input2",
 			"type": "array",
 			"shape": [1,4]
 		}
 	],
 	"outputs": [
 		{
-			"name": "output_z",
+			"name": "output1",
 			"type": "array",
 			"shape": [1,1]
 		},
 		{
-			"name": "output_s",
+			"name": "output2",
 			"type": "array",
 			"shape": [1,1]
 		}

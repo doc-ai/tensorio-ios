@@ -12,7 +12,7 @@
 	},
 	"inputs": [
 		{
-			"name": "input_x",
+			"name": "input",
 			"type": "image",
 			"shape": [224,224,3],
 			"format": "RGB",
@@ -23,7 +23,7 @@
 	],
 	"outputs": [
 		{
-			"name": "output_z",
+			"name": "output",
 			"type": "image",
 			"shape": [224,224,3],
 			"format": "RGB",
