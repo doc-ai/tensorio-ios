@@ -128,7 +128,7 @@
     NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
     
     XCTAssert(vectorResults.count == 1);
-    XCTAssert([vectorResults[@"output_z"] isEqualToArray:expectedZ]);
+    XCTAssert([vectorResults[@"output"] isEqualToArray:expectedZ]);
     
     // Run the model on bytes
     
@@ -137,7 +137,7 @@
     NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput];
     
     XCTAssert(byteResults.count == 1);
-    XCTAssert([byteResults[@"output_z"] isEqualToArray:expectedZ]);
+    XCTAssert([byteResults[@"output"] isEqualToArray:expectedZ]);
 }
 
 - (void)test2x2VectorsModel {
