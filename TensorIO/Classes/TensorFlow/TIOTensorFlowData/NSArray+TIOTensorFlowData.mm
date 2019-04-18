@@ -101,7 +101,7 @@
         return tensor;
     } else {
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto flat_tensor = tensor.flat<float>();
+        auto flat_tensor = tensor.flat<float_t>();
         auto buffer = flat_tensor.data();
         for ( NSInteger i = 0; i < self.count; i++ ) {
             ((float_t *)buffer)[i] = ((NSNumber*)self[i]).floatValue;

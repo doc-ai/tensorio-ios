@@ -90,7 +90,7 @@
         return tensor;
     } else {
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto flat_tensor = tensor.flat<float>();
+        auto flat_tensor = tensor.flat<float_t>();
         auto buffer = flat_tensor.data();
         buffer[0] = self.floatValue;
         return tensor;
