@@ -467,4 +467,29 @@
     free(bytes);
 }
 
+// MARK: - Additional Tests
+
+- (void)testModelWithoutSpecifiedBackendUsesAvailableBackend {
+    // Uses a copy of the 1_in_1_out_number_test without a model.backend field
+    
+    TIOModelBundle *bundle = [self bundleWithName:@"no-backend.tfbundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Run the model on a number
+    
+    NSNumber *numericInput = @(2);
+    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput];
+    
+    XCTAssert(numericResults.count == 1);
+    XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
+}
+
 @end

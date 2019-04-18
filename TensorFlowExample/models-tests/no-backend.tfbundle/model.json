@@ -6,9 +6,8 @@
 	"author": "doc.ai",
 	"license": "",
 	"model": {
-		"file": "model.tflite",
-		"quantized": false,
-		"backend": "tflite"
+		"file": "predict",
+		"quantized": false
 	},
 	"inputs": [
 		{
