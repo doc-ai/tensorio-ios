@@ -36,6 +36,28 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+- (void)testTypeSizes {
+    XCTAssert(sizeof(float_t) == 4);
+    XCTAssert(sizeof(int32_t) == 4);
+    XCTAssert(sizeof(int64_t) == 8);
+    
+    // 32 bit system: sizeof(long) = 4, sizeof(long long) = 8
+    // 64 bit system: sizeof(long) = 8, sizeof(long long) = 8
+    
+    XCTAssert(sizeof((int64_t)@(NSIntegerMax).longLongValue) == 8);
+    XCTAssert(sizeof((int32_t)@(NSIntegerMax).longValue) == 4);
+    
+    const int32_t min32bit = std::numeric_limits<int32_t>::min();
+    const int32_t max32bit = std::numeric_limits<int32_t>::max();
+    const int64_t min64bit = std::numeric_limits<int64_t>::min();
+    const int64_t max64bit = std::numeric_limits<int64_t>::max();
+    
+    XCTAssert(@(min32bit).longValue == min32bit);
+    XCTAssert(@(max32bit).longValue == max32bit);
+    XCTAssert(@(min64bit).longLongValue == min64bit);
+    XCTAssert(@(max64bit).longLongValue == max64bit);
+}
+
 // MARK: - NSNumber + TIOTFLiteData Get Bytes
 
 - (void)testNumberGetBytesFloatUnquantized {

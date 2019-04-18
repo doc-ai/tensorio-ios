@@ -30,8 +30,11 @@
 
 @implementation TIOTFLiteModelTests
 
+- (instancetype)init {
+    return [super init];
+}
+
 - (void)setUp {
-    assert( sizeof(float_t) == 4 );
     self.modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
 }
 
