@@ -18,6 +18,7 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOModel.h"
+#import "TIOModelBackend.h"
 #import "TIOModelBundle.h"
 #import "TIOModelBundleJSONSchema.h"
 #import "TIOModelBundleManager.h"
