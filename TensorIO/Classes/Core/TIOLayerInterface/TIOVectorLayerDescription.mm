@@ -23,9 +23,10 @@
 
 @implementation TIOVectorLayerDescription
 
-- (instancetype)initWithShape:(NSArray<NSNumber*>*)shape labels:(nullable NSArray<NSString*>*)labels quantized:(BOOL)quantized quantizer:(nullable TIODataQuantizer)quantizer dequantizer:(TIODataDequantizer)dequantizer {
+- (instancetype)initWithShape:(NSArray<NSNumber*>*)shape dtype:(TIODataType)dtype labels:(nullable NSArray<NSString*>*)labels quantized:(BOOL)quantized quantizer:(nullable TIODataQuantizer)quantizer dequantizer:(TIODataDequantizer)dequantizer {
     if (self=[super init]) {
         _shape = shape;
+        _dtype = dtype;
         _labels = labels.copy;
         _quantized = quantized;
         _quantizer = quantizer;

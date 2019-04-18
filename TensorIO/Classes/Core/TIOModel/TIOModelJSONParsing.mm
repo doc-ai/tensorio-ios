@@ -63,6 +63,10 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
         }
     }
     
+    // Data Type
+    
+    TIODataType dtype = TIODataTypeForString(dict[@"dtype"]);
+    
     // Quantization
     
     TIODataQuantizer quantizer;
@@ -98,6 +102,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name isInput:isInput vectorDescription:
         [[TIOVectorLayerDescription alloc]
             initWithShape:shape
+            dtype:dtype
             labels:labels
             quantized:quantized
             quantizer:quantizer
@@ -403,6 +408,25 @@ TIOPixelDenormalizer _Nullable TIOPixelDenormalizerForDictionary(NSDictionary * 
         } else {
             return TIOPixelDenormalizerPerChannelBias(normalization);
         }
+    }
+}
+
+TIODataType TIODataTypeForString(NSString * _Nullable string) {
+    string = string.lowercaseString;
+    
+    if ( string == nil ) {
+        return TIODataTypeUnknown;
+    } else if ( [string isEqualToString:@"uint8"]) {
+        return TIODataTypeUInt8;
+    } else if ( [string isEqualToString:@"float32"]) {
+        return TIODataTypeFloat32;
+    } else if ( [string isEqualToString:@"int32"]) {
+        return TIODataTypeInt32;
+    } else if ( [string isEqualToString:@"int64"]) {
+        return TIODataTypeInt64;
+    } else {
+        NSLog(@"Uknown data type (dtype) encountered in layer: %@", string);
+        return TIODataTypeUnknown;
     }
 }
 
