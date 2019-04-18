@@ -37,9 +37,10 @@
 
 // MARK: - Vector Layer Description Tests
 
-- (void)testVectorLengthIsCalculateFromShape {
+- (void)testVectorLengthIsCalculatedFromShape {
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(6),@(7)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil
@@ -51,6 +52,7 @@
 - (void)testVectorLengthIsAlwaysPositive {
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(6),@(7)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil

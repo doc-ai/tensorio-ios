@@ -544,4 +544,30 @@
     XCTAssertTrue(TIOImageVolumesEqual(volume, expectedVolume));
 }
 
+// MARK: - Data Types
+
+- (void)testIgnoresUnspecifiedDataType {
+    XCTAssert(TIODataTypeForString(nil) == TIODataTypeUnknown);
+}
+
+- (void)testParsesUnknownType {
+    XCTAssert(TIODataTypeForString(@"") == TIODataTypeUnknown);
+}
+
+- (void)testParsersUInt8DataType {
+    XCTAssert(TIODataTypeForString(@"uint8") == TIODataTypeUInt8);
+}
+
+- (void)testParsersFloat8DataType {
+    XCTAssert(TIODataTypeForString(@"float32") == TIODataTypeFloat32);
+}
+
+- (void)testParsersInt32DataType {
+    XCTAssert(TIODataTypeForString(@"int32") == TIODataTypeInt32);
+}
+
+- (void)testParsersInt64DataType {
+    XCTAssert(TIODataTypeForString(@"int64") == TIODataTypeInt64);
+}
+
 @end

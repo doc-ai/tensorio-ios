@@ -70,6 +70,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil
@@ -86,6 +87,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -116,6 +118,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:quantizer
@@ -144,6 +147,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil
@@ -161,6 +165,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -190,6 +195,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -217,6 +223,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil
@@ -236,6 +243,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -259,6 +267,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:quantizer
@@ -280,6 +289,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil
@@ -302,6 +312,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -328,6 +339,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -352,6 +364,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil
@@ -373,6 +386,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -398,6 +412,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:quantizer
@@ -421,6 +436,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
         quantizer:nil
@@ -444,6 +460,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
@@ -471,6 +488,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
         quantizer:nil
