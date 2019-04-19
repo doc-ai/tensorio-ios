@@ -467,4 +467,92 @@
     free(bytes);
 }
 
+// MARK: - Int32 and Int64 Tests
+
+- (void)testInt32IOModel {
+    // Uses the same graph as the 1_in_1_out_number_test but with int32 data types
+    
+    // Note this graph takes and produces int32s but they are cast to float32s for the internal ops
+    // Our current tensorflow build doesn't fully support int32 data types for all ops
+    
+    TIOModelBundle *bundle = [self bundleWithName:@"int32io_test.tfbundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Run the model on a number
+    
+    NSNumber *numericInput = @(2);
+    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput];
+    
+    XCTAssert(numericResults.count == 1);
+    XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on bytes
+    
+    int32_t bytes[1] = {2};
+    NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(int32_t)*1];
+    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput];
+    
+    XCTAssert(byteResults.count == 1);
+    XCTAssert([byteResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on a vector
+    
+    TIOVector *vectorInput = @[@(2)];
+    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
+    
+    XCTAssert(vectorResults.count == 1);
+    XCTAssert([vectorResults[@"output"] isEqualToNumber:@(25)]);
+}
+
+- (void)testInt64Model {
+    // Uses the same graph as the 1_in_1_out_number_test but with int64 data types
+    
+    // Note this graph takes and produces int64s but they are cast to float32s for the internal ops
+    // Our current tensorflow build doesn't fully support int64 data types for all ops
+    
+    TIOModelBundle *bundle = [self bundleWithName:@"int64io_test.tfbundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Run the model on a number
+    
+    NSNumber *numericInput = @(2);
+    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput];
+    
+    XCTAssert(numericResults.count == 1);
+    XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on bytes
+    
+    int64_t bytes[1] = {2};
+    NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(int64_t)*1];
+    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput];
+    
+    XCTAssert(byteResults.count == 1);
+    XCTAssert([byteResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on a vector
+    
+    TIOVector *vectorInput = @[@(2)];
+    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
+    
+    XCTAssert(vectorResults.count == 1);
+    XCTAssert([vectorResults[@"output"] isEqualToNumber:@(25)]);
+}
+
 @end
