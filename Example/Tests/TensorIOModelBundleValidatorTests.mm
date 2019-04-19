@@ -837,6 +837,84 @@
     XCTAssertNil(error);
 }
 
+- (void)testInputTypeArrayDataTypeFieldIsValid {
+    // it should validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"dtype"] = @"uint8";
+    
+    error = nil;
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeArraySupportedDataTypesAreValid {
+    // it should validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"dtype"] = @"uint8";
+    
+    error = nil;
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"dtype"] = @"float32";
+    
+    error = nil;
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"dtype"] = @"int32";
+    
+    error = nil;
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    input[@"dtype"] = @"int64";
+    
+    error = nil;
+    valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testInputTypeArrayUnsupportedDataTypesAreInvalid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"array";
+    input[@"dtype"] = @"int8"; // invalid
+    
+    error = nil;
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
 - (void)testInputTypeImageHasCorrectKeys {
     // it should not validate
     
@@ -1236,6 +1314,23 @@
     
     XCTAssertTrue(valid);
     XCTAssertNil(error);
+}
+
+- (void)testInputTypeImageDataTypeFieldIsNotValid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *input = self.basicInput.mutableCopy;
+    
+    input[@"type"] = @"image";
+    input[@"dtype"] = @"uint8"; // invalid
+    input[@"format"] = @"RGB";
+    
+    error = nil;
+    BOOL valid = [self.modelValidator validateInputs:@[input] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
 }
 
 // MARK: - Outputs Validation
@@ -1700,6 +1795,84 @@
     XCTAssertNil(error);
 }
 
+- (void)testOutputTypeArrayDataTypeFieldIsValid {
+    // it should validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicInput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"dtype"] = @"uint8";
+    
+    error = nil;
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeArraySupportedDataTypesAreValid {
+    // it should validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"dtype"] = @"uint8";
+    
+    error = nil;
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"dtype"] = @"float32";
+    
+    error = nil;
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"dtype"] = @"int32";
+    
+    error = nil;
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+    
+    // it should validate
+    
+    output[@"dtype"] = @"int64";
+    
+    error = nil;
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testOutputTypeArrayUnsupportedDataTypesAreInvalid {
+    // it should not validate
+    
+    NSError *error;
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    
+    output[@"type"] = @"array";
+    output[@"dtype"] = @"int8"; // invalid
+    
+    error = nil;
+    BOOL valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
 - (void)testOutputTypeImageHasCorrectKeys {
     // it should not validate
     
@@ -2079,6 +2252,23 @@
     
     XCTAssertTrue(valid);
     XCTAssertNil(error);
+}
+
+- (void)testOutputTypeImageDataTypeFieldIsNotValid {
+    // it should not validate
+    
+    NSMutableDictionary *output = self.basicOutput.mutableCopy;
+    NSError *error = nil;
+    BOOL valid;
+    
+    output[@"type"] = @"image";
+    output[@"dtype"] = @"uint8"; // invalid
+    output[@"format"] = @"RGB";
+    
+    valid = [self.modelValidator validateOutputs:@[output] error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
 }
 
 // MARK: - Custom Validation

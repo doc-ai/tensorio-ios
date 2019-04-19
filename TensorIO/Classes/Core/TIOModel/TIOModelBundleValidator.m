@@ -38,6 +38,7 @@ static const NSUInteger TIOInputShapeMustBeArrayErrorCode = 307;
 static const NSUInteger TIOInputShapeMustHaveEntriesErrorCode = 308;
 static const NSUInteger TIOInputShapeMustHaveNumericEntriesErrorCode = 309;
 static const NSUInteger TIOInputTypeMustConformErrorCode = 310;
+
 static const NSUInteger TIOArrayInputHasUnusedKeysErrorCode = 311;
 static const NSUInteger TIOArrayInputQuantizeIsEmptyErrorCode = 312;
 static const NSUInteger TIOArrayInputQuantizeHasUnusedKeysErrorCode = 313;
@@ -46,6 +47,8 @@ static const NSUInteger TIOArrayInputQuantizeMustHaveStandardOrScaleAndBiasKeysE
 static const NSUInteger TIOArrayInputStandardQuantizeMustConformErrorCode = 316;
 static const NSUInteger TIOArrayInputQuantizeScaleAndBiasMustBeNumericErrorCode = 317;
 static const NSUInteger TIOArrayInputQuantizeMustHaveBothScaleAndBiasKeysErrorCode = 318;
+static const NSUInteger TIOArrayInputHasInvalidDataType = 333;
+
 static const NSUInteger TIOImageInputHasUnusedKeysErrorCode = 319;
 static const NSUInteger TIOImageInputNormalizeIsEmptyErrorCode = 320;
 static const NSUInteger TIOImageInputNormalizeHasUnusedKeysErrorCode = 321;
@@ -63,6 +66,7 @@ static const NSUInteger TIOImageInputFormatNotValidErrorCode = 332;
 
 static const NSUInteger TIOZeroOutputsErrorCode = 400;
 static const NSUInteger TIOMissingOutputPropertyErrorCode = 401;
+
 static const NSUInteger TIOOutputShapeMustBeArrayErrorCode = 402;
 static const NSUInteger TIOOutputShapeMustHaveEntriesErrorCode = 403;
 static const NSUInteger TIOOutputShapeMustHaveNumericEntriesErrorCode = 404;
@@ -75,6 +79,8 @@ static const NSUInteger TIOArrayOutputDequantizeMustHaveStandardOrScaleAndBiasKe
 static const NSUInteger TIOArrayOutputStandardDequantizeMustConformErrorCode = 411;
 static const NSUInteger TIOArrayOutputDequantizeScaleAndBiasMustBeNumericErrorCode = 412;
 static const NSUInteger TIOArrayOutputDequantizeMustHaveBothScaleAndBiasKeysErrorCode = 413;
+static const NSUInteger TIOArrayOutputHasInvalidDataType = 428;
+
 static const NSUInteger TIOImageOutputHasUnusedKeysErrorCode = 414;
 static const NSUInteger TIOImageOutputDenormalizeIsEmptyErrorCode = 415;
 static const NSUInteger TIOImageOutputDenormalizeHasUnusedKeysErrorCode = 416;
@@ -115,6 +121,7 @@ static NSError * TIOArrayInputQuantizeMustHaveStandardOrScaleAndBiasKeysError(vo
 static NSError * TIOArrayInputStandardQuantizeMustConformError(void);
 static NSError * TIOArrayInputQuantizeScaleAndBiasMustBeNumericError(void);
 static NSError * TIOArrayInputQuantizeMustHaveBothScaleAndBiasKeysError(void);
+static NSError * TIOArrayInputHasInvalidDataTypeError(void);
 static NSError * TIOImageInputHasUnusedKeysError(void);
 static NSError * TIOImageInputNormalizeIsEmptyError(void);
 static NSError * TIOImageInputNormalizeHasUnusedKeysError(void);
@@ -144,6 +151,8 @@ static NSError * TIOArrayOutputDequantizeMustHaveStandardOrScaleAndBiasKeysError
 static NSError * TIOArrayOutputStandardDequantizeMustConformError(void);
 static NSError * TIOArrayOutputDequantizeScaleAndBiasMustBeNumericError(void);
 static NSError * TIOArrayOutputDequantizeMustHaveBothScaleAndBiasKeysError(void);
+static NSError * TIOArrayOutputHasInvalidDataTypeError(void);
+
 static NSError * TIOImageOutputHasUnusedKeysError(void);
 static NSError * TIOImageOutputDenormalizeIsEmptyError(void);
 static NSError * TIOImageOutputDenormalizeHasUnusedKeysError(void);
@@ -451,12 +460,29 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
             NSMutableSet *keys = [NSMutableSet setWithArray:input.allKeys];
             [keys removeObject:@"name"];
             [keys removeObject:@"type"];
+            [keys removeObject:@"dtype"];
             [keys removeObject:@"shape"];
             [keys removeObject:@"quantize"];
             
             if ( keys.count != 0 ) {
                 *error = TIOArrayInputHasUnusedKeysError();
                 return NO;
+            }
+            
+            // dtype validation
+            
+            if ( input[@"dtype"] != nil ) {
+                NSArray *permitedTypes = @[
+                    @"uint8",
+                    @"float32",
+                    @"int32",
+                    @"int64"
+                ];
+                
+                if ( ![permitedTypes containsObject:input[@"dtype"]] ) {
+                    *error = TIOArrayInputHasInvalidDataTypeError();
+                    return NO;
+                }
             }
             
             // quantize validation
@@ -729,6 +755,7 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
             NSMutableSet *keys = [NSMutableSet setWithArray:output.allKeys];
             [keys removeObject:@"name"];
             [keys removeObject:@"type"];
+            [keys removeObject:@"dtype"];
             [keys removeObject:@"shape"];
             [keys removeObject:@"dequantize"];
             [keys removeObject:@"labels"];
@@ -736,6 +763,22 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
             if ( keys.count != 0 ) {
                 *error = TIOArrayOutputHasUnusedKeysError();
                 return NO;
+            }
+            
+            // dtype validation
+            
+            if ( output[@"dtype"] != nil ) {
+                NSArray *permitedTypes = @[
+                    @"uint8",
+                    @"float32",
+                    @"int32",
+                    @"int64"
+                ];
+                
+                if ( ![permitedTypes containsObject:output[@"dtype"]] ) {
+                    *error = TIOArrayOutputHasInvalidDataTypeError();
+                    return NO;
+                }
             }
             
             // dequantize validation
@@ -1060,7 +1103,7 @@ static NSError * TIOInputTypeMustConformError(void) {
 static NSError * TIOArrayInputHasUnusedKeysError(void) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOArrayInputHasUnusedKeysErrorCode userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An inputs array type field in the model.json file has unused keys"],
-        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every inputs array type field in model.json has only name, type, shape, and and optional quantize keys"
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every inputs array type field in model.json has only name, type, shape, and and optional dtype and quantize keys"
     }];
 }
 
@@ -1110,6 +1153,13 @@ static NSError * TIOArrayInputQuantizeMustHaveBothScaleAndBiasKeysError(void) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOArrayInputQuantizeMustHaveBothScaleAndBiasKeysErrorCode userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An inputs.quantize field has either standard or bias keys but not both"],
         NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every inputs.quantize field in model.json has either standard or scale and bias keys"
+    }];
+}
+
+static NSError * TIOArrayInputHasInvalidDataTypeError(void) {
+    return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOArrayInputHasInvalidDataType userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An inputs.dtype field has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every inputs.dtype field in model.json is one of uint8, float32, int32, or int64"
     }];
 }
 
@@ -1258,7 +1308,7 @@ static NSError * TIOOutputTypeMustConformError(void) {
 static NSError * TIOArrayOutputHasUnusedKeysError(void) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOArrayOutputHasUnusedKeysErrorCode userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs array type field in the model.json file has unused keys"],
-        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs array type field in model.json has only name, type, shape, and a labels key with an optional dequantize key"
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs array type field in model.json has only name, type, shape, and optional dtype, labels, and dequantize key"
     }];
 }
 
@@ -1308,6 +1358,13 @@ static NSError * TIOArrayOutputDequantizeMustHaveBothScaleAndBiasKeysError(void)
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOArrayOutputDequantizeMustHaveBothScaleAndBiasKeysErrorCode userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.quantize field has either standard or bias keys but not both"],
         NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.quantize field in model.json has either standard or scale and bias keys"
+    }];
+}
+
+static NSError * TIOArrayOutputHasInvalidDataTypeError(void) {
+    return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOArrayOutputHasInvalidDataType userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An outputs.dtype field has an invalid value"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every outputs.dtype field in model.json is one of uint8, float32, int32, or int64"
     }];
 }
 
