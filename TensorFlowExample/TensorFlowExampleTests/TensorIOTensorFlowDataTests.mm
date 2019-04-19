@@ -374,6 +374,46 @@
     XCTAssertEqual(tensor_mapped(0,2), 255);
 }
 
+- (void)testArrayGetTensorInt32 {
+    const int32_t min32bit = std::numeric_limits<int32_t>::min();
+    const int32_t max32bit = std::numeric_limits<int32_t>::max();
+    
+    TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
+        initWithShape:@[@(1),@(2)]
+        dtype:TIODataTypeInt32
+        labels:nil
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    NSArray *numbers = @[ @(min32bit), @(max32bit)];
+    tensorflow::Tensor tensor = [numbers tensorWithDescription:description];
+    auto tensor_mapped = tensor.tensor<int32_t, 2>();
+    
+    XCTAssertEqual(tensor_mapped(0,0), min32bit);
+    XCTAssertEqual(tensor_mapped(0,1), max32bit);
+}
+
+- (void)testArrayGetTensorInt64 {
+    const int64_t min64bit = std::numeric_limits<int64_t>::min();
+    const int64_t max64bit = std::numeric_limits<int64_t>::max();
+    
+    TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
+        initWithShape:@[@(1),@(2)]
+        dtype:TIODataTypeInt64
+        labels:nil
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    NSArray *numbers = @[ @(min64bit), @(max64bit)];
+    tensorflow::Tensor tensor = [numbers tensorWithDescription:description];
+    auto tensor_mapped = tensor.tensor<int64_t, 2>();
+    
+    XCTAssertEqual(tensor_mapped(0,0), min64bit);
+    XCTAssertEqual(tensor_mapped(0,1), max64bit);
+}
+
 // MARK: - NSArray + TIOTFLiteData Init with Tensor
 
 - (void)testArrayInitWithTensorFloatUnquantized {
@@ -447,6 +487,50 @@
     XCTAssertEqual(numbers[0].unsignedCharValue, 0.0);
     XCTAssertEqual(numbers[1].unsignedCharValue, 1.0);
     XCTAssertEqual(numbers[2].unsignedCharValue, 255.0);
+}
+
+- (void)testArrayInitWithTensorInt32 {
+    const int32_t min32bit = std::numeric_limits<int32_t>::min();
+    const int32_t max32bit = std::numeric_limits<int32_t>::max();
+    
+    TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
+        initWithShape:@[@(1),@(2)]
+        dtype:TIODataTypeInt32
+        labels:nil
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    tensorflow::Tensor tensor(tensorflow::DT_INT32, tensorflow::TensorShape({1,2}));
+    auto tensor_mapped = tensor.tensor<int32_t, 2>();
+    tensor_mapped(0,0) = min32bit;
+    tensor_mapped(0,1) = max32bit;
+    
+    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithTensor:tensor description:description];
+    XCTAssertEqual((int32_t)numbers[0].longValue, min32bit);
+    XCTAssertEqual((int32_t)numbers[1].longValue, max32bit);
+}
+
+- (void)testArrayInitWithTensorInt64 {
+    const int64_t min64bit = std::numeric_limits<int64_t>::min();
+    const int64_t max64bit = std::numeric_limits<int64_t>::max();
+    
+    TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
+        initWithShape:@[@(1),@(2)]
+        dtype:TIODataTypeInt64
+        labels:nil
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    tensorflow::Tensor tensor(tensorflow::DT_INT64, tensorflow::TensorShape({1,2}));
+    auto tensor_mapped = tensor.tensor<int64_t, 2>();
+    tensor_mapped(0,0) = min64bit;
+    tensor_mapped(0,1) = max64bit;
+    
+    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithTensor:tensor description:description];
+    XCTAssertEqual((int64_t)numbers[0].longValue, min64bit);
+    XCTAssertEqual((int64_t)numbers[1].longValue, max64bit);
 }
 
 // MARK: - NSData + TIOTFLiteData Get Tensor
