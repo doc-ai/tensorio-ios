@@ -853,6 +853,8 @@
     XCTAssertNil(error);
 }
 
+// TODO: backend specific dtype validation https://github.com/doc-ai/tensorio-ios/issues/44
+
 - (void)testInputTypeArraySupportedDataTypesAreValid {
     // it should validate
     
@@ -1810,6 +1812,8 @@
     XCTAssertTrue(valid);
     XCTAssertNil(error);
 }
+
+// TODO: backend specific dtype validation https://github.com/doc-ai/tensorio-ios/issues/44
 
 - (void)testOutputTypeArraySupportedDataTypesAreValid {
     // it should validate

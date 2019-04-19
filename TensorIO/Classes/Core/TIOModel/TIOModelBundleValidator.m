@@ -470,6 +470,7 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
             }
             
             // dtype validation
+            // TODO: backend specific dtype validation https://github.com/doc-ai/tensorio-ios/issues/44
             
             if ( input[@"dtype"] != nil ) {
                 NSArray *permitedTypes = @[
@@ -766,6 +767,7 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
             }
             
             // dtype validation
+            // TODO: backend specific dtype validation https://github.com/doc-ai/tensorio-ios/issues/44
             
             if ( output[@"dtype"] != nil ) {
                 NSArray *permitedTypes = @[
