@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-//  TODO: Must be able to support other data types, specifically tensorflow::int32
+//  TODO: Consider using templated c++ helpers
 
 #import "NSNumber+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
