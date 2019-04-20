@@ -9,7 +9,7 @@
 		"file": "predict",
 		"quantized": false,
 		"type": "image.classification.catsvsdogs",
-		"class": "TIOTensorFlowModel"
+		"backend": "tensorflow"
 	},
 	"inputs": [
 		{
@@ -26,7 +26,7 @@
 		{
 			"name": "sigmoid",
 			"type": "array",
-			"shape": [1],
+			"shape": [-1,1],
 			"labels": "labels.txt"
 		}
 	],

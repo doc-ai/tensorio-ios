@@ -7,8 +7,7 @@
 	"license": "",
 	"model": {
 		"file": "predict",
-		"quantized": false,
-		"backend": "tensorflow"
+		"quantized": false
 	},
 	"inputs": [
 		{

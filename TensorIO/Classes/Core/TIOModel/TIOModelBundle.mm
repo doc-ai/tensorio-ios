@@ -23,10 +23,10 @@
 #import "TIOModel.h"
 #import "TIOModelOptions.h"
 #import "TIOPlaceholderModel.h"
+#import "TIOModelBackend.h"
 
 NSString * const kTFModelBundleExtension = @"tfbundle";
 NSString * const kTFModelInfoFile = @"model.json";
-NSString * const kTFLiteModelClassName = @"TIOTFLiteModel";
 NSString * const kTFModelAssetsDirectory = @"assets";
 
 @interface TIOModelBundle ()
@@ -42,7 +42,7 @@ NSString * const kTFModelAssetsDirectory = @"assets";
 @property (readwrite) BOOL quantized;
 
 @property (readwrite) TIOModelOptions *options;
-@property (readwrite) NSString *modelClassName;
+@property (readonly) NSString *modelClassName;
 
 @end
 
@@ -78,11 +78,8 @@ NSString * const kTFModelAssetsDirectory = @"assets";
         
         _options = [[TIOModelOptions alloc] initWithDictionary:json[@"options"]];
         _quantized = [json[@"model"][@"quantized"] boolValue];
+        _backend = json[@"model"][@"backend"];
         _type = json[@"model"][@"type"];
-        
-        _modelClassName = json[@"model"][@"class"] != nil
-            ? json[@"model"][@"class"]
-            : kTFLiteModelClassName;
         
         _placeholder = json[@"placeholder"] != nil
                     && [json[@"placeholder"] boolValue] == YES;
@@ -91,12 +88,38 @@ NSString * const kTFModelAssetsDirectory = @"assets";
     return self;
 }
 
-- (nullable id<TIOModel>)newModel {
+- (NSString*)modelClassName {
+    NSString *classname = _info[@"model"][@"class"];
+    
+    // If the model is a placeholder, use the placeholder class
     
     if ( self.placeholder ) {
-        return [[TIOPlaceholderModel alloc] initWithBundle:self];
+        return @"TIOPlaceholderModel";
     }
     
+    // Use model.class if it has been specified
+    
+    if ( classname != nil ) {
+        return classname;
+    }
+    
+    // Otherwise, use model.backend, and if none is specified, warn and use the available backend
+    // If no backend is available, TIOAvailableBackend raises an exception
+    
+    if ( _backend == nil ) {
+        NSLog(@"**** WARNING **** The model.json file must now specify which backend this model uses. "
+              @"Add a \"backend\" field to the model dictionary in model.json, for example: "
+              @"\n\"model\": {"
+              @"\n  \"file\": \"model.tflite\","
+              @"\n  \"backend\": \"tflite\""
+              @"\n}");
+        _backend = TIOAvailableBackend();
+    }
+    
+    return TIOClassNameForBackend(_backend);
+}
+
+- (nullable id<TIOModel>)newModel {
     Class ModelClass = NSClassFromString(self.modelClassName);
     
     if ( ModelClass == nil ) {
