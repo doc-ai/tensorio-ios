@@ -47,7 +47,7 @@ NSString * _Nullable TIOAvailableBackend() {
     #elif TIO_TENSORFLOW
         return TIOBackendTensorFlow;
     #else
-        throw [NSException
+        @throw [NSException
             exceptionWithName:TIONoBackendAvailableException
             reason:TIONoBackendAvailableReason
             userInfo:nil];
