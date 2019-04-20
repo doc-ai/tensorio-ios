@@ -391,6 +391,7 @@ A basic entry in this array will have the following fields:
 {
   "name": "layer-name",
   "type": "array",
+  "dtype": "float32",
   "shape": [224]
 }
 ```
@@ -410,6 +411,19 @@ The *type* field specifies the kind of data this tensor expects. Only two types 
 Use the *array* type for shapes of any dimension, including single values, vectors, matrices, and higher dimensional tensors. Use the *image* type for image inputs.
 
 This field is required.
+
+*dtype*
+
+The *dtype* field indicates what type of data this input accepts and will correspond, for example, to a primitive C type or a TensorFlow dtype. The following data types are supported:
+
+- *uint8*
+- *float32*
+- *int32*
+- *int64*
+
+Note that complete support for this field is in development and that not all backends support all datatypes. TFLite supports only uint8 and float32 data types, and this field is ignored. Quantized models automatically use uint8 types and unquantized models float32 types. The full TensorFlow backend, on the other hand, supports all four types, but if a type is not specified it defaults to float32.
+
+This field is currently optional. The *float32* is assumed in most cases.
 
 *shape*
 
@@ -524,6 +538,7 @@ The *outputs* field is an array of dictionaries that describe the output layers 
   {
     "name": "vector-output",
     "type": "array",
+    "dtype": "float32",
     "shape": [8]
   }
 ]

@@ -23,6 +23,7 @@
 #import "TIOLayerDescription.h"
 #import "TIOVector.h"
 #import "TIOQuantization.h"
+#import "TIODataTypes.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -61,6 +62,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @interface TIOVectorLayerDescription : NSObject <TIOLayerDescription>
+
+/**
+ * The layer's data type
+ *
+ * @warning
+ * There are complex interactions between backends, data types, and quantization
+ * that will be addressed and validated in later releases.
+ */
+
+@property (readonly) TIODataType dtype;
 
 /**
  * `YES` if the layer is quantized, `NO` otherwise
@@ -114,6 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
  * file.
  *
  * @param shape The shape of the underlying tensor
+ * @param dtype The type of data this layer expects or produces
  * @param labels The indexed labels associated with the outputs of this layer. May be `nil`.
  * @param quantized `YES` if the underlying model is quantized, `NO` otherwise
  * @param quantizer A function that transforms unquantized values to quantized input
@@ -122,7 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype A read-only instance of `TIOVectorLayerDescription`
  */
 
-- (instancetype)initWithShape:(NSArray<NSNumber*>*)shape labels:(nullable NSArray<NSString*>*)labels quantized:(BOOL)quantized quantizer:(nullable TIODataQuantizer)quantizer dequantizer:(nullable TIODataDequantizer)dequantizer NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithShape:(NSArray<NSNumber*>*)shape dtype:(TIODataType)dtype labels:(nullable NSArray<NSString*>*)labels quantized:(BOOL)quantized quantizer:(nullable TIODataQuantizer)quantizer dequantizer:(nullable TIODataDequantizer)dequantizer NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.

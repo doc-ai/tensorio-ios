@@ -13,6 +13,7 @@
 #import "TIOData.h"
 #import "TIOPixelBuffer.h"
 #import "TIOVector.h"
+#import "TIODataTypes.h"
 #import "TIOLayerDescription.h"
 #import "TIOLayerInterface.h"
 #import "TIOPixelBufferLayerDescription.h"

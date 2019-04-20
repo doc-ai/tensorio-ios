@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-//  TODO: Must be able to support other data types, specifically tensorflow::int32
+//  TODO: Consider using templated c++ helpers
 
 #import "NSData+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
@@ -30,6 +30,7 @@
     
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
     NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     
     if ( description.isQuantized && dequantizer != nil ) {
         size_t byte_count = length * sizeof(float_t);
@@ -47,6 +48,16 @@
         auto flat_tensor = tensor.flat<uint8_t>();
         auto tensor_data = flat_tensor.data();
         return [[NSData alloc] initWithBytes:tensor_data length:tensor_byte_count];
+    } else if ( dtype == TIODataTypeInt32 ) {
+        size_t tensor_byte_count = length * sizeof(int32_t);
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto tensor_data = flat_tensor.data();
+        return [[NSData alloc] initWithBytes:tensor_data length:tensor_byte_count];
+    } else if ( dtype == TIODataTypeInt64 ) {
+        size_t tensor_byte_count = length * sizeof(int64_t);
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto tensor_data = flat_tensor.data();
+        return [[NSData alloc] initWithBytes:tensor_data length:tensor_byte_count];
     } else {
         size_t tensor_byte_count = length * sizeof(float_t);
         auto flat_tensor = tensor.flat<float_t>();
@@ -60,11 +71,8 @@
     
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
     NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
-    
-    // Determine number of bytes
-    
-    size_t byte_size = description.quantized ? sizeof(uint8_t) : sizeof(float_t);
-    NSUInteger length = ((TIOVectorLayerDescription*)description).length * byte_size;
+    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     
     // Establish shape
     
@@ -96,16 +104,32 @@
         }
         return tensor;
     } else if ( description.isQuantized && quantizer == nil ) {
+        size_t tensor_byte_count = length * sizeof(uint8_t);
         tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
         auto flat_tensor = tensor.flat<uint8_t>();
         auto buffer = flat_tensor.data();
-        [self getBytes:buffer length:length];
+        [self getBytes:buffer length:tensor_byte_count];
+        return tensor;
+    } else if ( dtype == TIODataTypeInt32 ) {
+        size_t tensor_byte_count = length * sizeof(int32_t);
+        tensorflow::Tensor tensor(tensorflow::DT_INT32, shape);
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto buffer = flat_tensor.data();
+        [self getBytes:buffer length:tensor_byte_count];
+        return tensor;
+    } else if ( dtype == TIODataTypeInt64 ) {
+        size_t tensor_byte_count = length * sizeof(int64_t);
+        tensorflow::Tensor tensor(tensorflow::DT_INT64, shape);
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto buffer = flat_tensor.data();
+        [self getBytes:buffer length:tensor_byte_count];
         return tensor;
     } else {
+        size_t tensor_byte_count = length * sizeof(float_t);
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto flat_tensor = tensor.flat<float>();
+        auto flat_tensor = tensor.flat<float_t>();
         auto buffer = flat_tensor.data();
-        [self getBytes:buffer length:length];
+        [self getBytes:buffer length:tensor_byte_count];
         return tensor;
     }
 }

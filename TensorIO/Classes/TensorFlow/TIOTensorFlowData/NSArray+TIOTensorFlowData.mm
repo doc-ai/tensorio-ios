@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-//  TODO: Must be able to support other data types, specifically tensorflow::int32
+//  TODO: Consider using templated c++ helpers
 
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
@@ -32,6 +32,7 @@
     
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
     NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     NSMutableArray *array = NSMutableArray.array;
     
     if ( description.isQuantized && dequantizer != nil ) {
@@ -45,6 +46,18 @@
         auto tensor_data = flat_tensor.data();
         for ( NSUInteger i = 0; i < length; i++ ) {
             [array addObject:@(((uint8_t *)tensor_data)[i])];
+        }
+    } else if ( dtype == TIODataTypeInt32 ) {
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto tensor_data = flat_tensor.data();
+        for ( NSUInteger i = 0; i < length; i++ ) {
+            [array addObject:@(((int32_t *)tensor_data)[i])];
+        }
+    } else if ( dtype == TIODataTypeInt64 ) {
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto tensor_data = flat_tensor.data();
+        for ( NSUInteger i = 0; i < length; i++ ) {
+            [array addObject:@(((int64_t *)tensor_data)[i])];
         }
     } else {
         auto flat_tensor = tensor.flat<float_t>();
@@ -62,6 +75,7 @@
 
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
     NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     
     // Establish shape
     
@@ -99,9 +113,25 @@
             ((uint8_t *)buffer)[i] = ((NSNumber*)self[i]).unsignedCharValue;
         }
         return tensor;
+    } else if ( dtype == TIODataTypeInt32 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT32, shape);
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto buffer = flat_tensor.data();
+        for ( NSInteger i = 0; i < self.count; i++ ) {
+            ((int32_t *)buffer)[i] = (int32_t)((NSNumber*)self[i]).longValue;
+        }
+        return tensor;
+    } else if ( dtype == TIODataTypeInt64 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT64, shape);
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto buffer = flat_tensor.data();
+        for ( NSInteger i = 0; i < self.count; i++ ) {
+            ((int64_t *)buffer)[i] = (int64_t)((NSNumber*)self[i]).longLongValue;
+        }
+        return tensor;
     } else {
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto flat_tensor = tensor.flat<float>();
+        auto flat_tensor = tensor.flat<float_t>();
         auto buffer = flat_tensor.data();
         for ( NSInteger i = 0; i < self.count; i++ ) {
             ((float_t *)buffer)[i] = ((NSNumber*)self[i]).floatValue;

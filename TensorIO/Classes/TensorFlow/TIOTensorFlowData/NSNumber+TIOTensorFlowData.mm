@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-//  TODO: Must be able to support other data types, specifically tensorflow::int32
+//  TODO: Consider using templated c++ helpers
 
 #import "NSNumber+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
@@ -31,6 +31,7 @@
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     
     if ( description.isQuantized && dequantizer != nil ) {
         auto flat_tensor = tensor.flat<uint8_t>();
@@ -42,6 +43,16 @@
         auto tensor_data = flat_tensor.data();
         uint8_t value = tensor_data[0];
         return [self initWithUnsignedChar:value];
+    } else if ( dtype == TIODataTypeInt32 ) {
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto tensor_data = flat_tensor.data();
+        int32_t value = tensor_data[0];
+        return [self initWithLong:value];
+    } else if ( dtype == TIODataTypeInt64 ) {
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto tensor_data = flat_tensor.data();
+        int64_t value = tensor_data[0];
+        return [self initWithLongLong:value];
     } else {
         auto flat_tensor = tensor.flat<float_t>();
         auto tensor_data = flat_tensor.data();
@@ -57,6 +68,7 @@
     
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
     NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     
     // Establish shape
     
@@ -88,9 +100,21 @@
         auto buffer = flat_tensor.data();
         buffer[0] = self.unsignedCharValue;
         return tensor;
+    } else if ( dtype == TIODataTypeInt32 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT32, shape);
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto buffer = flat_tensor.data();
+        buffer[0] = (int32_t)self.longValue;
+        return tensor;
+    } else if ( dtype == TIODataTypeInt64 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT64, shape);
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto buffer = flat_tensor.data();
+        buffer[0] = (int64_t)self.longLongValue;
+        return tensor;
     } else {
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto flat_tensor = tensor.flat<float>();
+        auto flat_tensor = tensor.flat<float_t>();
         auto buffer = flat_tensor.data();
         buffer[0] = self.floatValue;
         return tensor;
