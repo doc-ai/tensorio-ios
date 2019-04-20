@@ -95,6 +95,8 @@ static const NSUInteger TIOModelMissingPropertyErrorCode = 501;
 static const NSUInteger TIOModelFileDoesNotExistsErrorCode = 502;
 static const NSUInteger TIOLabelsFileDoesNotExistErrorCode = 503;
 
+// MARK: -
+
 static NSError * TIOMalformedJSONError(void);
 static NSError * TIOInvalidFilepathError(NSString * path);
 static NSError * TIOInvalidExtensionError(NSString * path);
@@ -102,6 +104,8 @@ static NSError * TIONoModelJSONFileError(void);
 static NSError * TIOMissingPropertyError(NSString * property);
 static NSError * TIOZeroInputsError(void);
 static NSError * TIOMissingInputPropertyError(NSString * property);
+
+// MARK: -
 
 static NSError * TIOInputShapeMustBeArrayError(void);
 static NSError * TIOInputShapeMustHaveEntriesError(void);
@@ -129,6 +133,8 @@ static NSError * TIOImageInputNormalizeBiasIsEmptyError(void);
 static NSError * TIOImageInputNormalizeBiasMustHaveCorectKeysError(void);
 static NSError * TIOImageInputNormalizeBiasMustBeNumericValuesError(void);
 static NSError * TIOImageInputFormatNotValidError(void);
+
+// MARK: -
 
 static NSError * TIOZeroOutputsError(void);
 static NSError * TIOMissingOutputPropertyError(NSString * property);
@@ -158,6 +164,8 @@ static NSError * TIOImageOutputDenormalizeBiasIsEmptyError(void);
 static NSError * TIOImageOutputDenormalizeBiasMustHaveCorectKeysError(void);
 static NSError * TIOImageOutputDenormalizeBiasMustBeNumericValuesError(void);
 static NSError * TIOImageOutputFormatNotValidError(void);
+
+// MARK: -
 
 static NSError * TIOModelHasUnusedKeysError(void);
 static NSError * TIOModelMissingPropertyError(NSString * property);
@@ -323,7 +331,8 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
         @"quantized",
         @"file",
         @"class",
-        @"type"
+        @"type",
+        @"backend"
     ];
     
     NSArray *allKeys = JSON.allKeys;

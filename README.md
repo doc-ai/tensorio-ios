@@ -309,7 +309,8 @@ The *model.json* file has the following basic structure:
   "model": {
     "file": "model.tflite",
     "quantized": false,
-    "type": "image.classification.imagenet"
+    "type": "image.classification.imagenet",
+    "backend": "tflite"
   },
   "inputs": [
     {
@@ -334,11 +335,12 @@ In addition to the model's metadata, such as name, identifier, version, etc, all
 <a name="model-field"></a>
 #### The Model Field
 
-The model field is a dictionary that itself contains two to four entries:
+The model field is a dictionary that itself contains two to five entries:
 
 ```json
 "model": {
   "file": "model.tflite",
+  "backend": "tflite",
   "quantized": false,
   "type": "image.classification.imagenet",
   "class": "MyOptionalCustomClassName"
@@ -350,6 +352,15 @@ The model field is a dictionary that itself contains two to four entries:
 The *file* field is a string value that contains the name of your model file. For TF Lite models it is the file with the *.tflite* extension that resides at the top level of your model bundle folder. For TensorFlow models it is the directory produced by [Estimator.export_saved_model](https://www.tensorflow.org/api_docs/python/tf/estimator/Estimator#export_saved_model) or by [tf.saved_model.simple_save](https://www.tensorflow.org/guide/saved_model#simple_save) and which contains the saved_model.pb file and a variables directory. This folder must reside at the top level of your model bundle.
 
 This field is required.
+
+*backend*
+
+TensorIO supports multiple machine learning libraries, or backends. The *backend* field is a string that identifies which backend to use for this model. TensorFlow and TF Lite are currently supported, and this field should indicate which one to use, either of:
+
+- tflite
+- tensorflow
+
+This field is required. 
 
 *quantized*
 
@@ -997,6 +1008,7 @@ Noting the value of the *model.quantized* field and the presence of *quantize* a
   "license": "Apache 2",
   "model": {
     "file": "model.tflite",
+    "backend": "tflite",
     "quantized": true
   },
   "inputs": [
@@ -1272,6 +1284,7 @@ The *model.json* file might look like:
   "license": "Apache License. Version 2.0 http://www.apache.org/licenses/LICENSE-2.0",
   "model": {
     "file": "model.tflite",
+    "backend": "tflite",
     "quantized": false,
   },
   "inputs": [

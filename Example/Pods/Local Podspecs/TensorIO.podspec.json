@@ -69,7 +69,7 @@
       },
       "source_files": "TensorIO/Classes/TensorFlow/**/*",
       "private_header_files": [
-        "TensorIO/Classes/TensorFlow/SavedModel/**/*"
+        "TensorIO/Classes/TensorFlow/SavedModel/**/*.h"
       ],
       "xcconfig": {
         "HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers\"",

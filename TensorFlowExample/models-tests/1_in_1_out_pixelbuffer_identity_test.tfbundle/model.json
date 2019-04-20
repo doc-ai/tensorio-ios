@@ -8,7 +8,7 @@
 	"model": {
 		"file": "predict",
 		"quantized": false,
-		"class": "TIOTensorFlowModel"
+		"backend": "tensorflow"
 	},
 	"inputs": [
 		{

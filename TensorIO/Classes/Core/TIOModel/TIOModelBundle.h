@@ -38,12 +38,6 @@ extern NSString * const kTFModelBundleExtension;
 extern NSString * const kTFModelInfoFile;
 
 /**
- * The default classname for use with TensorFlow Lite models, currently `TIOTFLiteModel`.
- */
-
-extern NSString * const kTFLiteModelClassName;
-
-/**
  * The name of the directory inside a TensorIO bundle that contains additional data, currently 'assets'.
  */
 
@@ -135,6 +129,12 @@ extern NSString * const kTFModelAssetsDirectory;
  */
 
 @property (readonly) NSString *type;
+
+/**
+ * A string indicating the backend to use with this model
+ */
+
+@property (readonly) NSString *backend;
 
 /**
  * Options associated with the model represented by this bundle.

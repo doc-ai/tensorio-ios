@@ -20,6 +20,7 @@
 		E3CDE4C8225D3EC200C6A558 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3CDE4C6225D3EC200C6A558 /* LaunchScreen.storyboard */; };
 		E3CDE4CB225D3EC200C6A558 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E3CDE4CA225D3EC200C6A558 /* main.m */; };
 		E3CDE50A225D5ACD00C6A558 /* models in Resources */ = {isa = PBXBuildFile; fileRef = E3CDE509225D5ACD00C6A558 /* models */; };
+		E3EBEA14226907F90006138F /* TIOModelBackendTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3EBEA12226903950006138F /* TIOModelBackendTests.mm */; };
 		E3F9576A22653C8700D51FE9 /* ImageInputPreviewView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3F9576622653C8600D51FE9 /* ImageInputPreviewView.mm */; };
 		E3F9576B22653C8700D51FE9 /* ResultInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3F9576922653C8600D51FE9 /* ResultInfoView.m */; };
 		F3A7F51E6DDA5619F6C0CBC4 /* Pods_TensorFlowExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2CD577F2F15843D10516781 /* Pods_TensorFlowExampleTests.framework */; };
@@ -60,6 +61,7 @@
 		E3CDE4D0225D3EC200C6A558 /* TensorFlowExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TensorFlowExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3CDE4D6225D3EC200C6A558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3CDE509225D5ACD00C6A558 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = SOURCE_ROOT; };
+		E3EBEA12226903950006138F /* TIOModelBackendTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOModelBackendTests.mm; sourceTree = "<group>"; };
 		E3F9576622653C8600D51FE9 /* ImageInputPreviewView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageInputPreviewView.mm; sourceTree = "<group>"; };
 		E3F9576722653C8600D51FE9 /* ImageInputPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageInputPreviewView.h; sourceTree = "<group>"; };
 		E3F9576822653C8600D51FE9 /* ResultInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultInfoView.h; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				E346F33C225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm */,
 				E31524D82264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm */,
+				E3EBEA12226903950006138F /* TIOModelBackendTests.mm */,
 				E3CDE4D6225D3EC200C6A558 /* Info.plist */,
 			);
 			path = TensorFlowExampleTests;
@@ -326,6 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E31524D92264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm in Sources */,
+				E3EBEA14226907F90006138F /* TIOModelBackendTests.mm in Sources */,
 				E346F33D225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,6 +484,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = TensorFlowExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -498,6 +503,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = TensorFlowExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

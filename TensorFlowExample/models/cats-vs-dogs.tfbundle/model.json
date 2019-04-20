@@ -9,7 +9,7 @@
 		"file": "predict",
 		"quantized": false,
 		"type": "image.classification.catsvsdogs",
-		"class": "TIOTensorFlowModel"
+		"backend": "tensorflow"
 	},
 	"inputs": [
 		{
