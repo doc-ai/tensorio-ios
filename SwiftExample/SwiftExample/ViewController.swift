@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         let value = pixels.takeUnretainedValue() as CVPixelBuffer
         let buffer = TIOPixelBuffer(pixelBuffer:value, orientation: .up)
         
-        let path = Bundle.main.path(forResource: "mobilenet_v2_1.4_224", ofType: "tfbundle", inDirectory: "models")!
+        let path = Bundle.main.path(forResource: "mobilenet_v2_1.4_224", ofType: "tiobundle", inDirectory: "models")!
         let model = TIOTFLiteModel.withBundleAtPath(path)!
         
         let classification = model.run(on: buffer)

@@ -39,7 +39,7 @@
     
     // Load the model
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"cats-vs-dogs" ofType:@"tfbundle" inDirectory:@"models"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"cats-vs-dogs" ofType:TIOModelBundleExtension inDirectory:@"models"];
     id<TIOModel> model = [TIOTensorFlowModel modelWithBundleAtPath:path];
     
     [model load:nil];

@@ -212,7 +212,11 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
     
     // Validate bundle structure
     
-    if ( ![self.path.pathExtension isEqualToString:kTFModelBundleExtension] ) {
+    if ( [self.path.pathExtension isEqualToString:TIOTFModelBundleExtension] ) {
+        NSLog(@"The %@ extension for TIO Model Bundle is deprecated, use %@ instead",
+                TIOTFModelBundleExtension,
+                TIOModelBundleExtension);
+    } else if ( ![self.path.pathExtension isEqualToString:TIOModelBundleExtension] ) {
         *error = TIOInvalidExtensionError(self.path);
         return NO;
     }
@@ -395,7 +399,7 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
             break;
         }
         
-        NSString *labelsFilepath = [[self.path stringByAppendingPathComponent:kTFModelAssetsDirectory] stringByAppendingPathComponent:labelsFilename];
+        NSString *labelsFilepath = [[self.path stringByAppendingPathComponent:TIOModelAssetsDirectory] stringByAppendingPathComponent:labelsFilename];
         
         if ( ![fm fileExistsAtPath:labelsFilepath] ) {
             *error = TIOLabelsFileDoesNotExistError(labelsFilename);
@@ -1010,7 +1014,7 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
 // MARK: - Utilities
 
 - (NSString*)JSONPath {
-    return [self.path stringByAppendingPathComponent:kTFModelInfoFile];
+    return [self.path stringByAppendingPathComponent:TIOModelInfoFile];
 }
 
 - (NSDictionary*)loadJSON {
@@ -1034,22 +1038,22 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
 
 static NSError * TIOInvalidFilepathError(NSString * path) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOInvalidFilepathErrorCode userInfo:@{
-        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"No .tfbundle directory exists at path, %@", path],
-        NSLocalizedRecoverySuggestionErrorKey: @"Make sure a .tfbundle directory is the root directory"
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"No .tiobundle directory exists at path, %@", path],
+        NSLocalizedRecoverySuggestionErrorKey: @"Make sure a .tiobundle directory is the root directory"
     }];
 }
 
 static NSError * TIOInvalidExtensionError(NSString * path) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOInvalidExtensionErrorCode userInfo:@{
-        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Dirctory exists at path but does not have a .tfbundle extension, %@", path],
-        NSLocalizedRecoverySuggestionErrorKey: @"Add the .tfbundle extension to the root directory"
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Dirctory exists at path but does not have a .tiobundle extension, %@", path],
+        NSLocalizedRecoverySuggestionErrorKey: @"Add the .tiobundle extension to the root directory"
     }];
 }
 
 static NSError * TIONoModelJSONFileError(void) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIONoModelJSONFileErrorCode userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"No model.json file found"],
-        NSLocalizedRecoverySuggestionErrorKey: @"Ensure the root .tfbundle directory contains a model.json file"
+        NSLocalizedRecoverySuggestionErrorKey: @"Ensure the root .tiobundle directory contains a model.json file"
     }];
 }
 

@@ -227,14 +227,14 @@ However, a model may have other assets that are required to interpret the result
 
 Rather than requiring a developer to do this in application space and consequently store the lables in a text file or in some code somewhere in the application, TensorIO wraps models in a bundle and allows model builders to include additional assets in that bundle.
 
-A TensorIO bundle is just a folder with an extension that identifies it as such: *.tfbundle*. Assets may be included in this bundle and then referenced from model specific code. 
+A TensorIO bundle is just a folder with an extension that identifies it as such: *.tiobundle*. Assets may be included in this bundle and then referenced from model specific code. 
 
-*When you use your own models with TensorIO, make sure to put them in a folder with the .tfbundle extension.*
+*When you use your own models with TensorIO, make sure to put them in a folder with the .tiobundle extension.*
 
 A TensorIO TF Lite bundle has the following directory structure:
 
 ```
-mymodel.tfbundle
+mymodel.tiobundle
   - model.tflite
   - model.json
   - assets
@@ -559,10 +559,10 @@ An *array* type output optionally supports the presence of a *labels* field for 
 ]
 ```
 
-The value of this field is a string which corresponds to the name of a text file in the bundle's *assets* directory.  The *.tfbundle* directory structure for this model might look like:
+The value of this field is a string which corresponds to the name of a text file in the bundle's *assets* directory.  The *.tiobundle* directory structure for this model might look like:
 
 ```
-mymodel.tfbundle
+mymodel.tiobundle
   - model.json
   - model.tflite
   - assets
@@ -688,10 +688,10 @@ For example, Net Runner knows how to interpret *"image.classification.nodecay"*.
 
 Let's see a complete example of a model with two input layers and two output layers. The model takes two vectors, the first with 4 values and the second with 8 values, and outputs two vectors, the first with 3 values and the second with 6.
 
-Our *tfbundle* folder will have the following contents:
+Our *tiobundle* folder will have the following contents:
 
 ```
-mymodel.tfbundle
+mymodel.tiobundle
   - model.json
   - model.tflite
 ```
@@ -1006,7 +1006,7 @@ Let's look at a complete example. This model is quantized and has two input laye
 The model bundle will again have two files in it:
 
 ```
-myquantizedmodel.tfbundle
+myquantizedmodel.tiobundle
   - model.json
   - model.tflite
 ```
@@ -1280,7 +1280,7 @@ Let's look at a complete example. This is the unquantized MobileNetV2 image clas
 The model bundle folder might look something like:
 
 ```
-mobilenet-model.tfbundle
+mobilenet-model.tiobundle
   - model.json
   - model.tflite
   - assets
