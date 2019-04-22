@@ -1,9 +1,9 @@
 PODS:
   - TensorFlowLite (1.13.1)
-  - TensorIO (0.6.0):
-    - TensorIO/Core (= 0.6.0)
-  - TensorIO/Core (0.6.0)
-  - TensorIO/TFLite (0.6.0):
+  - TensorIO (0.6.1):
+    - TensorIO/Core (= 0.6.1)
+  - TensorIO/Core (0.6.1)
+  - TensorIO/TFLite (0.6.1):
     - TensorFlowLite
     - TensorIO/Core
 
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
-  TensorIO: 6e0f38888962193f75d4427edb48b0e6fdb4f139
+  TensorIO: 953bf9ca8e987bbd372447cf0d96f6415ece459b
 
 PODFILE CHECKSUM: 676397fecd319c04490c087a8ba57af58a89def1
 
