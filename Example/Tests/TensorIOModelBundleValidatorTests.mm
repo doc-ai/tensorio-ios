@@ -85,14 +85,14 @@
     // it should not validate
     
     NSError *error;
-    TIOModelBundleValidator *validator = [self validatorForFilename:@"qwerty.tfbundle"];
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"qwerty.tiobundle"];
     BOOL valid = [validator validate:&error];
     
     XCTAssertFalse(valid);
     XCTAssertNotNil(error);
 }
 
-- (void)testBundleWithoutTFBundleExtensionDoesNotValidate {
+- (void)testBundleWithoutTIOBundleExtensionDoesNotValidate {
     // it should not validate
     
     NSError *error;
@@ -107,7 +107,7 @@
     // it should not validate
     
     NSError *error;
-    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-no-json.tfbundle"];
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-no-json.tiobundle"];
     BOOL valid = [validator validate:&error];
     
     XCTAssertFalse(valid);
@@ -118,7 +118,7 @@
     // it should not validate is model.json is invalid json
     
     NSError *error;
-    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-bad-json.tfbundle"];
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-bad-json.tiobundle"];
     BOOL valid = [validator validate:&error];
     
     XCTAssertFalse(valid);
@@ -355,7 +355,7 @@
 - (void)testAnIncorrectlyNamedModelFileDoesNotValidate {
     // it should not validate if the model.file does not exist
     
-    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-incorrect-model-file.tfbundle"];
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-incorrect-model-file.tiobundle"];
     NSError *error;
     
     BOOL valid = [validator validate:&error];
@@ -367,7 +367,7 @@
 - (void)testAnIncorrectNamedLabelsFileDoesNotValidate {
     // it should not validate if a labels file does not exist
     
-    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-incorrect-labels-file.tfbundle"];
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"invalid-model-incorrect-labels-file.tiobundle"];
     NSError *error;
     
     BOOL valid = [validator validate:&error];
@@ -2336,7 +2336,7 @@
     error = nil;
     valid = NO;
     
-    validator = [self validatorForFilename:@"1_in_1_out_number_test.tfbundle"];
+    validator = [self validatorForFilename:@"1_in_1_out_number_test.tiobundle"];
     valid = [validator validate:&error];
     
     XCTAssertTrue(valid);
@@ -2347,7 +2347,7 @@
     error = nil;
     valid = NO;
     
-    validator = [self validatorForFilename:@"2_in_2_out_matrices_test.tfbundle"];
+    validator = [self validatorForFilename:@"2_in_2_out_matrices_test.tiobundle"];
     valid = [validator validate:&error];
     
     XCTAssertTrue(valid);
@@ -2358,7 +2358,7 @@
     error = nil;
     valid = NO;
     
-    validator = [self validatorForFilename:@"mobilenet_v2_1.4_224.tfbundle"];
+    validator = [self validatorForFilename:@"mobilenet_v2_1.4_224.tiobundle"];
     valid = [validator validate:&error];
     
     XCTAssertTrue(valid);
@@ -2377,7 +2377,7 @@
     error = nil;
     valid = NO;
     
-    validator = [self validatorForFilename:@"placeholder.tfbundle"];
+    validator = [self validatorForFilename:@"placeholder.tiobundle"];
     valid = [validator validate:&error];
     
     XCTAssertTrue(valid);

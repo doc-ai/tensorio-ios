@@ -66,7 +66,7 @@
 // MARK: - Single Valued Tests
 
 - (void)test1In1OutNumberModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -106,7 +106,7 @@
 // MARK: - Vector, Matrix, Tensor Tests
 
 - (void)test1x1VectorsModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_vectors_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_vectors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -140,7 +140,7 @@
 }
 
 - (void)test2x2VectorsModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_vectors_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_vectors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -180,7 +180,7 @@
 }
 
 - (void)test2x2MatricesModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_matrices_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_matrices_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -255,7 +255,7 @@
 }
 
 - (void)test3x3MatricesModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_tensors_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_tensors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -307,7 +307,7 @@
 - (void)testPixelBufferIdentityModel {
     self.continueAfterFailure = NO;
     
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     // Ensure inputs and outputs return correct count
@@ -394,7 +394,7 @@
 - (void)testPixelBufferNormalizationTransformationModel {
     self.continueAfterFailure = NO;
     
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     // Ensure inputs and outputs return correct count
@@ -487,7 +487,7 @@
     // Note this graph takes and produces int32s but they are cast to float32s for the internal ops
     // Our current tensorflow build doesn't fully support int32 data types for all ops
     
-    TIOModelBundle *bundle = [self bundleWithName:@"int32io_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"int32io_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -530,7 +530,7 @@
     // Note this graph takes and produces int64s but they are cast to float32s for the internal ops
     // Our current tensorflow build doesn't fully support int64 data types for all ops
     
-    TIOModelBundle *bundle = [self bundleWithName:@"int64io_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"int64io_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -572,7 +572,7 @@
 - (void)testModelWithoutSpecifiedBackendUsesAvailableBackend {
     // Uses a copy of the 1_in_1_out_number_test without a model.backend field
     
-    TIOModelBundle *bundle = [self bundleWithName:@"no-backend.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"no-backend.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);

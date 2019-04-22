@@ -70,7 +70,7 @@
 // MARK: - Single Valued Tests
 
 - (void)test1In1OutNumberModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -110,7 +110,7 @@
 // MARK: - Vector, Matrix, Tensor Tests
 
 - (void)test1x1VectorsModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_vectors_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_vectors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -144,7 +144,7 @@
 }
 
 - (void)test2x2VectorsModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_vectors_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_vectors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -184,7 +184,7 @@
 }
 
 - (void)test2x2MatricesModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_matrices_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_matrices_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -259,7 +259,7 @@
 }
 
 - (void)test3x3MatricesModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_tensors_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_tensors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -311,7 +311,7 @@
 - (void)testPixelBufferIdentityModel {
     self.continueAfterFailure = NO;
     
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     // Ensure inputs and outputs return correct count
@@ -398,7 +398,7 @@
 - (void)testPixelBufferNormalizationTransformationModel {
     self.continueAfterFailure = NO;
     
-    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     // Ensure inputs and outputs return correct count
@@ -486,7 +486,7 @@
 // MARK: - Tensor Flow Classification Models
 
 - (void)testMobileNetClassificationModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -528,7 +528,7 @@
 }
 
 - (void)testMobileNetClassificationModelPreprocessing {
-    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -573,7 +573,7 @@
 }
 
 - (void)testQuantizedMobileNetClassificationModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v1_1.0_224_quant.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v1_1.0_224_quant.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -617,7 +617,7 @@
 // MARK: - Placeholder Model
 
 - (void)testPlaceholderModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"placeholder.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"placeholder.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
@@ -631,7 +631,7 @@
 - (void)testModelWithoutSpecifiedBackendUsesAvailableBackend {
     // Uses a copy of the 1_in_1_out_number_test without a model.backend field
     
-    TIOModelBundle *bundle = [self bundleWithName:@"no-backend.tfbundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"no-backend.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
