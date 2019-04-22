@@ -25,9 +25,10 @@
 #import "TIOPlaceholderModel.h"
 #import "TIOModelBackend.h"
 
-NSString * const kTFModelBundleExtension = @"tfbundle";
-NSString * const kTFModelInfoFile = @"model.json";
-NSString * const kTFModelAssetsDirectory = @"assets";
+NSString * const TIOTFModelBundleExtension = @"tfbundle";
+NSString * const TIOModelBundleExtension = @"tiobundle";
+NSString * const TIOModelInfoFile = @"model.json";
+NSString * const TIOModelAssetsDirectory = @"assets";
 
 @interface TIOModelBundle ()
 
@@ -53,7 +54,7 @@ NSString * const kTFModelAssetsDirectory = @"assets";
         
         // Read json file
     
-        NSString *jsonPath = [path stringByAppendingPathComponent:kTFModelInfoFile];
+        NSString *jsonPath = [path stringByAppendingPathComponent:TIOModelInfoFile];
         NSData *data = [NSData dataWithContentsOfFile:jsonPath];
         
         NSError *jsonError;
@@ -146,7 +147,7 @@ NSString * const kTFModelAssetsDirectory = @"assets";
 }
 
 - (NSString*)pathToAsset:(NSString*)filename {
-    return [[_path stringByAppendingPathComponent:kTFModelAssetsDirectory] stringByAppendingPathComponent:filename];
+    return [[_path stringByAppendingPathComponent:TIOModelAssetsDirectory] stringByAppendingPathComponent:filename];
 }
 
 @end

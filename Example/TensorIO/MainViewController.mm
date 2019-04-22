@@ -45,7 +45,7 @@
     // Load the model directory from a model bundle at some path
     // You may also use the TIOModelBundleManager and TIOModelBundle to manage multiple models
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"mobilenet_v2_1.4_224" ofType:@"tfbundle" inDirectory:@"models"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"mobilenet_v2_1.4_224" ofType:TIOTFModelBundleExtension inDirectory:@"models"];
     id<TIOModel> model = [TIOTFLiteModel modelWithBundleAtPath:path];
     
     // Acquire the named results from performing inference on the model
