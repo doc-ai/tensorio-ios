@@ -125,6 +125,17 @@
     XCTAssertNotNil(error);
 }
 
+- (void)testBundleWithDeprecatedExtensionStillValidates {
+    // it should validate
+    
+    NSError *error;
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"deprecated.tfbundle"];
+    BOOL valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
 // MARK: - Basic Property Validation
 
 - (void)testBundleWithoutNameDoesNotValidate {
