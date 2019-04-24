@@ -30,7 +30,6 @@
 @implementation TensorIOTensorFlowModelIntegrationTests
 
 - (void)setUp {
-    assert( sizeof(float_t) == 4 );
     self.modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
 }
 

@@ -28,8 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class TIOModelBundle;
 @class TIOModelOptions;
 
-// MARK: -
-
 /**
  * An Obj-C wrapper around lower level, usually C++ model implementations. This is the primary
  * API provided by the TensorIO framework.
@@ -152,6 +150,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) NSArray<TIOLayerInterface*> *outputs;
 
+ // MARK: - Initialization
+
 /**
  * The designated initializer for conforming classes.
  *
@@ -176,6 +176,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
+
+// MARK: - Lifecycle
 
 /**
  * Loads a model into memory.
@@ -204,6 +206,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)unload;
 
+// MARK: - Run
+
 /**
  * Performs inference on the provided input and returns the results. The primary interface to a
  * conforming class.
@@ -214,6 +218,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
+
+// MARK: - Input/Output Layers
 
 /**
  * Returns a description of the model's input at a given index

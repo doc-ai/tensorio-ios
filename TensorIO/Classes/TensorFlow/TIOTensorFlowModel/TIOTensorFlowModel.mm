@@ -494,3 +494,13 @@ typedef std::vector<std::string> TensorNames;
 }
 
 @end
+
+// MARK: - Training
+
+@implementation TIOTensorFlowModel (TIOTrainableModel)
+
+- (id<TIOData>)train:(id<TIOData>)batch {
+    return @(-1);
+}
+
+@end

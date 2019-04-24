@@ -23,6 +23,7 @@
 #import "TIOLayerInterface.h"
 #import "TIOData.h"
 #import "TIOModel.h"
+#import "TIOTrainableModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSArray<TIOLayerInterface*> *inputs;
 @property (readonly) NSArray<TIOLayerInterface*> *outputs;
 
-// Model Protocol Methods
+// MARK: - Model Protocol Methods
 
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle NS_DESIGNATED_INITIALIZER;
 
@@ -70,6 +71,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index;
 - (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name;
+
+@end
+
+// MARK: - Training
+
+@interface TIOTensorFlowModel (TIOTrainableModel)
+
+- (id<TIOData>)train:(id<TIOData>)batch;
 
 @end
 
