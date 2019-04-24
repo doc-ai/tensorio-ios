@@ -23,6 +23,8 @@
 //  TODO: Duplicating input/output parsing but may need backend specific parsing as well
 //  TODO: Duplicated TensorType defines, should be defined elsewhere
 //  TODO: Typedefs are used elsewhere, define in shared file
+//  TODO: must be able to load a model for serving or training: kSavedModelTagServe vs kSavedModelTagTrain
+//          could be defined in JSON, could be specified at load...
 
 #import "TIOTensorFlowModel.h"
 
@@ -52,6 +54,9 @@
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
 
+// TODO: remove, temporary for hardcoded training pass
+#import "TIOVisionPipeline.h"
+
 static NSString * const kTensorTypeVector = @"array";
 static NSString * const kTensorTypeImage = @"image";
 
@@ -77,6 +82,8 @@ typedef std::vector<std::string> TensorNames;
     // Name to Index
     NSDictionary<NSString*,NSNumber*> *_namedInputToIndex;
     NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
+    
+    NSArray<NSString*> *_modes;
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
@@ -127,6 +134,8 @@ typedef std::vector<std::string> TensorNames;
             NSLog(@"Unable to parse output field in model.json");
             return nil;
         }
+        
+        _modes = bundle.info[@"model"][@"modes"];
     }
     
     return self;
@@ -256,7 +265,11 @@ typedef std::vector<std::string> TensorNames;
     }
     
     std::string model_dir = self.bundle.modelPredictPath.UTF8String;
-    const std::unordered_set<std::string> tags = {tensorflow::kSavedModelTagServe};
+    
+    // TODO: [addressing this pr] support loading different modes
+    std::unordered_set<std::string> tags;
+    if ([_modes containsObject:@"train"]) { tags = {tensorflow::kSavedModelTagTrain}; }
+    else { tags = {tensorflow::kSavedModelTagServe}; }
     
     // tensorflow::SavedModelBundle bundle;
     tensorflow::SessionOptions session_opts;
@@ -500,7 +513,94 @@ typedef std::vector<std::string> TensorNames;
 @implementation TIOTensorFlowModel (TIOTrainableModel)
 
 - (id<TIOData>)train:(id<TIOData>)batch {
-    return @(-1);
+    
+    // first pass hardcoded implementation on the cats-vs-dogs model
+    
+    // First dimension is batch size
+    tensorflow::Tensor image(tensorflow::DT_FLOAT, tensorflow::TensorShape({2, 128, 128, 3}));
+    tensorflow::Tensor labels(tensorflow::DT_INT32, tensorflow::TensorShape({2, 1}));
+    
+    auto image_mapped = image.tensor<float_t, 4>();
+    auto labels_mapped = labels.tensor<int32_t, 2>();
+    
+    labels_mapped(0,0) = (int32_t)[((NSDictionary*)batch)[@"labels"][0] integerValue];
+    labels_mapped(1,0) = (int32_t)[((NSDictionary*)batch)[@"labels"][1] integerValue];
+    
+    TIOPixelBufferLayerDescription *description = [self descriptionOfInputWithName:@"image"];
+    
+    TIOVisionPipeline *pipeline0 = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
+    CVPixelBufferRef pixels0 = [pipeline0 transform:[((NSDictionary*)batch)[@"image"][0] pixelBuffer] orientation:kCGImagePropertyOrientationUp];
+    
+    TIOVisionPipeline *pipeline1 = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
+    CVPixelBufferRef pixels1 = [pipeline1 transform:[((NSDictionary*)batch)[@"image"][1] pixelBuffer] orientation:kCGImagePropertyOrientationUp];
+    
+{
+    CVPixelBufferLockBaseAddress(pixels0, kNilOptions);
+    
+    OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixels0);
+    const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixels0);
+    const int image_width = (int)CVPixelBufferGetWidth(pixels0);
+    const int image_height = (int)CVPixelBufferGetHeight(pixels0);
+    const int image_channels = 4; // by definition (ARGB, BGRA)
+    const int tensor_channels = 3; // by definition (ARG, BGR)
+    const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
+        ? 1
+        : 0;
+    
+    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixels0);
+    
+    for (int y = 0; y < image_height; y++) {
+        for (int x = 0; x < image_width; x++) {
+            auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+            for (int c = 0; c < tensor_channels; ++c) {
+                image_mapped(0, y, x, c) = in_pixel[c+channel_offset] / 255.0;
+            }
+        }
+    }
+    
+    CVPixelBufferUnlockBaseAddress(pixels0, kNilOptions);
+}
+
+{
+    CVPixelBufferLockBaseAddress(pixels1, kNilOptions);
+    
+    OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixels1);
+    const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixels1);
+    const int image_width = (int)CVPixelBufferGetWidth(pixels1);
+    const int image_height = (int)CVPixelBufferGetHeight(pixels1);
+    const int image_channels = 4; // by definition (ARGB, BGRA)
+    const int tensor_channels = 3; // by definition (ARG, BGR)
+    const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
+        ? 1
+        : 0;
+    
+    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixels1);
+    
+    for (int y = 0; y < image_height; y++) {
+        for (int x = 0; x < image_width; x++) {
+            auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+            for (int c = 0; c < tensor_channels; ++c) {
+                image_mapped(1, y, x, c) = in_pixel[c+channel_offset] / 255.0;
+            }
+        }
+    }
+    
+    CVPixelBufferUnlockBaseAddress(pixels1, kNilOptions);
+}
+    
+    tensorflow::Session *session = _saved_model_bundle.session.get();
+    NamedTensors inputs = {{"image", image}, {"labels", labels}};
+    Tensors outputs;
+    
+    TF_CHECK_OK(session->Run({{"image", image}, {"labels", labels}}, {}, {"train"}, nullptr)); // Train
+    TF_CHECK_OK(session->Run({{"image", image}, {"labels", labels}}, {"sigmoid_cross_entropy_loss/value"}, {}, &outputs)); // Get loss
+    
+    float_t loss = outputs[0].scalar<float_t>()(0);
+    outputs.clear();
+
+    return @{
+        @"sigmoid_cross_entropy_loss/value": @(loss)
+    };
 }
 
 @end

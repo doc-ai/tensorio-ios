@@ -63,16 +63,26 @@
 }
 
 - (void)testTrainCatsDogsModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs.tiobundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
     id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
-    NSDictionary *batch;
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    // labels: 0=cat, 1=dog
+    
+    NSDictionary *batch = @{
+        @"image": @[cat, dog],
+        @"labels": @[@(0), @(1)]
+    };
+    
     NSDictionary *results = (NSDictionary*)[model train:batch];
     
-    NSLog(@"%@", results);
+    XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]);
+    XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
 }
 
 @end
