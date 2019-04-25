@@ -326,15 +326,17 @@ typedef std::vector<std::string> TensorNames;
  * Prepares the model's input tensors and performs inference, returning the results.
  *
  * @param input Any class conforming to `TIOData` whose bytes will be copied to the input tensors
- *
  * @return TIOData The results of performing inference
  */
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
     [self load:nil];
+    
     const NamedTensors inputs = [self _prepareInput:input];
     const Tensors outputs = [self _runInference:inputs];
-    return [self _captureOutput:outputs];
+    const id<TIOData> results = [self _captureOutput:outputs];
+    
+    return results;
 }
 
 /**
@@ -342,6 +344,7 @@ typedef std::vector<std::string> TensorNames;
  * prepares tensors with them.
  *
  * @param data Any class conforming to the `TIOData` protocol
+ * @return NamedTensors Tensors ready to be passing to an inference session
  */
 
 - (NamedTensors)_prepareInput:(id<TIOData>)data  {
@@ -434,6 +437,9 @@ typedef std::vector<std::string> TensorNames;
 
 /**
  * Runs inference on the model with prepared inputs.
+ *
+ * @param inputs `NamedTensors` that are ready to be passed to an inference session
+ * @return Tensors The output tensors that are a result of running inference
  */
 
 - (Tensors)_runInference:(NamedTensors)inputs {
@@ -453,9 +459,10 @@ typedef std::vector<std::string> TensorNames;
 /**
  * Captures outputs from the model.
  *
+ * @param outputTensors `Tensors` that have been produced by an inference session
  * @return TIOData A class that is appropriate to the model output. Currently all outputs are
- * wrapped in an instance of `NSDictionary` whose keys are taken from the json description of the
- * model outputs.
+ *  wrapped in an instance of `NSDictionary` whose keys are taken from the json description of the
+ *  model outputs.
  */
 
 - (id<TIOData>)_captureOutput:(Tensors)outputTensors {
@@ -513,6 +520,25 @@ typedef std::vector<std::string> TensorNames;
 @implementation TIOTensorFlowModel (TIOTrainableModel)
 
 - (id<TIOData>)train:(TIOBatch*)batch {
+    [self load:nil];
+    
+    const NamedTensors inputs = [self _prepareTrainingInput:batch];
+    const Tensors outputs = [self _runTraining:inputs];
+    const id<TIOData> results = [self _captureTrainingOutput:outputs];
+    
+    return results;
+}
+
+/**
+ * Iterates through the contents of batch, matching them to the model's training
+ * input layers, and prepares tensors with them.
+ *
+ * @param batch A batch of training data
+ * @return NamedTensors Tensors ready to be passing to a training session
+ */
+
+- (NamedTensors)_prepareTrainingInput:(TIOBatch*)batch  {
+    NamedTensors inputs;
     
     // second pass hardcoded implementation on the cats-vs-dogs model with batch
     
@@ -521,19 +547,36 @@ typedef std::vector<std::string> TensorNames;
     tensorflow::Tensor image(tensorflow::DT_FLOAT, tensorflow::TensorShape({batch_size, 128, 128, 3}));
     tensorflow::Tensor labels(tensorflow::DT_INT32, tensorflow::TensorShape({batch_size, 1}));
     
-    __block auto image_mapped = image.tensor<float_t, 4>();
-    __block auto labels_mapped = labels.tensor<int32_t, 2>();
+    // __block auto image_mapped = image.tensor<float_t, 4>();
+    // __block auto labels_mapped = labels.tensor<int32_t, 2>();
+    
+    auto image_flat = image.flat<float_t>();
+    auto image_buffer = image_flat.data();
+
+    auto labels_flat = labels.flat<int32_t>();
+    auto labels_buffer = labels_flat.data();
 
     // Instead of having to cast as we iterate through the values, since we don't know what obj is,
     // we'll be able to call a method that every TIOData implements for training
 
     [[batch valuesForKey:@"labels"] enumerateObjectsUsingBlock:^(id<TIOData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        labels_mapped(idx,0) = (int32_t)[(NSNumber*)obj integerValue];
+        size_t length = 1;
+        size_t offset = idx * length;
+        labels_buffer[offset] = (int32_t)[(NSNumber*)obj integerValue];
+        //labels_mapped(idx,0) = (int32_t)[(NSNumber*)obj integerValue];
     }];
     
     TIOPixelBufferLayerDescription *description = [self descriptionOfInputWithName:@"image"];
+    TIOImageVolume shape = description.shape;
+    
+    TIOPixelNormalizer normalizer = ^float_t(uint8_t value, uint8_t channel){
+        return (float_t)value / 255.0;
+    };
     
     [[batch valuesForKey:@"image"] enumerateObjectsUsingBlock:^(id<TIOData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        size_t length = shape.width * shape.height * shape.channels;
+        size_t offset = idx * length;
+        
         TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
         CVPixelBufferRef pixels = [pipeline transform:[(TIOPixelBuffer*)obj pixelBuffer] orientation:kCGImagePropertyOrientationUp];
         
@@ -544,18 +587,21 @@ typedef std::vector<std::string> TensorNames;
         const int image_width = (int)CVPixelBufferGetWidth(pixels);
         const int image_height = (int)CVPixelBufferGetHeight(pixels);
         const int image_channels = 4; // by definition (ARGB, BGRA)
-        const int tensor_channels = 3; // by definition (ARG, BGR)
+        const int tensor_channels = shape.channels; // should be 3 by definition (ARG, BGR)
+        const int tensor_bytes_per_row = shape.width * tensor_channels;
         const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
             ? 1
             : 0;
         
         uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixels);
+        float_t* out = image_buffer + offset;
         
         for (int y = 0; y < image_height; y++) {
             for (int x = 0; x < image_width; x++) {
                 auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+                auto* out_pixel = out + (y * tensor_bytes_per_row) + (x * tensor_channels);
                 for (int c = 0; c < tensor_channels; ++c) {
-                    image_mapped(idx, y, x, c) = in_pixel[c+channel_offset] / 255.0;
+                    out_pixel[c] = normalizer(in_pixel[c+channel_offset], c);
                 }
             }
         }
@@ -563,20 +609,72 @@ typedef std::vector<std::string> TensorNames;
         CVPixelBufferUnlockBaseAddress(pixels, kNilOptions);
     }];
     
+    inputs = {{"image", image}, {"labels", labels}};
+    
+    return inputs;
+}
 
-    tensorflow::Session *session = _saved_model_bundle.session.get();
-    NamedTensors inputs = {{"image", image}, {"labels", labels}};
+/**
+ * Runs training on the model with prepared inputs.
+ *
+ * @param inputs `NamedTensors` that are ready to be passed to a training session
+ * @return Tensors The output tensors that are a result of running training
+ */
+
+- (Tensors)_runTraining:(NamedTensors)inputs {
+    
+//    TensorNames output_names;
+//    Tensors outputs;
+//
+//    for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
+//        output_names.push_back(interface.name.UTF8String);
+//    }
+//
+//    tensorflow::Session *session = _saved_model_bundle.session.get();
+//    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs));
+//
+//    return outputs;
+
     Tensors outputs;
     
-    TF_CHECK_OK(session->Run({{"image", image}, {"labels", labels}}, {}, {"train"}, nullptr)); // Train
-    TF_CHECK_OK(session->Run({{"image", image}, {"labels", labels}}, {"sigmoid_cross_entropy_loss/value"}, {}, &outputs)); // Get loss
+    tensorflow::Session *session = _saved_model_bundle.session.get();
+    TF_CHECK_OK(session->Run(inputs, {}, {"train"}, nullptr)); // Train
+    TF_CHECK_OK(session->Run(inputs, {"sigmoid_cross_entropy_loss/value"}, {}, &outputs)); // Get loss
     
-    float_t loss = outputs[0].scalar<float_t>()(0);
-    outputs.clear();
+    return outputs;
+    
+}
+
+/**
+ * Captures training outputs from the model.
+ *
+ * @param outputTensors `Tensors` that have been produced by a training session
+ * @return TIOData A class that is appropriate to the model output. Currently all outputs are
+ *  wrapped in an instance of `NSDictionary` whose keys are taken from the JSON description of the
+ *  model's training outputs.
+ */
+
+- (id<TIOData>)_captureTrainingOutput:(Tensors)outputTensors {
+   
+//    NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
+//
+//    for ( int index = 0; index < _indexedOutputInterfaces.count; index++ ) {
+//        TIOLayerInterface *interface = _indexedOutputInterfaces[index];
+//        tensorflow::Tensor tensor = outputTensors[index];
+//
+//        id<TIOData> data = [self _captureOutput:tensor interface:interface];
+//        outputs[interface.name] = data;
+//    }
+//
+//    return outputs.copy;
+
+    float_t loss = outputTensors[0].scalar<float_t>()(0);
+    outputTensors.clear();
 
     return @{
         @"sigmoid_cross_entropy_loss/value": @(loss)
     };
+
 }
 
 @end

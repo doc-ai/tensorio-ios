@@ -345,8 +345,10 @@ static NSString * const kTensorTypeImage = @"image";
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
     [self load:nil];
+    
     [self _prepareInput:input];
     [self _runInference];
+    
     return [self _captureOutput];
 }
 
