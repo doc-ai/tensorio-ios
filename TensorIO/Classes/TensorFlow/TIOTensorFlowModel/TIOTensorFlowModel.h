@@ -24,6 +24,7 @@
 #import "TIOData.h"
 #import "TIOModel.h"
 #import "TIOTrainableModel.h"
+#import "TIOBatch.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -78,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TIOTensorFlowModel (TIOTrainableModel)
 
-- (id<TIOData>)train:(id<TIOData>)batch;
+- (id<TIOData>)train:(TIOBatch*)batch;
 
 @end
 

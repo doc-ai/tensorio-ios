@@ -20,6 +20,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TIOModel.h"
+#import "TIOBatch.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  * objects to execute those loops and prepare batches for calls to this method.
  */
 
-- (id<TIOData>)train:(id<TIOData>)batch;
+- (id<TIOData>)train:(TIOBatch*)batch;
 
 @end
 

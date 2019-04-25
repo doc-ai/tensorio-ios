@@ -34,6 +34,7 @@
 		E31C799A212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31C7999212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm */; };
 		E31C79DF212F63AC00139C90 /* TensorIODataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31C79DE212F63AC00139C90 /* TensorIODataTests.mm */; };
 		E3B1AD0E214ADE7E0094E065 /* TensorIOModelBundleValidatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3B1AD0D214ADE7E0094E065 /* TensorIOModelBundleValidatorTests.mm */; };
+		E3B2A902227226C20080DFDD /* TIOBatchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3B2A901227226C20080DFDD /* TIOBatchTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		E31C7999212E06CF00139C90 /* TensorIOTFLiteModelIntegrationTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOTFLiteModelIntegrationTests.mm; sourceTree = "<group>"; };
 		E31C79DE212F63AC00139C90 /* TensorIODataTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIODataTests.mm; sourceTree = "<group>"; };
 		E3B1AD0D214ADE7E0094E065 /* TensorIOModelBundleValidatorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOModelBundleValidatorTests.mm; sourceTree = "<group>"; };
+		E3B2A901227226C20080DFDD /* TIOBatchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOBatchTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +196,7 @@
 				E3B1AD0D214ADE7E0094E065 /* TensorIOModelBundleValidatorTests.mm */,
 				E3197F6D2267C7640082047D /* TensorIOLayerInterfaceTests.mm */,
 				E3197F732268F19B0082047D /* TIOModelBackendTests.mm */,
+				E3B2A901227226C20080DFDD /* TIOBatchTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -391,6 +394,7 @@
 				E30DF2D3214862A0008DBCB7 /* TensorIOModelBundleManagerTests.mm in Sources */,
 				E31C7996212DF38300139C90 /* TensorIOJSONParsingTests.mm in Sources */,
 				E3197F6E2267C7640082047D /* TensorIOLayerInterfaceTests.mm in Sources */,
+				E3B2A902227226C20080DFDD /* TIOBatchTests.m in Sources */,
 				E3B1AD0E214ADE7E0094E065 /* TensorIOModelBundleValidatorTests.mm in Sources */,
 				E31C79DF212F63AC00139C90 /* TensorIODataTests.mm in Sources */,
 				E3197F752268F57F0082047D /* TIOModelBackendTests.mm in Sources */,

@@ -74,15 +74,23 @@
     
     // labels: 0=cat, 1=dog
     
-    NSDictionary *batch = @{
-        @"image": @[cat, dog],
-        @"labels": @[@(0), @(1)]
-    };
+    TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
     
-    NSDictionary *results = (NSDictionary*)[model train:batch];
+    [batch addItem:@{
+        @"image": cat,
+        @"labels": @(0)
+    }];
     
-    XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]);
-    XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
+    [batch addItem:@{
+        @"image": dog,
+        @"labels": @(1)
+    }];
+    
+    for (NSUInteger epoch = 0; epoch < 10; epoch++) {
+        NSDictionary *results = (NSDictionary*)[model train:batch];
+        XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]);
+        XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
+    }
 }
 
 @end

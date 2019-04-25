@@ -266,7 +266,7 @@ typedef std::vector<std::string> TensorNames;
     
     std::string model_dir = self.bundle.modelPredictPath.UTF8String;
     
-    // TODO: [addressing this pr] support loading different modes
+    // TODO: [addressing in this pr] support loading different modes
     std::unordered_set<std::string> tags;
     if ([_modes containsObject:@"train"]) { tags = {tensorflow::kSavedModelTagTrain}; }
     else { tags = {tensorflow::kSavedModelTagServe}; }
@@ -512,82 +512,58 @@ typedef std::vector<std::string> TensorNames;
 
 @implementation TIOTensorFlowModel (TIOTrainableModel)
 
-- (id<TIOData>)train:(id<TIOData>)batch {
+- (id<TIOData>)train:(TIOBatch*)batch {
     
-    // first pass hardcoded implementation on the cats-vs-dogs model
+    // second pass hardcoded implementation on the cats-vs-dogs model with batch
     
-    // First dimension is batch size
-    tensorflow::Tensor image(tensorflow::DT_FLOAT, tensorflow::TensorShape({2, 128, 128, 3}));
-    tensorflow::Tensor labels(tensorflow::DT_INT32, tensorflow::TensorShape({2, 1}));
+    int32_t batch_size = (int32_t)batch.count;
     
-    auto image_mapped = image.tensor<float_t, 4>();
-    auto labels_mapped = labels.tensor<int32_t, 2>();
+    tensorflow::Tensor image(tensorflow::DT_FLOAT, tensorflow::TensorShape({batch_size, 128, 128, 3}));
+    tensorflow::Tensor labels(tensorflow::DT_INT32, tensorflow::TensorShape({batch_size, 1}));
     
-    labels_mapped(0,0) = (int32_t)[((NSDictionary*)batch)[@"labels"][0] integerValue];
-    labels_mapped(1,0) = (int32_t)[((NSDictionary*)batch)[@"labels"][1] integerValue];
+    __block auto image_mapped = image.tensor<float_t, 4>();
+    __block auto labels_mapped = labels.tensor<int32_t, 2>();
+
+    // Instead of having to cast as we iterate through the values, since we don't know what obj is,
+    // we'll be able to call a method that every TIOData implements for training
+
+    [[batch valuesForKey:@"labels"] enumerateObjectsUsingBlock:^(id<TIOData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        labels_mapped(idx,0) = (int32_t)[(NSNumber*)obj integerValue];
+    }];
     
     TIOPixelBufferLayerDescription *description = [self descriptionOfInputWithName:@"image"];
     
-    TIOVisionPipeline *pipeline0 = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
-    CVPixelBufferRef pixels0 = [pipeline0 transform:[((NSDictionary*)batch)[@"image"][0] pixelBuffer] orientation:kCGImagePropertyOrientationUp];
+    [[batch valuesForKey:@"image"] enumerateObjectsUsingBlock:^(id<TIOData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
+        CVPixelBufferRef pixels = [pipeline transform:[(TIOPixelBuffer*)obj pixelBuffer] orientation:kCGImagePropertyOrientationUp];
+        
+        CVPixelBufferLockBaseAddress(pixels, kNilOptions);
     
-    TIOVisionPipeline *pipeline1 = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
-    CVPixelBufferRef pixels1 = [pipeline1 transform:[((NSDictionary*)batch)[@"image"][1] pixelBuffer] orientation:kCGImagePropertyOrientationUp];
-    
-{
-    CVPixelBufferLockBaseAddress(pixels0, kNilOptions);
-    
-    OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixels0);
-    const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixels0);
-    const int image_width = (int)CVPixelBufferGetWidth(pixels0);
-    const int image_height = (int)CVPixelBufferGetHeight(pixels0);
-    const int image_channels = 4; // by definition (ARGB, BGRA)
-    const int tensor_channels = 3; // by definition (ARG, BGR)
-    const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
-        ? 1
-        : 0;
-    
-    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixels0);
-    
-    for (int y = 0; y < image_height; y++) {
-        for (int x = 0; x < image_width; x++) {
-            auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
-            for (int c = 0; c < tensor_channels; ++c) {
-                image_mapped(0, y, x, c) = in_pixel[c+channel_offset] / 255.0;
+        OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixels);
+        const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixels);
+        const int image_width = (int)CVPixelBufferGetWidth(pixels);
+        const int image_height = (int)CVPixelBufferGetHeight(pixels);
+        const int image_channels = 4; // by definition (ARGB, BGRA)
+        const int tensor_channels = 3; // by definition (ARG, BGR)
+        const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
+            ? 1
+            : 0;
+        
+        uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixels);
+        
+        for (int y = 0; y < image_height; y++) {
+            for (int x = 0; x < image_width; x++) {
+                auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
+                for (int c = 0; c < tensor_channels; ++c) {
+                    image_mapped(idx, y, x, c) = in_pixel[c+channel_offset] / 255.0;
+                }
             }
         }
-    }
+        
+        CVPixelBufferUnlockBaseAddress(pixels, kNilOptions);
+    }];
     
-    CVPixelBufferUnlockBaseAddress(pixels0, kNilOptions);
-}
 
-{
-    CVPixelBufferLockBaseAddress(pixels1, kNilOptions);
-    
-    OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixels1);
-    const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixels1);
-    const int image_width = (int)CVPixelBufferGetWidth(pixels1);
-    const int image_height = (int)CVPixelBufferGetHeight(pixels1);
-    const int image_channels = 4; // by definition (ARGB, BGRA)
-    const int tensor_channels = 3; // by definition (ARG, BGR)
-    const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
-        ? 1
-        : 0;
-    
-    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixels1);
-    
-    for (int y = 0; y < image_height; y++) {
-        for (int x = 0; x < image_width; x++) {
-            auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
-            for (int c = 0; c < tensor_channels; ++c) {
-                image_mapped(1, y, x, c) = in_pixel[c+channel_offset] / 255.0;
-            }
-        }
-    }
-    
-    CVPixelBufferUnlockBaseAddress(pixels1, kNilOptions);
-}
-    
     tensorflow::Session *session = _saved_model_bundle.session.get();
     NamedTensors inputs = {{"image", image}, {"labels", labels}};
     Tensors outputs;
