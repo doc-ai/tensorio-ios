@@ -540,78 +540,49 @@ typedef std::vector<std::string> TensorNames;
 - (NamedTensors)_prepareTrainingInput:(TIOBatch*)batch  {
     NamedTensors inputs;
     
-    // second pass hardcoded implementation on the cats-vs-dogs model with batch
-    
-    int32_t batch_size = (int32_t)batch.count;
-    
-    tensorflow::Tensor image(tensorflow::DT_FLOAT, tensorflow::TensorShape({batch_size, 128, 128, 3}));
-    tensorflow::Tensor labels(tensorflow::DT_INT32, tensorflow::TensorShape({batch_size, 1}));
-    
-    // __block auto image_mapped = image.tensor<float_t, 4>();
-    // __block auto labels_mapped = labels.tensor<int32_t, 2>();
-    
-    auto image_flat = image.flat<float_t>();
-    auto image_buffer = image_flat.data();
-
-    auto labels_flat = labels.flat<int32_t>();
-    auto labels_buffer = labels_flat.data();
-
-    // Instead of having to cast as we iterate through the values, since we don't know what obj is,
-    // we'll be able to call a method that every TIOData implements for training
-
-    [[batch valuesForKey:@"labels"] enumerateObjectsUsingBlock:^(id<TIOData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        size_t length = 1;
-        size_t offset = idx * length;
-        labels_buffer[offset] = (int32_t)[(NSNumber*)obj integerValue];
-        //labels_mapped(idx,0) = (int32_t)[(NSNumber*)obj integerValue];
-    }];
-    
-    TIOPixelBufferLayerDescription *description = [self descriptionOfInputWithName:@"image"];
-    TIOImageVolume shape = description.shape;
-    
-    TIOPixelNormalizer normalizer = ^float_t(uint8_t value, uint8_t channel){
-        return (float_t)value / 255.0;
-    };
-    
-    [[batch valuesForKey:@"image"] enumerateObjectsUsingBlock:^(id<TIOData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        size_t length = shape.width * shape.height * shape.channels;
-        size_t offset = idx * length;
-        
-        TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
-        CVPixelBufferRef pixels = [pipeline transform:[(TIOPixelBuffer*)obj pixelBuffer] orientation:kCGImagePropertyOrientationUp];
-        
-        CVPixelBufferLockBaseAddress(pixels, kNilOptions);
-    
-        OSType sourcePixelFormat = CVPixelBufferGetPixelFormatType(pixels);
-        const int bytes_per_row = (int)CVPixelBufferGetBytesPerRow(pixels);
-        const int image_width = (int)CVPixelBufferGetWidth(pixels);
-        const int image_height = (int)CVPixelBufferGetHeight(pixels);
-        const int image_channels = 4; // by definition (ARGB, BGRA)
-        const int tensor_channels = shape.channels; // should be 3 by definition (ARG, BGR)
-        const int tensor_bytes_per_row = shape.width * tensor_channels;
-        const int channel_offset = sourcePixelFormat == kCVPixelFormatType_32ARGB
-            ? 1
-            : 0;
-        
-        uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixels);
-        float_t* out = image_buffer + offset;
-        
-        for (int y = 0; y < image_height; y++) {
-            for (int x = 0; x < image_width; x++) {
-                auto* in_pixel = in + (y * bytes_per_row) + (x * image_channels);
-                auto* out_pixel = out + (y * tensor_bytes_per_row) + (x * tensor_channels);
-                for (int c = 0; c < tensor_channels; ++c) {
-                    out_pixel[c] = normalizer(in_pixel[c+channel_offset], c);
-                }
-            }
-        }
-        
-        CVPixelBufferUnlockBaseAddress(pixels, kNilOptions);
-    }];
-    
-    inputs = {{"image", image}, {"labels", labels}};
+    for ( NSString *key in batch.keys ) {
+        TIOLayerInterface *interface = _namedInputInterfaces[key];
+        NamedTensor input = [self _prepareTrainingInput:batch interface:interface];
+        inputs.push_back(input);
+    }
     
     return inputs;
+}
+
+/**
+ * Prepares a tensor from a training input
+ *
+ * @param batch The data whose bytes will be copied to the tensor
+ * @param interface A description of the data which the tensor expects
+ */
+
+- (NamedTensor)_prepareTrainingInput:(TIOBatch*)batch interface:(TIOLayerInterface*)interface {
+    __block NamedTensor named_tensor;
+    
+    NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
+    
+    [interface matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
+        
+        assert( [column[0] isKindOfClass:TIOPixelBuffer.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:pixelBufferDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+        
+    } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+        
+        assert( [column[0] isKindOfClass:NSArray.class]
+            ||  [column[0] isKindOfClass:NSData.class]
+            ||  [column[0] isKindOfClass:NSNumber.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:vectorDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+    }];
+    
+    return named_tensor;
 }
 
 /**
@@ -622,27 +593,29 @@ typedef std::vector<std::string> TensorNames;
  */
 
 - (Tensors)_runTraining:(NamedTensors)inputs {
-    
-//    TensorNames output_names;
-//    Tensors outputs;
-//
-//    for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
-//        output_names.push_back(interface.name.UTF8String);
-//    }
-//
-//    tensorflow::Session *session = _saved_model_bundle.session.get();
-//    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs));
-//
-//    return outputs;
-
+    TensorNames training_names;
+    TensorNames output_names;
     Tensors outputs;
     
+    for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
+        output_names.push_back(interface.name.UTF8String);
+    }
+    
+    // TODO: [addressing in this pr] dynamically read training ops from model.json
+    
+    // for (TIOLayerInterface *interface in _indexedTrainingInterfaces) {
+    //     output_names.push_back(interface.name.UTF8String);
+           training_names.push_back("train");
+    // }
+    
     tensorflow::Session *session = _saved_model_bundle.session.get();
-    TF_CHECK_OK(session->Run(inputs, {}, {"train"}, nullptr)); // Train
-    TF_CHECK_OK(session->Run(inputs, {"sigmoid_cross_entropy_loss/value"}, {}, &outputs)); // Get loss
+    TF_CHECK_OK(session->Run(inputs, {}, training_names, nullptr)); // Train
+    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs)); // Get loss
+    
+    // Train and get loss at the same time : results in a slightly different output
+    // TF_CHECK_OK(session->Run(inputs, output_names, training_names, &outputs));
     
     return outputs;
-    
 }
 
 /**
@@ -655,6 +628,8 @@ typedef std::vector<std::string> TensorNames;
  */
 
 - (id<TIOData>)_captureTrainingOutput:(Tensors)outputTensors {
+   
+   // TODO: [addressing in this pr] capture training output using outputs in model.json
    
 //    NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
 //

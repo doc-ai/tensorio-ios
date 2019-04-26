@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  * from the description:
  *
  * - If the layer is unquantized, the tensor's bytes are copied directly into a data object
- *   (the bytes are implicitly interpreted as `float_t` values).
+ *   (the dtype is used, or the bytes are implicitly interpreted as `float_t` values).
  *
  * - If the layer is quantized and no dequantizer block is provided, the tensor's bytes are copied
  *   directly into a data object (the bytes are implicitly interpreted as `uint8_t` values).
@@ -80,8 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
  * Bytes are copied according to the following rules, with information about quantization taken
  * from the description:
  *
- * - If the layer is unquantized, the data's bytes are copied directly to the buffer (and
- *   implicitly interpreted as `float_t` values).
+ * - If the layer is unquantized, the number's dtype value, or `float_t` by default, is copied
+ *   directly to the tensor.
  *
  * - If the layer is quantized and no quantizer block is provided, the data's bytes are copied
  *   directly to the buffer (and implicitly interpreted as `uint8_t` values).
@@ -96,6 +96,32 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
+
+// MARK: - Batch (Training)
+
+
+/**
+ * Request to fill a TensorFlow tensor with bytes.
+ *
+ * Bytes are copied according to the following rules, with information about quantization taken
+ * from the description:
+ *
+ * - If the layer is unquantized, the number's dtype value, or `float_t` by default, is copied
+ *   directly to the tensor.
+ *
+ * - If the layer is quantized and no quantizer block is provided, the number's `uint8_t` value is
+ *   copied directly to the tensor
+ *
+ * - If the layer is quantized and a quantizer block is provided, the number's `float_t` vlaue
+ *   is passed to the quantizer block and the `uint8_t` value it returns is copied to the tensor
+ *
+ * @param column A batch of data objects.
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from this batch of numbers.
+ */
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
 
 @end
 

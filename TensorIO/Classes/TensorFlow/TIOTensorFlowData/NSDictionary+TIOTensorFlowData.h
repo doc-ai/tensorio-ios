@@ -68,6 +68,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
 
+// MARK: - Batch (Training)
+
+/**
+ * Request to fill a TensorFlow tensor with bytes.
+ *
+ * @param column A batch of dictionaries.
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from the dictionary.
+ *
+ * @warning This method is unimplemented. A dictionary cannot provide bytes directly to a tensor.
+ */
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
+
 @end
 
 NS_ASSUME_NONNULL_END

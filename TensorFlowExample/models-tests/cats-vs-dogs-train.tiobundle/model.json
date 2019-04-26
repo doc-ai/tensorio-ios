@@ -18,20 +18,25 @@
 			"type": "image",
 			"shape": [-1,128,128,3],
 			"format": "RGB",
-			"normalize": {
-				"standard": "[0,1]"
-			}
+			"normalize": { "standard": "[0,1]" }
+		},
+		{
+			"name": "labels",
+			"type": "array",
+			"dtype": "int32",
+			"shape": [-1,1]
 		}
 	],
 	"outputs": [
 		{
-			"name": "sigmoid",
+			"name": "sigmoid_cross_entropy_loss/value",
 			"type": "array",
-			"shape": [-1,1],
-			"labels": "labels.txt"
+			"shape": [1]
 		}
 	],
-	"options": {
-		"device_position": "back"
+	"train": {
+		"ops": [
+			"train"
+		]
 	}
 }

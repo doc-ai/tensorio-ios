@@ -18,9 +18,13 @@
 //  limitations under the License.
 //
 
+//  TODO: Refactor similarity between batched and unbatched tensor preparation (#62)
+
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
+
+static const size_t kTIOPixelBufferCopyNoOffset = 0;
 
 /**
  * Copies a pixel buffer in ARGB or BGRA format to a tensor.
@@ -42,7 +46,7 @@
  */
 
 template <typename T>
-void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensorflow::Tensor tensor, TIOImageVolume shape, _Nullable TIOPixelNormalizer normalizer) {
+void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensorflow::Tensor tensor, TIOImageVolume shape, _Nullable TIOPixelNormalizer normalizer, size_t offset) {
     
     CFRetain(pixelBuffer);
     CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
@@ -66,7 +70,7 @@ void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensor
     assert(image_channels >= shape.channels);
     
     uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixelBuffer);
-    T* out = tensor.flat<T>().data();
+    T* out = tensor.flat<T>().data() + offset;
     
     if ( normalizer == nil ) {
         for (int y = 0; y < image_height; y++) {
@@ -262,7 +266,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         transformedPixelBuffer = pixelBuffer;
     } else {
         TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:pixelBufferDescription];
-        transformedPixelBuffer = [pipeline transform:self.pixelBuffer orientation:self.orientation];
+        transformedPixelBuffer = [pipeline transform:pixelBuffer orientation:orientation];
     }
     
     CVPixelBufferRetain(transformedPixelBuffer);
@@ -291,8 +295,8 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             transformedPixelBuffer,
             tensor,
             pixelBufferDescription.shape,
-            pixelBufferDescription.normalizer
-            );
+            pixelBufferDescription.normalizer,
+            kTIOPixelBufferCopyNoOffset);
         return tensor;
     } else {
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
@@ -300,8 +304,115 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             transformedPixelBuffer,
             tensor,
             pixelBufferDescription.shape,
-            pixelBufferDescription.normalizer
-            );
+            pixelBufferDescription.normalizer,
+            kTIOPixelBufferCopyNoOffset);
+        return tensor;
+    }
+}
+
+// MARK: - Batch (Training)
+
+// TODO: [addressing in this pr] refactor
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
+    
+    int32_t batch_size = (int32_t)column.count;
+    
+    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
+    
+    // Tensor shape
+    
+    const int t_channels = pixelBufferDescription.shape.channels;
+    const int t_width = pixelBufferDescription.shape.width;
+    const int t_height = pixelBufferDescription.shape.height;
+    const int length = t_height * t_width * t_channels;
+    
+    tensorflow::TensorShape shape;
+    
+    // When the zeroeth dimension is -1 convert the batch size placeholder to the actual batch size
+    
+    shape = tensorflow::TensorShape({batch_size, t_height, t_width, t_channels});
+    
+    // Typed enumeration over the column
+    
+    if ( description.isQuantized ) {
+        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            size_t offset = idx * length;
+           
+            CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer*)obj).pixelBuffer;
+            CGImagePropertyOrientation orientation = ((TIOPixelBuffer*)obj).orientation;
+            
+            CVPixelBufferRef transformedPixelBuffer;
+            
+            int width = (int)CVPixelBufferGetWidth(pixelBuffer);
+            int height = (int)CVPixelBufferGetHeight(pixelBuffer);
+            OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+            
+            // Transform image using vision pipeline
+            
+            if ( width == pixelBufferDescription.shape.width
+                && height == pixelBufferDescription.shape.height
+                && pixelFormat == pixelBufferDescription.pixelFormat
+                && orientation == kCGImagePropertyOrientationUp ) {
+                transformedPixelBuffer = pixelBuffer;
+            } else {
+                TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:pixelBufferDescription];
+                transformedPixelBuffer = [pipeline transform:pixelBuffer orientation:orientation];
+            }
+            
+            CVPixelBufferRetain(transformedPixelBuffer);
+            ((TIOPixelBuffer*)obj).transformedPixelBuffer = transformedPixelBuffer;
+            
+            TIOCopyCVPixelBufferToTensorFlowTensor<uint8_t>(
+                transformedPixelBuffer,
+                tensor,
+                pixelBufferDescription.shape,
+                pixelBufferDescription.normalizer,
+                offset);
+        }];
+        
+        return tensor;
+    } else {
+        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            size_t offset = idx * length;
+            
+            CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer*)obj).pixelBuffer;
+            CGImagePropertyOrientation orientation = ((TIOPixelBuffer*)obj).orientation;
+            
+            CVPixelBufferRef transformedPixelBuffer;
+            
+            int width = (int)CVPixelBufferGetWidth(pixelBuffer);
+            int height = (int)CVPixelBufferGetHeight(pixelBuffer);
+            OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+            
+            // Transform image using vision pipeline
+            
+            if ( width == pixelBufferDescription.shape.width
+                && height == pixelBufferDescription.shape.height
+                && pixelFormat == pixelBufferDescription.pixelFormat
+                && orientation == kCGImagePropertyOrientationUp ) {
+                transformedPixelBuffer = pixelBuffer;
+            } else {
+                TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:pixelBufferDescription];
+                transformedPixelBuffer = [pipeline transform:pixelBuffer orientation:orientation];
+            }
+            
+            CVPixelBufferRetain(transformedPixelBuffer);
+            ((TIOPixelBuffer*)obj).transformedPixelBuffer = transformedPixelBuffer;
+            
+            TIOCopyCVPixelBufferToTensorFlowTensor<float_t>(
+                transformedPixelBuffer,
+                tensor,
+                pixelBufferDescription.shape,
+                pixelBufferDescription.normalizer,
+                offset);
+        }];
+        
         return tensor;
     }
 }

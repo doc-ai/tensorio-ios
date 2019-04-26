@@ -19,6 +19,7 @@
 //
 
 //  TODO: Consider using templated c++ helpers
+//  TODO: Refactor similarity between batched and unbatched tensor preparation (#62)
 
 #import "NSNumber+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
@@ -117,6 +118,95 @@
         auto flat_tensor = tensor.flat<float_t>();
         auto buffer = flat_tensor.data();
         buffer[0] = self.floatValue;
+        return tensor;
+    }
+}
+
+// MARK: - Batch (Training)
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    
+    int32_t batch_size = (int32_t)column.count;
+    
+    TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
+    NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
+    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    
+    // Establish shape
+    
+    std::vector<tensorflow::int64> dims;
+    
+    // When the zeroeth dimension is -1 convert the batch size placeholder to the actual batch size
+    
+    for (NSNumber *dim in dshape) {
+        if ( dim.integerValue == -1 ) {
+            dims.push_back(batch_size);
+        } else {
+            dims.push_back(dim.integerValue);
+        }
+    }
+    
+    tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);
+    tensorflow::TensorShape shape = tensorflow::TensorShape(dim_sizes);
+    
+    // Typed enumeration over the column
+    
+    if ( description.isQuantized && quantizer != nil ) {
+        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            size_t offset = idx * length;
+            buffer[offset] = quantizer(((NSNumber*)obj).floatValue);
+        }];
+        
+        return tensor;
+    } else if ( description.isQuantized && quantizer == nil ) {
+        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            size_t offset = idx * length;
+            buffer[offset] = ((NSNumber*)obj).unsignedCharValue;
+        }];
+        
+        return tensor;
+    } else if ( dtype == TIODataTypeInt32 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT32, shape);
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            size_t offset = idx * length;
+            buffer[offset] = (int32_t)((NSNumber*)obj).longValue;
+        }];
+        
+        return tensor;
+    } else if ( dtype == TIODataTypeInt64 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT64, shape);
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            size_t offset = idx * length;
+            buffer[offset] = (int64_t)((NSNumber*)obj).longLongValue;
+        }];
+        
+        return tensor;
+    } else {
+        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
+        auto flat_tensor = tensor.flat<float_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            size_t offset = idx * length;
+            buffer[offset] = ((NSNumber*)obj).floatValue;
+        }];
+        
         return tensor;
     }
 }

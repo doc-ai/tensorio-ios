@@ -60,6 +60,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
 
+// MARK: - Batch (Training)
+
+/**
+ * Request to fill a TensorFlow tensor with bytes.
+ *
+ * @param column A batch of pixel buffers.
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from this batch of pixel buffers.
+ */
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
+
 @end
 
 NS_ASSUME_NONNULL_END
