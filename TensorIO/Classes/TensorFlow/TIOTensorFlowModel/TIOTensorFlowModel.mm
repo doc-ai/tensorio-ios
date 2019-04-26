@@ -84,6 +84,7 @@ typedef std::vector<std::string> TensorNames;
     NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
     
     NSArray<NSString*> *_modes;
+    NSArray<NSString*> *_trainingOps;
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
@@ -135,7 +136,9 @@ typedef std::vector<std::string> TensorNames;
             return nil;
         }
         
+        // TODO: [addressing in this pr] proper parsing of modes and training ops
         _modes = bundle.info[@"model"][@"modes"];
+        _trainingOps = bundle.info[@"train"][@"ops"];
     }
     
     return self;
@@ -597,20 +600,21 @@ typedef std::vector<std::string> TensorNames;
     TensorNames output_names;
     Tensors outputs;
     
+    // Output names
+    
     for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
         output_names.push_back(interface.name.UTF8String);
     }
     
-    // TODO: [addressing in this pr] dynamically read training ops from model.json
+    // Training op names
     
-    // for (TIOLayerInterface *interface in _indexedTrainingInterfaces) {
-    //     output_names.push_back(interface.name.UTF8String);
-           training_names.push_back("train");
-    // }
+    for (NSString *op in _trainingOps) {
+         training_names.push_back(op.UTF8String);
+    }
     
     tensorflow::Session *session = _saved_model_bundle.session.get();
     TF_CHECK_OK(session->Run(inputs, {}, training_names, nullptr)); // Train
-    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs)); // Get loss
+    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs)); // Get outputs (loss)
     
     // Train and get loss at the same time : results in a slightly different output
     // TF_CHECK_OK(session->Run(inputs, output_names, training_names, &outputs));
