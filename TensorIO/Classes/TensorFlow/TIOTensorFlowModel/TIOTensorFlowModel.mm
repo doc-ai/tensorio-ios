@@ -18,7 +18,6 @@
 //  limitations under the License.
 //
 
-//  TODO: Using class string to identity tensorflow model in model.json, identify some other way
 //  TODO: Overloading model.file in model.json to point to predict directory, must also point to train and eval dirs
 //  TODO: Duplicating input/output parsing but may need backend specific parsing as well
 //  TODO: Duplicated TensorType defines, should be defined elsewhere
@@ -54,9 +53,6 @@
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
 
-// TODO: remove, temporary for hardcoded training pass
-#import "TIOVisionPipeline.h"
-
 static NSString * const kTensorTypeVector = @"array";
 static NSString * const kTensorTypeImage = @"image";
 
@@ -68,8 +64,6 @@ typedef std::vector<std::string> TensorNames;
 @implementation TIOTensorFlowModel {
     @protected
     tensorflow::SavedModelBundle _saved_model_bundle;
-    // tensorflow::MetaGraphDef _meta_graph_def;
-    // std::unique_ptr<tensorflow::Session> _session;
     
     // Index to Interface Description
     NSArray<TIOLayerInterface*> *_indexedInputInterfaces;
@@ -83,6 +77,7 @@ typedef std::vector<std::string> TensorNames;
     NSDictionary<NSString*,NSNumber*> *_namedInputToIndex;
     NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
     
+    // Training Support
     NSArray<NSString*> *_modes;
     NSArray<NSString*> *_trainingOps;
 }
@@ -137,6 +132,7 @@ typedef std::vector<std::string> TensorNames;
         }
         
         // TODO: [addressing in this pr] proper parsing of modes and training ops
+        
         _modes = bundle.info[@"model"][@"modes"];
         _trainingOps = bundle.info[@"train"][@"ops"];
     }
@@ -270,17 +266,19 @@ typedef std::vector<std::string> TensorNames;
     std::string model_dir = self.bundle.modelPredictPath.UTF8String;
     
     // TODO: [addressing in this pr] support loading different modes
-    std::unordered_set<std::string> tags;
-    if ([_modes containsObject:@"train"]) { tags = {tensorflow::kSavedModelTagTrain}; }
-    else { tags = {tensorflow::kSavedModelTagServe}; }
     
-    // tensorflow::SavedModelBundle bundle;
+    std::unordered_set<std::string> tags;
+    
+    if ( [_modes containsObject:@"train"] ) {
+        tags = {tensorflow::kSavedModelTagTrain};
+    } else {
+        tags = {tensorflow::kSavedModelTagServe};
+    }
+    
     tensorflow::SessionOptions session_opts;
     tensorflow::RunOptions run_opts;
     
     TF_CHECK_OK(LoadSavedModel(session_opts, run_opts, model_dir, tags, &_saved_model_bundle));
-    //_meta_graph_def = bundle.meta_graph_def;
-    //_session = bundle.session.get();
     
     _loaded = YES;
     
@@ -293,7 +291,6 @@ typedef std::vector<std::string> TensorNames;
 
 - (void)unload {
     TF_CHECK_OK(_saved_model_bundle.session.get()->Close());
-    
     _loaded = NO;
 }
 

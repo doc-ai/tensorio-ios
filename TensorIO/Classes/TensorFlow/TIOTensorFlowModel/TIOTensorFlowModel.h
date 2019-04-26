@@ -65,6 +65,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)load:(NSError**)error;
 - (void)unload;
 
+/**
+ * Performs inference on the provided input and returns the results. The primary interface to a
+ * conforming class.
+ *
+ * @param input Any class conforming to `TIOData` that you want to run inference on
+ *
+ * @return TIOData The results of performing inference
+ */
+
 - (id<TIOData>)runOn:(id<TIOData>)input;
 
 - (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
@@ -78,6 +87,14 @@ NS_ASSUME_NONNULL_BEGIN
 // MARK: - Training
 
 @interface TIOTensorFlowModel (TIOTrainableModel)
+
+/**
+ * Calls the underlying training op with a single batch.
+ *
+ * A complete round of training will involve iterating over all the available
+ * batches for a certain number of epochs. It is the responsibility of other
+ * objects to execute those loops and prepare batches for calls to this method.
+ */
 
 - (id<TIOData>)train:(TIOBatch*)batch;
 

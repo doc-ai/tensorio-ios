@@ -31,7 +31,7 @@
     /**
      * Items are managed as a collection of named arrays of `TIOData`. Think of
      * the collection as a matrix whose rows are a single item, whose columns
-     * are named and whose values are accessed by row index or column name.
+     * are named, and whose values are accessed by row index or column name.
      */
 
     NSMutableDictionary<NSString*,NSMutableArray<id<TIOData>>*> *_items;

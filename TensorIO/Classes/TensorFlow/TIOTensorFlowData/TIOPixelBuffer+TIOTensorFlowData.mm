@@ -312,8 +312,6 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
 
 // MARK: - Batch (Training)
 
-// TODO: [addressing in this pr] refactor
-
 + (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     

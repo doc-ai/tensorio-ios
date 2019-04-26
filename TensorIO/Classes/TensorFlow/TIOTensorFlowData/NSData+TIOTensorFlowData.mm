@@ -84,7 +84,7 @@
     
     for (NSNumber *dim in dshape) {
         if ( dim.integerValue == -1 ) {
-            dims.push_back(1); // batch size of 1
+            dims.push_back(1);
         } else {
             dims.push_back(dim.integerValue);
         }

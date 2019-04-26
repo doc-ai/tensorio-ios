@@ -23,6 +23,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * A single batch item, equivalent to a training example or item to be used
+ * for inference. A batch item is just a named tuple of values whose keys
+ * correspond to the named inputs layers expected by a model operation.
+ */
+
 typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
 
 /**
