@@ -628,28 +628,54 @@ typedef std::vector<std::string> TensorNames;
  */
 
 - (id<TIOData>)_captureTrainingOutput:(Tensors)outputTensors {
+   // Note that this implementation is currently identical to _captureOutput:
    
-   // TODO: [addressing in this pr] capture training output using outputs in model.json
-   
-//    NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
-//
-//    for ( int index = 0; index < _indexedOutputInterfaces.count; index++ ) {
-//        TIOLayerInterface *interface = _indexedOutputInterfaces[index];
-//        tensorflow::Tensor tensor = outputTensors[index];
-//
-//        id<TIOData> data = [self _captureOutput:tensor interface:interface];
-//        outputs[interface.name] = data;
-//    }
-//
-//    return outputs.copy;
+    NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
 
-    float_t loss = outputTensors[0].scalar<float_t>()(0);
-    outputTensors.clear();
+    for ( int index = 0; index < _indexedOutputInterfaces.count; index++ ) {
+        TIOLayerInterface *interface = _indexedOutputInterfaces[index];
+        tensorflow::Tensor tensor = outputTensors[index];
+        
+        id<TIOData> data = [self _captureTrainingOutput:tensor interface:interface];
+        outputs[interface.name] = data;
+    }
+    
+    return outputs.copy;
+}
 
-    return @{
-        @"sigmoid_cross_entropy_loss/value": @(loss)
-    };
+/**
+ * Copies bytes from the tensor to an appropriate class that conforms to `TIOData`
+ *
+ * @param tensor The output tensor whose bytes will be captured
+ * @param interface A description of the data which this tensor contains
+ */
 
+- (id<TIOData>)_captureTrainingOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface*)interface {
+    // Note that this implementation is currently identical to _captureOutput:interface
+    
+    __block id<TIOData> data;
+    
+    [interface
+        matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
+            
+            data = [[TIOPixelBuffer alloc] initWithTensor:tensor description:pixelBufferDescription];
+        
+        } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+            
+            TIOVector *vector = [[TIOVector alloc] initWithTensor:tensor description:vectorDescription];
+            
+            if ( vectorDescription.isLabeled ) {
+                // If the vector's output is labeled, return a dictionary mapping labels to values
+                data = [vectorDescription labeledValues:vector];
+            } else {
+                // If the vector's output is single-valued just return that value
+                data = vector.count == 1
+                    ? vector[0]
+                    : vector;
+            }
+        }];
+    
+    return data;
 }
 
 @end
