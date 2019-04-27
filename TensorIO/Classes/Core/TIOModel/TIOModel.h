@@ -19,13 +19,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TIOModelBundle.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol TIOData;
 @protocol TIOLayerDescription;
 @class TIOLayerInterface;
-@class TIOModelBundle;
 @class TIOModelOptions;
 
 /**
@@ -129,6 +129,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) NSString *type;
+
+/**
+ * A string indicating the backend to use with this model
+ */
+
+@property (readonly) NSString *backend;
+
+/**
+ * The modes available to this model, i.e. predict, train, and eval.
+ */
+
+@property (readonly) TIOModelMode modes;
 
 /**
  * A boolean value indicating whether the model has been loaded or not. Conforming classes may want

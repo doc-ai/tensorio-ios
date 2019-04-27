@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "TIOBatch.h"
 #import "TIOData.h"
 #import "TIOPixelBuffer.h"
 #import "TIOVector.h"
@@ -29,6 +30,7 @@
 #import "TIOPixelNormalization.h"
 #import "TIOPlaceholderModel.h"
 #import "TIOQuantization.h"
+#import "TIOTrainableModel.h"
 #import "TIOVisionModelHelpers.h"
 #import "TIOVisionPipeline.h"
 #import "NSArray+TIOExtensions.h"

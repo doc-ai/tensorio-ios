@@ -22,8 +22,6 @@
 //  TODO: Duplicating input/output parsing but may need backend specific parsing as well
 //  TODO: Duplicated TensorType defines, should be defined elsewhere
 //  TODO: Typedefs are used elsewhere, define in shared file
-//  TODO: must be able to load a model for serving or training: kSavedModelTagServe vs kSavedModelTagTrain
-//          could be defined in JSON, could be specified at load...
 
 #import "TIOTensorFlowModel.h"
 
@@ -52,6 +50,7 @@
 #import "TIOTensorFlowData.h"
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
+#import "TIOTensorFlowErrors.h"
 
 static NSString * const kTensorTypeVector = @"array";
 static NSString * const kTensorTypeImage = @"image";
@@ -78,7 +77,6 @@ typedef std::vector<std::string> TensorNames;
     NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
     
     // Training Support
-    NSArray<NSString*> *_modes;
     NSArray<NSString*> *_trainingOps;
 }
 
@@ -105,6 +103,8 @@ typedef std::vector<std::string> TensorNames;
         _placeholder = bundle.placeholder;
         _quantized = bundle.quantized;
         _type = bundle.type;
+        _backend = bundle.backend;
+        _modes = bundle.modes;
         
         // Input and output parsing
         
@@ -131,9 +131,7 @@ typedef std::vector<std::string> TensorNames;
             return nil;
         }
         
-        // TODO: [addressing in this pr] proper parsing of modes and training ops
-        
-        _modes = bundle.info[@"model"][@"modes"];
+        // TODO: [addressing in this pr] proper parsing of training ops
         _trainingOps = bundle.info[@"train"][@"ops"];
     }
     
@@ -264,15 +262,16 @@ typedef std::vector<std::string> TensorNames;
     }
     
     std::string model_dir = self.bundle.modelPredictPath.UTF8String;
-    
-    // TODO: [addressing in this pr] support loading different modes
-    
     std::unordered_set<std::string> tags;
     
-    if ( [_modes containsObject:@"train"] ) {
+    if ( TIOModelModeTrains(_modes) ) {
         tags = {tensorflow::kSavedModelTagTrain};
-    } else {
+    } else if (TIOModelModePredicts(_modes)) {
         tags = {tensorflow::kSavedModelTagServe};
+    } else {
+        NSLog(@"No support model modes, i.e. predict, train, or eval");
+        *error = TIOTensorFlowModelModeError;
+        return NO;
     }
     
     tensorflow::SessionOptions session_opts;

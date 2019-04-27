@@ -22,6 +22,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// MARK: - Model Modes
+
+typedef NS_OPTIONS(NSUInteger, TIOModelMode) {
+    TIOModelModePredict = 1 << 0,
+    TIOModelModeTrain = 1 << 1,
+    TIOModelModelEval = 1 << 2
+};
+
+BOOL TIOModelModePredicts(TIOModelMode modes);
+BOOL TIOModelModeTrains(TIOModelMode modes);
+BOOL TIOModelModeEvals(TIOModelMode modes);
+
+// MARK: - Model Bundle
+
 @class TIOModelOptions;
 @protocol TIOModel;
 
@@ -144,6 +158,12 @@ extern NSString * const TIOModelAssetsDirectory;
  */
 
 @property (readonly) NSString *backend;
+
+/**
+ * The modes available to this model, i.e. predict, train, and eval.
+ */
+
+@property (readonly) TIOModelMode modes;
 
 /**
  * Options associated with the model represented by this bundle.
