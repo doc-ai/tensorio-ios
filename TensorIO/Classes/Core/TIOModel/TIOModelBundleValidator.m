@@ -345,7 +345,8 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
         @"file",
         @"class",
         @"type",
-        @"backend"
+        @"backend",
+        @"modes"
     ];
     
     NSArray *allKeys = JSON.allKeys;
@@ -369,6 +370,10 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
     if ( ![allKeys containsObject:@"quantized"] || ![JSON[@"quantized"] isKindOfClass:[NSNumber class]] ) {
         *error = TIOModelMissingPropertyError(@"quantized");
         return NO;
+    }
+    
+    if ( ![allKeys containsObject:@"modes"] ) {
+        NSLog(@"The model.json file is missing a model.modes field. This field will be required in a future version.");
     }
     
     return YES;

@@ -9,7 +9,8 @@
 		"file": "predict",
 		"quantized": false,
 		"type": "image.classification.catsvsdogs",
-		"backend": "tensorflow"
+		"backend": "tensorflow",
+		"modes": ["predict"]
 	},
 	"inputs": [
 		{

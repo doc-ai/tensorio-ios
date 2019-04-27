@@ -8,7 +8,8 @@
 	"model": {
 		"file": "mobilenet_v2_1.4_224.tflite",
 		"quantized": false,
-		"backend": "tflite"
+		"backend": "tflite",
+		"modes": ["predict"]
 	},
 	"inputs": [
 		{

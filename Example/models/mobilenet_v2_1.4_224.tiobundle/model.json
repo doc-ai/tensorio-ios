@@ -9,7 +9,8 @@
 		"file": "mobilenet_v2_1.4_224.tflite",
 		"quantized": false,
 		"type": "image.classification.imagenet",
-		"backend": "tflite"
+		"backend": "tflite",
+		"modes": ["predict"]
 	},
 	"inputs": [
 		{
