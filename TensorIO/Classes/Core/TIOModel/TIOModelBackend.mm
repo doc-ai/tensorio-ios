@@ -41,7 +41,7 @@ static NSString * const TIONoBackendAvailableReason =
 // Available Backend
 // Add your backend define and name to this method
 
-NSString * _Nullable TIOAvailableBackend() {
+NSString * _Nullable TIOAvailableBackend(void) {
     #ifdef TIO_TFLITE
         return TIOBackendTFLite;
     #elif TIO_TENSORFLOW

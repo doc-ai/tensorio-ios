@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  * of the backend here if that preprocessor definition is defined.
  */
 
-NSString * _Nullable TIOAvailableBackend();
+NSString * _Nullable TIOAvailableBackend(void);
 
 /**
  * Returns the default model class name used with a backend
