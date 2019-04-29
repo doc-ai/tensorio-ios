@@ -89,6 +89,8 @@ static NSString * const kTensorTypeImage = @"image";
         _placeholder = bundle.placeholder;
         _quantized = bundle.quantized;
         _type = bundle.type;
+        _backend = bundle.backend;
+        _modes = bundle.modes;
         
         // Input and output parsing
         
@@ -345,8 +347,10 @@ static NSString * const kTensorTypeImage = @"image";
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
     [self load:nil];
+    
     [self _prepareInput:input];
     [self _runInference];
+    
     return [self _captureOutput];
 }
 

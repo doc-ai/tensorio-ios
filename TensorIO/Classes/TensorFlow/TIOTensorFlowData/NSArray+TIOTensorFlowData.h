@@ -45,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
  * from the description:
  *
  * - If the layer is unquantized, the tensor's bytes are copied directly into numeric values and
- *   added to the resulting array (the bytes are implicitly interpreted as `float_t` values)
+ *   added to the resulting array (the dtype is used or the bytes are implicitly interpreted as
+ *   `float_t` values)
  *
  * - If the layer is quantized and no dequantizer block is provided, the tensor's bytes are copied
  *   directly into numeric values and added to the resulting array (the bytes are implicitly
@@ -58,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param tensor The tensor to read from.
  * @param description A description of the data this tensor produces.
  *
- * @return instancetype An instance of `NSData`.
+ * @return instancetype An instance of `NSArray`.
  */
 
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
@@ -81,10 +82,36 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param description A description of the data this tensor expects.
  *
- * @return tensorflow::Tensor A tensor with data from the dictionary.
+ * @return tensorflow::Tensor A tensor with data from the numeric arrays.
  */
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
+
+// MARK: - Batch (Training)
+
+/**
+ * Request to fill a TensorFlow tensor with bytes.
+ *
+ * Bytes are copied according to the following rules, with information about quantization taken
+ * from the description:
+ *
+ * - If the layer is unquantized, the bytes of the array's numeric entries are copied directly to
+ *   the buffer (the dtype is used or the values are implicitly interpreted as `float_t` values)
+ *
+ * - If the layer is quantized and no quantizer block is provided, the bytes of the array's numeric
+ *   entries are copied directly to the buffer (and implicitly interpreted as `uint8_t` values)
+ *
+ * - If the layer is quantized and a quantizer block is provided, the the bytes of the array's
+ *   numeric entries are interpreted as `float_t` values, passed to the quantizer block, and the
+ *   `uint8_t` values returned from it are copied to the buffer
+ *
+ * @param column A batch of numeric arrays.
+ * @param description A description of the data this tensor expects.
+ *
+ * @return tensorflow::Tensor A tensor with data from the numeric arrays.
+ */
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
 
 @end
 

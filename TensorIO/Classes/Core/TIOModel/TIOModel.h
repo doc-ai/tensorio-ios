@@ -19,16 +19,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TIOModelBundle.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol TIOData;
 @protocol TIOLayerDescription;
 @class TIOLayerInterface;
-@class TIOModelBundle;
 @class TIOModelOptions;
-
-// MARK: -
 
 /**
  * An Obj-C wrapper around lower level, usually C++ model implementations. This is the primary
@@ -133,6 +131,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *type;
 
 /**
+ * A string indicating the backend to use with this model
+ */
+
+@property (readonly) NSString *backend;
+
+/**
+ * The modes available to this model, i.e. predict, train, and eval.
+ */
+
+@property (readonly) TIOModelMode modes;
+
+/**
  * A boolean value indicating whether the model has been loaded or not. Conforming classes may want
  * to wrap the underlying models such that they can be aggressively loaded and unloaded from memory,
  * as some models contain hundreds of megabytes of paramters.
@@ -151,6 +161,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) NSArray<TIOLayerInterface*> *outputs;
+
+ // MARK: - Initialization
 
 /**
  * The designated initializer for conforming classes.
@@ -176,6 +188,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
+
+// MARK: - Lifecycle
 
 /**
  * Loads a model into memory.
@@ -204,6 +218,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)unload;
 
+// MARK: - Run
+
 /**
  * Performs inference on the provided input and returns the results. The primary interface to a
  * conforming class.
@@ -214,6 +230,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
+
+// MARK: - Input/Output Layers
 
 /**
  * Returns a description of the model's input at a given index

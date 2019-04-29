@@ -30,6 +30,42 @@ NSString * const TIOModelBundleExtension = @"tiobundle";
 NSString * const TIOModelInfoFile = @"model.json";
 NSString * const TIOModelAssetsDirectory = @"assets";
 
+// MARK: - Model Modes
+
+TIOModelMode TIOParseModelModes(NSArray<NSString*> * _Nullable array) {
+    if (!array) {
+        return TIOModelModePredict;
+    }
+    
+    TIOModelMode modes = 0;
+    
+    if ([array containsObject:@"predict"]) {
+        modes |= TIOModelModePredict;
+    }
+    if ([array containsObject:@"train"]) {
+        modes |= TIOModelModeTrain;
+    }
+    if ([array containsObject:@"eval"]) {
+        modes |= TIOModelModelEval;
+    }
+    
+    return modes;
+}
+
+BOOL TIOModelModePredicts(TIOModelMode modes) {
+    return (modes & TIOModelModePredict) == TIOModelModePredict;
+}
+
+BOOL TIOModelModeTrains(TIOModelMode modes) {
+    return (modes & TIOModelModeTrain) == TIOModelModeTrain;
+}
+
+BOOL TIOModelModeEvals(TIOModelMode modes) {
+    return (modes & TIOModelModelEval) == TIOModelModelEval;
+}
+
+// MARK: - Model Bundle
+
 @interface TIOModelBundle ()
 
 @property (readwrite) NSDictionary *info;
@@ -41,6 +77,8 @@ NSString * const TIOModelAssetsDirectory = @"assets";
 @property (readwrite) NSString *author;
 @property (readwrite) NSString *license;
 @property (readwrite) BOOL quantized;
+@property (readwrite) NSString *backend;
+@property (readwrite) TIOModelMode modes;
 
 @property (readwrite) TIOModelOptions *options;
 @property (readonly) NSString *modelClassName;
@@ -81,6 +119,8 @@ NSString * const TIOModelAssetsDirectory = @"assets";
         _quantized = [json[@"model"][@"quantized"] boolValue];
         _backend = json[@"model"][@"backend"];
         _type = json[@"model"][@"type"];
+        
+        _modes = TIOParseModelModes(json[@"model"][@"modes"]);
         
         _placeholder = json[@"placeholder"] != nil
                     && [json[@"placeholder"] boolValue] == YES;

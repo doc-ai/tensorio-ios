@@ -310,7 +310,8 @@ The *model.json* file has the following basic structure:
     "file": "model.tflite",
     "quantized": false,
     "type": "image.classification.imagenet",
-    "backend": "tflite"
+    "backend": "tflite",
+    "modes": ["train"]
   },
   "inputs": [
     {
@@ -342,6 +343,7 @@ The model field is a dictionary that itself contains two to five entries:
   "file": "model.tflite",
   "backend": "tflite",
   "quantized": false,
+  "modes": ["train"],
   "type": "image.classification.imagenet",
   "class": "MyOptionalCustomClassName"
 }
@@ -367,6 +369,18 @@ This field is required.
 The *quantized* field is a boolean value that is `true` when your model is quantized and `false` when it is not. Quantized models perform inference on single byte, unsigned integer representations of your data (`uint8_t`). Quantized models involve additional considerations which are discussed below.
 
 This field is required.
+
+*modes*
+
+The *modes* field is an array of strings that describes the modes supported by this model, for example, if the model supports prediction, training, or evaluation. The strings may be the following values:
+
+- *predict*
+- *train*
+- *eval*
+
+TF Lite models only support prediction while TensorFlow models support both training and prediction.
+
+This field is optional but will be required in a future version.
 
 *type*
 
@@ -1024,7 +1038,8 @@ Noting the value of the *model.quantized* field and the presence of *quantize* a
   "model": {
     "file": "model.tflite",
     "backend": "tflite",
-    "quantized": true
+    "quantized": true,
+    "modes": ["predict"]
   },
   "inputs": [
     {
@@ -1301,6 +1316,7 @@ The *model.json* file might look like:
     "file": "model.tflite",
     "backend": "tflite",
     "quantized": false,
+    "modes": ["predict"]
   },
   "inputs": [
     {

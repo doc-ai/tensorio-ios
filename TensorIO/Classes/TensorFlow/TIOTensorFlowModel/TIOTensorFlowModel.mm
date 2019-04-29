@@ -18,7 +18,6 @@
 //  limitations under the License.
 //
 
-//  TODO: Using class string to identity tensorflow model in model.json, identify some other way
 //  TODO: Overloading model.file in model.json to point to predict directory, must also point to train and eval dirs
 //  TODO: Duplicating input/output parsing but may need backend specific parsing as well
 //  TODO: Duplicated TensorType defines, should be defined elsewhere
@@ -51,6 +50,7 @@
 #import "TIOTensorFlowData.h"
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
+#import "TIOTensorFlowErrors.h"
 
 static NSString * const kTensorTypeVector = @"array";
 static NSString * const kTensorTypeImage = @"image";
@@ -63,8 +63,6 @@ typedef std::vector<std::string> TensorNames;
 @implementation TIOTensorFlowModel {
     @protected
     tensorflow::SavedModelBundle _saved_model_bundle;
-    // tensorflow::MetaGraphDef _meta_graph_def;
-    // std::unique_ptr<tensorflow::Session> _session;
     
     // Index to Interface Description
     NSArray<TIOLayerInterface*> *_indexedInputInterfaces;
@@ -77,6 +75,9 @@ typedef std::vector<std::string> TensorNames;
     // Name to Index
     NSDictionary<NSString*,NSNumber*> *_namedInputToIndex;
     NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
+    
+    // Training Support
+    NSArray<NSString*> *_trainingOps;
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
@@ -102,11 +103,14 @@ typedef std::vector<std::string> TensorNames;
         _placeholder = bundle.placeholder;
         _quantized = bundle.quantized;
         _type = bundle.type;
+        _backend = bundle.backend;
+        _modes = bundle.modes;
         
         // Input and output parsing
         
         NSArray<NSDictionary<NSString*,id>*> *inputs = bundle.info[@"inputs"];
         NSArray<NSDictionary<NSString*,id>*> *outputs = bundle.info[@"outputs"];
+        NSDictionary<NSString*,id> *train = bundle.info[@"train"];
         
         if ( inputs == nil ) {
             NSLog(@"Expected input array field in model.json, none found");
@@ -125,6 +129,11 @@ typedef std::vector<std::string> TensorNames;
         
         if ( ![self _parseOutputs:outputs] ) {
             NSLog(@"Unable to parse output field in model.json");
+            return nil;
+        }
+        
+        if ( ![self _parseTrainingDict:train] ) {
+            NSLog(@"Unable to parse train field in model.json");
             return nil;
         }
     }
@@ -240,6 +249,36 @@ typedef std::vector<std::string> TensorNames;
     return !error;
 }
 
+/**
+ * Parses the train dict if this model includes "train" as one of its supported modes.
+ *
+ * @param train A JSON dictionary describing the model's training options.
+ *
+ * @return BOOL `YES` if the JSON dictionary was successfully parsed, `NO` otherwise.
+ */
+
+- (BOOL)_parseTrainingDict:(nullable NSDictionary<NSString*,id>*)train {
+    if ( !TIOModelModeTrains(_modes) ) {
+        return YES;
+    }
+    
+    if ( !train ) {
+        NSLog(@"Model with identifier %@ includes 'train' as one of its modes "
+                "but does not have a train field in model.json",
+                _identifier);
+    }
+    
+    if ( !train[@"ops"] ) {
+        NSLog(@"Model with identifier %@ includes 'train' as one of its modes "
+                "but does not have a train.ops field in model.json",
+                _identifier);
+    }
+    
+    _trainingOps = train[@"ops"];
+    
+    return YES;
+}
+
 // MARK: - Model Memory Management
 
 /**
@@ -256,15 +295,22 @@ typedef std::vector<std::string> TensorNames;
     }
     
     std::string model_dir = self.bundle.modelPredictPath.UTF8String;
-    const std::unordered_set<std::string> tags = {tensorflow::kSavedModelTagServe};
+    std::unordered_set<std::string> tags;
     
-    // tensorflow::SavedModelBundle bundle;
+    if ( TIOModelModeTrains(_modes) ) {
+        tags = {tensorflow::kSavedModelTagTrain};
+    } else if (TIOModelModePredicts(_modes)) {
+        tags = {tensorflow::kSavedModelTagServe};
+    } else {
+        NSLog(@"No support model modes, i.e. predict, train, or eval");
+        *error = TIOTensorFlowModelModeError;
+        return NO;
+    }
+    
     tensorflow::SessionOptions session_opts;
     tensorflow::RunOptions run_opts;
     
     TF_CHECK_OK(LoadSavedModel(session_opts, run_opts, model_dir, tags, &_saved_model_bundle));
-    //_meta_graph_def = bundle.meta_graph_def;
-    //_session = bundle.session.get();
     
     _loaded = YES;
     
@@ -277,7 +323,6 @@ typedef std::vector<std::string> TensorNames;
 
 - (void)unload {
     TF_CHECK_OK(_saved_model_bundle.session.get()->Close());
-    
     _loaded = NO;
 }
 
@@ -313,15 +358,17 @@ typedef std::vector<std::string> TensorNames;
  * Prepares the model's input tensors and performs inference, returning the results.
  *
  * @param input Any class conforming to `TIOData` whose bytes will be copied to the input tensors
- *
  * @return TIOData The results of performing inference
  */
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
     [self load:nil];
+    
     const NamedTensors inputs = [self _prepareInput:input];
     const Tensors outputs = [self _runInference:inputs];
-    return [self _captureOutput:outputs];
+    const id<TIOData> results = [self _captureOutput:outputs];
+    
+    return results;
 }
 
 /**
@@ -329,6 +376,7 @@ typedef std::vector<std::string> TensorNames;
  * prepares tensors with them.
  *
  * @param data Any class conforming to the `TIOData` protocol
+ * @return NamedTensors Tensors ready to be passing to an inference session
  */
 
 - (NamedTensors)_prepareInput:(id<TIOData>)data  {
@@ -421,6 +469,9 @@ typedef std::vector<std::string> TensorNames;
 
 /**
  * Runs inference on the model with prepared inputs.
+ *
+ * @param inputs `NamedTensors` that are ready to be passed to an inference session
+ * @return Tensors The output tensors that are a result of running inference
  */
 
 - (Tensors)_runInference:(NamedTensors)inputs {
@@ -440,9 +491,10 @@ typedef std::vector<std::string> TensorNames;
 /**
  * Captures outputs from the model.
  *
+ * @param outputTensors `Tensors` that have been produced by an inference session
  * @return TIOData A class that is appropriate to the model output. Currently all outputs are
- * wrapped in an instance of `NSDictionary` whose keys are taken from the json description of the
- * model outputs.
+ *  wrapped in an instance of `NSDictionary` whose keys are taken from the json description of the
+ *  model outputs.
  */
 
 - (id<TIOData>)_captureOutput:(Tensors)outputTensors {
@@ -468,6 +520,172 @@ typedef std::vector<std::string> TensorNames;
  */
 
 - (id<TIOData>)_captureOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface*)interface {
+    __block id<TIOData> data;
+    
+    [interface
+        matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
+            
+            data = [[TIOPixelBuffer alloc] initWithTensor:tensor description:pixelBufferDescription];
+        
+        } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+            
+            TIOVector *vector = [[TIOVector alloc] initWithTensor:tensor description:vectorDescription];
+            
+            if ( vectorDescription.isLabeled ) {
+                // If the vector's output is labeled, return a dictionary mapping labels to values
+                data = [vectorDescription labeledValues:vector];
+            } else {
+                // If the vector's output is single-valued just return that value
+                data = vector.count == 1
+                    ? vector[0]
+                    : vector;
+            }
+        }];
+    
+    return data;
+}
+
+@end
+
+// MARK: - Training
+
+@implementation TIOTensorFlowModel (TIOTrainableModel)
+
+- (id<TIOData>)train:(TIOBatch*)batch {
+    [self load:nil];
+    
+    const NamedTensors inputs = [self _prepareTrainingInput:batch];
+    const Tensors outputs = [self _runTraining:inputs];
+    const id<TIOData> results = [self _captureTrainingOutput:outputs];
+    
+    return results;
+}
+
+/**
+ * Iterates through the contents of batch, matching them to the model's training
+ * input layers, and prepares tensors with them.
+ *
+ * @param batch A batch of training data
+ * @return NamedTensors Tensors ready to be passing to a training session
+ */
+
+- (NamedTensors)_prepareTrainingInput:(TIOBatch*)batch  {
+    NamedTensors inputs;
+    
+    for ( NSString *key in batch.keys ) {
+        TIOLayerInterface *interface = _namedInputInterfaces[key];
+        NamedTensor input = [self _prepareTrainingInput:batch interface:interface];
+        inputs.push_back(input);
+    }
+    
+    return inputs;
+}
+
+/**
+ * Prepares a tensor from a training input
+ *
+ * @param batch The data whose bytes will be copied to the tensor
+ * @param interface A description of the data which the tensor expects
+ */
+
+- (NamedTensor)_prepareTrainingInput:(TIOBatch*)batch interface:(TIOLayerInterface*)interface {
+    __block NamedTensor named_tensor;
+    
+    NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
+    
+    [interface matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
+        
+        assert( [column[0] isKindOfClass:TIOPixelBuffer.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:pixelBufferDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+        
+    } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+        
+        assert( [column[0] isKindOfClass:NSArray.class]
+            ||  [column[0] isKindOfClass:NSData.class]
+            ||  [column[0] isKindOfClass:NSNumber.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:vectorDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+    }];
+    
+    return named_tensor;
+}
+
+/**
+ * Runs training on the model with prepared inputs.
+ *
+ * @param inputs `NamedTensors` that are ready to be passed to a training session
+ * @return Tensors The output tensors that are a result of running training
+ */
+
+- (Tensors)_runTraining:(NamedTensors)inputs {
+    TensorNames training_names;
+    TensorNames output_names;
+    Tensors outputs;
+    
+    // Output names
+    
+    for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
+        output_names.push_back(interface.name.UTF8String);
+    }
+    
+    // Training op names
+    
+    for (NSString *op in _trainingOps) {
+         training_names.push_back(op.UTF8String);
+    }
+    
+    tensorflow::Session *session = _saved_model_bundle.session.get();
+    TF_CHECK_OK(session->Run(inputs, {}, training_names, nullptr)); // Train
+    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs)); // Get outputs (loss)
+    
+    // Train and get loss at the same time : results in a slightly different output
+    // TF_CHECK_OK(session->Run(inputs, output_names, training_names, &outputs));
+    
+    return outputs;
+}
+
+/**
+ * Captures training outputs from the model.
+ *
+ * @param outputTensors `Tensors` that have been produced by a training session
+ * @return TIOData A class that is appropriate to the model output. Currently all outputs are
+ *  wrapped in an instance of `NSDictionary` whose keys are taken from the JSON description of the
+ *  model's training outputs.
+ */
+
+- (id<TIOData>)_captureTrainingOutput:(Tensors)outputTensors {
+   // Note that this implementation is currently identical to _captureOutput:
+   
+    NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
+
+    for ( int index = 0; index < _indexedOutputInterfaces.count; index++ ) {
+        TIOLayerInterface *interface = _indexedOutputInterfaces[index];
+        tensorflow::Tensor tensor = outputTensors[index];
+        
+        id<TIOData> data = [self _captureTrainingOutput:tensor interface:interface];
+        outputs[interface.name] = data;
+    }
+    
+    return outputs.copy;
+}
+
+/**
+ * Copies bytes from the tensor to an appropriate class that conforms to `TIOData`
+ *
+ * @param tensor The output tensor whose bytes will be captured
+ * @param interface A description of the data which this tensor contains
+ */
+
+- (id<TIOData>)_captureTrainingOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface*)interface {
+    // Note that this implementation is currently identical to _captureOutput:interface
+    
     __block id<TIOData> data;
     
     [interface

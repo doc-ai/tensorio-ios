@@ -23,6 +23,8 @@
 #import "TIOLayerInterface.h"
 #import "TIOData.h"
 #import "TIOModel.h"
+#import "TIOTrainableModel.h"
+#import "TIOBatch.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -49,12 +51,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) BOOL placeholder;
 @property (readonly) BOOL quantized;
 @property (readonly) NSString *type;
+@property (readonly) NSString *backend;
+@property (readonly) TIOModelMode modes;
 @property (readonly) BOOL loaded;
 
 @property (readonly) NSArray<TIOLayerInterface*> *inputs;
 @property (readonly) NSArray<TIOLayerInterface*> *outputs;
 
-// Model Protocol Methods
+// MARK: - Model Protocol Methods
 
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle NS_DESIGNATED_INITIALIZER;
 
@@ -63,6 +67,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)load:(NSError**)error;
 - (void)unload;
 
+/**
+ * Performs inference on the provided input and returns the results. The primary interface to a
+ * conforming class.
+ *
+ * @param input Any class conforming to `TIOData` that you want to run inference on
+ *
+ * @return TIOData The results of performing inference
+ */
+
 - (id<TIOData>)runOn:(id<TIOData>)input;
 
 - (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
@@ -70,6 +83,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index;
 - (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name;
+
+@end
+
+// MARK: - Training
+
+@interface TIOTensorFlowModel (TIOTrainableModel)
+
+/**
+ * Calls the underlying training op with a single batch.
+ *
+ * A complete round of training will involve iterating over all the available
+ * batches for a certain number of epochs. It is the responsibility of other
+ * objects to execute those loops and prepare batches for calls to this method.
+ */
+
+- (id<TIOData>)train:(TIOBatch*)batch;
 
 @end
 

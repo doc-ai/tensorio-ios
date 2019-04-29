@@ -8,7 +8,8 @@
 	"model": {
 		"file": "model.tflite",
 		"quantized": false,
-		"backend": "tflite"
+		"backend": "tflite",
+		"modes": ["predict"]
 	},
 	"inputs": [
 		{

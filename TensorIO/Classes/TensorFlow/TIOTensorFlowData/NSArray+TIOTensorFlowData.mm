@@ -19,6 +19,7 @@
 //
 
 //  TODO: Consider using templated c++ helpers
+//  TODO: Refactor similarity between batched and unbatched tensor preparation (#62)
 
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
@@ -86,7 +87,7 @@
     
     for (NSNumber *dim in dshape) {
         if ( dim.integerValue == -1 ) {
-            dims.push_back(1); // batch size of 1
+            dims.push_back(1);
         } else {
             dims.push_back(dim.integerValue);
         }
@@ -136,6 +137,110 @@
         for ( NSInteger i = 0; i < self.count; i++ ) {
             ((float_t *)buffer)[i] = ((NSNumber*)self[i]).floatValue;
         }
+        return tensor;
+    }
+}
+
+// MARK: - Batch (Training)
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    
+    int32_t batch_size = (int32_t)column.count;
+    
+    TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
+    NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
+    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
+    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    
+    // Establish shape
+    
+    std::vector<tensorflow::int64> dims;
+    
+    // When the zeroeth dimension is -1 convert the batch size placeholder to the actual batch size
+    
+    for (NSNumber *dim in dshape) {
+        if ( dim.integerValue == -1 ) {
+            dims.push_back(batch_size);
+        } else {
+            dims.push_back(dim.integerValue);
+        }
+    }
+    
+    tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);
+    tensorflow::TensorShape shape = tensorflow::TensorShape(dim_sizes);
+    
+    // Typed enumeration over the column
+    
+    if ( description.isQuantized && quantizer != nil ) {
+        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *arrobj = (NSArray*)obj;
+            size_t offset = idx * length;
+            for ( NSInteger i = 0; i < arrobj.count; i++ ) {
+                ((uint8_t *)buffer)[offset+i] = quantizer(((NSNumber*)arrobj[i]).floatValue);
+            }
+        }];
+        
+        return tensor;
+    } else if ( description.isQuantized && quantizer == nil ) {
+        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
+        auto flat_tensor = tensor.flat<uint8_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *arrobj = (NSArray*)obj;
+            size_t offset = idx * length;
+            for ( NSInteger i = 0; i < arrobj.count; i++ ) {
+                ((uint8_t *)buffer)[offset+i] = ((NSNumber*)arrobj[i]).unsignedCharValue;
+            }
+        }];
+        
+        return tensor;
+    } else if ( dtype == TIODataTypeInt32 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT32, shape);
+        auto flat_tensor = tensor.flat<int32_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *arrobj = (NSArray*)obj;
+            size_t offset = idx * length;
+            for ( NSInteger i = 0; i < arrobj.count; i++ ) {
+                ((int32_t *)buffer)[offset+i] = (int32_t)((NSNumber*)arrobj[i]).longValue;
+            }
+        }];
+        
+        return tensor;
+    } else if ( dtype == TIODataTypeInt64 ) {
+        tensorflow::Tensor tensor(tensorflow::DT_INT64, shape);
+        auto flat_tensor = tensor.flat<int64_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *arrobj = (NSArray*)obj;
+            size_t offset = idx * length;
+            for ( NSInteger i = 0; i < arrobj.count; i++ ) {
+                ((int64_t *)buffer)[offset+i] = (int64_t)((NSNumber*)arrobj[i]).longLongValue;
+            }
+        }];
+        
+        return tensor;
+    } else {
+        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
+        auto flat_tensor = tensor.flat<float_t>();
+        auto buffer = flat_tensor.data();
+        
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *arrobj = (NSArray*)obj;
+            size_t offset = idx * length;
+            for ( NSInteger i = 0; i < arrobj.count; i++ ) {
+                ((float_t *)buffer)[offset+i] = ((NSNumber*)arrobj[i]).floatValue;
+            }
+        }];
+        
         return tensor;
     }
 }

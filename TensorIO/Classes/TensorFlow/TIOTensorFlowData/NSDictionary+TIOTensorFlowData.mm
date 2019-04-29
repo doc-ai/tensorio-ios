@@ -32,4 +32,11 @@
     return tensorflow::Tensor(tensorflow::DT_FLOAT, {});
 }
 
+// MARK: - Batch (Training)
+
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
+    NSAssert(NO, @"This method is unimplemented. Tensor bytes cannot be captured from a dictionary.");
+    return tensorflow::Tensor(tensorflow::DT_FLOAT, {});
+}
+
 @end

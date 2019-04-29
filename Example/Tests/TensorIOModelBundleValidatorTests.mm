@@ -2286,6 +2286,32 @@
     XCTAssertNotNil(error);
 }
 
+// MARK: - Train Validating
+
+- (void)testTrainDictWithoutOpsDoesNotValidate {
+    // it should not validate
+    
+    NSError *error = nil;
+    BOOL valid = [self.modelValidator validateTrainProperties:@{} error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testTrainDictWithOpsIsValid {
+    // it should validate
+    
+    NSDictionary *JSON = @{
+        @"ops": @[@"train"]
+    };
+    
+    NSError *error = nil;
+    BOOL valid = [self.modelValidator validateTrainProperties:JSON error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
 // MARK: - Custom Validation
 
 - (void)testInvalidCustomValidationDoesNotValidate {
@@ -2376,7 +2402,29 @@
     XCTAssertNil(error);
 }
 
-//MARK: - Placeholder Models
+- (void)testModelWithoutBackendValidates {
+    // it should validate
+    
+    NSError *error;
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"no-backend.tiobundle"];
+    BOOL valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+- (void)testModelWithoutModesValidates {
+    // it should validate
+    
+    NSError *error;
+    TIOModelBundleValidator *validator = [self validatorForFilename:@"no-modes.tiobundle"];
+    BOOL valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
+// MARK: - Placeholder Models
 
 - (void)testPlaceholderModelValidates {
     TIOModelBundleValidator *validator;

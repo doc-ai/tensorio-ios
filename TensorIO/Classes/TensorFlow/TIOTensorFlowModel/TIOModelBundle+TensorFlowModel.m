@@ -31,7 +31,11 @@
 }
 
 - (NSString*)modelTrainPath {
-    return nil;
+    if (self.isPlaceholder) {
+        return nil;
+    } else {
+        return [self.path stringByAppendingPathComponent:self.info[@"model"][@"file"]];
+    }
 }
 
 - (NSString*)modelEvalPath {
