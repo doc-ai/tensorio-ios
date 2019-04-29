@@ -110,6 +110,7 @@ typedef std::vector<std::string> TensorNames;
         
         NSArray<NSDictionary<NSString*,id>*> *inputs = bundle.info[@"inputs"];
         NSArray<NSDictionary<NSString*,id>*> *outputs = bundle.info[@"outputs"];
+        NSDictionary<NSString*,id> *train = bundle.info[@"train"];
         
         if ( inputs == nil ) {
             NSLog(@"Expected input array field in model.json, none found");
@@ -131,8 +132,10 @@ typedef std::vector<std::string> TensorNames;
             return nil;
         }
         
-        // TODO: [addressing in this pr] proper parsing of training ops
-        _trainingOps = bundle.info[@"train"][@"ops"];
+        if ( ![self _parseTrainingDict:train] ) {
+            NSLog(@"Unable to parse train field in model.json");
+            return nil;
+        }
     }
     
     return self;
@@ -244,6 +247,36 @@ typedef std::vector<std::string> TensorNames;
     _namedOutputToIndex = namedOutputToIndex.copy;
     
     return !error;
+}
+
+/**
+ * Parses the train dict if this model includes "train" as one of its supported modes.
+ *
+ * @param train A JSON dictionary describing the model's training options.
+ *
+ * @return BOOL `YES` if the JSON dictionary was successfully parsed, `NO` otherwise.
+ */
+
+- (BOOL)_parseTrainingDict:(nullable NSDictionary<NSString*,id>*)train {
+    if ( !TIOModelModeTrains(_modes) ) {
+        return YES;
+    }
+    
+    if ( !train ) {
+        NSLog(@"Model with identifier %@ includes 'train' as one of its modes "
+                "but does not have a train field in model.json",
+                _identifier);
+    }
+    
+    if ( !train[@"ops"] ) {
+        NSLog(@"Model with identifier %@ includes 'train' as one of its modes "
+                "but does not have a train.ops field in model.json",
+                _identifier);
+    }
+    
+    _trainingOps = train[@"ops"];
+    
+    return YES;
 }
 
 // MARK: - Model Memory Management

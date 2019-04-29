@@ -163,6 +163,19 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
 - (BOOL)validateOutputs:(NSArray*)JSON error:(NSError**)error;
 
 /**
+ * Validates train properties from a JSON dictionary. Called by `validate:error:`
+ *
+ * The `validate:error:` function passes the value of the "train" field to this method.
+ *
+ * @param JSON The bundle properties loaded from a model.json file.
+ * @param error Pointer to an `NSError` that will be set if the train properties could not be validated.
+ *
+ * @return BOOL `YES` if the train properties were successfully validated, `NO` otherwise.
+ */
+
+- (BOOL)validateTrainProperties:(NSDictionary*)JSON error:(NSError**)error;
+
+/**
  * Executes a custom validator. Called by `validate:error:`
  *
  * The `validate:error:` function passes the custom validator provided there to this function.

@@ -101,6 +101,8 @@ static const NSUInteger TIOModelMissingPropertyErrorCode = 501;
 static const NSUInteger TIOModelFileDoesNotExistsErrorCode = 502;
 static const NSUInteger TIOLabelsFileDoesNotExistErrorCode = 503;
 
+static const NSUInteger TIOTrainDoesNotIncludeOpsArrayErrorCode  = 600;
+
 // MARK: -
 
 static NSError * TIOMalformedJSONError(void);
@@ -173,6 +175,10 @@ static NSError * TIOImageOutputDenormalizeBiasIsEmptyError(void);
 static NSError * TIOImageOutputDenormalizeBiasMustHaveCorectKeysError(void);
 static NSError * TIOImageOutputDenormalizeBiasMustBeNumericValuesError(void);
 static NSError * TIOImageOutputFormatNotValidError(void);
+
+// MARK: -
+
+static NSError * TIOTrainDoesNotIncludeOpsArrayError(void);
 
 // MARK: -
 
@@ -265,6 +271,14 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
         return NO;
     }
     
+    // Validate train properties, but only if training is supported
+    
+    if ( JSON[@"model"][@"modes"] != nil && [JSON[@"model"][@"modes"] containsObject:@"train"] ) {
+        if ( ![self validateTrainProperties:JSON[@"train"] error:error] ) {
+            return NO;
+        }
+    }
+    
     // Validate assets
     
     if ( ![self validateAssets:JSON error:error] ) {
@@ -331,6 +345,17 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
     if ( JSON[@"placeholder"] == nil || [JSON[@"placeholder"] boolValue] == NO ) {
         if ( JSON[@"model"] == nil || ![JSON[@"model"] isKindOfClass:[NSDictionary class]] ) {
             *error = TIOMissingPropertyError(@"model");
+            return NO;
+        }
+    }
+    
+    // Train is optional
+    
+    // Enforce presence of a train field only if supported modes includes train
+    
+    if ( JSON[@"model"][@"modes"] != nil && [JSON[@"model"][@"modes"] containsObject:@"train"] ) {
+        if ( JSON[@"train"] == nil || ![JSON[@"train"] isKindOfClass:[NSDictionary class]] ) {
+            *error = TIOMissingPropertyError(@"train");
             return NO;
         }
     }
@@ -1012,6 +1037,18 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
     return YES;
 }
 
+- (BOOL)validateTrainProperties:(NSDictionary*)JSON error:(NSError**)error {
+    
+    // ops
+    
+    if ( JSON[@"ops"] == nil || ![JSON[@"ops"] isKindOfClass:[NSArray class]] ) {
+        *error = TIOTrainDoesNotIncludeOpsArrayError();
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error {
     return customValidator(self.path, JSON, error);
 }
@@ -1483,6 +1520,15 @@ static NSError * TIOImageOutputFormatNotValidError(void) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOImageOutputFormatNotValidErrorCode userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An image type outputs.format field is missing or has an invalid value"],
         NSLocalizedRecoverySuggestionErrorKey: @"Ensure that every image type outputs.format field in model.json is either \"RGB\" or \"BRG\""
+    }];
+}
+
+// MARK: - Train Errors
+
+static NSError * TIOTrainDoesNotIncludeOpsArrayError(void) {
+    return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOTrainDoesNotIncludeOpsArrayErrorCode userInfo:@{
+        NSLocalizedDescriptionKey: @"The train field does not include an ops array with the named training ops to run.",
+        NSLocalizedRecoverySuggestionErrorKey: @"The train.ops field should be an array of string values that name the ops to run for training."
     }];
 }
 

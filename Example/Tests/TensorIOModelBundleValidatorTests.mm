@@ -2286,6 +2286,32 @@
     XCTAssertNotNil(error);
 }
 
+// MARK: - Train Validating
+
+- (void)testTrainDictWithoutOpsDoesNotValidate {
+    // it should not validate
+    
+    NSError *error = nil;
+    BOOL valid = [self.modelValidator validateTrainProperties:@{} error:&error];
+    
+    XCTAssertFalse(valid);
+    XCTAssertNotNil(error);
+}
+
+- (void)testTrainDictWithOpsIsValid {
+    // it should validate
+    
+    NSDictionary *JSON = @{
+        @"ops": @[@"train"]
+    };
+    
+    NSError *error = nil;
+    BOOL valid = [self.modelValidator validateTrainProperties:JSON error:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+}
+
 // MARK: - Custom Validation
 
 - (void)testInvalidCustomValidationDoesNotValidate {
