@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The shape of the pixel data, including width, height, and channels
  */
 
-@property (readonly) TIOImageVolume shape;
+@property (readonly) TIOImageVolume imageVolume;
 
 /**
  * A function that normalizes pixel values from a uint8_t range of `[0,255]` to some other
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype A read-only instance of `TIOPixelBufferLayerDescription`
  */
 
-- (instancetype)initWithPixelFormat:(OSType)pixelFormat shape:(TIOImageVolume)shape batched:(BOOL)batched normalizer:(nullable TIOPixelNormalizer)normalizer denormalizer:(nullable TIOPixelDenormalizer)denormalizer quantized:(BOOL)quantized NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPixelFormat:(OSType)pixelFormat imageVolume:(TIOImageVolume)shape batched:(BOOL)batched normalizer:(nullable TIOPixelNormalizer)normalizer denormalizer:(nullable TIOPixelDenormalizer)denormalizer quantized:(BOOL)quantized NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.

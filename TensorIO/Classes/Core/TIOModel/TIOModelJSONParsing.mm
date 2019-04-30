@@ -171,7 +171,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
     TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name isInput:isInput pixelBufferDescription:
         [[TIOPixelBufferLayerDescription alloc]
             initWithPixelFormat:pixelFormat
-            shape:imageVolume
+            imageVolume:imageVolume
             batched:batched
             normalizer:normalizer
             denormalizer:denormalizer

@@ -218,7 +218,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         result = TIOCreateCVPixelBufferFromTensorFlowTensor<uint8_t>(
             &pixelBuffer,
             tensor,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.pixelFormat,
             pixelBufferDescription.denormalizer
         );
@@ -226,7 +226,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         result = TIOCreateCVPixelBufferFromTensorFlowTensor<float_t>(
             &pixelBuffer,
             tensor,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.pixelFormat,
             pixelBufferDescription.denormalizer
         );
@@ -259,8 +259,8 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     
     // Transform image using vision pipeline
     
-    if ( width == pixelBufferDescription.shape.width
-        && height == pixelBufferDescription.shape.height
+    if ( width == pixelBufferDescription.imageVolume.width
+        && height == pixelBufferDescription.imageVolume.height
         && pixelFormat == pixelBufferDescription.pixelFormat
         && orientation == kCGImagePropertyOrientationUp ) {
         transformedPixelBuffer = pixelBuffer;
@@ -274,9 +274,9 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     
     // Tensor shape
     
-    const int t_channels = pixelBufferDescription.shape.channels;
-    const int t_width = pixelBufferDescription.shape.width;
-    const int t_height = pixelBufferDescription.shape.height;
+    const int t_channels = pixelBufferDescription.imageVolume.channels;
+    const int t_width = pixelBufferDescription.imageVolume.width;
+    const int t_height = pixelBufferDescription.imageVolume.height;
     
     tensorflow::TensorShape shape;
     
@@ -294,7 +294,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         TIOCopyCVPixelBufferToTensorFlowTensor<uint8_t>(
             transformedPixelBuffer,
             tensor,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.normalizer,
             kTIOPixelBufferCopyNoOffset);
         return tensor;
@@ -303,7 +303,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         TIOCopyCVPixelBufferToTensorFlowTensor<float_t>(
             transformedPixelBuffer,
             tensor,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.normalizer,
             kTIOPixelBufferCopyNoOffset);
         return tensor;
@@ -321,9 +321,9 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     
     // Tensor shape
     
-    const int t_channels = pixelBufferDescription.shape.channels;
-    const int t_width = pixelBufferDescription.shape.width;
-    const int t_height = pixelBufferDescription.shape.height;
+    const int t_channels = pixelBufferDescription.imageVolume.channels;
+    const int t_width = pixelBufferDescription.imageVolume.width;
+    const int t_height = pixelBufferDescription.imageVolume.height;
     const int length = t_height * t_width * t_channels;
     
     tensorflow::TensorShape shape;
@@ -351,8 +351,8 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             
             // Transform image using vision pipeline
             
-            if ( width == pixelBufferDescription.shape.width
-                && height == pixelBufferDescription.shape.height
+            if ( width == pixelBufferDescription.imageVolume.width
+                && height == pixelBufferDescription.imageVolume.height
                 && pixelFormat == pixelBufferDescription.pixelFormat
                 && orientation == kCGImagePropertyOrientationUp ) {
                 transformedPixelBuffer = pixelBuffer;
@@ -367,7 +367,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             TIOCopyCVPixelBufferToTensorFlowTensor<uint8_t>(
                 transformedPixelBuffer,
                 tensor,
-                pixelBufferDescription.shape,
+                pixelBufferDescription.imageVolume,
                 pixelBufferDescription.normalizer,
                 offset);
         }];
@@ -390,8 +390,8 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             
             // Transform image using vision pipeline
             
-            if ( width == pixelBufferDescription.shape.width
-                && height == pixelBufferDescription.shape.height
+            if ( width == pixelBufferDescription.imageVolume.width
+                && height == pixelBufferDescription.imageVolume.height
                 && pixelFormat == pixelBufferDescription.pixelFormat
                 && orientation == kCGImagePropertyOrientationUp ) {
                 transformedPixelBuffer = pixelBuffer;
@@ -406,7 +406,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             TIOCopyCVPixelBufferToTensorFlowTensor<float_t>(
                 transformedPixelBuffer,
                 tensor,
-                pixelBufferDescription.shape,
+                pixelBufferDescription.imageVolume,
                 pixelBufferDescription.normalizer,
                 offset);
         }];
