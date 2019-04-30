@@ -19,6 +19,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TIOModelBackend.h"
 
 // Backend Names
 
@@ -38,10 +39,12 @@ static NSString * const TIONoBackendAvailableReason =
     @"along with the core pod installation. Add pod 'TensorIO/TFLite' "
     @"or another backend to your podfile and run pod install.";
 
-// Available Backend
-// Add your backend define and name to this method
+@implementation TIOModelBackend
 
-NSString * _Nullable TIOAvailableBackend(void) {
+// Available Backend
+// Add your backend preprocessor definition and name to this method
+
++ (nullable NSString*)availableBackend {
     #ifdef TIO_TFLITE
         return TIOBackendTFLite;
     #elif TIO_TENSORFLOW
@@ -58,7 +61,7 @@ NSString * _Nullable TIOAvailableBackend(void) {
 // Class Name for Backend
 // Add your backend name and class name to this dictionary
 
-NSString * _Nullable TIOClassNameForBackend(NSString *backend) {
++ (nullable NSString*)classNameForBackend:(NSString*)backend {
     static NSDictionary<NSString*,NSString*> *backends = nil;
     static dispatch_once_t onceToken;
     
@@ -71,3 +74,5 @@ NSString * _Nullable TIOClassNameForBackend(NSString *backend) {
     
     return backends[backend.lowercaseString];
 }
+
+@end
