@@ -9,12 +9,13 @@
 /* Begin PBXBuildFile section */
 		E30058CC221505C2002F41AE /* models in Resources */ = {isa = PBXBuildFile; fileRef = E30058CB221505C2002F41AE /* models */; };
 		E30058D022150B16002F41AE /* ResultInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E30058CE22150B16002F41AE /* ResultInfoView.m */; };
+		E34F12CD2277C565000A0DD7 /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E34F12CC2277C565000A0DD7 /* models-tests */; };
 		E35A64A92215010D0047D035 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A64A82215010D0047D035 /* AppDelegate.swift */; };
 		E35A64AB2215010D0047D035 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A64AA2215010D0047D035 /* ViewController.swift */; };
 		E35A64AE2215010D0047D035 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E35A64AC2215010D0047D035 /* Main.storyboard */; };
 		E35A64B02215010E0047D035 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E35A64AF2215010E0047D035 /* Assets.xcassets */; };
 		E35A64B32215010E0047D035 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E35A64B12215010E0047D035 /* LaunchScreen.storyboard */; };
-		E35A64BE2215010F0047D035 /* SwiftExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A64BD2215010F0047D035 /* SwiftExampleTests.swift */; };
+		E35A64BE2215010F0047D035 /* TIOSwiftTFLiteModelIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A64BD2215010F0047D035 /* TIOSwiftTFLiteModelIntegrationTests.swift */; };
 		F367109FA376DFBB95AD51E7 /* Pods_SwiftExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA48DD7D6BFFBEF5D881D8A5 /* Pods_SwiftExample.framework */; };
 		F5B86247B81F15A31FDF33A1 /* Pods_SwiftExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2E5F5F62F7BC54D05893EE8 /* Pods_SwiftExampleTests.framework */; };
 /* End PBXBuildFile section */
@@ -38,6 +39,7 @@
 		E30058CD22150B15002F41AE /* SwiftExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		E30058CE22150B16002F41AE /* ResultInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ResultInfoView.m; path = ../../Example/TensorIO/ResultInfoView.m; sourceTree = "<group>"; };
 		E30058CF22150B16002F41AE /* ResultInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResultInfoView.h; path = ../../Example/TensorIO/ResultInfoView.h; sourceTree = "<group>"; };
+		E34F12CC2277C565000A0DD7 /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
 		E35A64A52215010D0047D035 /* SwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E35A64A82215010D0047D035 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E35A64AA2215010D0047D035 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,7 +48,7 @@
 		E35A64B22215010E0047D035 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E35A64B42215010E0047D035 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E35A64B92215010F0047D035 /* SwiftExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E35A64BD2215010F0047D035 /* SwiftExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExampleTests.swift; sourceTree = "<group>"; };
+		E35A64BD2215010F0047D035 /* TIOSwiftTFLiteModelIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TIOSwiftTFLiteModelIntegrationTests.swift; sourceTree = "<group>"; };
 		E35A64BF2215010F0047D035 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6175394B959A44D25FEAE38 /* Pods-SwiftExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftExampleTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftExampleTests/Pods-SwiftExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		FA48DD7D6BFFBEF5D881D8A5 /* Pods_SwiftExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +123,7 @@
 				E30058CE22150B16002F41AE /* ResultInfoView.m */,
 				E35A64AC2215010D0047D035 /* Main.storyboard */,
 				E30058CB221505C2002F41AE /* models */,
+				E34F12CC2277C565000A0DD7 /* models-tests */,
 				E35A64AF2215010E0047D035 /* Assets.xcassets */,
 				E35A64B12215010E0047D035 /* LaunchScreen.storyboard */,
 				E35A64B42215010E0047D035 /* Info.plist */,
@@ -132,7 +135,7 @@
 		E35A64BC2215010F0047D035 /* SwiftExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				E35A64BD2215010F0047D035 /* SwiftExampleTests.swift */,
+				E35A64BD2215010F0047D035 /* TIOSwiftTFLiteModelIntegrationTests.swift */,
 				E35A64BF2215010F0047D035 /* Info.plist */,
 			);
 			path = SwiftExampleTests;
@@ -223,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E35A64B32215010E0047D035 /* LaunchScreen.storyboard in Resources */,
+				E34F12CD2277C565000A0DD7 /* models-tests in Resources */,
 				E35A64B02215010E0047D035 /* Assets.xcassets in Resources */,
 				E30058CC221505C2002F41AE /* models in Resources */,
 				E35A64AE2215010D0047D035 /* Main.storyboard in Resources */,
@@ -300,7 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E35A64BE2215010F0047D035 /* SwiftExampleTests.swift in Sources */,
+				E35A64BE2215010F0047D035 /* TIOSwiftTFLiteModelIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
