@@ -24,15 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - Model Modes
 
-typedef NS_OPTIONS(NSUInteger, TIOModelMode) {
-    TIOModelModePredict = 1 << 0,
-    TIOModelModeTrain = 1 << 1,
-    TIOModelModelEval = 1 << 2
-};
-
-BOOL TIOModelModePredicts(TIOModelMode modes);
-BOOL TIOModelModeTrains(TIOModelMode modes);
-BOOL TIOModelModeEvals(TIOModelMode modes);
+BOOL TIOModelModePredicts(TIOModelMode modes) __attribute__(deprecated);
+BOOL TIOModelModeTrains(TIOModelMode modes) __attribute__(deprecated);
+BOOL TIOModelModeEvals(TIOModelMode modes) __attribute__(deprecated);
 
 // MARK: - Model Bundle
 

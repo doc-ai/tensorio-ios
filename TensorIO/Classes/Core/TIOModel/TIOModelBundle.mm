@@ -30,42 +30,6 @@ NSString * const TIOModelBundleExtension = @"tiobundle";
 NSString * const TIOModelInfoFile = @"model.json";
 NSString * const TIOModelAssetsDirectory = @"assets";
 
-// MARK: - Model Modes
-
-TIOModelMode TIOParseModelModes(NSArray<NSString*> * _Nullable array) {
-    if (!array) {
-        return TIOModelModePredict;
-    }
-    
-    TIOModelMode modes = 0;
-    
-    if ([array containsObject:@"predict"]) {
-        modes |= TIOModelModePredict;
-    }
-    if ([array containsObject:@"train"]) {
-        modes |= TIOModelModeTrain;
-    }
-    if ([array containsObject:@"eval"]) {
-        modes |= TIOModelModelEval;
-    }
-    
-    return modes;
-}
-
-BOOL TIOModelModePredicts(TIOModelMode modes) {
-    return (modes & TIOModelModePredict) == TIOModelModePredict;
-}
-
-BOOL TIOModelModeTrains(TIOModelMode modes) {
-    return (modes & TIOModelModeTrain) == TIOModelModeTrain;
-}
-
-BOOL TIOModelModeEvals(TIOModelMode modes) {
-    return (modes & TIOModelModelEval) == TIOModelModelEval;
-}
-
-// MARK: - Model Bundle
-
 @interface TIOModelBundle ()
 
 @property (readwrite) NSDictionary *info;

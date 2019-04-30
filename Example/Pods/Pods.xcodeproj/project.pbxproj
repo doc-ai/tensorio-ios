@@ -15,6 +15,7 @@
 			dependencies = (
 			);
 			name = TensorFlowLite;
+			productName = TensorFlowLite;
 		};
 /* End PBXAggregateTarget section */
 
@@ -82,6 +83,8 @@
 		CE6816B0B04D3BF28E9D06FFF528DB09 /* NSDictionary+TIOTFLiteData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8013B8709AB367739D4615F06706276D /* NSDictionary+TIOTFLiteData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CF3EEAB6A0677A403FA6F6DC76FDD942 /* TIOPixelBuffer+TIOTFLiteData.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7AECC46049A34E0FDDBE51308649172 /* TIOPixelBuffer+TIOTFLiteData.mm */; };
 		DB271BC941DC320216BD757382BA90A8 /* TIOVisionModelHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AD25C678F83CF67C4E6FB9145D9A541 /* TIOVisionModelHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E34F12D02278C452000A0DD7 /* TIOModelModes.h in Headers */ = {isa = PBXBuildFile; fileRef = E34F12CE2278C452000A0DD7 /* TIOModelModes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E34F12D12278C452000A0DD7 /* TIOModelModes.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F12CF2278C452000A0DD7 /* TIOModelModes.m */; };
 		E3DBBC5F09741F4FE654DC67B879EEE2 /* TIOTFLiteModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 7681B525FA53EC36CA53E2E9F00CDE25 /* TIOTFLiteModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E8EA7A93348FF31DB2D181CE8CB27B77 /* TIOPlaceholderModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 089D662BC220FDF47DD26858E233D1BB /* TIOPlaceholderModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F160BA2FFC9434723B8F2158725D8467 /* TIOModelBundleValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = B0602AA917206896695C748403ED4E30 /* TIOModelBundleValidator.m */; };
@@ -137,62 +140,62 @@
 		0EBCC17FA6C41D883D6BE9EDBD6B049E /* NSArray+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSArray+TIOTFLiteData.h"; sourceTree = "<group>"; };
 		109DCC73A9F694CC4E5E0457D42DB222 /* Pods-TensorIO_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TensorIO_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		1191B0C3A4190851A483FA2BFF776278 /* Pods-TensorIO_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TensorIO_Example-umbrella.h"; sourceTree = "<group>"; };
-		12A469C1D07485323292CF9EB82909A5 /* TIOModelJSONParsing.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelJSONParsing.mm; sourceTree = "<group>"; };
+		12A469C1D07485323292CF9EB82909A5 /* TIOModelJSONParsing.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOModelJSONParsing.mm; sourceTree = "<group>"; };
 		14E91D22D90C33B2F3678AFC7790CF6F /* TIOModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModel.h; sourceTree = "<group>"; };
 		15A453CF1F89EF974DFE6362ED4E697E /* TIOVectorLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVectorLayerDescription.h; sourceTree = "<group>"; };
 		1623819CF2330676F01DB708E38A4C86 /* NSNumber+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSNumber+TIOTFLiteData.h"; sourceTree = "<group>"; };
-		1623E57B54692646966B14C2FC266BB8 /* TIOLayerInterface.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOLayerInterface.mm; sourceTree = "<group>"; };
-		1A503345925BC61C43160D72E4DC6D30 /* TIOVisionModelHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVisionModelHelpers.mm; sourceTree = "<group>"; };
+		1623E57B54692646966B14C2FC266BB8 /* TIOLayerInterface.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOLayerInterface.mm; sourceTree = "<group>"; };
+		1A503345925BC61C43160D72E4DC6D30 /* TIOVisionModelHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOVisionModelHelpers.mm; sourceTree = "<group>"; };
 		1F614677F76910A3C0A9206AB12FB7ED /* TIOVector.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVector.h; sourceTree = "<group>"; };
 		1FF551D4240BA3E10E25754E34535275 /* TIOModelBundleManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundleManager.m; sourceTree = "<group>"; };
 		23C73ABC58D121C89DACA4E34A8B7E89 /* TIOModelBundle.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundle.h; sourceTree = "<group>"; };
-		25D7B505B6E2222C60EDFBD4D3AA8CEF /* TIOModelOptions.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelOptions.mm; sourceTree = "<group>"; };
+		25D7B505B6E2222C60EDFBD4D3AA8CEF /* TIOModelOptions.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOModelOptions.mm; sourceTree = "<group>"; };
 		28E34B05FE12E9CDDB4DCABC7C1E9C89 /* TIOCVPixelBufferHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOCVPixelBufferHelpers.h; sourceTree = "<group>"; };
 		3494BAEA0D9D6EEC69C5EADFB695FDBC /* TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteData.h; sourceTree = "<group>"; };
-		36A6C835EE3BDF33663A03BA9321CE23 /* TIOVectorLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVectorLayerDescription.mm; sourceTree = "<group>"; };
+		36A6C835EE3BDF33663A03BA9321CE23 /* TIOVectorLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOVectorLayerDescription.mm; sourceTree = "<group>"; };
 		416D40F9A4EC7A39FC5FDD8E025BDCB1 /* Pods-TensorIO_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TensorIO_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		42EE638F43CFE18212C3149453D1B388 /* TensorIO-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TensorIO-umbrella.h"; sourceTree = "<group>"; };
 		4A237BB9A55C9E9AAD8BEFF6EDB17FDF /* NSDictionary+TIOExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TIOExtensions.m"; sourceTree = "<group>"; };
-		50560A7AB3F72721E87EA1B50E1D0514 /* NSArray+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSArray+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		50560A7AB3F72721E87EA1B50E1D0514 /* NSArray+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+TIOTFLiteData.mm"; sourceTree = "<group>"; };
 		55AA13E6BAE292AD75CC0238A20777B7 /* TensorIO.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = TensorIO.modulemap; sourceTree = "<group>"; };
-		58ED8D560C33E10B56E6B4C6CB293B96 /* Pods_TensorIO_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TensorIO_Tests.framework; path = "Pods-TensorIO_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5A929714CC03C6DC92A2E16212D155A5 /* TensorIO.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = TensorIO.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		58ED8D560C33E10B56E6B4C6CB293B96 /* Pods_TensorIO_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorIO_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A929714CC03C6DC92A2E16212D155A5 /* TensorIO.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = TensorIO.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		5B69E065CC51C595D4751FF0B37E390B /* TensorIO-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TensorIO-dummy.m"; sourceTree = "<group>"; };
 		5E5E507D31DBE9DCB6E69800C5B9C084 /* TIOTrainableModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTrainableModel.h; sourceTree = "<group>"; };
-		60B74298CFEF10AA7E839A2EE32C36AB /* TIOCVPixelBufferHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOCVPixelBufferHelpers.mm; sourceTree = "<group>"; };
+		60B74298CFEF10AA7E839A2EE32C36AB /* TIOCVPixelBufferHelpers.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOCVPixelBufferHelpers.mm; sourceTree = "<group>"; };
 		690A9389ECB6D2B36F62EA532F9F455D /* Pods-TensorIO_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TensorIO_Example.release.xcconfig"; sourceTree = "<group>"; };
-		6A0F95036ADAED48CEE6BEA8DB318349 /* TIOTFLiteModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOTFLiteModel.mm; sourceTree = "<group>"; };
+		6A0F95036ADAED48CEE6BEA8DB318349 /* TIOTFLiteModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTFLiteModel.mm; sourceTree = "<group>"; };
 		6DB331600084CB46931491DD0F4B5674 /* Pods-TensorIO_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TensorIO_Tests-dummy.m"; sourceTree = "<group>"; };
-		6F6F3B3FEF7814469EFCC1FEB0856258 /* TIOModelBackend.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelBackend.mm; sourceTree = "<group>"; };
+		6F6F3B3FEF7814469EFCC1FEB0856258 /* TIOModelBackend.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOModelBackend.mm; sourceTree = "<group>"; };
 		767D6FD34A5EB4D981B6D7D991C4C522 /* tensorflow_lite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = tensorflow_lite.framework; path = Frameworks/tensorflow_lite.framework; sourceTree = "<group>"; };
 		7681B525FA53EC36CA53E2E9F00CDE25 /* TIOTFLiteModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteModel.h; sourceTree = "<group>"; };
-		785502A8ACD57079AAF38895886CFDD0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		785502A8ACD57079AAF38895886CFDD0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		78B2AD41B866D3CC55F2E723D52551C7 /* TIOPixelBuffer+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TIOPixelBuffer+TIOTFLiteData.h"; sourceTree = "<group>"; };
 		7A8FDBBCA44F09CDC87143F9B97920A5 /* Pods-TensorIO_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TensorIO_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		7AF85DDC6BEE70D32F660394F8F64E27 /* TIOModelBundle.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOModelBundle.mm; sourceTree = "<group>"; };
+		7AF85DDC6BEE70D32F660394F8F64E27 /* TIOModelBundle.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOModelBundle.mm; sourceTree = "<group>"; };
 		8013B8709AB367739D4615F06706276D /* NSDictionary+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TIOTFLiteData.h"; sourceTree = "<group>"; };
-		80623DC7F9B521848F39AB4161804922 /* TIOTFLiteErrors.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOTFLiteErrors.mm; sourceTree = "<group>"; };
+		80623DC7F9B521848F39AB4161804922 /* TIOTFLiteErrors.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTFLiteErrors.mm; sourceTree = "<group>"; };
 		80B302C88E9075F4B147D59241247828 /* TIOPixelNormalization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelNormalization.h; sourceTree = "<group>"; };
 		80CF7B048B2185A6262B2549502F9748 /* TIOData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOData.h; sourceTree = "<group>"; };
-		8236558B6D1496E8130A35E5486FFDBE /* TensorIO.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TensorIO.framework; path = TensorIO.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8236558B6D1496E8130A35E5486FFDBE /* TensorIO.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TensorIO.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8412A595F7166FAB6EC775CF2C08D051 /* Pods-TensorIO_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TensorIO_Example.modulemap"; sourceTree = "<group>"; };
 		8AD25C678F83CF67C4E6FB9145D9A541 /* TIOVisionModelHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVisionModelHelpers.h; sourceTree = "<group>"; };
-		8C67E3636F6A732BA2B8530BAC571F12 /* TIOQuantization.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOQuantization.mm; sourceTree = "<group>"; };
+		8C67E3636F6A732BA2B8530BAC571F12 /* TIOQuantization.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOQuantization.mm; sourceTree = "<group>"; };
 		8CABB430A0E6E1C4E0953FBE27F29A7C /* NSData+TIOTFLiteData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSData+TIOTFLiteData.h"; sourceTree = "<group>"; };
 		8FC45A501FD20BD1E8EBD6809B4678BA /* TIOVisionPipeline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOVisionPipeline.h; sourceTree = "<group>"; };
-		92C0D1B3E3E3639D6B6C3F7740B6DDA7 /* UIImage+TIOCVPixelBufferExtensions.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "UIImage+TIOCVPixelBufferExtensions.mm"; sourceTree = "<group>"; };
+		92C0D1B3E3E3639D6B6C3F7740B6DDA7 /* UIImage+TIOCVPixelBufferExtensions.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+TIOCVPixelBufferExtensions.mm"; sourceTree = "<group>"; };
 		92EA8742D26FEDE673CA888416853568 /* TIOQuantization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOQuantization.h; sourceTree = "<group>"; };
 		9A5042D100DC45D85223E0F5E91EA441 /* NSDictionary+TIOExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TIOExtensions.h"; sourceTree = "<group>"; };
 		9CBCF7D559D27A24F1B87C32499447F5 /* NSArray+TIOExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TIOExtensions.m"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9F51D92039790BDDAE8DBC820F7F7229 /* TIOPixelBufferLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelBufferLayerDescription.mm; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9F51D92039790BDDAE8DBC820F7F7229 /* TIOPixelBufferLayerDescription.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOPixelBufferLayerDescription.mm; sourceTree = "<group>"; };
 		A4CE96D90D984726E1E912BF405324F6 /* Pods-TensorIO_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TensorIO_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		A580DD4E90DE4C8949FD42F16D3396C7 /* Pods-TensorIO_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TensorIO_Example-dummy.m"; sourceTree = "<group>"; };
 		A946DDFCBF96F1A88A5130202E227201 /* TIOBatch.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOBatch.m; sourceTree = "<group>"; };
 		AC902086C78FCF6A5F9FF8132751511F /* TensorIO-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "TensorIO-Info.plist"; sourceTree = "<group>"; };
 		AE5634682873D97ADB7684EFFA217F65 /* Pods-TensorIO_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TensorIO_Tests-Info.plist"; sourceTree = "<group>"; };
 		B0602AA917206896695C748403ED4E30 /* TIOModelBundleValidator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TIOModelBundleValidator.m; sourceTree = "<group>"; };
-		B14E0F3287D9AE8DFD602AC139814853 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		B14E0F3287D9AE8DFD602AC139814853 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B3CCD811F092C94193084D4460EA5B39 /* TIOLayerInterface.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOLayerInterface.h; sourceTree = "<group>"; };
 		B5679C9D762E9A5017D6E437F8F3C98E /* TIOPixelBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOPixelBuffer.h; sourceTree = "<group>"; };
 		B6E5EBFC9750BEB4AB6A6423E2CAB80D /* TIOBatch.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOBatch.h; sourceTree = "<group>"; };
@@ -202,24 +205,26 @@
 		CA195A6B470BFAE1C418C003D77DFE13 /* TIOModelBundleManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBundleManager.h; sourceTree = "<group>"; };
 		CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		CE192C65691571BBEFAB4CEC35802C7E /* TensorIO-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TensorIO-prefix.pch"; sourceTree = "<group>"; };
-		D1057F0453B09518CFD6AB36469C4A8B /* TIOPixelNormalization.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelNormalization.mm; sourceTree = "<group>"; };
-		D2798CE0597A9FAE20E65A4565BB09ED /* TIOPixelBuffer.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPixelBuffer.mm; sourceTree = "<group>"; };
+		D1057F0453B09518CFD6AB36469C4A8B /* TIOPixelNormalization.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOPixelNormalization.mm; sourceTree = "<group>"; };
+		D2798CE0597A9FAE20E65A4565BB09ED /* TIOPixelBuffer.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOPixelBuffer.mm; sourceTree = "<group>"; };
 		D318907FD50601390D25CE4DEC912E96 /* Pods-TensorIO_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TensorIO_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		D639C59AAD6C643C6239174C4477D1FC /* TIOObjcDefer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOObjcDefer.h; sourceTree = "<group>"; };
-		D690325474A1DCD5F50E5B624DF643FA /* NSNumber+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSNumber+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		D690325474A1DCD5F50E5B624DF643FA /* NSNumber+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+TIOTFLiteData.mm"; sourceTree = "<group>"; };
 		D7E32E8F925EE079FC6772492C0C5DF0 /* Pods-TensorIO_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TensorIO_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D7FAE17DDA3D482D4486A40581A3ED4D /* TIOLayerDescription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOLayerDescription.h; sourceTree = "<group>"; };
-		D9771B274B05C99B2E4F14A071458FD0 /* TIOPlaceholderModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOPlaceholderModel.mm; sourceTree = "<group>"; };
+		D9771B274B05C99B2E4F14A071458FD0 /* TIOPlaceholderModel.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOPlaceholderModel.mm; sourceTree = "<group>"; };
 		DC5E86FEE9E35FD3A27FDB1AB7580DA0 /* TensorIO.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TensorIO.xcconfig; sourceTree = "<group>"; };
 		E321C0C9585ED05CA06DF66DA2D83053 /* TIODataTypes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIODataTypes.h; sourceTree = "<group>"; };
-		E4C32B85399D5B0DC3B6F81B1F7D8A75 /* Pods_TensorIO_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TensorIO_Example.framework; path = "Pods-TensorIO_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8B0D6EC502943AB6B9B1CC922E6D3AE /* TIOVisionPipeline.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = TIOVisionPipeline.mm; sourceTree = "<group>"; };
-		E97445CF43C9117B04F44410DF79ED2C /* NSData+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSData+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		E34F12CE2278C452000A0DD7 /* TIOModelModes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TIOModelModes.h; sourceTree = "<group>"; };
+		E34F12CF2278C452000A0DD7 /* TIOModelModes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOModelModes.m; sourceTree = "<group>"; };
+		E4C32B85399D5B0DC3B6F81B1F7D8A75 /* Pods_TensorIO_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorIO_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8B0D6EC502943AB6B9B1CC922E6D3AE /* TIOVisionPipeline.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOVisionPipeline.mm; sourceTree = "<group>"; };
+		E97445CF43C9117B04F44410DF79ED2C /* NSData+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+TIOTFLiteData.mm"; sourceTree = "<group>"; };
 		F1BE56090E3FD8318CE7AFB0DF912922 /* UIImage+TIOCVPixelBufferExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImage+TIOCVPixelBufferExtensions.h"; sourceTree = "<group>"; };
-		F7AECC46049A34E0FDDBE51308649172 /* TIOPixelBuffer+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "TIOPixelBuffer+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		F7AECC46049A34E0FDDBE51308649172 /* TIOPixelBuffer+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = "TIOPixelBuffer+TIOTFLiteData.mm"; sourceTree = "<group>"; };
 		FA398D9DAB9C11A19B183981548F8460 /* TIOTFLiteErrors.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOTFLiteErrors.h; sourceTree = "<group>"; };
 		FB2148729BD6B7EE108F244CD115F475 /* TIOModelBackend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TIOModelBackend.h; sourceTree = "<group>"; };
-		FE7788FCC732A36B2161FF9DB3B85C48 /* NSDictionary+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = "NSDictionary+TIOTFLiteData.mm"; sourceTree = "<group>"; };
+		FE7788FCC732A36B2161FF9DB3B85C48 /* NSDictionary+TIOTFLiteData.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+TIOTFLiteData.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +284,8 @@
 				6F6F3B3FEF7814469EFCC1FEB0856258 /* TIOModelBackend.mm */,
 				23C73ABC58D121C89DACA4E34A8B7E89 /* TIOModelBundle.h */,
 				7AF85DDC6BEE70D32F660394F8F64E27 /* TIOModelBundle.mm */,
+				E34F12CE2278C452000A0DD7 /* TIOModelModes.h */,
+				E34F12CF2278C452000A0DD7 /* TIOModelModes.m */,
 				017FB266D0D56616DC553D0DD3F667DD /* TIOModelBundleJSONSchema.h */,
 				CA195A6B470BFAE1C418C003D77DFE13 /* TIOModelBundleManager.h */,
 				1FF551D4240BA3E10E25754E34535275 /* TIOModelBundleManager.m */,
@@ -488,7 +495,6 @@
 				DC9A9EF054FE8D8CC7DE4E77F7427750 /* Frameworks */,
 				179C088AF10B439578B197D2F9D17B7C /* Support Files */,
 			);
-			name = TensorFlowLite;
 			path = TensorFlowLite;
 			sourceTree = "<group>";
 		};
@@ -550,6 +556,7 @@
 				F3C44198A882E8A0B57542B476A3C9E2 /* NSArray+TIOTFLiteData.h in Headers */,
 				7430C7B702FAFBE64BB20BCFB9CB2C82 /* NSData+TIOTFLiteData.h in Headers */,
 				01518D61D568A5671BDAAA6CA7C09B26 /* NSDictionary+TIOExtensions.h in Headers */,
+				E34F12D02278C452000A0DD7 /* TIOModelModes.h in Headers */,
 				CE6816B0B04D3BF28E9D06FFF528DB09 /* NSDictionary+TIOTFLiteData.h in Headers */,
 				84645DEC3E89AFE5D6DF529567B8A995 /* NSNumber+TIOTFLiteData.h in Headers */,
 				3126141880A3DA3B40AB97E8EF647DD7 /* TensorIO-umbrella.h in Headers */,
@@ -677,6 +684,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
@@ -727,6 +735,7 @@
 				1D567273BBD79B1FC63C8A136C9DB667 /* NSDictionary+TIOExtensions.m in Sources */,
 				71D1B9473B0F955421912E4AB1E35D6B /* NSDictionary+TIOTFLiteData.mm in Sources */,
 				840B3DD6E3BA87EC0D407695EFD3DF74 /* NSNumber+TIOTFLiteData.mm in Sources */,
+				E34F12D12278C452000A0DD7 /* TIOModelModes.m in Sources */,
 				CA798C631FDFCFBB238145F6A397A799 /* TensorIO-dummy.m in Sources */,
 				4BCB12828E46CE9B9EE26B21D3624251 /* TIOBatch.m in Sources */,
 				F3A705C0BD69860C01CCE2CA2BF07F23 /* TIOCVPixelBufferHelpers.mm in Sources */,
@@ -1139,8 +1148,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.2;
 				SYMROOT = "${SRCROOT}/../build";
 			};
