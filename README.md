@@ -1391,7 +1391,7 @@ Make sure you are using a backend which supports training and have a model with 
 <a name="training-batch-api"></a>
 #### The Batch API 
 
-Unlike inference, which currently runs on a single example, training supports running on many examples simultaneously and requires the use of the `TIOBatch` API. A batch is simply a collection of many training examples whose key-values correspond to the named training inputs expected by the model. Think of a batch as a matrix of training data with each item occupying a row and each column a named column of values for a single input layer across every item.
+Unlike inference, which currently runs on a single example, training runs on many examples simultaneously and requires the use of the `TIOBatch` API. A batch is simply a collection of training examples whose key-values correspond to the named training inputs expected by the model. Think of a batch as a matrix of training data with each item occupying a row and each column a named column of values for a single input layer across every item.
 
 Instantiate a batch with the input keys to your trainable model. This will typically include both the inputs and labels. Then add items to the batch, typed to `TIOBatchItem` but which are really just dictionaries of named values corresponding to the `TIOData` protocol:
 
@@ -1422,7 +1422,7 @@ To execute multiple epochs of training across many batches, you will need to set
 <a name="training-complete-example"></a>
 #### A Complete Example
 
-A trainable cats vs dogs model is included with the full TensorFlow example in this repository. Inside the cats-vs-dogs-train.tiobundle you'll find the expected *model.json* file along with a *predict* directory that contains the results of exporting a saved model in tensorflow (more below).
+A trainable cats vs dogs model is included with the full TensorFlow example in this repository. Inside the cats-vs-dogs-train.tiobundle you'll find the expected *model.json* file along with a *train* directory that contains the results of exporting a saved model in TensorFlow (more below).
 
 The *model.json* looks like:
 
@@ -1497,7 +1497,7 @@ for (NSUInteger epoch = 0; epoch < 100; epoch++) {
 
 **Model Snippets**
 
-Notice that the `serving_input_receive_fn` provides an input named *image*, that we are exporting the model using `experimental_mode=tf.estimator.ModeKeys.TRAIN`, and that in the `model_fn` we set up a placeholder for the `labels` and name it *labels* and name the training op *train*. The names in the *model.json* file correspond directly to these values.
+This model was exported from the following code. Notice that the `serving_input_receive_fn` provides an input named *image*, that we are exporting the model using `experimental_mode=tf.estimator.ModeKeys.TRAIN`, and that in the `model_fn` we set up a placeholder for the `labels` and name it *labels* and name the training op *train*. The names in the *model.json* file correspond directly to these values.
 
 This model was built with TensorFlow 1.13. 
 
@@ -1515,8 +1515,8 @@ def serving_input_receiver_fn(params):
 
   return tf.estimator.export.ServingInputReceiver(inputs, inputs)
 
-# the save_model function which is called by a custom batch script
-# you must have already trained the model for a single epoch and generated training checkpoints
+# the save_model function which is called by a custom python script
+# you must have already trained the model for at least a single epoch and generated training checkpoints
 # the model_dir param points to that checkpoints directory
 
 def save_model(model_dir, output_dir, dims):
