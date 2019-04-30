@@ -24,19 +24,19 @@
 }
 
 - (void)testReturnsTFLiteBackendClassName {
-    XCTAssertEqualObjects(TIOClassNameForBackend(@"tflite"), @"TIOTFLiteModel");
+    XCTAssertEqualObjects([TIOModelBackend classNameForBackend:@"tflite"], @"TIOTFLiteModel");
 }
 
 - (void)testReturnsTensorFlowBackendClassName {
-    XCTAssertEqualObjects(TIOClassNameForBackend(@"tensorflow"), @"TIOTensorFlowModel");
+    XCTAssertEqualObjects([TIOModelBackend classNameForBackend:@"tensorflow"], @"TIOTensorFlowModel");
 }
 
 - (void)testReturnsNilClassNameForUnknownBackend {
-    XCTAssertNil(TIOClassNameForBackend(@""));
+    XCTAssertNil([TIOModelBackend classNameForBackend:@""]);
 }
 
 - (void)testAvailableBackendIsTFLite {
-    XCTAssertEqualObjects(TIOAvailableBackend(), @"tensorflow");
+    XCTAssertEqualObjects(TIOModelBackend.availableBackend, @"tensorflow");
 }
 
 @end
