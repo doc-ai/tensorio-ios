@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol TIOLayerDescription;
 @class TIOLayerInterface;
 @class TIOModelOptions;
+@class TIOModelModes;
 
 /**
  * An Obj-C wrapper around lower level, usually C++ model implementations. This is the primary
@@ -140,7 +141,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The modes available to this model, i.e. predict, train, and eval.
  */
 
-@property (readonly) TIOModelMode modes;
+@property (readonly) TIOModelModes *modes;
 
 /**
  * A boolean value indicating whether the model has been loaded or not. Conforming classes may want

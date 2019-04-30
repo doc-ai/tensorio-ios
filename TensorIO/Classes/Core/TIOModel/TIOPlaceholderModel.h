@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) BOOL quantized;
 @property (readonly) NSString *type;
 @property (readonly) NSString *backend;
-@property (readonly) TIOModelMode modes;
+@property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
 
 @property (readonly) NSArray<TIOLayerInterface*> *inputs;

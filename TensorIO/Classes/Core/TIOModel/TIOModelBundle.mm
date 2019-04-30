@@ -24,6 +24,7 @@
 #import "TIOModelOptions.h"
 #import "TIOPlaceholderModel.h"
 #import "TIOModelBackend.h"
+#import "TIOModelModes.h"
 
 NSString * const TIOTFModelBundleExtension = @"tfbundle";
 NSString * const TIOModelBundleExtension = @"tiobundle";
@@ -42,8 +43,7 @@ NSString * const TIOModelAssetsDirectory = @"assets";
 @property (readwrite) NSString *license;
 @property (readwrite) BOOL quantized;
 @property (readwrite) NSString *backend;
-@property (readwrite) TIOModelMode modes;
-
+@property (readwrite) TIOModelModes *modes;
 @property (readwrite) TIOModelOptions *options;
 @property (readonly) NSString *modelClassName;
 
@@ -84,10 +84,8 @@ NSString * const TIOModelAssetsDirectory = @"assets";
         _backend = json[@"model"][@"backend"];
         _type = json[@"model"][@"type"];
         
-        _modes = TIOParseModelModes(json[@"model"][@"modes"]);
-        
-        _placeholder = json[@"placeholder"] != nil
-                    && [json[@"placeholder"] boolValue] == YES;
+        _modes = [[TIOModelModes alloc] initWithArray:json[@"model"][@"modes"]];
+        _placeholder = json[@"placeholder"] != nil && [json[@"placeholder"] boolValue] == YES;
     }
     
     return self;

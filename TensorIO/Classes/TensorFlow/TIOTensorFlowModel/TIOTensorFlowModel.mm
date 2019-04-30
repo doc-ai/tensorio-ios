@@ -51,6 +51,7 @@
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
 #import "TIOTensorFlowErrors.h"
+#import "TIOModelModes.h"
 
 static NSString * const kTensorTypeVector = @"array";
 static NSString * const kTensorTypeImage = @"image";
@@ -258,7 +259,7 @@ typedef std::vector<std::string> TensorNames;
  */
 
 - (BOOL)_parseTrainingDict:(nullable NSDictionary<NSString*,id>*)train {
-    if ( !TIOModelModeTrains(_modes) ) {
+    if ( !_modes.trains ) {
         return YES;
     }
     
@@ -297,9 +298,9 @@ typedef std::vector<std::string> TensorNames;
     std::string model_dir = self.bundle.modelPredictPath.UTF8String;
     std::unordered_set<std::string> tags;
     
-    if ( TIOModelModeTrains(_modes) ) {
+    if ( _modes.trains ) {
         tags = {tensorflow::kSavedModelTagTrain};
-    } else if (TIOModelModePredicts(_modes)) {
+    } else if ( _modes.predicts ) {
         tags = {tensorflow::kSavedModelTagServe};
     } else {
         NSLog(@"No support model modes, i.e. predict, train, or eval");

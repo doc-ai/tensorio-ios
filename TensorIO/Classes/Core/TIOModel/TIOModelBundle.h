@@ -22,15 +22,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// MARK: - Model Modes
-
-BOOL TIOModelModePredicts(TIOModelMode modes) __attribute__(deprecated);
-BOOL TIOModelModeTrains(TIOModelMode modes) __attribute__(deprecated);
-BOOL TIOModelModeEvals(TIOModelMode modes) __attribute__(deprecated);
-
-// MARK: - Model Bundle
-
 @class TIOModelOptions;
+@class TIOModelModes;
 @protocol TIOModel;
 
 /**
@@ -157,7 +150,7 @@ extern NSString * const TIOModelAssetsDirectory;
  * The modes available to this model, i.e. predict, train, and eval.
  */
 
-@property (readonly) TIOModelMode modes;
+@property (readonly) TIOModelModes *modes;
 
 /**
  * Options associated with the model represented by this bundle.
