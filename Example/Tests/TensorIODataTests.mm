@@ -65,6 +65,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -86,6 +87,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -119,6 +121,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -150,6 +153,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -167,6 +171,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -197,6 +202,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -225,6 +231,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -248,6 +255,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -275,6 +283,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -300,6 +309,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -319,6 +329,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -342,6 +353,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -363,6 +375,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -388,6 +401,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -417,6 +431,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -445,6 +460,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -465,6 +481,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -489,6 +506,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES

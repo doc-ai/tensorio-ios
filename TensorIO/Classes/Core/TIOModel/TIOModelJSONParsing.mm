@@ -46,6 +46,8 @@ static NSError * const kTIOParserInvalidDequantizerError = [NSError errorWithDom
 
 TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictionary *dict, BOOL isInput, BOOL quantized, TIOModelBundle *bundle) {
     NSArray<NSNumber*> *shape = dict[@"shape"];
+    BOOL batched = shape[0].integerValue == -1;
+    
     NSString *name = dict[@"name"];
     BOOL isOutput = !isInput;
 
@@ -102,6 +104,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name isInput:isInput vectorDescription:
         [[TIOVectorLayerDescription alloc]
             initWithShape:shape
+            batched:batched
             dtype:dtype
             labels:labels
             quantized:quantized
@@ -113,10 +116,12 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
 
 TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDictionary *dict, BOOL isInput, BOOL quantized) {
     NSArray<NSNumber*> *shape = dict[@"shape"];
+    BOOL batched = shape[0].integerValue == -1;
+    
     NSString *name = dict[@"name"];
     BOOL isOutput = !isInput;
     
-    // Image Volume and Batching
+    // Image Volume
     
     TIOImageVolume imageVolume = TIOImageVolumeForShape(shape);
     
@@ -124,8 +129,6 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDic
         NSLog(@"Expected dict.shape array field with three elements in model.json, found %@", dict[@"shape"]);
         return nil;
     }
-    
-    BOOL batched = shape[0].integerValue == -1;
     
     // Pixel Format
 

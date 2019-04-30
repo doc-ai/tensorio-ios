@@ -40,6 +40,7 @@
 - (void)testVectorLengthIsCalculatedFromShape {
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(6),@(7)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -52,6 +53,7 @@
 - (void)testVectorLengthIsAlwaysPositive {
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(6),@(7)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO

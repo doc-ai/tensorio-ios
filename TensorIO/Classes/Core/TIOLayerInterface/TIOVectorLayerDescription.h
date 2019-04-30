@@ -63,15 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TIOVectorLayerDescription : NSObject <TIOLayerDescription>
 
-/**
- * The layer's data type
- *
- * @warning
- * There are complex interactions between backends, data types, and quantization
- * that will be addressed and validated in later releases.
- */
-
-@property (readonly) TIODataType dtype;
+// MARK: - TIOLayerDescription Properties
 
 /**
  * `YES` if the layer is quantized, `NO` otherwise
@@ -85,6 +77,24 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) NSArray<NSNumber*> *shape;
+
+/**
+ * `YES` if this tensor includes a dimension for the batch, `NO` otherwise.
+ */
+
+@property (readonly, getter=isBatched) BOOL batched;
+
+// MARK: - TIOVectorLayerDescription Properties
+
+/**
+ * The layer's data type
+ *
+ * @warning
+ * There are complex interactions between backends, data types, and quantization
+ * that will be addressed and validated in later releases.
+ */
+
+@property (readonly) TIODataType dtype;
 
 /**
  * The length of the vector in terms of its total number of elements. Calculated
@@ -121,11 +131,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, readonly) TIODataDequantizer dequantizer;
 
+// MARK: - Init
+
 /**
  * Designated initializer. Creates a vector description from the properties parsed in a model.json
  * file.
  *
  * @param shape The shape of the underlying tensor
+ * @param batched `YES` if the underlying tensor supports batching
  * @param dtype The type of data this layer expects or produces
  * @param labels The indexed labels associated with the outputs of this layer. May be `nil`.
  * @param quantized `YES` if the underlying model is quantized, `NO` otherwise
@@ -135,7 +148,14 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype A read-only instance of `TIOVectorLayerDescription`
  */
 
-- (instancetype)initWithShape:(NSArray<NSNumber*>*)shape dtype:(TIODataType)dtype labels:(nullable NSArray<NSString*>*)labels quantized:(BOOL)quantized quantizer:(nullable TIODataQuantizer)quantizer dequantizer:(nullable TIODataDequantizer)dequantizer NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithShape:(NSArray<NSNumber*>*)shape
+    batched:(BOOL)batched
+    dtype:(TIODataType)dtype
+    labels:(nullable NSArray<NSString*>*)labels
+    quantized:(BOOL)quantized
+    quantizer:(nullable TIODataQuantizer)quantizer
+    dequantizer:(nullable TIODataDequantizer)dequantizer
+    NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.

@@ -72,6 +72,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -89,6 +90,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -120,6 +122,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -148,6 +151,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -171,6 +175,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -195,6 +200,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(1)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -218,6 +224,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(1)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -247,6 +254,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(1)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -272,7 +280,8 @@
     const int32_t max32bit = std::numeric_limits<int32_t>::max();
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithShape:@[@(1),@(1)]
+        initWithShape:@[@(-1),@(1)]
+        batched:YES
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -296,7 +305,8 @@
     const int64_t max64bit = std::numeric_limits<int64_t>::max();
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
-        initWithShape:@[@(1),@(1)]
+        initWithShape:@[@(-1),@(1)]
+        batched:YES
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -322,6 +332,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -340,6 +351,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -370,6 +382,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -397,6 +410,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -420,6 +434,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(1)]
+        batched:NO
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -444,6 +459,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -464,6 +480,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -488,6 +505,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -509,6 +527,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -529,6 +548,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -550,6 +570,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(3)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -578,6 +599,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(3)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -610,6 +632,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(3)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -639,6 +662,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(2)]
+        batched:YES
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -666,6 +690,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(2)]
+        batched:YES
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -694,6 +719,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -717,6 +743,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -744,6 +771,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -768,6 +796,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -790,6 +819,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -813,6 +843,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -835,6 +866,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -861,6 +893,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -884,6 +917,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -906,6 +940,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -929,6 +964,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(3)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -957,6 +993,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(3)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -989,6 +1026,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(3)]
+        batched:YES
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -1018,6 +1056,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(2)]
+        batched:YES
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -1045,6 +1084,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(-1),@(2)]
+        batched:YES
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO
@@ -1073,6 +1113,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:NO
@@ -1097,6 +1138,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -1125,6 +1167,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(3)]
+        batched:NO
         dtype:TIODataTypeUnknown
         labels:nil
         quantized:YES
@@ -1150,6 +1193,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt32
         labels:nil
         quantized:NO
@@ -1173,6 +1217,7 @@
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1),@(2)]
+        batched:NO
         dtype:TIODataTypeInt64
         labels:nil
         quantized:NO

@@ -47,6 +47,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) NSArray<NSNumber*> *shape;
 
+/**
+ * `YES` if this tensor includes a dimension for the batch, `NO` otherwise.
+ */
+
+@property (readonly, getter=isBatched) BOOL batched;
+
 @end
 
 NS_ASSUME_NONNULL_END

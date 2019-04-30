@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TIOPixelBufferLayerDescription : NSObject <TIOLayerDescription>
 
+// MARK: - TIOLayerDescription Properties
+
 /**
  * `YES` is the layer is quantized, `NO` otherwise
  */
@@ -46,11 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSArray<NSNumber*> *shape;
 
 /**
- * `YES` if this tensor includes a dimension for the batch, no otherwise. A
- * workaround until a more permanent solution is implemented. See issue #41
+ * `YES` if this tensor includes a dimension for the batch, `NO` otherwise.
  */
 
-@property (readonly, getter=isBatched) BOOL batched __attribute__((deprecated));
+@property (readonly, getter=isBatched) BOOL batched;
+
+// MARK: - TIOPixelBufferLayerDescription Properties
 
 /**
  * The pixel format of the image data, must be kCVPixelFormatType_32BGRA or kCVPixelFormatType_32BGRA
@@ -78,6 +81,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, readonly) TIOPixelDenormalizer denormalizer ;
 
+// MARK: - Init
+
 /**
  * Designated initializer. Creates a pixel buffer description from the properties parsed in a
  * model.json file.
@@ -93,7 +98,14 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype A read-only instance of `TIOPixelBufferLayerDescription`
  */
 
-- (instancetype)initWithPixelFormat:(OSType)pixelFormat shape:(NSArray<NSNumber*>*)shape imageVolume:(TIOImageVolume)imageVolume batched:(BOOL)batched normalizer:(nullable TIOPixelNormalizer)normalizer denormalizer:(nullable TIOPixelDenormalizer)denormalizer quantized:(BOOL)quantized NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPixelFormat:(OSType)pixelFormat
+    shape:(NSArray<NSNumber*>*)shape
+    imageVolume:(TIOImageVolume)imageVolume
+    batched:(BOOL)batched
+    normalizer:(nullable TIOPixelNormalizer)normalizer
+    denormalizer:(nullable TIOPixelDenormalizer)denormalizer
+    quantized:(BOOL)quantized
+    NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
