@@ -23,6 +23,7 @@
 
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
+#import "NSArray+TIOExtensions.h"
 
 #include <vector>
 
@@ -75,22 +76,18 @@
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
 
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
-    NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
     TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     
     // Establish shape
     
     std::vector<tensorflow::int64> dims;
     
-    // When the zeroeth dimension is -1 then this model expects a batch size to be included in its dimensions
-    // Inference batch size is 1 by default
+    if ( description.isBatched ) {
+        dims.push_back(1);
+    }
     
-    for (NSNumber *dim in dshape) {
-        if ( dim.integerValue == -1 ) {
-            dims.push_back(1);
-        } else {
-            dims.push_back(dim.integerValue);
-        }
+    for ( NSNumber *dim in description.shape.excludingBatch ) {
+        dims.push_back(dim.integerValue);
     }
     
     tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);
@@ -146,25 +143,21 @@
 + (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
-    int32_t batch_size = (int32_t)column.count;
-    
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
-    NSArray<NSNumber*> *dshape = ((TIOVectorLayerDescription*)description).shape;
     TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
     NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    int32_t batch_size = (int32_t)column.count;
     
     // Establish shape
     
     std::vector<tensorflow::int64> dims;
     
-    // When the zeroeth dimension is -1 convert the batch size placeholder to the actual batch size
+    if ( description.isBatched ) {
+        dims.push_back(batch_size);
+    }
     
-    for (NSNumber *dim in dshape) {
-        if ( dim.integerValue == -1 ) {
-            dims.push_back(batch_size);
-        } else {
-            dims.push_back(dim.integerValue);
-        }
+    for ( NSNumber *dim in description.shape.excludingBatch ) {
+        dims.push_back(dim.integerValue);
     }
     
     tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);

@@ -326,11 +326,18 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     const int t_height = pixelBufferDescription.imageVolume.height;
     const int length = t_height * t_width * t_channels;
     
-    tensorflow::TensorShape shape;
+    std::vector<tensorflow::int64> dims;
     
-    // When the zeroeth dimension is -1 convert the batch size placeholder to the actual batch size
+    if ( description.isBatched ) {
+        dims.push_back(batch_size);
+    }
     
-    shape = tensorflow::TensorShape({batch_size, t_height, t_width, t_channels});
+    dims.push_back(t_height);
+    dims.push_back(t_width);
+    dims.push_back(t_channels);
+    
+    tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);
+    tensorflow::TensorShape shape = tensorflow::TensorShape(dim_sizes);
     
     // Typed enumeration over the column
     
