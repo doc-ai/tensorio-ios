@@ -40,6 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly, getter=isQuantized) BOOL quantized;
 
+/**
+ * The shape of the underlying tensor, which may include a `-1` along the first or last axis
+ * to indicate the batch dimension.
+ */
+
+@property (readonly) NSArray<NSNumber*> *shape;
+
 @end
 
 NS_ASSUME_NONNULL_END

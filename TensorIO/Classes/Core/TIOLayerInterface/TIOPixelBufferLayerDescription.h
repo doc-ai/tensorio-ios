@@ -39,6 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, getter=isQuantized) BOOL quantized;
 
 /**
+ * The shape of the underlying tensor, which may include a `-1` along the first or last axis
+ * to indicate the batch dimension.
+ */
+
+@property (readonly) NSArray<NSNumber*> *shape;
+
+/**
  * `YES` if this tensor includes a dimension for the batch, no otherwise. A
  * workaround until a more permanent solution is implemented. See issue #41
  */
@@ -76,7 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
  * model.json file.
  *
  * @param pixelFormat The expected format of the pixels
- * @param shape The shape of the image volume
+ * @param shape The shape of the underlying tensor
+ * @param imageVolume The shape of the image volume
  * @param batched `YES` if this tensor has a dimension for the batch size
  * @param normalizer A function which normalizes the pixel values for an input layer, may be `nil`.
  * @param denormalizer A function which denormalizes pixel values for an output layer, may be `nil`
@@ -85,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype A read-only instance of `TIOPixelBufferLayerDescription`
  */
 
-- (instancetype)initWithPixelFormat:(OSType)pixelFormat imageVolume:(TIOImageVolume)shape batched:(BOOL)batched normalizer:(nullable TIOPixelNormalizer)normalizer denormalizer:(nullable TIOPixelDenormalizer)denormalizer quantized:(BOOL)quantized NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPixelFormat:(OSType)pixelFormat shape:(NSArray<NSNumber*>*)shape imageVolume:(TIOImageVolume)imageVolume batched:(BOOL)batched normalizer:(nullable TIOPixelNormalizer)normalizer denormalizer:(nullable TIOPixelDenormalizer)denormalizer quantized:(BOOL)quantized NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
