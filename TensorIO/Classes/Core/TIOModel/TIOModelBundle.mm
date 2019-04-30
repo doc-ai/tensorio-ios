@@ -148,16 +148,16 @@ BOOL TIOModelModeEvals(TIOModelMode modes) {
     // If no backend is available, TIOAvailableBackend raises an exception
     
     if ( _backend == nil ) {
+        _backend = TIOModelBackend.availableBackend;
         NSLog(@"**** WARNING **** The model.json file must now specify which backend this model uses. "
               @"Add a \"backend\" field to the model dictionary in model.json, for example: "
               @"\n\"model\": {"
               @"\n  \"file\": \"model.tflite\","
               @"\n  \"backend\": \"tflite\""
               @"\n}");
-        _backend = TIOAvailableBackend();
     }
     
-    return TIOClassNameForBackend(_backend);
+    return [TIOModelBackend classNameForBackend:_backend];
 }
 
 - (nullable id<TIOModel>)newModel {
