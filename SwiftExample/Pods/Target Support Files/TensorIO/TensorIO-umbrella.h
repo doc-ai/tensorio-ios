@@ -26,6 +26,7 @@
 #import "TIOModelBundleManager.h"
 #import "TIOModelBundleValidator.h"
 #import "TIOModelJSONParsing.h"
+#import "TIOModelModes.h"
 #import "TIOModelOptions.h"
 #import "TIOPixelNormalization.h"
 #import "TIOPlaceholderModel.h"
