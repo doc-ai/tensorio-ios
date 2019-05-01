@@ -34,7 +34,7 @@ static NSString * const TIOModelClassNameTensorFlow = @"TIOTensorFlowModel";
 // Resource Bundle Names
 
 static NSString * const TIOTFLiteResourceBundle = @"TFLite.bundle";
-static NSString * const TIOTensorFlowResourceBundle = @"TensorFlow.tfbundle";
+static NSString * const TIOTensorFlowResourceBundle = @"TensorFlow.bundle";
 
 // Backend Exception
 

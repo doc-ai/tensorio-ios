@@ -178,7 +178,7 @@ static NSError * TIOModelValidationError(void);
 // MARK: - Utilities
 
 - (DSJSONSchema*)JSONSchemaForBackend:(NSString*)backend error:(NSError**)error {
-    NSBundle *bundle = [TIOModelBackend resourceBundleForBackend:@"tflite"];
+    NSBundle *bundle = [TIOModelBackend resourceBundleForBackend:backend];
     NSURL *schemaURL = [bundle URLForResource:@"model-schema" withExtension:@"json"];
     NSData *schemaData = [NSData dataWithContentsOfURL:schemaURL];
     

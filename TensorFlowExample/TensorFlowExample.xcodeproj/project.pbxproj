@@ -11,6 +11,7 @@
 		E31524D72264F8E5007F594D /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E31524D62264F8E5007F594D /* models-tests */; };
 		E31524D92264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31524D82264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm */; };
 		E346F33D225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E346F33C225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm */; };
+		E34F12D5227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E34F12D4227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm */; };
 		E3B2A8F62270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3B2A8F52270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm */; };
 		E3C9DDAD225EA09700691A07 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAC225EA07B00691A07 /* cat.jpg */; };
 		E3C9DDAF225EA12B00691A07 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAE225EA12B00691A07 /* dog.jpg */; };
@@ -47,6 +48,7 @@
 		E31524D62264F8E5007F594D /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
 		E31524D82264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOTensorFlowModelIntegrationTests.mm; sourceTree = "<group>"; };
 		E346F33C225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOTensorFlowDataTests.mm; sourceTree = "<group>"; };
+		E34F12D4227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTensorFlowModelBundleValidatorTests.mm; sourceTree = "<group>"; };
 		E3B2A8F52270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTensorFlowTrainingTests.mm; sourceTree = "<group>"; };
 		E3C9DDAC225EA07B00691A07 /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
 		E3C9DDAE225EA12B00691A07 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 			children = (
 				E346F33C225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm */,
 				E31524D82264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm */,
+				E34F12D4227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm */,
 				E3B2A8F52270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm */,
 				E3EBEA12226903950006138F /* TIOModelBackendTests.mm */,
 				E3CDE4D6225D3EC200C6A558 /* Info.plist */,
@@ -381,6 +384,7 @@
 				E31524D92264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm in Sources */,
 				E3EBEA14226907F90006138F /* TIOModelBackendTests.mm in Sources */,
 				E346F33D225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm in Sources */,
+				E34F12D5227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
