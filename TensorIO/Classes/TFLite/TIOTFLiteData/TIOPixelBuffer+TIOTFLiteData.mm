@@ -227,7 +227,7 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
         result = TIOCreateCVPixelBufferFromTensor<uint8_t>(
             &pixelBuffer,
             (uint8_t*)bytes,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.pixelFormat,
             pixelBufferDescription.denormalizer
         );
@@ -235,7 +235,7 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
         result = TIOCreateCVPixelBufferFromTensor<float_t>(
             &pixelBuffer,
             (float_t*)bytes,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.pixelFormat,
             pixelBufferDescription.denormalizer
         );
@@ -266,8 +266,8 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     int height = (int)CVPixelBufferGetHeight(pixelBuffer);
     OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
     
-    if ( width == pixelBufferDescription.shape.width
-        && height == pixelBufferDescription.shape.height
+    if ( width == pixelBufferDescription.imageVolume.width
+        && height == pixelBufferDescription.imageVolume.height
         && pixelFormat == pixelBufferDescription.pixelFormat
         && orientation == kCGImagePropertyOrientationUp ) {
         transformedPixelBuffer = pixelBuffer;
@@ -283,14 +283,14 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
         TIOCopyCVPixelBufferToTensor<uint8_t>(
             transformedPixelBuffer,
             (uint8_t *)buffer,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.normalizer
         );
     } else {
         TIOCopyCVPixelBufferToTensor<float_t>(
             transformedPixelBuffer,
             (float_t *)buffer,
-            pixelBufferDescription.shape,
+            pixelBufferDescription.imageVolume,
             pixelBufferDescription.normalizer
         );
     }

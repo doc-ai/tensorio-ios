@@ -17,6 +17,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+
 #import "NSArray+TIOExtensions.h"
 
 @implementation NSArray (Blocks)
@@ -76,6 +77,37 @@
             return @(accumulator.integerValue * item.integerValue);
         }]
         integerValue];
+}
+
+- (NSArray*)excludingBatch {
+    if ( self.count == 0 ) {
+        return self;
+    }
+    
+    if ( ((NSNumber*)self.firstObject).integerValue == -1 ) {
+        return self.excludingFirst;
+    }
+    if ( ((NSNumber*)self.lastObject).integerValue == -1 ) {
+        return self.excludingLast;
+    }
+    
+    return self;
+}
+
+- (NSArray*)excludingFirst {
+    if ( self.count == 0 ) {
+        return self;
+    }
+    
+    return [self subarrayWithRange:NSMakeRange(1, self.count-1)];
+}
+
+- (NSArray*)excludingLast {
+    if ( self.count == 0 ) {
+        return self;
+    }
+    
+    return [self subarrayWithRange:NSMakeRange(0, self.count-1)];
 }
 
 @end
