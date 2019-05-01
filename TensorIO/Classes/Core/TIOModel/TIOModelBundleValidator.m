@@ -30,6 +30,8 @@ static NSError * TIOInvalidExtensionError(NSString * path);
 static NSError * TIONoModelJSONFileError(void);
 static NSError * TIOModelFileDoesNotExistsError(NSString *filename);
 static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
+static NSError * TIOModelSchemaError(void);
+static NSError * TIOModelValidationError(void);
 
 // MARK: -
 
@@ -104,8 +106,8 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
     DSJSONSchema *schema = [self JSONSchemaForBackend:backend error:&schemaError];
     
     if (schemaError) {
-        *error = schemaError;
-        NSLog(@"%@", schemaError);
+        *error = TIOModelSchemaError();
+        NSLog(@"There was a problem loading the model schema for backend %@, error: %@", backend, schemaError);
         return NO;
     }
     
@@ -113,8 +115,8 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
     [schema validateObject:JSON withError:&validationError];
     
     if (validationError) {
-        *error = validationError;
-        NSLog(@"%@", validationError);
+        *error = TIOModelValidationError();
+        NSLog(@"The model.json file with backend %@ failed validation, error: %@", backend, validationError);
         return NO;
     }
     
@@ -220,6 +222,8 @@ static const NSUInteger TIOInvalidExtensionErrorCode = 1002;
 static const NSUInteger TIONoModelJSONFileErrorCode = 1003;
 static const NSUInteger TIOModelFileDoesNotExistsErrorCode = 1004;
 static const NSUInteger TIOLabelsFileDoesNotExistErrorCode = 1005;
+static const NSUInteger TIOModelSchemaErrorCode = 1006;
+static const NSUInteger TIOModelValidationErrorCode = 1007;
 
 // MARK: - Bundle Structure Errors
 
@@ -250,6 +254,20 @@ static NSError * TIOMalformedJSONError(void) {
     return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOMalformedJSONErrorCode userInfo:@{
         NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model.json file could not be read"],
         NSLocalizedRecoverySuggestionErrorKey: @"Make sure that model.json contains valid json"
+    }];
+}
+
+static NSError * TIOModelSchemaError(void) {
+    return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOModelSchemaErrorCode userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model-schema.json file for this backend could not be loaded"],
+        NSLocalizedRecoverySuggestionErrorKey: @"Make sure you have added a backend to your podspec"
+    }];
+}
+
+static NSError * TIOModelValidationError(void) {
+    return [NSError errorWithDomain:TIOModelBundleValidatorErrorDomain code:TIOModelValidationErrorCode userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The model.json file failed validation."],
+        NSLocalizedRecoverySuggestionErrorKey: @"Use the ajv-cli tool and the latest model schema at https://doc-ai.github.io/tensorio/ to validate the your model.json file"
     }];
 }
 
