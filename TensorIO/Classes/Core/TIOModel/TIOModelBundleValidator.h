@@ -99,32 +99,6 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
 
 - (BOOL)validate:(NSError**)error;
 
-// MARK: - Specific Validation Steps
-
-/**
- * Validates basic bundle properties from a JSON dictionary. Called by `validate:error:`
- *
- * @param JSON The bundle properties loaded from a model.json file.
- * @param error Pointer to an `NSError` that will be set if the bundle properties could not be validated.
- *
- * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
- */
-
-- (BOOL)validateBundleProperties:(NSDictionary*)JSON error:(NSError**)error;
-
-/**
- * Validates basic model properties from a JSON dictionary. Called by `validate:error:`
- *
- * The `validate:error:` function passes the value of the "model" field to this method.
- *
- * @param JSON The model properties loaded from a model.json file.
- * @param error Pointer to an `NSError` that will be set if the model properties could not be validated.
- *
- * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
- */
-
-- (BOOL)validateModelProperties:(NSDictionary*)JSON error:(NSError**)error;
-
 /**
  * Validates presence of assets identified in JSON dictionary. Called by `validate:error:`
  *
@@ -135,45 +109,6 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  */
 
 - (BOOL)validateAssets:(NSDictionary*)JSON error:(NSError**)error;
-
-/**
- * Validates input properties from a JSON array. Called by `validate:error:`
- *
- * The `validate:error:` function passes the value of the "inputs" field to this method.
- *
- * @param JSON The bundle properties loaded from a model.json file.
- * @param error Pointer to an `NSError` that will be set if the input properties could not be validated.
- *
- * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
- */
-
-- (BOOL)validateInputs:(NSArray*)JSON error:(NSError**)error;
-
-/**
- * Validates input properties from a JSON array. Called by `validate:error:`
- *
- * The `validate:error:` function passes the value of the "outputs" field to this method.
- *
- * @param JSON The bundle properties loaded from a model.json file.
- * @param error Pointer to an `NSError` that will be set if the output properties could not be validated.
- *
- * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
- */
-
-- (BOOL)validateOutputs:(NSArray*)JSON error:(NSError**)error;
-
-/**
- * Validates train properties from a JSON dictionary. Called by `validate:error:`
- *
- * The `validate:error:` function passes the value of the "train" field to this method.
- *
- * @param JSON The bundle properties loaded from a model.json file.
- * @param error Pointer to an `NSError` that will be set if the train properties could not be validated.
- *
- * @return BOOL `YES` if the train properties were successfully validated, `NO` otherwise.
- */
-
-- (BOOL)validateTrainProperties:(NSDictionary*)JSON error:(NSError**)error;
 
 /**
  * Executes a custom validator. Called by `validate:error:`
