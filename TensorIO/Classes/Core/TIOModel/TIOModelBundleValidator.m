@@ -20,6 +20,7 @@
 
 #import "TIOModelBundleValidator.h"
 #import "TIOModelBundle.h"
+#import "TIOModelBackend.h"
 
 @import DSJSONSchemaValidation;
 
@@ -209,15 +210,8 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
     
     // TEST
     
-    NSBundle *frameworkBundle = [NSBundle bundleForClass:self.class];
-    NSURL *resourceURL = [frameworkBundle.resourceURL URLByAppendingPathComponent:@"TFLite.bundle"];
-    NSBundle *resourceBundle = [NSBundle bundleWithURL:resourceURL];
-    NSURL *schemaURL = [resourceBundle URLForResource:@"model-schema" withExtension:@"json"];
-    
-    NSData *schemaData = [NSData dataWithContentsOfURL:schemaURL];
     NSError *schemaError = nil;
-    
-    DSJSONSchema *schema = [DSJSONSchema schemaWithData:schemaData baseURI:nil referenceStorage:nil specification:[DSJSONSchemaSpecification draft7] options:nil error:&schemaError];
+    DSJSONSchema *schema = [self JSONSchemaForBackend:@"tflite" error:&schemaError];
     
     if (schemaError) {
         NSLog(@"%@", schemaError);
@@ -1074,6 +1068,20 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
 }
 
 // MARK: - Utilities
+
+- (DSJSONSchema*)JSONSchemaForBackend:(NSString*)backend error:(NSError**)error {
+    NSBundle *bundle = [TIOModelBackend resourceBundleForBackend:@"tflite"];
+    NSURL *schemaURL = [bundle URLForResource:@"model-schema" withExtension:@"json"];
+    NSData *schemaData = [NSData dataWithContentsOfURL:schemaURL];
+    
+    return [DSJSONSchema
+        schemaWithData:schemaData
+        baseURI:nil
+        referenceStorage:nil
+        specification:[DSJSONSchemaSpecification draft7]
+        options:nil
+        error:error];
+}
 
 - (NSString*)JSONPath {
     return [self.path stringByAppendingPathComponent:TIOModelInfoFile];
