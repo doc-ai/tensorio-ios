@@ -207,19 +207,6 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
 }
 
 - (BOOL)validate:(_Nullable TIOModelBundleValidationBlock)customValidator error:(NSError**)error {
-    
-    // TEST
-    
-    NSError *schemaError = nil;
-    DSJSONSchema *schema = [self JSONSchemaForBackend:@"tflite" error:&schemaError];
-    
-    if (schemaError) {
-        NSLog(@"%@", schemaError);
-        return NO;
-    }
-    
-    // END TEST
-    
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDirectory;
     
@@ -255,43 +242,77 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
         return NO;
     }
     
+    // Acquire backend
+    
+    NSString *backend = JSON[@"model"][@"backend"];
+    
+    if (backend == nil) {
+        backend = TIOModelBackend.availableBackend;
+        NSLog(@"**** WARNING **** The model.json file must now specify which backend this model uses. "
+              @"Add a \"backend\" field to the model dictionary in model.json, for example: "
+              @"\n\"model\": {"
+              @"\n  \"file\": \"model.tflite\","
+              @"\n  \"backend\": \"tflite\""
+              @"\n}");
+    }
+    
+    // Validate JSON using schema
+    
+    NSError *schemaError = nil;
+    DSJSONSchema *schema = [self JSONSchemaForBackend:backend error:&schemaError];
+    
+    if ( schemaError ) {
+        *error = schemaError;
+        NSLog(@"%@", schemaError);
+        return NO;
+    }
+    
+    NSError *validationError;
+    [schema validateObject:JSON withError:&validationError];
+    
+    if ( validationError ) {
+        *error = validationError;
+        NSLog(@"%@", validationError);
+        return NO;
+    }
+    
     // Cache the JSON
     
     _JSON = JSON;
     
     // Validate basic bundle properties
     
-    if ( ![self validateBundleProperties:JSON error:error] ) {
-        return NO;
-    }
-    
-    // Validate model, but only if this is not a placeholder bundle
-    
-    if ( JSON[@"placeholder"] == nil || [JSON[@"placeholder"] boolValue] == NO ) {
-        if ( ![self validateModelProperties:JSON[@"model"] error:error] ) {
-            return NO;
-        }
-    }
-    
-    // Validate inputs
-    
-    if ( ![self validateInputs:JSON[@"inputs"] error:error] ) {
-        return NO;
-    }
-    
-    // Validate outputs
-    
-    if ( ![self validateOutputs:JSON[@"outputs"] error:error] ) {
-        return NO;
-    }
-    
-    // Validate train properties, but only if training is supported
-    
-    if ( JSON[@"model"][@"modes"] != nil && [JSON[@"model"][@"modes"] containsObject:@"train"] ) {
-        if ( ![self validateTrainProperties:JSON[@"train"] error:error] ) {
-            return NO;
-        }
-    }
+//    if ( ![self validateBundleProperties:JSON error:error] ) {
+//        return NO;
+//    }
+//
+//    // Validate model, but only if this is not a placeholder bundle
+//
+//    if ( JSON[@"placeholder"] == nil || [JSON[@"placeholder"] boolValue] == NO ) {
+//        if ( ![self validateModelProperties:JSON[@"model"] error:error] ) {
+//            return NO;
+//        }
+//    }
+//
+//    // Validate inputs
+//
+//    if ( ![self validateInputs:JSON[@"inputs"] error:error] ) {
+//        return NO;
+//    }
+//
+//    // Validate outputs
+//
+//    if ( ![self validateOutputs:JSON[@"outputs"] error:error] ) {
+//        return NO;
+//    }
+//
+//    // Validate train properties, but only if training is supported
+//
+//    if ( JSON[@"model"][@"modes"] != nil && [JSON[@"model"][@"modes"] containsObject:@"train"] ) {
+//        if ( ![self validateTrainProperties:JSON[@"train"] error:error] ) {
+//            return NO;
+//        }
+//    }
     
     // Validate assets
     
