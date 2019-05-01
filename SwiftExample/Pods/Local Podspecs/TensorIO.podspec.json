@@ -55,6 +55,9 @@
         ]
       },
       "source_files": "TensorIO/Classes/TFLite/**/*",
+      "resource_bundles": {
+        "TFLite": "TensorIO/Assets/TFLite/**/*"
+      },
       "xcconfig": {
         "USER_HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers\""
       },
@@ -76,6 +79,9 @@
       "private_header_files": [
         "TensorIO/Classes/TensorFlow/SavedModel/**/*.h"
       ],
+      "resource_bundles": {
+        "TensorFlow": "TensorIO/Assets/TensorFlow/**/*"
+      },
       "xcconfig": {
         "HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers\"",
         "OTHER_LDFLAGS": "-force_load \"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow\" \"-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework\""

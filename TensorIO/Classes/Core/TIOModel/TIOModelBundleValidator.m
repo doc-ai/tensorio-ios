@@ -19,8 +19,9 @@
 //
 
 #import "TIOModelBundleValidator.h"
-
 #import "TIOModelBundle.h"
+
+@import DSJSONSchemaValidation;
 
 // MARK: - Errors
 
@@ -205,6 +206,25 @@ static NSError * TIOLabelsFileDoesNotExistError(NSString *filename);
 }
 
 - (BOOL)validate:(_Nullable TIOModelBundleValidationBlock)customValidator error:(NSError**)error {
+    
+    // TEST
+    
+    NSBundle *frameworkBundle = [NSBundle bundleForClass:self.class];
+    NSURL *resourceURL = [frameworkBundle.resourceURL URLByAppendingPathComponent:@"TFLite.bundle"];
+    NSBundle *resourceBundle = [NSBundle bundleWithURL:resourceURL];
+    NSURL *schemaURL = [resourceBundle URLForResource:@"model-schema" withExtension:@"json"];
+    
+    NSData *schemaData = [NSData dataWithContentsOfURL:schemaURL];
+    NSError *schemaError = nil;
+    
+    DSJSONSchema *schema = [DSJSONSchema schemaWithData:schemaData baseURI:nil referenceStorage:nil specification:[DSJSONSchemaSpecification draft7] options:nil error:&schemaError];
+    
+    if (schemaError) {
+        NSLog(@"%@", schemaError);
+        return NO;
+    }
+    
+    // END TEST
     
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDirectory;
