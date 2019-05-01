@@ -177,6 +177,7 @@
 				E3CDE4B4225D3EC100C6A558 /* Sources */,
 				E3CDE4B5225D3EC100C6A558 /* Frameworks */,
 				E3CDE4B6225D3EC100C6A558 /* Resources */,
+				49F772FFFEC295D9E5F2F2D8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -268,6 +269,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		49F772FFFEC295D9E5F2F2D8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DSJSONSchemaValidation/DSJSONSchemaValidation.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DSJSONSchemaValidation.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5CCFD70D708C517D128FC9C7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

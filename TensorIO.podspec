@@ -22,6 +22,8 @@ Pod::Spec.new do |s|
   s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'Accelerate', 'VideoToolbox'
   s.library = 'c++'
   
+  s.dependency 'DSJSONSchemaValidation'
+  
   s.default_subspec = 'Core'
   
   # Core subspec contains base classes and protocol definitions but no model implementation
