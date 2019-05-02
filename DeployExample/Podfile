@@ -1,0 +1,13 @@
+platform :ios, '9.3'
+
+target 'DeployExample' do
+  use_frameworks!
+
+  pod 'TensorIO', :path => '../'
+  pod 'TensorIO/Deploy', :path => '../'
+
+  target 'DeployExampleTests' do
+    inherit! :search_paths
+  end
+
+end

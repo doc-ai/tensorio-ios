@@ -75,4 +75,15 @@ Pod::Spec.new do |s|
     }
   end
 
+  # The deploy subspec contains the tensorio-models repository client side code
+
+  s.subspec 'Deploy' do |ss|
+    ss.dependency 'TensorIO/Core'
+
+    ss.source_files = 'TensorIO/Classes/Deploy/**/*'
+    ss.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_DEPLOY=1'
+    }
+  end
+
 end
