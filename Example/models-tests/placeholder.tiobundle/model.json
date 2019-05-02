@@ -7,7 +7,7 @@
 	"license": "",
 	"placeholder": true,
 	"model": {
-		"file": null,
+		"file": "",
 		"quantized": false
 	},
 	"inputs": [

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.7.1'
+  s.version          = '0.7.2'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow.'
   s.description      = 'Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -21,6 +21,8 @@ Pod::Spec.new do |s|
   
   s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'Accelerate', 'VideoToolbox'
   s.library = 'c++'
+  
+  s.dependency 'DSJSONSchemaValidation'
   
   s.default_subspec = 'Core'
   
@@ -40,6 +42,9 @@ Pod::Spec.new do |s|
     ss.dependency 'TensorIO/Core'
     
     ss.source_files = 'TensorIO/Classes/TFLite/**/*'
+    ss.resource_bundles = { 
+      'TFLite' => 'TensorIO/Assets/TFLite/**/*' 
+    }
     ss.xcconfig = {
       'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers"'
     }
@@ -58,6 +63,9 @@ Pod::Spec.new do |s|
     ss.private_header_files = [
       'TensorIO/Classes/TensorFlow/SavedModel/**/*.h'
     ]
+    ss.resource_bundles = { 
+      'TensorFlow' => 'TensorIO/Assets/TensorFlow/**/*' 
+    }
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers"',
       'OTHER_LDFLAGS' => '-force_load "${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow" "-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework"'

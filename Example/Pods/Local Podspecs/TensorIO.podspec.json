@@ -1,6 +1,6 @@
 {
   "name": "TensorIO",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "summary": "An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow.",
   "description": "Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift",
   "homepage": "https://github.com/doc-ai/tensorio-ios",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/doc-ai/tensorio-ios.git",
-    "tag": "0.7.0"
+    "tag": "0.7.2"
   },
   "platforms": {
     "ios": "9.3"
@@ -30,6 +30,11 @@
     "VideoToolbox"
   ],
   "libraries": "c++",
+  "dependencies": {
+    "DSJSONSchemaValidation": [
+
+    ]
+  },
   "default_subspecs": "Core",
   "subspecs": [
     {
@@ -50,6 +55,9 @@
         ]
       },
       "source_files": "TensorIO/Classes/TFLite/**/*",
+      "resource_bundles": {
+        "TFLite": "TensorIO/Assets/TFLite/**/*"
+      },
       "xcconfig": {
         "USER_HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorFlowLite/Frameworks/tensorflow_lite.framework/Headers\""
       },
@@ -71,6 +79,9 @@
       "private_header_files": [
         "TensorIO/Classes/TensorFlow/SavedModel/**/*.h"
       ],
+      "resource_bundles": {
+        "TensorFlow": "TensorIO/Assets/TensorFlow/**/*"
+      },
       "xcconfig": {
         "HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers\"",
         "OTHER_LDFLAGS": "-force_load \"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow\" \"-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework\""

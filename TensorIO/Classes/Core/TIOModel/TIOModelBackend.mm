@@ -31,6 +31,11 @@ static NSString * const TIOBackendTensorFlow = @"tensorflow";
 static NSString * const TIOModelClassNameTFLite = @"TIOTFLiteModel";
 static NSString * const TIOModelClassNameTensorFlow = @"TIOTensorFlowModel";
 
+// Resource Bundle Names
+
+static NSString * const TIOTFLiteResourceBundle = @"TFLite.bundle";
+static NSString * const TIOTensorFlowResourceBundle = @"TensorFlow.bundle";
+
 // Backend Exception
 
 static NSString * const TIONoBackendAvailableException = @"TIONoBackendAvailableException";
@@ -62,17 +67,35 @@ static NSString * const TIONoBackendAvailableReason =
 // Add your backend name and class name to this dictionary
 
 + (nullable NSString*)classNameForBackend:(NSString*)backend {
-    static NSDictionary<NSString*,NSString*> *backends = nil;
+    static NSDictionary<NSString*,NSString*> *classnames = nil;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        backends = @{
+        classnames = @{
             TIOBackendTFLite:       TIOModelClassNameTFLite,
             TIOBackendTensorFlow:   TIOModelClassNameTensorFlow
         };
     });
     
-    return backends[backend.lowercaseString];
+    return classnames[backend.lowercaseString];
+}
+
++ (nullable NSBundle*)resourceBundleForBackend:(NSString*)backend {
+    static NSDictionary<NSString*,NSString*> *bundles = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        bundles = @{
+            TIOBackendTFLite:       TIOTFLiteResourceBundle,
+            TIOBackendTensorFlow:   TIOTensorFlowResourceBundle
+        };
+    });
+    
+    NSBundle *frameworkBundle = [NSBundle bundleForClass:self.class];
+    NSURL *resourceURL = [frameworkBundle.resourceURL URLByAppendingPathComponent:bundles[backend.lowercaseString]];
+    NSBundle *resourceBundle = [NSBundle bundleWithURL:resourceURL];
+    
+    return resourceBundle;
 }
 
 @end
