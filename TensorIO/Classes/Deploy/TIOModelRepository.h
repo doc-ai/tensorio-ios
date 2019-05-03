@@ -22,6 +22,7 @@
 
 @class TIOMRStatus;
 @class TIOMRModels;
+@class TIOMRModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -70,6 +71,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable response, NSError * _Nullable error))responseBlock;
+
+/**
+ * Retreives metadata for a model with id, including the canonical hyperparameters for that model
+ */
+
+- (NSURLSessionTask*)GETModelWithId:(NSString*)Id callback:(void(^)(TIOMRModel * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @end
 

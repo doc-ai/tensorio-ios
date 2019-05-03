@@ -49,6 +49,7 @@
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHealthStatus:^(TIOMRStatus * _Nullable response, NSError * _Nonnull error) {
         XCTAssertNil(error);
+        XCTAssertNotNil(response);
         XCTAssert(response.status == TIOMRStatusValueServing);
         [expectation fulfill];
     }];
