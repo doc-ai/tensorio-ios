@@ -19,34 +19,37 @@
 //
 
 #import "TIOModelRepository.h"
+#import "TIOMRStatus.h"
 
 @interface TIOModelRepository ()
-
-@property NSURLSession *URLSession;
 
 @end
 
 @implementation TIOModelRepository : NSObject
 
-- (instancetype)initWithURL:(NSURL*)URL {
+- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
     if ((self=[super init])) {
-        _URLSession = NSURLSession.sharedSession;
-        _URL = URL;
+        _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
+        _baseURL = URL;
     }
     return self;
 }
 
-- (BOOL)GETHealthStatus {
-    NSURL *endpoint = [self.URL URLByAppendingPathComponent:@"healthz"];
+- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError *error))responseBlock {
+    NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"healthz"];
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         if ( error != nil ) {
             NSLog(@"error");
+            responseBlock(nil, nil);
+            // TODO: add error
         }
         
         if ( data == nil ) {
             NSLog(@"no data");
+            responseBlock(nil, nil);
+            // TODO: add error
         }
         
         NSError *JSONError;
@@ -54,14 +57,23 @@
         
         if ( JSONError != nil ) {
             NSLog(@"Unable to parse JSON");
+            responseBlock(nil, nil);
+            // TODO: add error
         }
         
-        NSLog(@"%@", JSON);
+        TIOMRStatus *status = [[TIOMRStatus alloc] initWithJSON:JSON];
+        
+        if ( status.status != TIOMRStatusValueServing ) {
+            NSLog(@"Health returned value other than serving");
+            responseBlock(nil, nil);
+            // TODO: add error
+        }
+        
+        responseBlock(status, nil);
     }];
     
     [task resume];
-    
-    return YES;
+    return task;
 }
 
 @end

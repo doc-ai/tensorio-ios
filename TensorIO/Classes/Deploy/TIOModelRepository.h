@@ -20,19 +20,37 @@
 
 #import <Foundation/Foundation.h>
 
+@class TIOMRStatus;
+
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ * Encapsulates requests to a TensorIO model repository, allowing users to
+ * manage deployment of TensorIO models.
+ *
+ * All repository HTTP requests are run on a background thread but will
+ * execute their callbacks on the main thread.
+ */
+
 @interface TIOModelRepository : NSObject
 
 /**
  * The base URL of the model repository
  */
 
-@property (readonly) NSURL *URL;
+@property (readonly) NSURL *baseURL;
+
+/**
+ * The URL session used by the model respository
+ */
+
+@property (readonly) NSURLSession *URLSession;
 
 /**
  * Initializes a model repository with a base URL
  */
 
-- (instancetype)initWithURL:(NSURL*)URL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer
@@ -44,6 +62,8 @@
  * Checks if the repository is up and correctly running
  */
 
-- (BOOL)GETHealthStatus;
+- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError *error))responseBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END

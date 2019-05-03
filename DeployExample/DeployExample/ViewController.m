@@ -33,9 +33,15 @@
     // Do any additional setup after loading the view.
     
     NSURL *URL = [NSURL URLWithString:@"https://tio-models-test.dev.docai.beer/rest/v1/repository"];
-    self.repository = [[TIOModelRepository alloc] initWithURL:URL];
+    self.repository = [[TIOModelRepository alloc] initWithBaseURL:URL session:nil];
     
-    [self.repository GETHealthStatus];
+    [self.repository GETHealthStatus:^(TIOMRStatus * _Nullable response, NSError * _Nonnull error) {
+        if (error) {
+            return;
+        }
+        
+        NSLog(@"%lu", (unsigned long)response.status);
+    }];
 }
 
 
