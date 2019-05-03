@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Checks if the repository is up and correctly running
  */
 
-- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError *error))responseBlock;
+- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @end
 

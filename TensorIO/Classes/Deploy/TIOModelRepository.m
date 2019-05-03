@@ -21,6 +21,14 @@
 #import "TIOModelRepository.h"
 #import "TIOMRStatus.h"
 
+static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
+
+static NSInteger TIOMRURLSessionErrorCode = 0;
+static NSInteger TIOMNoDataErrorCode = 1;
+static NSInteger TIOMRJSONError = 2;
+
+static NSInteger TIOMRHealthStatusNotServingError = 100;
+
 @interface TIOModelRepository ()
 
 @end
@@ -35,21 +43,21 @@
     return self;
 }
 
-- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError *error))responseBlock {
+- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"healthz"];
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         if ( error != nil ) {
             NSLog(@"error");
-            responseBlock(nil, nil);
-            // TODO: add error
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
+            return;
         }
         
         if ( data == nil ) {
             NSLog(@"no data");
-            responseBlock(nil, nil);
-            // TODO: add error
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
+            return;
         }
         
         NSError *JSONError;
@@ -57,16 +65,16 @@
         
         if ( JSONError != nil ) {
             NSLog(@"Unable to parse JSON");
-            responseBlock(nil, nil);
-            // TODO: add error
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
+            return;
         }
         
         TIOMRStatus *status = [[TIOMRStatus alloc] initWithJSON:JSON];
         
         if ( status.status != TIOMRStatusValueServing ) {
             NSLog(@"Health returned value other than serving");
-            responseBlock(nil, nil);
-            // TODO: add error
+            responseBlock(status, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHealthStatusNotServingError userInfo:nil]);
+            return;
         }
         
         responseBlock(status, nil);
