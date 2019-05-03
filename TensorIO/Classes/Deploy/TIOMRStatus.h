@@ -29,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TIOMRStatus : NSObject
 
+/**
+ * The health status, will be `TIOMRStatusValueServing` if the repository is up.
+ */
+
 @property (readonly) TIOMRStatusValue status;
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;

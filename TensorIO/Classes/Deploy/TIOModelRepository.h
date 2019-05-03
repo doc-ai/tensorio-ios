@@ -21,6 +21,7 @@
 #import <Foundation/Foundation.h>
 
 @class TIOMRStatus;
+@class TIOMRModels;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -63,6 +64,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError * _Nullable error))responseBlock;
+
+/**
+ * Retrieves a list of model ids for models available in the repository
+ */
+
+- (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @end
 

@@ -37,12 +37,21 @@
     
     [self.repository GETHealthStatus:^(TIOMRStatus * _Nullable response, NSError * _Nonnull error) {
         if (error) {
+            NSLog(@"There was an error getting status");
             return;
         }
         
-        NSLog(@"%lu", (unsigned long)response.status);
+        NSLog(@"HEALTH STATUS: %lu", (unsigned long)response.status);
+    }];
+    
+    [self.repository GETModels:^(TIOMRModels * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"There was an error getting models");
+            return;
+        }
+        
+        NSLog(@"MODELS: %@", response.modelIds);
     }];
 }
-
 
 @end

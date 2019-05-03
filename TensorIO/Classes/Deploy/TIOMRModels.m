@@ -1,5 +1,5 @@
 //
-//  TIMRModels.m
+//  TIOMRModels.m
 //  TensorIO
 //
 //  Created by Phil Dow on 5/3/19.
@@ -18,8 +18,18 @@
 //  limitations under the License.
 //
 
-#import "TIMRModels.h"
+#import "TIOMRModels.h"
 
-@implementation TIMRModels
+@implementation TIOMRModels
+
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+    if ((self=[super init])) {
+        if ( JSON[@"modelIds"] == nil || ![JSON[@"modelIds"] isKindOfClass:NSArray.class] ) {
+            return nil;
+        }
+        _modelIds = JSON[@"modelIds"];
+    }
+    return self;
+}
 
 @end

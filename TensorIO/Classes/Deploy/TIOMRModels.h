@@ -1,5 +1,5 @@
 //
-//  TIMRModels.h
+//  TIOMRModels.h
 //  TensorIO
 //
 //  Created by Phil Dow on 5/3/19.
@@ -22,7 +22,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TIMRModels : NSObject
+@interface TIOMRModels : NSObject
+
+/**
+ * A list of ids for models available in this repository.
+ */
+
+@property (readonly) NSArray<NSString*> *modelIds;
+
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 

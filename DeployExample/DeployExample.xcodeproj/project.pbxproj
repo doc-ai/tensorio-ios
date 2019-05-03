@@ -16,6 +16,7 @@
 		E34F12F2227BB5F2000A0DD7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F12F1227BB5F2000A0DD7 /* main.m */; };
 		E34F130B227C9EEE000A0DD7 /* TIOMRStatusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F130A227C9EEE000A0DD7 /* TIOMRStatusTests.m */; };
 		E34F130E227CABAF000A0DD7 /* MockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F130D227CABAF000A0DD7 /* MockURLSession.m */; };
+		E34F1314227CB908000A0DD7 /* TIOMRModelsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F1313227CB908000A0DD7 /* TIOMRModelsTests.m */; };
 		EAA7DE30289C1CCB260A724D /* Pods_DeployExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B23D05029FBB46E3679F1B /* Pods_DeployExampleTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		E34F130A227C9EEE000A0DD7 /* TIOMRStatusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRStatusTests.m; sourceTree = "<group>"; };
 		E34F130C227CABAF000A0DD7 /* MockURLSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockURLSession.h; sourceTree = "<group>"; };
 		E34F130D227CABAF000A0DD7 /* MockURLSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockURLSession.m; sourceTree = "<group>"; };
+		E34F1313227CB908000A0DD7 /* TIOMRModelsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRModelsTests.m; sourceTree = "<group>"; };
 		E4B23D05029FBB46E3679F1B /* Pods_DeployExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DeployExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -135,6 +137,7 @@
 				E34F130C227CABAF000A0DD7 /* MockURLSession.h */,
 				E34F130D227CABAF000A0DD7 /* MockURLSession.m */,
 				E34F130A227C9EEE000A0DD7 /* TIOMRStatusTests.m */,
+				E34F1313227CB908000A0DD7 /* TIOMRModelsTests.m */,
 				E34F12FD227BB5F2000A0DD7 /* Info.plist */,
 			);
 			path = DeployExampleTests;
@@ -322,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E34F1314227CB908000A0DD7 /* TIOMRModelsTests.m in Sources */,
 				E34F130E227CABAF000A0DD7 /* MockURLSession.m in Sources */,
 				E34F130B227C9EEE000A0DD7 /* TIOMRStatusTests.m in Sources */,
 			);

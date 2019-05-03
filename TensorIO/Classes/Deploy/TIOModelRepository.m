@@ -20,6 +20,7 @@
 
 #import "TIOModelRepository.h"
 #import "TIOMRStatus.h"
+#import "TIOMRModels.h"
 
 static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 
@@ -27,7 +28,10 @@ static NSInteger TIOMRURLSessionErrorCode = 0;
 static NSInteger TIOMNoDataErrorCode = 1;
 static NSInteger TIOMRJSONError = 2;
 
-static NSInteger TIOMRHealthStatusNotServingError = 100;
+static NSInteger TIOMRHealthStatusParsingError = 100;
+static NSInteger TIOMRHealthStatusNotServingError = 101;
+
+static NSInteger TIOMRModelsParsingError = 200;
 
 @interface TIOModelRepository ()
 
@@ -71,6 +75,12 @@ static NSInteger TIOMRHealthStatusNotServingError = 100;
         
         TIOMRStatus *status = [[TIOMRStatus alloc] initWithJSON:JSON];
         
+        if ( status == nil ) {
+            NSLog(@"Unable to parse status");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHealthStatusParsingError userInfo:nil]);
+            return;
+        }
+        
         if ( status.status != TIOMRStatusValueServing ) {
             NSLog(@"Health returned value other than serving");
             responseBlock(status, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHealthStatusNotServingError userInfo:nil]);
@@ -78,6 +88,47 @@ static NSInteger TIOMRHealthStatusNotServingError = 100;
         }
         
         responseBlock(status, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable response, NSError * _Nullable error))responseBlock {
+    NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"models"];
+    
+    NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        if ( error != nil ) {
+            NSLog(@"error");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
+            return;
+        }
+        
+        if ( data == nil ) {
+            NSLog(@"no data");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
+            return;
+        }
+        
+        NSError *JSONError;
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
+        
+        if ( JSONError != nil ) {
+            NSLog(@"Unable to parse JSON");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
+            return;
+        }
+        
+        TIOMRModels *models = [[TIOMRModels alloc] initWithJSON:JSON];
+        
+        if ( models == nil ) {
+            NSLog(@"Unable to parse models");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRModelsParsingError userInfo:nil]);
+            return;
+        }
+        
+        responseBlock(models, nil);
     }];
     
     [task resume];
