@@ -1,9 +1,9 @@
 //
-//  TIOMRModel.h
+//  TIOMRHyperparameters.h
 //  TensorIO
 //
 //  Created by Phil Dow on 5/3/19.
-////  Copyright © 2019 doc.ai (http://doc.ai)
+//  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,30 +18,23 @@
 //  limitations under the License.
 //
 
-
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TIOMRModel : NSObject
+@interface TIOMRHyperparameters : NSObject
 
 /**
- * The unique model id
+ * The id of the model with which these hyperparameters are associated
  */
 
 @property (readonly) NSString *modelId;
 
 /**
- * A description of the model
+ * A list of hyperparameters ids availble for these model
  */
 
-@property (readonly) NSString *details;
-
-/**
- * The canonical hyperparameters with which the model has been trained
- */
-
-@property (readonly) NSString *canonicalHyperparameters;
+@property (readonly) NSArray<NSString*> *hyperparameterIds;
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
 

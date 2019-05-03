@@ -22,6 +22,7 @@
 #import "TIOMRStatus.h"
 #import "TIOMRModels.h"
 #import "TIOMRModel.h"
+#import "TIOMRHyperparameters.h"
 
 static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 
@@ -33,8 +34,8 @@ static NSInteger TIOMRHealthStatusParsingError = 100;
 static NSInteger TIOMRHealthStatusNotServingError = 101;
 
 static NSInteger TIOMRModelsParsingError = 200;
-
 static NSInteger TIOMRModelParsingError = 300;
+static NSInteger TIOMRHyperparametersParasingError = 400;
 
 @interface TIOModelRepository ()
 
@@ -138,8 +139,8 @@ static NSInteger TIOMRModelParsingError = 300;
     return task;
 }
 
-- (NSURLSessionTask*)GETModelWithId:(NSString*)Id callback:(void(^)(TIOMRModel * _Nullable response, NSError * _Nullable error))responseBlock {
-    NSURL *endpoint = [[self.baseURL URLByAppendingPathComponent:@"models"] URLByAppendingPathComponent:Id];
+- (NSURLSessionTask*)GETModelWithId:(NSString*)modelId callback:(void(^)(TIOMRModel * _Nullable response, NSError * _Nullable error))responseBlock {
+    NSURL *endpoint = [[self.baseURL URLByAppendingPathComponent:@"models"] URLByAppendingPathComponent:modelId];
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
@@ -167,12 +168,53 @@ static NSInteger TIOMRModelParsingError = 300;
         TIOMRModel *model = [[TIOMRModel alloc] initWithJSON:JSON];
         
         if ( model == nil ) {
-            NSLog(@"Unable to parse models");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRModelsParsingError userInfo:nil]);
+            NSLog(@"Unable to parse model");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRModelParsingError userInfo:nil]);
             return;
         }
         
         responseBlock(model, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionTask*)GETHyperparametersForModelWithId:(NSString*)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error))responseBlock {
+    NSURL *endpoint = [[[self.baseURL URLByAppendingPathComponent:@"models"] URLByAppendingPathComponent:modelId] URLByAppendingPathComponent:@"hyperparameters"];
+    
+    NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        if ( error != nil ) {
+            NSLog(@"error");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
+            return;
+        }
+        
+        if ( data == nil ) {
+            NSLog(@"no data");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
+            return;
+        }
+        
+        NSError *JSONError;
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
+        
+        if ( JSONError != nil ) {
+            NSLog(@"Unable to parse JSON");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
+            return;
+        }
+        
+        TIOMRHyperparameters *hyperparameters = [[TIOMRHyperparameters alloc] initWithJSON:JSON];
+        
+        if ( hyperparameters == nil ) {
+            NSLog(@"Unable to parse hyperparameters");
+            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHyperparametersParasingError userInfo:nil]);
+            return;
+        }
+        
+        responseBlock(hyperparameters, nil);
     }];
     
     [task resume];

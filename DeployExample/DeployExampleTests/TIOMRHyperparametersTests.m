@@ -1,0 +1,152 @@
+//
+//  TIOMRHyperparametersTests.m
+//  DeployExampleTests
+//
+//  Created by Phil Dow on 5/3/19.
+//  Copyright © 2019 doc.ai (http://doc.ai)
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+#import <XCTest/XCTest.h>
+#import <TensorIO/TensorIO-umbrella.h>
+#import "MockURLSession.h"
+
+@interface TIOMRHyperparametersTests : XCTestCase
+
+@end
+
+@implementation TIOMRHyperparametersTests
+
+- (void)setUp {
+    // Put setup code here. This method is called before the invocation of each test method in the class.
+}
+
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
+}
+
+- (void)testExample {
+    // This is an example of a functional test case.
+    // Use XCTAssert and related functions to verify your tests produce the correct results.
+}
+
+// MARK: -
+
+- (void)testGETHyperparametersWithHyperparametersSucceeds {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"happy-face",
+        @"hyperparameterIds": @[
+            @"batch-9-2-0-1-5",
+            @"batch-9-2-0-1-0",
+            @"batch-9-2-0-0-5"
+        ]
+    }];
+    
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+        XCTAssertNil(error);
+        XCTAssertNotNil(response);
+        XCTAssertEqualObjects(response.modelId, @"happy-face");
+        XCTAssertEqualObjects(response.hyperparameterIds, (@[
+            @"batch-9-2-0-1-5",
+            @"batch-9-2-0-1-0",
+            @"batch-9-2-0-0-5"
+        ]));
+        [expectation fulfill];
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETHyperparametersWithoutHyperparametersFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"happy-face"
+    }];
+    
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertNil(response);
+        [expectation fulfill];
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETHyperparametersWithoutModelIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"hyperparameterIds": @[
+            @"batch-9-2-0-1-5",
+            @"batch-9-2-0-1-0",
+            @"batch-9-2-0-0-5"
+        ]
+    }];
+    
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertNil(response);
+        [expectation fulfill];
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETHyperparametersWithErrorFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
+    
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertNil(response);
+        [expectation fulfill];
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETHyperparametersWithoutDataFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONData:[NSData data]];
+    
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertNil(response);
+        [expectation fulfill];
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+@end
