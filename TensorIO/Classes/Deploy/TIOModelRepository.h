@@ -24,6 +24,7 @@
 @class TIOMRModels;
 @class TIOMRModel;
 @class TIOMRHyperparameters;
+@class TIOMRHyperparameter;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -84,6 +85,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (NSURLSessionTask*)GETHyperparametersForModelWithId:(NSString*)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error))responseBlock;
+
+/**
+ * Retrieves the hyperparameters for a model by hyperparameter id
+ */
+
+ - (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @end
 

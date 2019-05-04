@@ -22,6 +22,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * Model repository hyperparameters identify all of the hyperparameter settings
+ * with which a model has been trained.
+ */
+
 @interface TIOMRHyperparameters : NSObject
 
 /**

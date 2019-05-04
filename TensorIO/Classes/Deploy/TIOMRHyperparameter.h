@@ -1,8 +1,8 @@
 //
-//  TIOMRStatus.h
+//  TIOMRHyperparameter.h
 //  TensorIO
 //
-//  Created by Phil Dow on 5/2/19.
+//  Created by Phil Dow on 5/3/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,24 +20,44 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum : NSUInteger {
-    TIOMRStatusValueUnknown,
-    TIOMRStatusValueServing
-} TIOMRStatusValue;
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * The health check status of a repository
+ * A model repository hyperparameter uniquely identifies the hyperparameters
+ * with which a given model has been trained.
  */
 
-@interface TIOMRStatus : NSObject
+@interface TIOMRHyperparameter : NSObject
 
 /**
- * The health status, will be `TIOMRStatusValueServing` if the repository is up.
+ * The id of the model with which this hyperparameter is associated
  */
 
-@property (readonly) TIOMRStatusValue status;
+@property (readonly) NSString *modelId;
+
+/**
+ * The hyperparameter id
+ */
+
+@property (readonly) NSString *hyperparameterId;
+
+/**
+ * The id of the hyperparmater this (model, hyperparameter) upgrades to
+ */
+
+@property (nullable, readonly) NSString *upgradeTo;
+
+/**
+ * Human readable hyperparameters
+ */
+
+@property (readonly) NSDictionary<NSString*,NSString*> *hyperparameters;
+
+/**
+ * The canonical checkpoint for the model trained with these hyperparameters
+ */
+
+@property (readonly) NSString *canonicalCheckpoint;
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
 

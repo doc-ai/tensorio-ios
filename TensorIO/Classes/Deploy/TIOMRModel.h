@@ -23,6 +23,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * A model available in a model repository
+ */
+
 @interface TIOMRModel : NSObject
 
 /**
