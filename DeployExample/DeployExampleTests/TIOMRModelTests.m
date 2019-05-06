@@ -64,6 +64,21 @@
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
+- (void)testGETModelURL {
+    MockURLSession *session = [[MockURLSession alloc] init];
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable response, NSError * _Nonnull error) {}];
+    
+    NSURL *expectedURL = [[[NSURL
+        URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
+        URLByAppendingPathComponent:@"models"]
+        URLByAppendingPathComponent:@"happy-face"];
+    
+    XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
+
 - (void)testGETModelWithEmptyModelFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for model response"];
     
@@ -101,6 +116,8 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+// MARK: -
 
 - (void)testGETModelsWithErrorFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for health status response"];

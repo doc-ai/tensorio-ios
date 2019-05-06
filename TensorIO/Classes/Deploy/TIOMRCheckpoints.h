@@ -22,6 +22,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * Encpasulates information about the checkpoints available to a
+ * (model, hyperparemeters) tuple.
+ *
+ * You should not need to instantiate instances of this class yourself. They
+ * are retured by requests to a `TIOModelRepository`.
+ */
+
 @interface TIOMRCheckpoints : NSObject
 
 /**
@@ -42,8 +50,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) NSArray<NSString*> *checkpointIds;
 
+/**
+ * The designated initializer. You should not need to instantiate instances of
+ * this class yourself.
+ */
+
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
 
+/**
+ * Use the designated initializer.
+ */
+ 
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

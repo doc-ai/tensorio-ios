@@ -36,6 +36,8 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+// MARK: -
+
 - (void)testGETHyperparameterWithHyperparameterPropertiesSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameter response"];
     
@@ -73,6 +75,23 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+- (void)testGETHyperparameterURL {
+    MockURLSession *session = [[MockURLSession alloc] init];
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error) {}];
+    
+    NSURL *expectedURL = [[[[[NSURL
+        URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
+        URLByAppendingPathComponent:@"models"]
+        URLByAppendingPathComponent:@"happy-face"]
+        URLByAppendingPathComponent:@"hyperparameters"]
+        URLByAppendingPathComponent:@"batch-9-2-0-1-5"];
+    
+    XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
 
 - (void)testGETHyperparameterWithHyperparameterPropertiesNullUpgradeToSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameter response"];
@@ -242,8 +261,10 @@
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
+// MARK: -
+
 - (void)testGETHyperparameterWithErrorFails {
-    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameter response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
@@ -260,7 +281,7 @@
 }
 
 - (void)testGETHyperparameterWithoutDataFails {
-    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameter response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONData:[NSData data]];
     

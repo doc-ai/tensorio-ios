@@ -24,7 +24,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * A model available in a model repository
+ * Encpasulates information about a model available in a model repository.
+ *
+ * You should not need to instantiate instances of this class yourself. They
+ * are retured by requests to a `TIOModelRepository`.
  */
 
 @interface TIOMRModel : NSObject
@@ -47,8 +50,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) NSString *canonicalHyperparameters;
 
+/**
+ * The designated initializer. You should not need to instantiate instances of
+ * this class yourself.
+ */
+
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
 
+/**
+ * Use the designated initializer.
+ */
+ 
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

@@ -28,7 +28,10 @@ typedef enum : NSUInteger {
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * The health check status of a repository
+ * Encpasulates information about the health check status of a model repository.
+ *
+ * You should not need to instantiate instances of this class yourself. They
+ * are retured by requests to a `TIOModelRepository`.
  */
 
 @interface TIOMRStatus : NSObject
@@ -39,8 +42,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) TIOMRStatusValue status;
 
+/**
+ * The designated initializer. You should not need to instantiate instances of
+ * this class yourself.
+ */
+
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
 
+/**
+ * Use the designated initializer.
+ */
+ 
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

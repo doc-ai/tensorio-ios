@@ -36,11 +36,6 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-}
-
 // MARK: -
 
 - (void)testGETHyperparametersWithHyperparametersSucceeds {
@@ -72,6 +67,44 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+- (void)testGETHyperparametersWithEmptyHyperparameterIdsSucceeds {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"happy-face",
+        @"hyperparameterIds": @[]
+    }];
+    
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+        XCTAssertNil(error);
+        XCTAssertNotNil(response);
+        XCTAssertEqualObjects(response.modelId, @"happy-face");
+        XCTAssertEqualObjects(response.hyperparameterIds, (@[]));
+        [expectation fulfill];
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETHyperparametersURL {
+    MockURLSession *session = [[MockURLSession alloc] init];
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {}];
+    
+    NSURL *expectedURL = [[[[NSURL
+        URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
+        URLByAppendingPathComponent:@"models"]
+        URLByAppendingPathComponent:@"happy-face"]
+        URLByAppendingPathComponent:@"hyperparameters"];
+    
+    XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
 
 - (void)testGETHyperparametersWithoutHyperparametersFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
@@ -114,6 +147,8 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+// MARK: -
 
 - (void)testGETHyperparametersWithErrorFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];

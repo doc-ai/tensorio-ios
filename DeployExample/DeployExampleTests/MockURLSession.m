@@ -19,10 +19,27 @@
 //
 #import "MockURLSession.h"
 
-@implementation MockSessionDataTask
+@implementation MockSessionDataTask {
+    NSURLRequest *_mockRequest;
+}
+
+- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest {
+    if ((self=[super init])) {
+        _mockRequest = mockRequest;
+    }
+    return self;
+}
 
 - (void)resume {
     _calledResume = YES;
+}
+
+- (NSURLRequest*)originalRequest {
+    return _mockRequest;
+}
+
+- (NSURLRequest*)currentRequest {
+    return _mockRequest;
 }
 
 @end
@@ -58,6 +75,7 @@
 }
 
 - (NSURLSessionDataTask*)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+    NSURLRequest *URLRequest = [NSURLRequest requestWithURL:url];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.error) {
@@ -71,7 +89,7 @@
         }
     });
     
-    return [[MockSessionDataTask alloc] init];
+    return [[MockSessionDataTask alloc] initWithMockURLRequest:URLRequest];
 }
 
 @end

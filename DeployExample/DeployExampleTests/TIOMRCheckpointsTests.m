@@ -17,7 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  TODO: Test URL
 
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
@@ -36,6 +35,8 @@
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
+
+// MARK: -
 
 - (void)testGETCheckpointsWithCheckpointPropertiesSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoints response"];
@@ -68,6 +69,48 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+- (void)testGETCheckpointsWithEmptyCheckpointIdsSucceeds {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoints response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"happy-face",
+        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"checkpointIds": @[]
+    }];
+    
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointsForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" callback:^(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error) {
+        XCTAssertNil(error);
+        XCTAssertNotNil(response);
+        XCTAssertEqualObjects(response.modelId, @"happy-face");
+        XCTAssertEqualObjects(response.hyperparameterId, @"batch-9-2-0-1-5");
+        XCTAssertEqualObjects(response.checkpointIds, (@[]));
+        [expectation fulfill];
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETCheckpointsURL {
+    MockURLSession *session = [[MockURLSession alloc] init];
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointsForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" callback:^(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error) {}];
+    
+    NSURL *expectedURL = [[[[[[NSURL
+        URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
+        URLByAppendingPathComponent:@"models"]
+        URLByAppendingPathComponent:@"happy-face"]
+        URLByAppendingPathComponent:@"hyperparameters"]
+        URLByAppendingPathComponent:@"batch-9-2-0-1-5"]
+        URLByAppendingPathComponent:@"checkpoints"];
+    
+    XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
 
 - (void)testGETCheckpointsWithoutCheckpointIdsFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoints response"];
@@ -137,8 +180,10 @@
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
+// MARK: -
+
 - (void)testGETCheckpointsWithErrorFails {
-    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoints response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
@@ -155,7 +200,7 @@
 }
 
 - (void)testGETCheckpointsWithoutDataFails {
-    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoints response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONData:[NSData data]];
     

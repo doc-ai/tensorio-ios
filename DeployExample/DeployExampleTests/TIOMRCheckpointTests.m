@@ -17,7 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  TODO: Test URL
 
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
@@ -36,6 +35,8 @@
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
+
+// MARK: -
 
 - (void)testGETCheckpointWithCheckpointPropertieSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoint response"];
@@ -67,6 +68,25 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+- (void)testGETCheckpointURL {
+    MockURLSession *session = [[MockURLSession alloc] init];
+    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {}];
+    
+    NSURL *expectedURL = [[[[[[[NSURL
+        URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
+        URLByAppendingPathComponent:@"models"]
+        URLByAppendingPathComponent:@"happy-face"]
+        URLByAppendingPathComponent:@"hyperparameters"]
+        URLByAppendingPathComponent:@"batch-9-2-0-1-5"]
+        URLByAppendingPathComponent:@"checkpoints"]
+        URLByAppendingPathComponent:@"model.ckpt-321312"];
+    
+    XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
 
 - (void)testGETCheckpointWithoutModelIdFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoint response"];
@@ -215,6 +235,8 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+// MARK: -
 
 - (void)testGETCheckpointWithErrorFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoint response"];
