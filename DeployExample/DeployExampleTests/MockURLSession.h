@@ -28,17 +28,57 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface MockSessionDownloadTask: NSURLSessionDownloadTask
+
+@property (readonly) BOOL calledResume;
+
+@end
+
 // MARK: -
 
 @interface MockURLSession: NSURLSession
 
 @property (readonly) NSDictionary *JSONResponse;
 @property (readonly) NSData *JSONData;
+@property (readonly) NSURL *download;
 @property (readonly) NSError *error;
 
+/**
+ * Prepare for a `NSURLSessionDataTask` with JSON
+ */
+
 - (instancetype)initWithJSONResponse:(NSDictionary*)JSON;
-- (instancetype)initWithJSONData:(NSData*)data;
+
+/**
+ * Prepare for a `NSURLSessionDataTask` with JSON data
+ */
+
+- (instancetype)initWithJSONData:(NSData*)JSONData;
+
+/**
+ * Prepare for a `NSURLSessionDownloadTask` with a file URL
+ */
+
+- (instancetype)initWithDownload:(NSURL*)download;
+
+/**
+ * Prepare for a `NSURLSessionDataTask` or `NSURLSessionDownloadTask` with an
+ * error
+ */
+
 - (instancetype)initWithError:(NSError*)error;
+
+/**
+ * Mocks a NSURLSessionDataTask with JSON, JSON data, or an error
+ */
+
+- (NSURLSessionDataTask*)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
+
+/**
+ * Mocks a NSURLSessionDownloadTask with a file URL or an error
+ */
+
+- (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
 @end
 

@@ -26,6 +26,7 @@
 #import "TIOMRHyperparameter.h"
 #import "TIOMRCheckpoints.h"
 #import "TIOMRCheckpoint.h"
+#import "TIOMRDownload.h"
 
 static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 
@@ -35,6 +36,7 @@ static NSInteger TIOMRJSONError = 2;
 static NSInteger TIMORDeserializationError = 3;
 
 static NSInteger TIOMRHealthStatusNotServingError = 100;
+static NSInteger TIOMRDownloadError = 200;
 
 /**
  * Parses a JSON response from a tensorio models repository
@@ -282,6 +284,32 @@ static NSInteger TIOMRHealthStatusNotServingError = 100;
         }
         
         responseBlock(checkpoint, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable response, double progress, NSError * _Nullable error))responseBlock {
+    
+    NSURLSessionDownloadTask *task = [self.URLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+        
+        if ( requestError != nil ) {
+            NSLog(@"Request error for request with URL: %@", response.URL);
+            NSError *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDownloadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
+        if ( location == nil ) {
+            NSLog(@"File error for request with URL: %@", response.URL);
+            NSError *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDownloadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
+        TIOMRDownload *download = [[TIOMRDownload alloc] initWithURL:location modelId:modelId hyperparametereId:hyperparameterId checkpointId:checkpointId];
+        responseBlock(download, 1, nil);
     }];
     
     [task resume];

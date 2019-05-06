@@ -27,6 +27,7 @@
 @class TIOMRHyperparameter;
 @class TIOMRCheckpoints;
 @class TIOMRCheckpoint;
+@class TIOMRDownload;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -63,6 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (instancetype)init NS_UNAVAILABLE;
+
+// MARK: - Primitive Request Methods
 
 /**
  * Checks if the repository is up and correctly running
@@ -105,6 +108,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock;
+
+/**
+ * Downloads a zipped model bundle
+ */
+
+- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparameterId:(NSString*)parameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable response, double progress, NSError * _Nullable error))responseBlock;
 
 @end
 

@@ -44,6 +44,31 @@
 
 @end
 
+@implementation MockSessionDownloadTask {
+    NSURLRequest *_mockRequest;
+}
+
+- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest {
+    if ((self=[super init])) {
+        _mockRequest = mockRequest;
+    }
+    return self;
+}
+
+- (void)resume {
+    _calledResume = YES;
+}
+
+- (NSURLRequest*)originalRequest {
+    return _mockRequest;
+}
+
+- (NSURLRequest*)currentRequest {
+    return _mockRequest;
+}
+
+@end
+
 // MARK: -
 
 @implementation MockURLSession
@@ -60,9 +85,16 @@
     return self;
 }
 
-- (instancetype)initWithJSONData:(NSData*)data {
+- (instancetype)initWithJSONData:(NSData*)JSONData {
     if ((self=[super init])) {
-        _JSONData = data;
+        _JSONData = JSONData;
+    }
+    return self;
+}
+
+- (instancetype)initWithDownload:(NSURL*)download {
+    if ((self=[super init])) {
+        _download = download;
     }
     return self;
 }
@@ -90,6 +122,41 @@
     });
     
     return [[MockSessionDataTask alloc] initWithMockURLRequest:URLRequest];
+}
+
+- (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+    NSURLRequest *URLRequest = [NSURLRequest requestWithURL:url];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.error) {
+            completionHandler(nil, nil, self.error);
+        }
+        else if (self.download) {
+            NSURL *copiedURL = [self copyToTemporaryDirectory:url];
+            completionHandler(copiedURL, nil, nil);
+        }
+        else {
+            completionHandler(nil, nil, nil);
+        }
+    });
+    
+    return [[MockSessionDownloadTask alloc] initWithMockURLRequest:URLRequest];
+}
+
+- (nullable NSURL*)copyToTemporaryDirectory:(NSURL*)URL {
+    NSURL *tempDir = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSURL *destURL = [tempDir URLByAppendingPathComponent:URL.lastPathComponent];
+    
+    NSError *fileError;
+    [NSFileManager.defaultManager removeItemAtURL:destURL error:&fileError];
+    [NSFileManager.defaultManager copyItemAtURL:URL toURL:destURL error:&fileError];
+    
+    if ( fileError != nil ) {
+        NSLog(@"Copy Error");
+        return nil;
+    }
+    
+    return destURL;
 }
 
 @end
