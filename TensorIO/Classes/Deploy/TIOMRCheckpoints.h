@@ -1,8 +1,8 @@
 //
-//  TIOMRHyperparameters.h
+//  TIOMRCheckpoints.h
 //  TensorIO
 //
-//  Created by Phil Dow on 5/3/19.
+//  Created by Phil Dow on 5/6/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,24 +22,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- * Model repository hyperparameters identify all of the hyperparameter settings
- * with which a model has been trained.
- */
-
-@interface TIOMRHyperparameters : NSObject
+@interface TIOMRCheckpoints : NSObject
 
 /**
- * The id of the model with which these hyperparameters are associated
+ * The id of the model with which this hyperparameter is associated
  */
 
 @property (readonly) NSString *modelId;
 
 /**
- * A list of hyperparameters ids availble for this model
+ * The hyperparameter id
  */
 
-@property (readonly) NSArray<NSString*> *hyperparameterIds;
+@property (readonly) NSString *hyperparameterId;
+
+
+/**
+ * A list of checkpoint ids availble for this (model, hyperparameter) tuple
+ */
+
+@property (readonly) NSArray<NSString*> *checkpointIds;
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
 

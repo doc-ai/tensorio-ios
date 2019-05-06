@@ -25,6 +25,7 @@
 @class TIOMRModel;
 @class TIOMRHyperparameters;
 @class TIOMRHyperparameter;
+@class TIOMRCheckpoints;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Encapsulates requests to a TensorIO model repository, allowing users to
  * manage deployment of TensorIO models.
  *
- * All repository HTTP requests are run on a background thread but will
+ * All repository HTTP requests are run on a background thread and
  * execute their callbacks on the main thread.
  */
 
@@ -91,6 +92,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
  - (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock;
+
+/**
+ * Retrieves the checkpoints for a model with the tuple (model id, hyperparameter id)
+ */
+
+ - (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @end
 

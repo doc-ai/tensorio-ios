@@ -24,6 +24,7 @@
 #import "TIOMRModel.h"
 #import "TIOMRHyperparameters.h"
 #import "TIOMRHyperparameter.h"
+#import "TIOMRCheckpoints.h"
 
 static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 
@@ -33,6 +34,10 @@ static NSInteger TIOMRJSONError = 2;
 static NSInteger TIMORDeserializationError = 3;
 
 static NSInteger TIOMRHealthStatusNotServingError = 100;
+
+/**
+ * Parses a JSON response from a tensorio models repository
+ */
 
 @interface TIOModelRepositoryJSONResponseParser <ParsedType> : NSObject
 
@@ -226,5 +231,32 @@ static NSInteger TIOMRHealthStatusNotServingError = 100;
     [task resume];
     return task;
  }
+
+- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock {
+  
+    NSURL *endpoint = [[[[[self.baseURL
+        URLByAppendingPathComponent:@"models"]
+        URLByAppendingPathComponent:modelId]
+        URLByAppendingPathComponent:@"hyperparameters"]
+        URLByAppendingPathComponent:hyperparameterId]
+        URLByAppendingPathComponent:@"checkpoints"];
+    
+    NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSError *parseError;
+        TIOModelRepositoryJSONResponseParser<TIOMRCheckpoints*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRCheckpoints.class];
+        TIOMRCheckpoints *checkpoints = [parser parseData:data response:response requestError:error error:&parseError];
+        
+        if ( checkpoints == nil ) {
+            responseBlock(nil, parseError);
+            return;
+        }
+        
+        responseBlock(checkpoints, nil);
+    }];
+    
+    [task resume];
+    return task;
+  }
 
 @end
