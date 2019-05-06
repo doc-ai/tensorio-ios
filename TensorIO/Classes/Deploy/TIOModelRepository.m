@@ -30,14 +30,67 @@ static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 static NSInteger TIOMRURLSessionErrorCode = 0;
 static NSInteger TIOMNoDataErrorCode = 1;
 static NSInteger TIOMRJSONError = 2;
+static NSInteger TIMORDeserializationError = 3;
 
-static NSInteger TIOMRHealthStatusParsingError = 100;
-static NSInteger TIOMRHealthStatusNotServingError = 101;
+static NSInteger TIOMRHealthStatusNotServingError = 100;
 
-static NSInteger TIOMRModelsParsingError = 200;
-static NSInteger TIOMRModelParsingError = 300;
-static NSInteger TIOMRHyperparametersParasingError = 400;
-static NSInteger TIOMRHyperparameterParasingError = 500;
+@interface TIOModelRepositoryJSONResponseParser <ParsedType> : NSObject
+
+- (instancetype)initWithClass:(Class)klass NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
+
+@property Class klass;
+
+- (nullable ParsedType)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error;
+
+@end
+
+@implementation TIOModelRepositoryJSONResponseParser
+
+- (instancetype)initWithClass:(Class)klass {
+    if ((self=[super init])) {
+        _klass = klass;
+    }
+    return self;
+}
+
+- (nullable id)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error {
+    
+    if ( requestError != nil ) {
+        NSLog(@"Request error for request with URL: %@", response.URL);
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil];
+        return nil;
+    }
+    
+    if ( data == nil ) {
+        NSLog(@"No data for request with URL: %@", response.URL);
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil];
+        return nil;
+    }
+    
+    NSError *JSONError;
+    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
+
+    if ( JSONError != nil ) {
+        NSLog(@"Unable to parse JSON for request with URL: %@", response.URL);
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil];
+        return nil;
+    }
+    
+    id object = [[_klass alloc] initWithJSON:JSON];
+    
+    if ( object == nil ) {
+        NSLog(@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass);
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIMORDeserializationError userInfo:nil];
+        return nil;
+    }
+    
+    return object;
+}
+
+@end
+
+// MARK: -
 
 @interface TIOModelRepository ()
 
@@ -58,32 +111,12 @@ static NSInteger TIOMRHyperparameterParasingError = 500;
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        if ( error != nil ) {
-            NSLog(@"error");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
-            return;
-        }
-        
-        if ( data == nil ) {
-            NSLog(@"no data");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
-            return;
-        }
-        
-        NSError *JSONError;
-        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
-        
-        if ( JSONError != nil ) {
-            NSLog(@"Unable to parse JSON");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
-            return;
-        }
-        
-        TIOMRStatus *status = [[TIOMRStatus alloc] initWithJSON:JSON];
+        NSError *parseError;
+        TIOModelRepositoryJSONResponseParser<TIOMRStatus*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRStatus.class];
+        TIOMRStatus *status = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( status == nil ) {
-            NSLog(@"Unable to parse status");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHealthStatusParsingError userInfo:nil]);
+            responseBlock(nil, parseError);
             return;
         }
         
@@ -106,32 +139,12 @@ static NSInteger TIOMRHyperparameterParasingError = 500;
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        if ( error != nil ) {
-            NSLog(@"error");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
-            return;
-        }
-        
-        if ( data == nil ) {
-            NSLog(@"no data");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
-            return;
-        }
-        
-        NSError *JSONError;
-        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
-        
-        if ( JSONError != nil ) {
-            NSLog(@"Unable to parse JSON");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
-            return;
-        }
-        
-        TIOMRModels *models = [[TIOMRModels alloc] initWithJSON:JSON];
+        NSError *parseError;
+        TIOModelRepositoryJSONResponseParser<TIOMRModels*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRModels.class];
+        TIOMRModels *models = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( models == nil ) {
-            NSLog(@"Unable to parse models");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRModelsParsingError userInfo:nil]);
+            responseBlock(nil, parseError);
             return;
         }
         
@@ -149,32 +162,12 @@ static NSInteger TIOMRHyperparameterParasingError = 500;
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        if ( error != nil ) {
-            NSLog(@"error");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
-            return;
-        }
-        
-        if ( data == nil ) {
-            NSLog(@"no data");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
-            return;
-        }
-        
-        NSError *JSONError;
-        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
-        
-        if ( JSONError != nil ) {
-            NSLog(@"Unable to parse JSON");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
-            return;
-        }
-        
-        TIOMRModel *model = [[TIOMRModel alloc] initWithJSON:JSON];
+        NSError *parseError;
+        TIOModelRepositoryJSONResponseParser<TIOMRModel*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRModel.class];
+        TIOMRModel *model = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( model == nil ) {
-            NSLog(@"Unable to parse model");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRModelParsingError userInfo:nil]);
+            responseBlock(nil, parseError);
             return;
         }
         
@@ -193,32 +186,12 @@ static NSInteger TIOMRHyperparameterParasingError = 500;
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        if ( error != nil ) {
-            NSLog(@"error");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
-            return;
-        }
-        
-        if ( data == nil ) {
-            NSLog(@"no data");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
-            return;
-        }
-        
-        NSError *JSONError;
-        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
-        
-        if ( JSONError != nil ) {
-            NSLog(@"Unable to parse JSON");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
-            return;
-        }
-        
-        TIOMRHyperparameters *hyperparameters = [[TIOMRHyperparameters alloc] initWithJSON:JSON];
+        NSError *parseError;
+        TIOModelRepositoryJSONResponseParser<TIOMRHyperparameters*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRHyperparameters.class];
+        TIOMRHyperparameters *hyperparameters = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( hyperparameters == nil ) {
-            NSLog(@"Unable to parse hyperparameters");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHyperparametersParasingError userInfo:nil]);
+            responseBlock(nil, parseError);
             return;
         }
         
@@ -238,32 +211,12 @@ static NSInteger TIOMRHyperparameterParasingError = 500;
      
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        if ( error != nil ) {
-            NSLog(@"error");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil]);
-            return;
-        }
-        
-        if ( data == nil ) {
-            NSLog(@"no data");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil]);
-            return;
-        }
-        
-        NSError *JSONError;
-        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
-        
-        if ( JSONError != nil ) {
-            NSLog(@"Unable to parse JSON");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil]);
-            return;
-        }
-        
-        TIOMRHyperparameter *hyperparameter = [[TIOMRHyperparameter alloc] initWithJSON:JSON];
+        NSError *parseError;
+        TIOModelRepositoryJSONResponseParser<TIOMRHyperparameter*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRHyperparameter.class];
+        TIOMRHyperparameter *hyperparameter = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( hyperparameter == nil ) {
-            NSLog(@"Unable to parse hyperparameters");
-            responseBlock(nil, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHyperparameterParasingError userInfo:nil]);
+            responseBlock(nil, parseError);
             return;
         }
         
