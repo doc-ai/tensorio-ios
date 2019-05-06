@@ -38,8 +38,8 @@ Pod::Spec.new do |s|
   # TFLite subspec contains the TensorFlow Lite implementation
   
   s.subspec 'TFLite' do |ss|
-    ss.dependency 'TensorFlowLite'
     ss.dependency 'TensorIO/Core'
+    ss.dependency 'TensorFlowLite'
     
     ss.source_files = 'TensorIO/Classes/TFLite/**/*'
     ss.resource_bundles = { 
@@ -56,8 +56,8 @@ Pod::Spec.new do |s|
   # TensorFlow subspec contains a full TensorFlow implementation
 
   s.subspec 'TensorFlow' do |ss|
-    ss.dependency 'TensorIOTensorFlow'
     ss.dependency 'TensorIO/Core'
+    ss.dependency 'TensorIOTensorFlow'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
@@ -79,6 +79,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Deploy' do |ss|
     ss.dependency 'TensorIO/Core'
+    ss.dependency 'SSZipArchive'
 
     ss.source_files = 'TensorIO/Classes/Deploy/**/*'
     ss.pod_target_xcconfig = {
