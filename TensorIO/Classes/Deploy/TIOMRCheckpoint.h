@@ -1,5 +1,5 @@
 //
-//  TIOMRCheckpoints.h
+//  TIOMRCheckpoint.h
 //  TensorIO
 //
 //  Created by Phil Dow on 5/6/19.
@@ -22,7 +22,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TIOMRCheckpoints : NSObject
+/**
+ * Encpasulates information about a (model, hyperparemeters, checkpoint) triple,
+ * including a link to the `TIOModel` bundle trained with these properties.
+ *
+ * You should not need to instantiate instances of this class yourself. They
+ * are retured by requests to a `TIOModelRepository`.
+ */
+
+@interface TIOMRCheckpoint : NSObject
 
 /**
  * The id of the model with which this checkpoint is associated
@@ -31,18 +39,45 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *modelId;
 
 /**
- * The hyperparameter id
+ * The hyperparameter id for which this checkpoint is associated
  */
 
 @property (readonly) NSString *hyperparameterId;
 
 /**
- * A list of checkpoint ids availble for this (model, hyperparameter) tuple
+ * The checkpoint id
  */
 
-@property (readonly) NSArray<NSString*> *checkpointIds;
+@property (readonly) NSString *checkpointId;
+
+/**
+ * The date of creation of this checkpoint
+ */
+
+@property (readonly) NSDate *createdAt;
+
+/**
+ * Additional information about this checkpoint
+ */
+
+@property (readonly) NSDictionary<NSString*,NSString*> *info;
+
+/**
+ * A URL to the `TIOModel` bundle that contains the model trained with this
+ * (model, hyperparameters, checkpoint) triple
+ */
+
+@property (readonly) NSURL *link;
+
+/**
+ * The designated initializer
+ */
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
+
+/**
+ * Use the designated initializer
+ */
 
 - (instancetype)init NS_UNAVAILABLE;
 

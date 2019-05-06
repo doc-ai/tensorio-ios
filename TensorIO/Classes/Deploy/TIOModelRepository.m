@@ -25,6 +25,7 @@
 #import "TIOMRHyperparameters.h"
 #import "TIOMRHyperparameter.h"
 #import "TIOMRCheckpoints.h"
+#import "TIOMRCheckpoint.h"
 
 static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 
@@ -230,7 +231,7 @@ static NSInteger TIOMRHealthStatusNotServingError = 100;
     
     [task resume];
     return task;
- }
+}
 
 - (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock {
   
@@ -257,6 +258,34 @@ static NSInteger TIOMRHealthStatusNotServingError = 100;
     
     [task resume];
     return task;
-  }
+}
+
+- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock {
+    
+    NSURL *endpoint = [[[[[[self.baseURL
+        URLByAppendingPathComponent:@"models"]
+        URLByAppendingPathComponent:modelId]
+        URLByAppendingPathComponent:@"hyperparameters"]
+        URLByAppendingPathComponent:hyperparameterId]
+        URLByAppendingPathComponent:@"checkpoints"]
+        URLByAppendingPathComponent:checkpointId];
+    
+    NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSError *parseError;
+        TIOModelRepositoryJSONResponseParser<TIOMRCheckpoint*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRCheckpoint.class];
+        TIOMRCheckpoint *checkpoint = [parser parseData:data response:response requestError:error error:&parseError];
+        
+        if ( checkpoint == nil ) {
+            responseBlock(nil, parseError);
+            return;
+        }
+        
+        responseBlock(checkpoint, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
 
 @end

@@ -26,6 +26,7 @@
 @class TIOMRHyperparameters;
 @class TIOMRHyperparameter;
 @class TIOMRCheckpoints;
+@class TIOMRCheckpoint;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -91,13 +92,19 @@ NS_ASSUME_NONNULL_BEGIN
  * Retrieves the hyperparameters for a model by hyperparameter id
  */
 
- - (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves the checkpoints for a model with the tuple (model id, hyperparameter id)
  */
 
- - (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock;
+
+/**
+ * Retrieves the checkpoint for a model with the tuple (model id, hyperparameter id, checkpoint id)
+ */
+
+- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock;
 
 @end
 
