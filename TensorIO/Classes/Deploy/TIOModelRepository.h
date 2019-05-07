@@ -17,8 +17,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+//  TODO: Model bundle verification
+//  TODO: Consistent plurality of hyperparametersId strings
+//  TODO: Name of callback response should reflect type of object
 
 #import <Foundation/Foundation.h>
+#import <SSZipArchive/SSZipArchive.h>
 
 @class TIOMRStatus;
 @class TIOMRModels;
@@ -55,6 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Initializes a model repository with a base URL
+ *
+ * You may inject your own URL Session into the model respository object for
+ * custom request handling and downloads, but this behavior exists in order to
+ * test the object and passing `nil` is sufficient.
  */
 
 - (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession NS_DESIGNATED_INITIALIZER;
@@ -65,7 +73,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-// MARK: - Primitive Request Methods
+// MARK: - Convenience Repository Methods
+
+/**
+ * Updates a model with the identifying (model, hyperparameter, checkpoint) triple,
+ * unzipping the model bundle to the destination file URL parameter. If a bundle
+ * already exists at that path, the bundle will be replaced.
+ *
+ * The callback is called with updated = `YES` and error = `nil` if the model
+ * was successfully updated. When no update is available, updated = `NO` and
+ * error = `nil`. Otherwise, error will be set to some value.
+ */
+
+- (void)updateModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId destination:(NSURL*)destinationURL callback:(void(^)(BOOL updated, NSError *error))responseBlock;
+
+// MARK: - Primitive Repository Methods
 
 /**
  * Checks if the repository is up and correctly running
@@ -109,11 +131,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock;
 
+// MARK: -
+
 /**
  * Downloads a zipped model bundle
  */
 
 - (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparameterId:(NSString*)parameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable response, double progress, NSError * _Nullable error))responseBlock;
+
+/**
+ * Unzips a downloaded model bundle at a file URL to a destination file URL.
+ * The destination will be overwritten.
+ */
+
+- (BOOL)unzipModelBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL error:(NSError**)error;
 
 @end
 
