@@ -47,10 +47,10 @@
     {
       "name": "TFLite",
       "dependencies": {
-        "TensorFlowLite": [
+        "TensorIO/Core": [
 
         ],
-        "TensorIO/Core": [
+        "TensorFlowLite": [
 
         ]
       },
@@ -68,10 +68,10 @@
     {
       "name": "TensorFlow",
       "dependencies": {
-        "TensorIOTensorFlow": [
+        "TensorIO/Core": [
 
         ],
-        "TensorIO/Core": [
+        "TensorIOTensorFlow": [
 
         ]
       },
@@ -94,6 +94,9 @@
       "name": "Deploy",
       "dependencies": {
         "TensorIO/Core": [
+
+        ],
+        "SSZipArchive": [
 
         ]
       },
