@@ -20,6 +20,13 @@
 
 #import "NSDictionary+TIOTensorFlowData.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
+#include "tensorflow/core/framework/tensor.h"
+
+#pragma clang diagnostic pop
+
 @implementation NSDictionary (TIOTensorFlowData)
 
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {

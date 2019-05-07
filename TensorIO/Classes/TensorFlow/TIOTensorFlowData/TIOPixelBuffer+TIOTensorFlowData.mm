@@ -24,6 +24,13 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+
+#include "tensorflow/core/framework/tensor.h"
+
+#pragma clang diagnostic pop
+
 static const size_t kTIOPixelBufferCopyNoOffset = 0;
 
 /**

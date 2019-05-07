@@ -19,15 +19,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "TIOData.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
-
-#include "tensorflow/core/framework/tensor.h"
-
-#pragma clang diagnostic pop
+namespace tensorflow {
+    class Tensor;
+}
 
 NS_ASSUME_NONNULL_BEGIN
 
