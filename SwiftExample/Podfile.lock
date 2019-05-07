@@ -1,12 +1,12 @@
 PODS:
   - DSJSONSchemaValidation (2.0.5)
   - TensorFlowLite (1.13.1)
-  - TensorIO (0.7.2):
+  - TensorIO (0.7.3):
     - DSJSONSchemaValidation
-    - TensorIO/Core (= 0.7.2)
-  - TensorIO/Core (0.7.2):
+    - TensorIO/Core (= 0.7.3)
+  - TensorIO/Core (0.7.3):
     - DSJSONSchemaValidation
-  - TensorIO/TFLite (0.7.2):
+  - TensorIO/TFLite (0.7.3):
     - DSJSONSchemaValidation
     - TensorFlowLite
     - TensorIO/Core
