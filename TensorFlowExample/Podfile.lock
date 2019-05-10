@@ -9,11 +9,12 @@ PODS:
     - DSJSONSchemaValidation
     - TensorIO/Core
     - TensorIOTensorFlow
-  - TensorIOTensorFlow (0.1.0)
+  - TensorIOTensorFlow (0.1.1)
 
 DEPENDENCIES:
   - TensorIO (from `../`)
   - TensorIO/TensorFlow (from `../`)
+  - TensorIOTensorFlow (~> 0.1.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -27,8 +28,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DSJSONSchemaValidation: a0d791d3c8a4801cb3c72f3c8701342e2cb66f58
   TensorIO: 26c56ff21d3319500612a26a5ca897c72308fc70
-  TensorIOTensorFlow: 31f473f6a9e0cd9457f3c842fcdea83070e9e5fb
+  TensorIOTensorFlow: cc1344119f0d724bd47676fc5932d2289e91f856
 
-PODFILE CHECKSUM: ccf272cde197932817bdf42271dac93482107a16
+PODFILE CHECKSUM: bc84ddc8ac6de2412e8ebee57166893e9641827a
 
 COCOAPODS: 1.6.0
