@@ -22,6 +22,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// MARK: Mock Session Responses
+
+@protocol MockSessionResponse <NSObject>
+@end
+
+@interface NSDictionary (MockSessionResponse) <MockSessionResponse>
+@end
+
+@interface NSData (MockSessionResponse) <MockSessionResponse>
+@end
+
+@interface NSURL (MockSessionResponse) <MockSessionResponse>
+@end
+
+@interface NSError (MockSessionResponse) <MockSessionResponse>
+@end
+
+// MARK: - Mock Session Tasks
+
 @interface MockSessionDataTask: NSURLSessionDataTask
 
 @property (readonly) BOOL calledResume;
@@ -34,10 +53,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-// MARK: -
+// MARK: - Mock Session
 
 @interface MockURLSession: NSURLSession
 
+// A list of responses that will be returned in order
+@property (readonly) NSArray<id<MockSessionResponse>> *responses;
+
+// The next response that will be returned
 @property (readonly) NSDictionary *JSONResponse;
 @property (readonly) NSData *JSONData;
 @property (readonly) NSURL *download;
@@ -69,6 +92,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithError:(NSError*)error;
 
 /**
+ * Prepares a session with mulitple response for multiple expected tasks
+ */
+
+- (instancetype)initWithResponses:(NSArray<id<MockSessionResponse>>*)responses;
+
+/**
  * Mocks a NSURLSessionDataTask with JSON, JSON data, or an error
  */
 
@@ -83,3 +112,4 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+

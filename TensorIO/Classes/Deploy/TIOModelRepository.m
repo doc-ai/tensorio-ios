@@ -33,7 +33,7 @@ static NSString * TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 static NSInteger TIOMRURLSessionErrorCode = 0;
 static NSInteger TIOMNoDataErrorCode = 1;
 static NSInteger TIOMRJSONError = 2;
-static NSInteger TIMORDeserializationError = 3;
+static NSInteger TIOMRDeserializationError = 3;
 
 static NSInteger TIOMRHealthStatusNotServingError = 100;
 static NSInteger TIOMRDownloadError = 200;
@@ -90,7 +90,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
     
     if ( object == nil ) {
         NSLog(@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIMORDeserializationError userInfo:nil];
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDeserializationError userInfo:nil];
         return nil;
     }
     
@@ -422,9 +422,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
 }
 
 - (BOOL)unzipModelBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL error:(NSError**)error {
-    return NO;
-    
-    
+    return YES;
 }
 
 @end

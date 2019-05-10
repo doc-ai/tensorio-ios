@@ -71,7 +71,9 @@
 
 // MARK: -
 
-@implementation MockURLSession
+@implementation MockURLSession {
+    NSMutableArray<id<MockSessionResponse>> *_responseQueue;
+}
 
 - (instancetype)initWithJSONResponse:(NSDictionary*)JSON {
     if ((self=[super init])) {
@@ -106,6 +108,42 @@
     return self;
 }
 
+- (instancetype)initWithResponses:(NSArray<id<MockSessionResponse>>*)responses {
+    if ((self=[super init])) {
+        assert(responses.count > 0);
+        _responseQueue = responses.mutableCopy;
+        [self prepareNextResponse];
+    }
+    return self;
+}
+
+- (void)prepareNextResponse {
+    if ( _responseQueue.count == 0 ) {
+        return;
+    }
+    
+    id<MockSessionResponse> next = _responseQueue.firstObject;
+    
+    if ( [next isKindOfClass:NSDictionary.class] ) {
+        _JSONResponse = (NSDictionary*)next;
+        _JSONData = [NSJSONSerialization dataWithJSONObject:(NSDictionary*)next options:0 error:nil];
+    } else if ( [next isKindOfClass:NSData.class] ) {
+        _JSONData = (NSData*)next;
+    } else if ( [next isKindOfClass:NSURL.class] ) {
+        _download = (NSURL*)next;
+    } else if ( [next isKindOfClass:NSError.class] ) {
+        _error = (NSError*)next;
+    }
+    
+    [_responseQueue removeObjectAtIndex:0];
+}
+
+- (NSArray<id<MockSessionResponse>>*)responses {
+    return _responseQueue.copy;
+}
+
+// MARK: -
+
 - (NSURLSessionDataTask*)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSURLRequest *URLRequest = [NSURLRequest requestWithURL:url];
     
@@ -119,6 +157,8 @@
         else {
             completionHandler(nil, nil, nil);
         }
+        
+        [self prepareNextResponse]; // works because of dispatch_after
     });
     
     return [[MockSessionDataTask alloc] initWithMockURLRequest:URLRequest];
@@ -132,12 +172,14 @@
             completionHandler(nil, nil, self.error);
         }
         else if (self.download) {
-            NSURL *copiedURL = [self copyToTemporaryDirectory:url];
+            NSURL *copiedURL = [self copyToTemporaryDirectory:self.download];
             completionHandler(copiedURL, nil, nil);
         }
         else {
             completionHandler(nil, nil, nil);
         }
+        
+        [self prepareNextResponse]; // works because of dispatch_after
     });
     
     return [[MockSessionDownloadTask alloc] initWithMockURLRequest:URLRequest];

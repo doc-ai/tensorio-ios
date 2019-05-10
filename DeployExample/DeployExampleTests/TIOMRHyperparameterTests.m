@@ -116,7 +116,7 @@
         XCTAssertNotNil(response);
         XCTAssertEqualObjects(response.modelId, @"happy-face");
         XCTAssertEqualObjects(response.hyperparameterId, @"batch-9-2-0-1-5");
-        XCTAssertEqualObjects(response.upgradeTo, [NSNull null]);
+        XCTAssertNil(response.upgradeTo);
         XCTAssertEqualObjects(response.hyperparameters,(@{
             @"architecture": @"inception-resnet-v3",
             @"batch": @"9",
@@ -295,6 +295,21 @@
     
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+// MARK: -
+
+- (void)testJSONNilUpgradeToResolvesToNilProperty {
+    NSDictionary *JSON = @{
+        @"modelId": @"happy-face",
+        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"upgradeTo": NSNull.null,
+        @"hyperparameters": @{},
+        @"canonicalCheckpoint": @"model.ckpt-321312"
+    };
+    
+    TIOMRHyperparameter *hyperparameter = [[TIOMRHyperparameter alloc] initWithJSON:JSON];
+    XCTAssertNil(hyperparameter.upgradeTo);
 }
 
 @end

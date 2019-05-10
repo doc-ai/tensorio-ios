@@ -37,7 +37,7 @@
         if ( JSON[@"upgradeTo"] == nil || !([JSON[@"upgradeTo"] isKindOfClass:NSString.class] || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class]) ) {
             return nil;
         } else {
-            _upgradeTo = JSON[@"upgradeTo"];
+            _upgradeTo = [JSON[@"upgradeTo"] isEqual:NSNull.null] ? nil : JSON[@"upgradeTo"];
         }
         if ( JSON[@"hyperparameters"] == nil || ![JSON[@"hyperparameters"] isKindOfClass:NSDictionary.class] ) {
             return nil;
