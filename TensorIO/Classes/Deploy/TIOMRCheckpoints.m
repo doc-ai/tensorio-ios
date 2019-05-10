@@ -29,10 +29,10 @@
         } else {
             _checkpointIds = JSON[@"checkpointIds"];
         }
-        if ( JSON[@"hyperparameterId"] == nil || ![JSON[@"hyperparameterId"] isKindOfClass:NSString.class] ) {
+        if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
-            _hyperparameterId = JSON[@"hyperparameterId"];
+            _hyperparametersId = JSON[@"hyperparametersId"];
         }
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
             return nil;

@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The hyperparameter id for which this checkpoint is associated
  */
 
-@property (readonly) NSString *hyperparameterId;
+@property (readonly) NSString *hyperparametersId;
 
 /**
  * The checkpoint id

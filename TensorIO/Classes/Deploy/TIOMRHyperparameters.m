@@ -24,10 +24,10 @@
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
     if ((self=[super init])) {
-        if ( JSON[@"hyperparameterIds"] == nil || ![JSON[@"hyperparameterIds"] isKindOfClass:NSArray.class] ) {
+        if ( JSON[@"hyperparametersIds"] == nil || ![JSON[@"hyperparametersIds"] isKindOfClass:NSArray.class] ) {
             return nil;
         } else {
-            _hyperparameterIds = JSON[@"hyperparameterIds"];
+            _hyperparametersIds = JSON[@"hyperparametersIds"];
         }
         
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {

@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The hyperparameter id with which this download is associated
  */
 
-@property (readonly) NSString *hyperparameterId;
+@property (readonly) NSString *hyperparametersId;
 
 /**
  * The checkpoint id with which this download is associated
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
  * are retured by requests to a `TIOModelRepository`.
  */
 
-- (instancetype)initWithURL:(NSURL*)URL modelId:(NSString*)modelId hyperparametereId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithURL:(NSURL*)URL modelId:(NSString*)modelId hyperparametereId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.

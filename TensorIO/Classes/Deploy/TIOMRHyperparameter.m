@@ -29,10 +29,10 @@
         } else {
             _modelId = JSON[@"modelId"];
         }
-        if ( JSON[@"hyperparameterId"] == nil || ![JSON[@"hyperparameterId"] isKindOfClass:NSString.class] ) {
+        if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
-            _hyperparameterId = JSON[@"hyperparameterId"];
+            _hyperparametersId = JSON[@"hyperparametersId"];
         }
         if ( JSON[@"upgradeTo"] == nil || !([JSON[@"upgradeTo"] isKindOfClass:NSString.class] || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class]) ) {
             return nil;

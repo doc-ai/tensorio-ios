@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
  * error = `nil`. Otherwise, error will be set to some value.
  */
 
-- (void)updateModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId destination:(NSURL*)destinationURL callback:(void(^)(BOOL updated, NSError *error))responseBlock;
+- (void)updateModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId destination:(NSURL*)destinationURL callback:(void(^)(BOOL updated, NSError *error))responseBlock;
 
 // MARK: - Primitive Repository Methods
 
@@ -117,19 +117,19 @@ NS_ASSUME_NONNULL_BEGIN
  * Retrieves the hyperparameters for a model by hyperparameter id
  */
 
-- (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves the checkpoints for a model with the tuple (model id, hyperparameter id)
  */
 
-- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves the checkpoint for a model with the tuple (model id, hyperparameter id, checkpoint id)
  */
 
-- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparameterId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock;
 
 // MARK: -
 
@@ -137,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Downloads a zipped model bundle
  */
 
-- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparameterId:(NSString*)parameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable response, double progress, NSError * _Nullable error))responseBlock;
+- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)parameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable response, double progress, NSError * _Nullable error))responseBlock;
 
 /**
  * Unzips a downloaded model bundle at a file URL to a destination file URL.

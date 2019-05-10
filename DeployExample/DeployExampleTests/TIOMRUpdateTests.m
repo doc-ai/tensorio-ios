@@ -70,7 +70,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -88,7 +88,7 @@
     
     NSDictionary *GETHyperParameterResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": NSNull.null,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.checkpointId
@@ -100,7 +100,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
         XCTAssertFalse(updated);
@@ -119,7 +119,7 @@
     
     NSDictionary *GETHyperParameterResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": NSNull.null,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.canonicalCheckpoint
@@ -134,7 +134,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -154,7 +154,7 @@
     
     NSDictionary *GETHyperParameterResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": NSNull.null,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.canonicalCheckpoint
@@ -162,7 +162,7 @@
     
     NSDictionary *GETCheckpointResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"checkpointId": self.canonicalCheckpoint,
         @"createdAt": @"1549868901",
         @"info": @{
@@ -181,7 +181,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -201,7 +201,7 @@
     
     NSDictionary *GETHyperParameterResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": NSNull.null,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.canonicalCheckpoint
@@ -209,7 +209,7 @@
     
     NSDictionary *GETCheckpointResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"checkpointId": self.canonicalCheckpoint,
         @"createdAt": @"1549868901",
         @"info": @{
@@ -228,7 +228,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
         XCTAssertTrue(updated);
@@ -247,7 +247,7 @@
     
     NSDictionary *GETHyperParameterResponse1 = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": self.upgradeTo,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.canonicalCheckpoint
@@ -262,7 +262,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -282,7 +282,7 @@
     
     NSDictionary *GETHyperParameterResponse1 = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": self.upgradeTo,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.checkpointId
@@ -290,7 +290,7 @@
     
     NSDictionary *GETHyperParameterResponse2 = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.upgradeTo,
+        @"hyperparametersId": self.upgradeTo,
         @"upgradeTo": NSNull.null,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.canonicalCheckpoint
@@ -306,7 +306,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -327,7 +327,7 @@
     
     NSDictionary *GETHyperParameterResponse1 = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": self.upgradeTo,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.checkpointId
@@ -335,7 +335,7 @@
     
     NSDictionary *GETHyperParameterResponse2 = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.upgradeTo,
+        @"hyperparametersId": self.upgradeTo,
         @"upgradeTo": NSNull.null,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.canonicalCheckpoint
@@ -343,7 +343,7 @@
     
     NSDictionary *GETCheckpointResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.upgradeTo,
+        @"hyperparametersId": self.upgradeTo,
         @"checkpointId": self.canonicalCheckpoint,
         @"createdAt": @"1549868901",
         @"info": @{
@@ -363,7 +363,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -384,7 +384,7 @@
     
     NSDictionary *GETHyperParameterResponse1 = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.hyperparametersId,
+        @"hyperparametersId": self.hyperparametersId,
         @"upgradeTo": self.upgradeTo,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.checkpointId
@@ -392,7 +392,7 @@
     
     NSDictionary *GETHyperParameterResponse2 = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.upgradeTo,
+        @"hyperparametersId": self.upgradeTo,
         @"upgradeTo": NSNull.null,
         @"hyperparameters": @{},
         @"canonicalCheckpoint": self.canonicalCheckpoint
@@ -400,7 +400,7 @@
     
     NSDictionary *GETCheckpointResponse = @{
         @"modelId": self.modelId,
-        @"hyperparameterId": self.upgradeTo,
+        @"hyperparametersId": self.upgradeTo,
         @"checkpointId": self.canonicalCheckpoint,
         @"createdAt": @"1549868901",
         @"info": @{
@@ -420,7 +420,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    [repository updateModelWithId:self.modelId hyperparameterId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
         XCTAssertTrue(updated);

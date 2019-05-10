@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  * A list of hyperparameters ids availble for this model
  */
 
-@property (readonly) NSArray<NSString*> *hyperparameterIds;
+@property (readonly) NSArray<NSString*> *hyperparametersIds;
 
 /**
  * The designated initializer. You should not need to instantiate instances of

@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The hyperparameter id
  */
 
-@property (readonly) NSString *hyperparameterId;
+@property (readonly) NSString *hyperparametersId;
 
 /**
  * A list of checkpoint ids availble for this (model, hyperparameter) tuple

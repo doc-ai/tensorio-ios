@@ -22,10 +22,10 @@
 
 @implementation TIOMRDownload
 
-- (instancetype)initWithURL:(NSURL*)URL modelId:(NSString*)modelId hyperparametereId:(NSString*)hyperparameterId checkpointId:(NSString*)checkpointId {
+- (instancetype)initWithURL:(NSURL*)URL modelId:(NSString*)modelId hyperparametereId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId {
     if ((self=[super init])) {
         _modelId = modelId;
-        _hyperparameterId = hyperparameterId;
+        _hyperparametersId = hyperparametersId;
         _checkpointId = checkpointId;
         _URL = URL;
     }

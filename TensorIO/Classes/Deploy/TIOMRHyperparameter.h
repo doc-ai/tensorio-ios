@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The hyperparameter id
  */
 
-@property (readonly) NSString *hyperparameterId;
+@property (readonly) NSString *hyperparametersId;
 
 /**
  * The id of the hyperparmater this (model, hyperparameter) upgrades to

@@ -43,7 +43,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
-        @"hyperparameterIds": @[
+        @"hyperparametersIds": @[
             @"batch-9-2-0-1-5",
             @"batch-9-2-0-1-0",
             @"batch-9-2-0-0-5"
@@ -56,7 +56,7 @@
         XCTAssertNil(error);
         XCTAssertNotNil(response);
         XCTAssertEqualObjects(response.modelId, @"happy-face");
-        XCTAssertEqualObjects(response.hyperparameterIds, (@[
+        XCTAssertEqualObjects(response.hyperparametersIds, (@[
             @"batch-9-2-0-1-5",
             @"batch-9-2-0-1-0",
             @"batch-9-2-0-0-5"
@@ -68,12 +68,12 @@
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
-- (void)testGETHyperparametersWithEmptyHyperparameterIdsSucceeds {
+- (void)testGETHyperparametersWithEmptyhyperparametersIdsSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
-        @"hyperparameterIds": @[]
+        @"hyperparametersIds": @[]
     }];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
@@ -82,7 +82,7 @@
         XCTAssertNil(error);
         XCTAssertNotNil(response);
         XCTAssertEqualObjects(response.modelId, @"happy-face");
-        XCTAssertEqualObjects(response.hyperparameterIds, (@[]));
+        XCTAssertEqualObjects(response.hyperparametersIds, (@[]));
         [expectation fulfill];
     }];
     
@@ -129,7 +129,7 @@
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameters response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
-        @"hyperparameterIds": @[
+        @"hyperparametersIds": @[
             @"batch-9-2-0-1-5",
             @"batch-9-2-0-1-0",
             @"batch-9-2-0-0-5"

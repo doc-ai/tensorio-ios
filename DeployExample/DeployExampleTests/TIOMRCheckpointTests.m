@@ -43,7 +43,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
-        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"hyperparametersId": @"batch-9-2-0-1-5",
         @"checkpointId": @"model.ckpt-321312",
         @"createdAt": @"1549868901",
         @"info": @{
@@ -54,11 +54,11 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNil(error);
         XCTAssertNotNil(response);
         XCTAssertEqualObjects(response.modelId, @"happy-face");
-        XCTAssertEqualObjects(response.hyperparameterId, @"batch-9-2-0-1-5");
+        XCTAssertEqualObjects(response.hyperparametersId, @"batch-9-2-0-1-5");
         XCTAssertEqualObjects(response.checkpointId, @"model.ckpt-321312");
         XCTAssertEqualObjects(response.createdAt, [NSDate dateWithTimeIntervalSince1970:[@"1549868901" doubleValue]]);
         XCTAssertEqualObjects(response.link, [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/happy-face/batch-9-2-0-9-2-0/model.ckpt-322405.zip"]);
@@ -72,7 +72,7 @@
 - (void)testGETCheckpointURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {}];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {}];
     
     NSURL *expectedURL = [[[[[[[NSURL
         URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
@@ -92,7 +92,7 @@
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoint response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
-        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"hyperparametersId": @"batch-9-2-0-1-5",
         @"checkpointId": @"model.ckpt-321312",
         @"createdAt": @"1549868901",
         @"info": @{
@@ -103,7 +103,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
@@ -113,7 +113,7 @@
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
-- (void)testGETCheckpointWithoutHyperparameterIdFails {
+- (void)testGETCheckpointWithouthyperparametersIdFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoint response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
@@ -128,7 +128,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
@@ -143,7 +143,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
-        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"hyperparametersId": @"batch-9-2-0-1-5",
         @"createdAt": @"1549868901",
         @"info": @{
             @"standard-1-accuracy": @"0.934"
@@ -153,7 +153,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
@@ -168,7 +168,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
-        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"hyperparametersId": @"batch-9-2-0-1-5",
         @"checkpointId": @"model.ckpt-321312",
         @"info": @{
             @"standard-1-accuracy": @"0.934"
@@ -178,7 +178,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
@@ -193,7 +193,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
-        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"hyperparametersId": @"batch-9-2-0-1-5",
         @"checkpointId": @"model.ckpt-321312",
         @"createdAt": @"1549868901",
         @"link": @"https://storage.googleapis.com/doc-ai-models/happy-face/batch-9-2-0-9-2-0/model.ckpt-322405.zip"
@@ -201,7 +201,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
@@ -216,7 +216,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
-        @"hyperparameterId": @"batch-9-2-0-1-5",
+        @"hyperparametersId": @"batch-9-2-0-1-5",
         @"checkpointId": @"model.ckpt-321312",
         @"createdAt": @"1549868901",
         @"info": @{
@@ -226,7 +226,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
@@ -245,7 +245,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
@@ -262,7 +262,7 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparameterId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETCheckpointForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertNil(response);
         [expectation fulfill];
