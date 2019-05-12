@@ -18,7 +18,6 @@
 //  limitations under the License.
 //
 //  TODO: Model bundle verification
-//  TODO: Consistent plurality of hyperparametersId strings
 //  TODO: Name of callback response should reflect type of object
 
 #import <Foundation/Foundation.h>
