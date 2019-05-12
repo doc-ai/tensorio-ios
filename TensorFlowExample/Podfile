@@ -2,6 +2,9 @@ platform :ios, '9.3'
 use_frameworks!
 
 target 'TensorFlowExample' do
+  # downgrade TensorIOTensorFlow until https://github.com/doc-ai/tensorio-tensorflow-ios/issues/3 is resolved
+  pod 'TensorIOTensorFlow', '~> 0.1.1'
+
   pod 'TensorIO', :path => '../'
   pod 'TensorIO/TensorFlow', :path => '../'
 
