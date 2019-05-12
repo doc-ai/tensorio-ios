@@ -24,3 +24,10 @@ NSError * const TIOTensorFlowModelModeError = [NSError errorWithDomain:@"ai.doc.
     NSLocalizedDescriptionKey: @"Unsupported mode or mode not found for model (i.e. predict, train, or eval)"
 }];
 
+NSError * const TIOTensorFlowModelExportURLNotFilePath = [NSError errorWithDomain:@"ai.doc.tensorio" code:102 userInfo:@{
+    NSLocalizedDescriptionKey: @"Export URL is not a file URL"
+}];
+
+NSError * const TIOTensorFlowModelExportURLDoesNotExist = [NSError errorWithDomain:@"ai.doc.tensorio" code:103 userInfo:@{
+    NSLocalizedDescriptionKey: @"Export URL must point to a directory that already exists"
+}];

@@ -37,6 +37,8 @@
     
 }
 
+// MARK: -
+
 - (TIOModelBundle*)bundleWithName:(NSString*)filename {
     NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
     return [[TIOModelBundle alloc] initWithPath:path];
@@ -61,6 +63,8 @@
     
     return model;
 }
+
+// MARK: -
 
 - (void)testTrainCatsDogsModel {
     TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
@@ -91,6 +95,36 @@
         XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
         XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
     }
+}
+
+- (void)testExportsModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
+    id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    NSURL *directory = [NSURL fileURLWithPath:NSTemporaryDirectory()];
+    NSError *error;
+    BOOL success;
+    
+    // The method call should return successfully
+    
+    success = [model exportTo:directory error:&error];
+    
+    XCTAssertTrue(success);
+    XCTAssertNil(error);
+    
+    // The directory should have something added to it
+    
+    NSError *fmError;
+    NSArray<NSString*> *contents = [NSFileManager.defaultManager contentsOfDirectoryAtPath:directory.path error:&fmError];
+    
+    XCTAssertNil(fmError);
+    XCTAssert(contents.count > 0);
+    
+    XCTAssert([contents containsObject:@"checkpoint.index"]);
+    XCTAssert([contents containsObject:@"checkpoint.data-00000-of-00001"]);
 }
 
 @end
