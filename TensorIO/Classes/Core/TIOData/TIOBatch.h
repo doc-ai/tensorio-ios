@@ -44,7 +44,14 @@ typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
  * expected by a model operation, such as inference or training.
  */
 
-- (instancetype)initWithKeys:(NSArray<NSString*>*)keys;
+- (instancetype)initWithKeys:(NSArray<NSString*>*)keys NS_DESIGNATED_INITIALIZER;
+
+/**
+ * Initializes a `TIOBatch` with a single item, deriving the keys from it. Keys
+ * must correspond to the inputs expected by the model.
+ */
+
+- (instancetype)initWithItem:(TIOBatchItem*)item;
 
 /**
  * Use the designated initializer.
