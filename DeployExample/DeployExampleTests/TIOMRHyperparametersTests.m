@@ -52,11 +52,11 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error) {
         XCTAssertNil(error);
-        XCTAssertNotNil(response);
-        XCTAssertEqualObjects(response.modelId, @"happy-face");
-        XCTAssertEqualObjects(response.hyperparametersIds, (@[
+        XCTAssertNotNil(hyperparameters);
+        XCTAssertEqualObjects(hyperparameters.modelId, @"happy-face");
+        XCTAssertEqualObjects(hyperparameters.hyperparametersIds, (@[
             @"batch-9-2-0-1-5",
             @"batch-9-2-0-1-0",
             @"batch-9-2-0-0-5"
@@ -78,11 +78,11 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error) {
         XCTAssertNil(error);
-        XCTAssertNotNil(response);
-        XCTAssertEqualObjects(response.modelId, @"happy-face");
-        XCTAssertEqualObjects(response.hyperparametersIds, (@[]));
+        XCTAssertNotNil(hyperparameters);
+        XCTAssertEqualObjects(hyperparameters.modelId, @"happy-face");
+        XCTAssertEqualObjects(hyperparameters.hyperparametersIds, (@[]));
         [expectation fulfill];
     }];
     
@@ -93,7 +93,7 @@
 - (void)testGETHyperparametersURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {}];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error) {}];
     
     NSURL *expectedURL = [[[[NSURL
         URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
@@ -115,9 +115,9 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error) {
         XCTAssertNotNil(error);
-        XCTAssertNil(response);
+        XCTAssertNil(hyperparameters);
         [expectation fulfill];
     }];
     
@@ -138,9 +138,9 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error) {
         XCTAssertNotNil(error);
-        XCTAssertNil(response);
+        XCTAssertNil(hyperparameters);
         [expectation fulfill];
     }];
     
@@ -157,9 +157,9 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error) {
         XCTAssertNotNil(error);
-        XCTAssertNil(response);
+        XCTAssertNil(hyperparameters);
         [expectation fulfill];
     }];
     
@@ -174,9 +174,9 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparametersForModelWithId:@"happy-face" callback:^(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error) {
         XCTAssertNotNil(error);
-        XCTAssertNil(response);
+        XCTAssertNil(hyperparameters);
         [expectation fulfill];
     }];
     

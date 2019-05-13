@@ -50,12 +50,12 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable response, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         XCTAssertNil(error);
-        XCTAssertNotNil(response);
-        XCTAssert(response.modelIds.count == 2);
-        XCTAssertEqualObjects(response.modelIds[0], @"happy-face");
-        XCTAssertEqualObjects(response.modelIds[1], @"phenomenal-face");
+        XCTAssertNotNil(models);
+        XCTAssert(models.modelIds.count == 2);
+        XCTAssertEqualObjects(models.modelIds[0], @"happy-face");
+        XCTAssertEqualObjects(models.modelIds[1], @"phenomenal-face");
         [expectation fulfill];
     }];
     
@@ -72,10 +72,10 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable response, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         XCTAssertNil(error);
-        XCTAssertNotNil(response);
-        XCTAssert(response.modelIds.count == 0);
+        XCTAssertNotNil(models);
+        XCTAssert(models.modelIds.count == 0);
         [expectation fulfill];
     }];
     
@@ -86,7 +86,7 @@
 - (void)testGETModelsURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable response, NSError * _Nonnull error) {}];
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {}];
     
     NSURL *expectedURL = [[NSURL
         URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
@@ -106,9 +106,9 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable response, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
-        XCTAssertNil(response);
+        XCTAssertNil(models);
         [expectation fulfill];
     }];
     
@@ -125,9 +125,9 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable response, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
-        XCTAssertNil(response);
+        XCTAssertNil(models);
         [expectation fulfill];
     }];
     
@@ -142,9 +142,9 @@
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable response, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
-        XCTAssertNil(response);
+        XCTAssertNil(models);
         [expectation fulfill];
     }];
     

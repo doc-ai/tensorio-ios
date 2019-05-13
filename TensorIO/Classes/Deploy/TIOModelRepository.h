@@ -18,7 +18,6 @@
 //  limitations under the License.
 //
 //  TODO: Model bundle verification
-//  TODO: Name of callback response should reflect type of object
 
 #import <Foundation/Foundation.h>
 #import <SSZipArchive/SSZipArchive.h>
@@ -92,51 +91,54 @@ NS_ASSUME_NONNULL_BEGIN
  * Checks if the repository is up and correctly running
  */
 
-- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable status, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves a list of model ids for models available in the repository
  */
 
-- (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable models, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves metadata for a model with id, including the canonical hyperparameters for that model
  */
 
-- (NSURLSessionTask*)GETModelWithId:(NSString*)modelId callback:(void(^)(TIOMRModel * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETModelWithId:(NSString*)modelId callback:(void(^)(TIOMRModel * _Nullable model, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves a list of hyperparameter ids for a model
  */
 
-- (NSURLSessionTask*)GETHyperparametersForModelWithId:(NSString*)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETHyperparametersForModelWithId:(NSString*)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves the hyperparameters for a model by hyperparameter id
  */
 
-- (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves the checkpoints for a model with the tuple (model id, hyperparameter id)
  */
 
-- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRCheckpoints * _Nullable checkpoints, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves the checkpoint for a model with the tuple (model id, hyperparameter id, checkpoint id)
  */
 
-- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error))responseBlock;
 
 // MARK: -
 
 /**
- * Downloads a zipped model bundle
+ * Downloads a zipped model bundle.
+ *
+ * The progress parameter is currently ignored and the download reports 0 or 1
+ * for progress.
  */
 
-- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)parameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable response, double progress, NSError * _Nullable error))responseBlock;
+- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)parameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock;
 
 /**
  * Unzips a downloaded model bundle at a file URL to a destination file URL.

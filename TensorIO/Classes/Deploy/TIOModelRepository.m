@@ -217,7 +217,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
 
 // MARK: -
 
-- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable response, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable status, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"healthz"];
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -244,7 +244,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
     return task;
 }
 
-- (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable response, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable models, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL
         URLByAppendingPathComponent:@"models"];
     
@@ -266,7 +266,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
     return task;
 }
 
-- (NSURLSessionTask*)GETModelWithId:(NSString*)modelId callback:(void(^)(TIOMRModel * _Nullable response, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask*)GETModelWithId:(NSString*)modelId callback:(void(^)(TIOMRModel * _Nullable model, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [[self.baseURL
         URLByAppendingPathComponent:@"models"]
         URLByAppendingPathComponent:modelId];
@@ -289,7 +289,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
     return task;
 }
 
-- (NSURLSessionTask*)GETHyperparametersForModelWithId:(NSString*)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable response, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask*)GETHyperparametersForModelWithId:(NSString*)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [[[self.baseURL
         URLByAppendingPathComponent:@"models"]
         URLByAppendingPathComponent:modelId]
@@ -313,7 +313,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
     return task;
 }
 
- - (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRHyperparameter * _Nullable response, NSError * _Nullable error))responseBlock {
+ - (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error))responseBlock {
      NSURL *endpoint = [[[[self.baseURL
         URLByAppendingPathComponent:@"models"]
         URLByAppendingPathComponent:modelId]
@@ -338,7 +338,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
     return task;
 }
 
-- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRCheckpoints * _Nullable response, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRCheckpoints * _Nullable checkpoints, NSError * _Nullable error))responseBlock {
   
     NSURL *endpoint = [[[[[self.baseURL
         URLByAppendingPathComponent:@"models"]
@@ -365,7 +365,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
     return task;
 }
 
-- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable response, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error))responseBlock {
     
     NSURL *endpoint = [[[[[[self.baseURL
         URLByAppendingPathComponent:@"models"]
@@ -395,7 +395,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 300;
 
 // MARK: -
 
-- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable response, double progress, NSError * _Nullable error))responseBlock {
+- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
     NSURLSessionDownloadTask *task = [self.URLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
