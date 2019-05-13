@@ -712,4 +712,34 @@ typedef std::vector<std::string> TensorNames;
     return data;
 }
 
+- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error {
+    NSFileManager *fm = NSFileManager.defaultManager;
+    BOOL isDirectory;
+    
+    if ( !fileURL.isFileURL ) {
+        *error = TIOTensorFlowModelExportURLNotFilePath;
+        return NO;
+    }
+    
+    if ( ![fm fileExistsAtPath:fileURL.path isDirectory:&isDirectory] || !isDirectory ) {
+        *error = TIOTensorFlowModelExportURLDoesNotExist;
+        return NO;
+    }
+    
+    // Save checkpoint
+    
+    NSURL *checkpointURL = [fileURL URLByAppendingPathComponent:@"checkpoint"];
+    
+    tensorflow::Tensor checkpoint_tensor(tensorflow::DT_STRING, tensorflow::TensorShape());
+    checkpoint_tensor.scalar<std::string>()() = checkpointURL.path.UTF8String;
+
+    tensorflow::Session *session = _saved_model_bundle.session.get();
+    tensorflow::MetaGraphDef meta_graph_def = _saved_model_bundle.meta_graph_def;
+
+    NamedTensors checkpoint_feed_dict = {{meta_graph_def.saver_def().filename_tensor_name(), checkpoint_tensor}};
+    TF_CHECK_OK(session->Run(checkpoint_feed_dict, {}, {meta_graph_def.saver_def().save_tensor_name()}, nullptr));
+    
+    return YES;
+}
+
 @end
