@@ -35,7 +35,8 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
 static NSInteger TIOMRUpdateModelUnzipError = 200;
 static NSInteger TIOMRUpdateModelContentsError = 201;
 static NSInteger TIOMRUpdateFileSystemError = 202;
-static NSInteger TIOMRUpdateFileCopyError = 203;
+static NSInteger TIOMRUpdateFileDeletionError = 203;
+static NSInteger TIOMRUpdateFileCopyError = 204;
 
 @implementation TIOModelUpdater
 
@@ -105,10 +106,18 @@ static NSInteger TIOMRUpdateFileCopyError = 203;
                 return;
             }
         
-            // Copy and overwrite existing bundle
+            // Overwrite existing bundle with new bundle
             
+            NSURL *newBundleURL = [[[NSURL fileURLWithPath:self.bundle.path] URLByDeletingLastPathComponent] URLByAppendingPathComponent:[downloadedBundleURL lastPathComponent]];
             NSError *fmError;
-            if ( ![fm replaceItemAtURL:[NSURL fileURLWithPath:self.bundle.path] withItemAtURL:downloadedBundleURL backupItemName:nil options:NSFileManagerItemReplacementUsingNewMetadataOnly resultingItemURL:nil error:&fmError] ) {
+            
+            if ( ![fm removeItemAtPath:self.bundle.path error:&fmError] ) {
+                NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileDeletionError userInfo:nil];
+                callback(NO, error);
+                return;
+            }
+            
+            if ( ![fm copyItemAtURL:downloadedBundleURL toURL:newBundleURL error:&fmError] ) {
                 NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileCopyError userInfo:nil];
                 callback(NO, error);
                 return;

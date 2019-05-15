@@ -22,6 +22,8 @@
 #import <TensorIO/TensorIO-umbrella.h>
 #import "MockURLSession.h"
 
+// MARK: -
+
 @interface TIOMRUpdateTests : XCTestCase
 
 @property NSString *modelId;
@@ -31,8 +33,6 @@
 @property NSString *upgradeTo;
 @property NSString *canonicalCheckpoint;
 
-@property NSURL *download;
-@property NSURL *destination;
 @property TIOModelBundle *upgradableBundle;
 
 @end
@@ -54,17 +54,14 @@
     
     self.canonicalCheckpoint = @"model.ckpt-329117";
     
-    self.download = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
-    self.destination = [NSURL URLWithString:@""];
-    
     // Ensure each test works with a unique copy of upgradable.tiobundle
+    
+    NSFileManager *fm = NSFileManager.defaultManager;
+    NSError *fmError;
     
     NSURL *upgradableURL = [NSBundle.mainBundle URLForResource:@"upgradable" withExtension:@"tiobundle"];
     NSURL *uniqueDirectory = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:NSUUID.UUID.UUIDString];
     NSURL *uniqueUpgradableURL = [uniqueDirectory URLByAppendingPathComponent:upgradableURL.lastPathComponent];
-    
-    NSFileManager *fm = NSFileManager.defaultManager;
-    NSError *fmError;
     
     if ( ![fm createDirectoryAtURL:uniqueDirectory withIntermediateDirectories:NO attributes:nil error:&fmError] ) {
         NSLog(@"Unable to create directory at %@", uniqueDirectory);
@@ -254,7 +251,7 @@
         @"link": @"https://storage.googleapis.com/doc-ai-models/happy-face/batch-9-2-0-9-2-0/model.ckpt-322405.zip"
     };
     
-    NSURL *DownloadResponse = self.download;
+    NSURL *DownloadResponse = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
         GETHyperParameterResponse,
@@ -449,7 +446,7 @@
         @"link": @"https://storage.googleapis.com/doc-ai-models/happy-face/batch-9-2-0-9-2-0/model.ckpt-322405.zip"
     };
     
-    NSURL *DownloadResponse = self.download;
+    NSURL *DownloadResponse = [NSBundle.mainBundle URLForResource:@"upgradable-hyperparameters.tiobundle" withExtension:@"zip"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
         GETHyperParameterResponse1,

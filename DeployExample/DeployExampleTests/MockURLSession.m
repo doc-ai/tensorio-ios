@@ -190,7 +190,7 @@
     NSURL *destURL = [tempDir URLByAppendingPathComponent:URL.lastPathComponent];
     
     NSError *fileError;
-    [NSFileManager.defaultManager removeItemAtURL:destURL error:&fileError];
+    [NSFileManager.defaultManager removeItemAtURL:destURL error:nil];
     [NSFileManager.defaultManager copyItemAtURL:URL toURL:destURL error:&fileError];
     
     if ( fileError != nil ) {
