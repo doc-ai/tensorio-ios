@@ -17,7 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  TODO: Model bundle verification
 
 #import <Foundation/Foundation.h>
 #import <SSZipArchive/SSZipArchive.h>
@@ -70,20 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (instancetype)init NS_UNAVAILABLE;
-
-// MARK: - Convenience Repository Methods
-
-/**
- * Updates a model with the identifying (model, hyperparameter, checkpoint) triple,
- * unzipping the model bundle to the destination file URL parameter. If a bundle
- * already exists at that path, the bundle will be replaced.
- *
- * The callback is called with updated = `YES` and error = `nil` if the model
- * was successfully updated. When no update is available, updated = `NO` and
- * error = `nil`. Otherwise, error will be set to some value.
- */
-
-- (void)updateModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId destination:(NSURL*)destinationURL callback:(void(^)(BOOL updated, NSError *error))responseBlock;
 
 // MARK: - Primitive Repository Methods
 
@@ -139,13 +124,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)parameterId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock;
-
-/**
- * Unzips a downloaded model bundle at a file URL to a destination file URL.
- * The destination will be overwritten.
- */
-
-- (BOOL)unzipModelBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL error:(NSError**)error;
 
 @end
 

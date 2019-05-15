@@ -33,20 +33,26 @@
 
 @property NSURL *download;
 @property NSURL *destination;
+@property TIOModelBundle *upgradableBundle;
 
 @end
 
 @implementation TIOMRUpdateTests
 
 - (void)setUp {
+    // taken from bundle.id: tio:///models/happy-face/hyperparameters/batch-9-2-0-1-5/checkpoints/model.ckpt-321312
+   
     self.modelId = @"happy-face";
     self.hyperparametersId = @"batch-9-2-0-1-5";
     self.checkpointId = @"model.ckpt-321312";
+    
+    // response constructed in test methods
     
     self.upgradeTo = @"batch-9-2-0-1-6";
     self.canonicalCheckpoint = @"model.ckpt-329117";
     
     self.download = [NSBundle.mainBundle URLForResource:@"testbundle" withExtension:@"zip"];
+    self.upgradableBundle = [[TIOModelBundle alloc] initWithPath:[NSBundle.mainBundle URLForResource:@"upgradable" withExtension:@"tiobundle"].path];
     self.destination = [NSURL URLWithString:@""];
 }
 
@@ -69,8 +75,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -99,8 +106,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
         XCTAssertFalse(updated);
@@ -133,8 +141,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -180,8 +189,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -227,8 +237,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
         XCTAssertTrue(updated);
@@ -261,8 +272,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -305,8 +317,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -362,8 +375,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
         XCTAssertFalse(updated);
@@ -419,8 +433,9 @@
     ]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [repository updateModelWithId:self.modelId hyperparametersId:self.hyperparametersId checkpointId:self.checkpointId destination:self.destination callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
         XCTAssertTrue(updated);
