@@ -48,7 +48,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     return self;
 }
 
-- (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSError *error))callback {
+- (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error))callback {
     
     // Parse the id
     
@@ -57,7 +57,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     if ( identifier == nil ) {
         NSLog(@"Unable to initialize model identifier from bundle id %@", self.bundle.identifier);
         NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRInvalidBundleId userInfo:nil];
-        callback(NO,error);
+        callback(NO, nil, error);
         return;
     }
     
@@ -66,12 +66,12 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     [self updateModelWithId:identifier.modelId hyperparametersId:identifier.hyperparametersId checkpointId:identifier.checkpointId callback:^(BOOL updated, NSURL * _Nullable downloadURL, NSError * _Nonnull error) {
         
         if (error) {
-            callback(updated, error);
+            callback(updated, nil, error);
             return;
         }
         
         if (!updated) {
-            callback(updated, error);
+            callback(updated, nil, error);
             return;
         }
         
@@ -84,14 +84,14 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         
         if ( ![fm createDirectoryAtURL:temporaryDirectory withIntermediateDirectories:NO attributes:nil error:&fmError] ) {
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileSystemError userInfo:nil];
-            callback(NO, error);
+            callback(NO, nil, error);
             return;
         }
         
         [self unzipModelBundleAtURL:downloadURL toURL:temporaryDirectory callback:^(NSURL * _Nullable downloadedBundleURL, NSError * _Nullable error) {
             
             if (error) {
-                callback(NO, error);
+                callback(NO, nil, error);
                 return;
             }
             
@@ -102,7 +102,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         
             if ( ![validator validate:customValidator error:&validationError] ) {
                 NSLog(@"Custom validator failed: %@ with bundle at path: %@", error, downloadedBundleURL);
-                callback(NO, validationError);
+                callback(NO, nil, validationError);
                 return;
             }
         
@@ -113,19 +113,19 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
             
             if ( ![fm removeItemAtPath:self.bundle.path error:&fmError] ) {
                 NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileDeletionError userInfo:nil];
-                callback(NO, error);
+                callback(NO, nil, error);
                 return;
             }
             
             if ( ![fm copyItemAtURL:downloadedBundleURL toURL:newBundleURL error:&fmError] ) {
                 NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileCopyError userInfo:nil];
-                callback(NO, error);
+                callback(NO, nil, error);
                 return;
             }
         
             // Success
         
-            callback(updated, error);
+            callback(updated, newBundleURL, error);
             
         }]; // unzipModelBundleAtURL:toURL:callback:
     

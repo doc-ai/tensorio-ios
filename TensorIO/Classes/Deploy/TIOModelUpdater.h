@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
  * available, updated = `NO` and error = `nil`. Otherwise, error will be set to some value.
  */
 
-- (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSError *error))callback;
+- (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error))callback;
 
 @end
 

@@ -100,9 +100,10 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
+        XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
         [expectation fulfill];
     }];
@@ -131,9 +132,10 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
+        XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
         [expectation fulfill];
     }];
@@ -166,9 +168,10 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
+        XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
         [expectation fulfill];
     }];
@@ -214,9 +217,10 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
+        XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
         [expectation fulfill];
     }];
@@ -262,11 +266,17 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
+        [expectation fulfill];
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
+        XCTAssertNotNil(updatedBundleURL);
         XCTAssertTrue(updated);
-        [expectation fulfill];
+        
+        // Confirm that the bundle has been replaced
+        
+        TIOModelBundle *newBundle = [[TIOModelBundle alloc] initWithPath:updatedBundleURL.path];
+        XCTAssertEqualObjects(newBundle.identifier, @"tio:///models/happy-face/hyperparameters/batch-9-2-0-1-5/checkpoints/model.ckpt-329117");
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
@@ -297,9 +307,10 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
+        XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
         [expectation fulfill];
     }];
@@ -342,9 +353,10 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
+        XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
         [expectation fulfill];
     }];
@@ -400,9 +412,10 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNotNil(error);
+        XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
         [expectation fulfill];
     }];
@@ -458,11 +471,17 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
-    [updater updateWithValidator:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
+        [expectation fulfill];
         XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
+        XCTAssertNotNil(updatedBundleURL);
         XCTAssertTrue(updated);
-        [expectation fulfill];
+        
+        // Confirm that the bundle has been replaced
+        
+        TIOModelBundle *newBundle = [[TIOModelBundle alloc] initWithPath:updatedBundleURL.path];
+        XCTAssertEqualObjects(newBundle.identifier, @"tio:///models/happy-face/hyperparameters/batch-9-2-0-1-6/checkpoints/model.ckpt-321312");
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
