@@ -41,7 +41,7 @@
 - (void)testDownloadZippedModelBundleWithFileSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for download response"];
     
-    NSURL *testURL = [NSBundle.mainBundle URLForResource:@"testbundle" withExtension:@"zip"];
+    NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithDownload:testURL];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
@@ -66,7 +66,7 @@
 - (void)testDownloadZippedModelBundleWithErrorFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for download response"];
     
-    NSURL *testURL = [NSBundle.mainBundle URLForResource:@"testbundle" withExtension:@"zip"];
+    NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
@@ -84,7 +84,7 @@
 - (void)testDownloadZippedModelBundleWithoutLocationFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for download response"];
     
-    NSURL *testURL = [NSBundle.mainBundle URLForResource:@"testbundle" withExtension:@"zip"];
+    NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] init];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];

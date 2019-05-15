@@ -5,6 +5,7 @@ target 'DeployExample' do
 
   pod 'TensorIO', :path => '../'
   pod 'TensorIO/Deploy', :path => '../'
+  pod 'TensorIO/TFLite', :path => '../'
 
   target 'DeployExampleTests' do
     inherit! :search_paths

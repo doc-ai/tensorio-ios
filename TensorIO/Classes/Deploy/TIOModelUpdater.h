@@ -74,20 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSError *error))callback;
 
-// MARK: -
-
-/**
- * Call updateWithValidator:callback: instead, which calls this method.
- */
-
-- (void)updateModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId destination:(NSURL*)destinationURL callback:(void(^)(BOOL updated, NSError *error))responseBlock;
-
-/**
- * Call updateWithValidator:callback: instead, which calls this method.
- */
-
-- (BOOL)unzipModelBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL error:(NSError**)error;
-
 @end
 
 NS_ASSUME_NONNULL_END

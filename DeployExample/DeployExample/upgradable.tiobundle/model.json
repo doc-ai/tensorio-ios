@@ -1,6 +1,6 @@
 {
 	"name": "Upgradable Model For Testing",
-	"details": "",
+	"details": "An upgradable model",
 	"id": "tio:///models/happy-face/hyperparameters/batch-9-2-0-1-5/checkpoints/model.ckpt-321312",
 	"version": "1",
 	"author": "doc.ai",

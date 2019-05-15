@@ -32,6 +32,10 @@ static NSString *TIOModelUpdaterErrorDomain = @"ai.doc.tensorio.model-updater";
 
 static NSInteger TIOMRInvalidBundleId = 0;
 static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
+static NSInteger TIOMRUpdateModelUnzipError = 200;
+static NSInteger TIOMRUpdateModelContentsError = 201;
+static NSInteger TIOMRUpdateFileSystemError = 202;
+static NSInteger TIOMRUpdateFileCopyError = 203;
 
 @implementation TIOModelUpdater
 
@@ -58,7 +62,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
     
     // Download a model bundle if one is available
     
-    [self updateModelWithId:identifier.modelId hyperparametersId:identifier.hyperparametersId checkpointId:identifier.checkpointId destination:nil callback:^(BOOL updated, NSError * _Nonnull error) {
+    [self updateModelWithId:identifier.modelId hyperparametersId:identifier.hyperparametersId checkpointId:identifier.checkpointId callback:^(BOOL updated, NSURL * _Nullable downloadURL, NSError * _Nonnull error) {
         
         if (error) {
             callback(updated, error);
@@ -72,18 +76,51 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
         
         // Unzip the bundle
         
+        NSFileManager *fm = NSFileManager.defaultManager;
+        NSError *fmError;
         
+        NSURL *temporaryDirectory = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:NSUUID.UUID.UUIDString];
         
-        // Validate
+        if ( ![fm createDirectoryAtURL:temporaryDirectory withIntermediateDirectories:NO attributes:nil error:&fmError] ) {
+            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileSystemError userInfo:nil];
+            callback(NO, error);
+            return;
+        }
+        
+        [self unzipModelBundleAtURL:downloadURL toURL:temporaryDirectory callback:^(NSURL * _Nullable downloadedBundleURL, NSError * _Nullable error) {
+            
+            if (error) {
+                callback(NO, error);
+                return;
+            }
+            
+            // Validate
+            
+            NSError *validationError;
+            TIOModelBundleValidator *validator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:downloadedBundleURL.path];
+        
+            if ( ![validator validate:customValidator error:&validationError] ) {
+                NSLog(@"Custom validator failed: %@ with bundle at path: %@", error, downloadedBundleURL);
+                callback(NO, validationError);
+                return;
+            }
+        
+            // Copy and overwrite existing bundle
+            
+            NSError *fmError;
+            if ( ![fm replaceItemAtURL:[NSURL fileURLWithPath:self.bundle.path] withItemAtURL:downloadedBundleURL backupItemName:nil options:NSFileManagerItemReplacementUsingNewMetadataOnly resultingItemURL:nil error:&fmError] ) {
+                NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileCopyError userInfo:nil];
+                callback(NO, error);
+                return;
+            }
+        
+            // Success
+        
+            callback(updated, error);
+            
+        }]; // unzipModelBundleAtURL:toURL:callback:
     
-    
-    
-        // Callback
-    
-        callback(updated, error);
-    
-    }];
-    
+    }]; // updateModelWithId:hyperparametersId:checkpointId:callback:
 }
 
 // MARK: - Private Methods
@@ -98,17 +135,17 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
  * error = `nil`. Otherwise, error will be set to some value.
  */
 
-- (void)updateModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId destination:(NSURL*)destinationURL callback:(void(^)(BOOL updated, NSError *error))responseBlock {
+- (void)updateModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(BOOL updated, NSURL * _Nullable downloadURL, NSError * _Nullable error))responseBlock {
     
     NSURLSessionTask *task1 = [self.repository GETHyperparameterForModelWithId:modelId hyperparametersId:hyperparametersId callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
         if ( error != nil ) {
-            responseBlock(NO, error);
+            responseBlock(NO, nil, error);
             return;
         }
         
         if ( hyperparameter.upgradeTo == nil && [hyperparameter.canonicalCheckpoint isEqualToString:checkpointId] ) {
             // No upgrade to a new set of hyperparameters and we are already using the canonical checkpoint
-            responseBlock(NO, nil);
+            responseBlock(NO, nil, nil);
             return;
         } else if ( hyperparameter.upgradeTo == nil && ![hyperparameter.canonicalCheckpoint isEqualToString:checkpointId] ) {
             // No upgrade to a new set of hyperparameters but a new checkpoint is available
@@ -116,28 +153,17 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
             // Request the new canonical checkpoint
             NSURLSessionTask *task2 = [self.repository GETCheckpointForModelWithId:modelId hyperparametersId:hyperparametersId checkpointId:hyperparameter.canonicalCheckpoint callback:^(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error) {
                 if ( error != nil ) {
-                    responseBlock(NO, error);
+                    responseBlock(NO, nil, error);
                     return;
                 }
                 
                 // From the canonical checkpoint download the model link
                 NSURLSessionTask *task3 = [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
                     if ( error != nil ) {
-                        responseBlock(NO, error);
-                        return;
-                    }
-                    
-                    // Uzip and copy the download to the destination URL
-                    
-                    NSError *unzipError;
-                    BOOL unzipped = [self unzipModelBundleAtURL:download.URL toURL:destinationURL error:&unzipError];
-                    
-                    if ( !unzipped ) {
-                        responseBlock(NO, unzipError);
+                        responseBlock(NO, nil, error);
                     } else {
-                        responseBlock(YES, nil);
+                        responseBlock(YES, download.URL, nil);
                     }
-                    
                 }];
                 [task3 resume];
                 
@@ -150,35 +176,24 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
             // Request the new set of hyperparameters
             NSURLSessionTask *task2 = [self.repository GETHyperparameterForModelWithId:modelId hyperparametersId:hyperparameter.upgradeTo callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
                 if ( error != nil ) {
-                    responseBlock(NO, error);
+                    responseBlock(NO, nil, error);
                     return;
                 }
                 
                 // From the hyperparameters request the canonical checkpoint
                 NSURLSessionTask *task3 = [self.repository GETCheckpointForModelWithId:hyperparameter.modelId hyperparametersId:hyperparameter.hyperparametersId checkpointId:hyperparameter.canonicalCheckpoint callback:^(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error) {
                     if ( error != nil ) {
-                        responseBlock(NO, error);
+                        responseBlock(NO, nil, error);
                         return;
                     }
                     
                     // From the canonical checkpoint download the model link
                     NSURLSessionTask *task4 = [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
                         if ( error != nil ) {
-                            responseBlock(NO, error);
-                            return;
-                        }
-                    
-                        // Uzip and copy the download to the destination URL
-                    
-                        NSError *unzipError;
-                        BOOL unzipped = [self unzipModelBundleAtURL:download.URL toURL:destinationURL error:&unzipError];
-                        
-                        if ( !unzipped ) {
-                            responseBlock(NO, unzipError);
+                            responseBlock(NO, nil, error);
                         } else {
-                            responseBlock(YES, nil);
+                            responseBlock(YES, download.URL, nil);
                         }
-                    
                     }];
                     [task4 resume];
                     
@@ -191,7 +206,7 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
         } else {
             NSLog(@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", modelId, hyperparametersId, checkpointId);
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelInternalInconsistentyError userInfo:nil];
-            responseBlock(NO, error);
+            responseBlock(NO, nil, error);
         }
         
     }];
@@ -199,11 +214,56 @@ static NSInteger TIOMRUpdateModelInternalInconsistentyError = 100;
 }
 
 /**
- * Unzips a downloaded model bundle at a file URL to a destination file URL.
- * The destination will be overwritten.
+ * Unzips a downloaded model bundle at a file URL to a destination file URL,
+ * which should be a temporary directory.
  */
 
-- (BOOL)unzipModelBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL error:(NSError**)error {
+- (BOOL)unzipModelBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL callback:(void(^)(NSURL * _Nullable bundleURL, NSError * _Nullable error))callback {
+    NSFileManager *fm = NSFileManager.defaultManager;
+    
+    [SSZipArchive unzipFileAtPath:sourceURL.path toDestination:destinationURL.path progressHandler:nil completionHandler:^(NSString * _Nonnull path, BOOL succeeded, NSError * _Nullable error) {
+        
+        // Report unzip errors
+        
+        if ( error ) {
+            NSLog(@"Error unzipping model bundle: %@, to: %@ error: %@", sourceURL, destinationURL, error);
+            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelUnzipError userInfo:nil];
+            callback(nil, error);
+            return;
+        }
+        
+        if ( ![fm fileExistsAtPath:destinationURL.path] ) {
+            NSLog(@"Error unzipping model bundle: %@, to: %@ error: %@", sourceURL, destinationURL, error);
+            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelUnzipError userInfo:nil];
+            callback(nil, error);
+            return;
+        }
+        
+        // Confirm unzipped contents are valid
+        
+        NSError *fmError;
+        NSArray *contents = [fm contentsOfDirectoryAtPath:destinationURL.path error:&fmError];
+        
+        if ( contents == nil || fmError ) {
+            NSLog(@"Zipped model bundle at :%@ contains no contents at: %@", sourceURL, destinationURL);
+            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
+            callback(nil, error);
+            return;
+        }
+        
+        if ( contents.count != 1 ) {
+            NSLog(@"Zipped model bundle at :%@ contains incorrect contents at: %@, contents: %@", sourceURL, destinationURL, contents);
+            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
+            callback(nil, error);
+            return;
+        }
+        
+        // Append the name of the unzipped file to the destination URL and return that as the bundle URL
+        
+        NSURL *bundleURL = [destinationURL URLByAppendingPathComponent:contents[0]];
+        callback(bundleURL, nil);
+    }];
+    
     return YES;
 }
 

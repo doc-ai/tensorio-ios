@@ -23,10 +23,11 @@
 		E34F132C2280935C000A0DD7 /* TIOMRCheckpointsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F132B2280935C000A0DD7 /* TIOMRCheckpointsTests.m */; };
 		E34F133222809BEF000A0DD7 /* TIOMRCheckpointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F133122809BEF000A0DD7 /* TIOMRCheckpointTests.m */; };
 		E34F13382280B6B7000A0DD7 /* TIOMRDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F13372280B6B7000A0DD7 /* TIOMRDownloadTests.m */; };
-		E34F133A2280B72E000A0DD7 /* testbundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E34F13392280B72E000A0DD7 /* testbundle.zip */; };
 		E3E16D4E2285E9490087197A /* TIOModelUpdaterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D4D2285E9490087197A /* TIOModelUpdaterTests.m */; };
 		E3E16D64228C935A0087197A /* TIOMRModelIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D63228C935A0087197A /* TIOMRModelIdentifierTests.m */; };
 		E3E16D66228CA1D40087197A /* upgradable.tiobundle in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D65228CA1D40087197A /* upgradable.tiobundle */; };
+		E3E16D69228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */; };
+		E3E16D6A228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */; };
 		EAA7DE30289C1CCB260A724D /* Pods_DeployExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B23D05029FBB46E3679F1B /* Pods_DeployExampleTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,10 +69,11 @@
 		E34F132B2280935C000A0DD7 /* TIOMRCheckpointsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRCheckpointsTests.m; sourceTree = "<group>"; };
 		E34F133122809BEF000A0DD7 /* TIOMRCheckpointTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRCheckpointTests.m; sourceTree = "<group>"; };
 		E34F13372280B6B7000A0DD7 /* TIOMRDownloadTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRDownloadTests.m; sourceTree = "<group>"; };
-		E34F13392280B72E000A0DD7 /* testbundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = testbundle.zip; sourceTree = "<group>"; };
 		E3E16D4D2285E9490087197A /* TIOModelUpdaterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOModelUpdaterTests.m; sourceTree = "<group>"; };
 		E3E16D63228C935A0087197A /* TIOMRModelIdentifierTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRModelIdentifierTests.m; sourceTree = "<group>"; };
 		E3E16D65228CA1D40087197A /* upgradable.tiobundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = upgradable.tiobundle; sourceTree = "<group>"; };
+		E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "upgradable-checkpoint.tiobundle.zip"; sourceTree = "<group>"; };
+		E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "upgradable-hyperparameters.tiobundle.zip"; sourceTree = "<group>"; };
 		E4B23D05029FBB46E3679F1B /* Pods_DeployExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DeployExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -147,8 +149,9 @@
 				E34F12ED227BB5F2000A0DD7 /* LaunchScreen.storyboard */,
 				E34F12F0227BB5F2000A0DD7 /* Info.plist */,
 				E34F12F1227BB5F2000A0DD7 /* main.m */,
-				E34F13392280B72E000A0DD7 /* testbundle.zip */,
 				E3E16D65228CA1D40087197A /* upgradable.tiobundle */,
+				E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */,
+				E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */,
 			);
 			path = DeployExample;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 				E34F12DC227BB5F0000A0DD7 /* Frameworks */,
 				E34F12DD227BB5F0000A0DD7 /* Resources */,
 				E2EF9D9AF89354B70CA68F8C /* [CP] Embed Pods Frameworks */,
+				62EE1FBD814A7BF27FF527CF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -257,10 +261,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E34F12EF227BB5F2000A0DD7 /* LaunchScreen.storyboard in Resources */,
-				E34F133A2280B72E000A0DD7 /* testbundle.zip in Resources */,
 				E34F12EC227BB5F2000A0DD7 /* Assets.xcassets in Resources */,
 				E34F12EA227BB5F0000A0DD7 /* Main.storyboard in Resources */,
+				E3E16D6A228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip in Resources */,
 				E3E16D66228CA1D40087197A /* upgradable.tiobundle in Resources */,
+				E3E16D69228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +279,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		62EE1FBD814A7BF27FF527CF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DeployExample/Pods-DeployExample-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TensorIO/TFLite.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TFLite.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DeployExample/Pods-DeployExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7A0E69DB8A89998F2DAE52B2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

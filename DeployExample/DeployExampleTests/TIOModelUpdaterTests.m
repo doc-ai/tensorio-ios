@@ -40,20 +40,46 @@
 @implementation TIOMRUpdateTests
 
 - (void)setUp {
-    // taken from bundle.id: tio:///models/happy-face/hyperparameters/batch-9-2-0-1-5/checkpoints/model.ckpt-321312
+    // taken from upgradable.id: tio:///models/happy-face/hyperparameters/batch-9-2-0-1-5/checkpoints/model.ckpt-321312
    
     self.modelId = @"happy-face";
     self.hyperparametersId = @"batch-9-2-0-1-5";
     self.checkpointId = @"model.ckpt-321312";
     
-    // response constructed in test methods
+    // taken from upgradable-hyperparameters.id: tio:///models/happy-face/hyperparameters/batch-9-2-0-1-6/checkpoints/model.ckpt-321312
     
     self.upgradeTo = @"batch-9-2-0-1-6";
+    
+    // taken from upgradable-checkpoint.id: tio:///models/happy-face/hyperparameters/batch-9-2-0-1-5/checkpoints/model.ckpt-329117
+    
     self.canonicalCheckpoint = @"model.ckpt-329117";
     
-    self.download = [NSBundle.mainBundle URLForResource:@"testbundle" withExtension:@"zip"];
-    self.upgradableBundle = [[TIOModelBundle alloc] initWithPath:[NSBundle.mainBundle URLForResource:@"upgradable" withExtension:@"tiobundle"].path];
+    self.download = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     self.destination = [NSURL URLWithString:@""];
+    
+    // Ensure each test works with a unique copy of upgradable.tiobundle
+    
+    NSURL *upgradableURL = [NSBundle.mainBundle URLForResource:@"upgradable" withExtension:@"tiobundle"];
+    NSURL *uniqueDirectory = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:NSUUID.UUID.UUIDString];
+    NSURL *uniqueUpgradableURL = [uniqueDirectory URLByAppendingPathComponent:upgradableURL.lastPathComponent];
+    
+    NSFileManager *fm = NSFileManager.defaultManager;
+    NSError *fmError;
+    
+    if ( ![fm createDirectoryAtURL:uniqueDirectory withIntermediateDirectories:NO attributes:nil error:&fmError] ) {
+        NSLog(@"Unable to create directory at %@", uniqueDirectory);
+        XCTAssert(NO);
+    }
+    
+    if ( ![fm copyItemAtURL:upgradableURL toURL:uniqueUpgradableURL error:&fmError] || fmError ) {
+        NSLog(@"Unable to copy upgradable bundle at %@ to unique location at %@", upgradableURL, uniqueUpgradableURL);
+        XCTAssert(NO);
+    }
+    
+    TIOModelBundle *bundle = [[TIOModelBundle alloc] initWithPath:uniqueUpgradableURL.path];
+    XCTAssertNotNil(bundle);
+    
+    self.upgradableBundle = bundle;
 }
 
 - (void)tearDown {
