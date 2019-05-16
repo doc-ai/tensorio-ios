@@ -19,7 +19,6 @@
 //
 
 //  TODO: Consider using templated c++ helpers
-//  TODO: Refactor similarity between batched and unbatched tensor preparation (#62)
 
 #import "NSData+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
@@ -27,9 +26,7 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
-
 #include "tensorflow/core/framework/tensor.h"
-
 #pragma clang diagnostic pop
 
 @implementation NSData (TIOTensorFlowData)
@@ -76,67 +73,7 @@
 }
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
-    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
-    
-    TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
-    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
-    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
-    
-    // Establish shape
-    
-    std::vector<tensorflow::int64> dims;
-    
-    if ( description.isBatched ) {
-        dims.push_back(1);
-    }
-    
-    for ( NSNumber *dim in description.shape.excludingBatch ) {
-        dims.push_back(dim.integerValue);
-    }
-    
-    tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);
-    tensorflow::TensorShape shape = tensorflow::TensorShape(dim_sizes);
-    
-    // Copy bytes into tensor
-    
-    if ( description.isQuantized && quantizer != nil ) {
-        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto flat_tensor = tensor.flat<uint8_t>();
-        auto buffer = flat_tensor.data();
-        float_t *bytes = (float_t *)self.bytes;
-        for ( NSInteger i = 0; i < length; i++ ) {
-            ((uint8_t *)buffer)[i] = quantizer(bytes[i]);
-        }
-        return tensor;
-    } else if ( description.isQuantized && quantizer == nil ) {
-        size_t tensor_byte_count = length * sizeof(uint8_t);
-        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto flat_tensor = tensor.flat<uint8_t>();
-        auto buffer = flat_tensor.data();
-        [self getBytes:buffer length:tensor_byte_count];
-        return tensor;
-    } else if ( dtype == TIODataTypeInt32 ) {
-        size_t tensor_byte_count = length * sizeof(int32_t);
-        tensorflow::Tensor tensor(tensorflow::DT_INT32, shape);
-        auto flat_tensor = tensor.flat<int32_t>();
-        auto buffer = flat_tensor.data();
-        [self getBytes:buffer length:tensor_byte_count];
-        return tensor;
-    } else if ( dtype == TIODataTypeInt64 ) {
-        size_t tensor_byte_count = length * sizeof(int64_t);
-        tensorflow::Tensor tensor(tensorflow::DT_INT64, shape);
-        auto flat_tensor = tensor.flat<int64_t>();
-        auto buffer = flat_tensor.data();
-        [self getBytes:buffer length:tensor_byte_count];
-        return tensor;
-    } else {
-        size_t tensor_byte_count = length * sizeof(float_t);
-        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto flat_tensor = tensor.flat<float_t>();
-        auto buffer = flat_tensor.data();
-        [self getBytes:buffer length:tensor_byte_count];
-        return tensor;
-    }
+    return [NSData tensorWithColumn:@[self] description:description];
 }
 
 // MARK: - Batch (Training)
