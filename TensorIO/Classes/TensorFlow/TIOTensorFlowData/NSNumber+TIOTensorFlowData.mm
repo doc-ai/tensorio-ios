@@ -19,7 +19,6 @@
 //
 
 //  TODO: Consider using templated c++ helpers
-//  TODO: Refactor similarity between batched and unbatched tensor preparation (#62)
 
 #import "NSNumber+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
@@ -29,9 +28,7 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
-
 #include "tensorflow/core/framework/tensor.h"
-
 #pragma clang diagnostic pop
 
 @implementation NSNumber (TIOTensorFlowData)
@@ -71,57 +68,7 @@
 }
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
-    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
-    
-    TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
-    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
-    
-    // Establish shape
-    
-    std::vector<tensorflow::int64> dims;
-    
-    if ( description.isBatched ) {
-        dims.push_back(1);
-    }
-    
-    for ( NSNumber *dim in description.shape.excludingBatch ) {
-        dims.push_back(dim.integerValue);
-    }
-    
-    tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);
-    tensorflow::TensorShape shape = tensorflow::TensorShape(dim_sizes);
-    
-    if ( description.isQuantized && quantizer != nil ) {
-        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto flat_tensor = tensor.flat<uint8_t>();
-        auto buffer = flat_tensor.data();
-        buffer[0] = quantizer(self.floatValue);
-        return tensor;
-    } else if ( description.isQuantized && quantizer == nil ) {
-        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        auto flat_tensor = tensor.flat<uint8_t>();
-        auto buffer = flat_tensor.data();
-        buffer[0] = self.unsignedCharValue;
-        return tensor;
-    } else if ( dtype == TIODataTypeInt32 ) {
-        tensorflow::Tensor tensor(tensorflow::DT_INT32, shape);
-        auto flat_tensor = tensor.flat<int32_t>();
-        auto buffer = flat_tensor.data();
-        buffer[0] = (int32_t)self.longValue;
-        return tensor;
-    } else if ( dtype == TIODataTypeInt64 ) {
-        tensorflow::Tensor tensor(tensorflow::DT_INT64, shape);
-        auto flat_tensor = tensor.flat<int64_t>();
-        auto buffer = flat_tensor.data();
-        buffer[0] = (int64_t)self.longLongValue;
-        return tensor;
-    } else {
-        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        auto flat_tensor = tensor.flat<float_t>();
-        auto buffer = flat_tensor.data();
-        buffer[0] = self.floatValue;
-        return tensor;
-    }
+    return [NSNumber tensorWithColumn:@[self] description:description];
 }
 
 // MARK: - Batch (Training)

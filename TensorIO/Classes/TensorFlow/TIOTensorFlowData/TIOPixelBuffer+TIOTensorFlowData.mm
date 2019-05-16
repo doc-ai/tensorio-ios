@@ -18,20 +18,14 @@
 //  limitations under the License.
 //
 
-//  TODO: Refactor similarity between batched and unbatched tensor preparation (#62)
-
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
-
 #include "tensorflow/core/framework/tensor.h"
-
 #pragma clang diagnostic pop
-
-static const size_t kTIOPixelBufferCopyNoOffset = 0;
 
 /**
  * Copies a pixel buffer in ARGB or BGRA format to a tensor.
@@ -248,73 +242,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
 }
 
 - (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description {
-    assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
-    
-    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
-    
-    // If the pixel buffer is already the right size, format, and orientation simpy copy it to the tensor.
-    // Otherwise, run it through the vision pipeline
-    
-    CVPixelBufferRef pixelBuffer = self.pixelBuffer;
-    CGImagePropertyOrientation orientation = self.orientation;
-    
-    CVPixelBufferRef transformedPixelBuffer;
-    
-    int width = (int)CVPixelBufferGetWidth(pixelBuffer);
-    int height = (int)CVPixelBufferGetHeight(pixelBuffer);
-    OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
-    
-    // Transform image using vision pipeline
-    
-    if ( width == pixelBufferDescription.imageVolume.width
-        && height == pixelBufferDescription.imageVolume.height
-        && pixelFormat == pixelBufferDescription.pixelFormat
-        && orientation == kCGImagePropertyOrientationUp ) {
-        transformedPixelBuffer = pixelBuffer;
-    } else {
-        TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:pixelBufferDescription];
-        transformedPixelBuffer = [pipeline transform:pixelBuffer orientation:orientation];
-    }
-    
-    CVPixelBufferRetain(transformedPixelBuffer);
-    self.transformedPixelBuffer = transformedPixelBuffer;
-    
-    // Tensor shape
-    
-    const int t_channels = pixelBufferDescription.imageVolume.channels;
-    const int t_width = pixelBufferDescription.imageVolume.width;
-    const int t_height = pixelBufferDescription.imageVolume.height;
-    
-    tensorflow::TensorShape shape;
-    
-    if ( pixelBufferDescription.isBatched ) {
-        const int t_batch_size = 1;
-        shape = tensorflow::TensorShape({t_batch_size, t_height, t_width, t_channels});
-    } else {
-        shape = tensorflow::TensorShape({t_height, t_width, t_channels});
-    }
-
-    // Copy pixels to tensor
-
-    if ( description.isQuantized ) {
-        tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
-        TIOCopyCVPixelBufferToTensorFlowTensor<uint8_t>(
-            transformedPixelBuffer,
-            tensor,
-            pixelBufferDescription.imageVolume,
-            pixelBufferDescription.normalizer,
-            kTIOPixelBufferCopyNoOffset);
-        return tensor;
-    } else {
-        tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
-        TIOCopyCVPixelBufferToTensorFlowTensor<float_t>(
-            transformedPixelBuffer,
-            tensor,
-            pixelBufferDescription.imageVolume,
-            pixelBufferDescription.normalizer,
-            kTIOPixelBufferCopyNoOffset);
-        return tensor;
-    }
+    return [TIOPixelBuffer tensorWithColumn:@[self] description:description];
 }
 
 // MARK: - Batch (Training)

@@ -37,7 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
  * conforming properties and methods here.
  */
 
-@interface TIOTensorFlowModel : NSObject <TIOModel, TIOTrainableModel>
+@interface TIOTensorFlowModel : NSObject <TIOModel>
+
++ (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
 
 // Model Protocol Properties
 
@@ -88,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - Training
 
-@interface TIOTensorFlowModel (TIOTrainableModel)
+@interface TIOTensorFlowModel (TIOTrainableModel) <TIOTrainableModel>
 
 /**
  * Calls the underlying training op with a single batch.
