@@ -44,10 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *details;
 
 /**
- * The canonical hyperparameters with which the model has been trained
+ * The canonical hyperparameters with which the model has been trained.
+ * May be `nil`.
  */
 
-@property (readonly) NSString *canonicalHyperparameters;
+@property (nullable, readonly) NSString *canonicalHyperparameters;
 
 /**
  * The designated initializer. You should not need to instantiate instances of
