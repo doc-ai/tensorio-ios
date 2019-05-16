@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  * conforming properties and methods here.
  */
 
-@interface TIOTensorFlowModel : NSObject <TIOModel>
+@interface TIOTensorFlowModel : NSObject <TIOModel, TIOTrainableModel>
 
 // Model Protocol Properties
 

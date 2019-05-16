@@ -66,6 +66,18 @@
 
 // MARK: -
 
+- (void)testConformsToModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
+    id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
+    XCTAssert([model conformsToProtocol:@protocol(TIOModel)]);
+}
+
+- (void)testConformsToTrainable {
+    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
+    id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
+    XCTAssert([model conformsToProtocol:@protocol(TIOTrainableModel)]);
+}
+
 - (void)testTrainCatsDogsModel {
     TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
     id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
