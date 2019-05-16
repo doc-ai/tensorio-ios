@@ -17,7 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  TODO: canonicalCheckpoint may be nil, and test
 
 #import "TIOMRHyperparameter.h"
 
@@ -30,22 +29,28 @@
         } else {
             _modelId = JSON[@"modelId"];
         }
+        
         if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
             _hyperparametersId = JSON[@"hyperparametersId"];
         }
+        
         if ( JSON[@"upgradeTo"] == nil || !([JSON[@"upgradeTo"] isKindOfClass:NSString.class] || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class]) ) {
             return nil;
         } else {
             _upgradeTo = [JSON[@"upgradeTo"] isEqual:NSNull.null] ? nil : JSON[@"upgradeTo"];
         }
+        
         if ( JSON[@"hyperparameters"] == nil || ![JSON[@"hyperparameters"] isKindOfClass:NSDictionary.class] ) {
             return nil;
         } else {
             _hyperparameters = JSON[@"hyperparameters"];
         }
-        if ( JSON[@"canonicalCheckpoint"] == nil || ![JSON[@"canonicalCheckpoint"] isKindOfClass:NSString.class] ) {
+        
+        if ( JSON[@"canonicalCheckpoint"] == nil ) {
+            _canonicalCheckpoint = nil;
+        } else if ( ![JSON[@"canonicalCheckpoint"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
             _canonicalCheckpoint = JSON[@"canonicalCheckpoint"];

@@ -234,13 +234,13 @@
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
-- (void)testGETHyperparameterWithoutCanonicalCheckpointFails {
+- (void)testGETHyperparameterWithoutCanonicalCheckpointSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for hyperparameter response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
         @"hyperparametersId": @"batch-9-2-0-1-5",
-        @"upgradeTo": [NSNull null],
+        @"upgradeTo": @"batch-9-2-0-1-6",
         @"hyperparameters": @{
             @"architecture": @"inception-resnet-v3",
             @"batch": @"9",
@@ -252,8 +252,17 @@
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
-        XCTAssertNotNil(error);
-        XCTAssertNil(hyperparameter);
+        XCTAssertNil(error);
+        XCTAssertNotNil(hyperparameter);
+        XCTAssertEqualObjects(hyperparameter.modelId, @"happy-face");
+        XCTAssertEqualObjects(hyperparameter.hyperparametersId, @"batch-9-2-0-1-5");
+        XCTAssertEqualObjects(hyperparameter.upgradeTo, @"batch-9-2-0-1-6");
+        XCTAssertEqualObjects(hyperparameter.hyperparameters,(@{
+            @"architecture": @"inception-resnet-v3",
+            @"batch": @"9",
+            @"training-set-entropy-cutoff": @"2.0",
+            @"evaluation-set-entropy-cutoff": @"2.0"
+        }));
         [expectation fulfill];
     }];
     
