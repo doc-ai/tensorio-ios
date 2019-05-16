@@ -82,7 +82,7 @@ typedef std::vector<std::string> TensorNames;
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
-    return [[[TIOModelBundle alloc] initWithPath:path] newModel];
+    return [[TIOTensorFlowModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
 
 - (void)dealloc {

@@ -67,7 +67,7 @@ static NSString * const kTensorTypeImage = @"image";
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
-    return [[[TIOModelBundle alloc] initWithPath:path] newModel];
+    return [[TIOTFLiteModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
 
 - (void)dealloc {

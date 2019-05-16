@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TIOTensorFlowModel : NSObject <TIOModel>
 
++ (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
+
 // Model Protocol Properties
 
 @property (readonly) TIOModelBundle *bundle;
