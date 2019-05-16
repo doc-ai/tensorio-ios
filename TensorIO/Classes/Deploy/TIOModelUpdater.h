@@ -17,8 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  TODO: Model bundle verification
-
 
 #import <Foundation/Foundation.h>
 #import "TIOModelBundleValidator.h"

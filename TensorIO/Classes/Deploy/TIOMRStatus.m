@@ -36,4 +36,15 @@
     return self;
 }
 
+- (NSString*)description {
+    switch (self.status) {
+    case TIOMRStatusValueUnknown:
+         return @"TIOMRStatusValueUnknown";
+    case TIOMRStatusValueServing:
+        return @"TIOMRStatusValueServing";
+    default:
+        return @"Uknown status";
+    }
+}
+
 @end

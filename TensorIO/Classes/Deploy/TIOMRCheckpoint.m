@@ -17,6 +17,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+//  TODO: update tests for new createdAt format
 
 #import "TIOMRCheckpoint.h"
 
@@ -42,7 +43,12 @@
         if ( JSON[@"createdAt"] == nil || ![JSON[@"createdAt"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
-            _createdAt = [NSDate dateWithTimeIntervalSince1970:[JSON[@"createdAt"] doubleValue]];
+            NSDateFormatter *RFC3339DateFormatter = [[NSDateFormatter alloc] init];
+            RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+            RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+            RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+            
+            _createdAt = [RFC3339DateFormatter dateFromString:JSON[@"createdAt"]];
             if ( _createdAt == nil ) { // bad dates
                 return nil;
             }
@@ -62,6 +68,16 @@
         }
     }
     return self;
+}
+
+- (NSString*)description {
+    NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
+    NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
+    NSString *cs = [NSString stringWithFormat:@"Checkpoint IDs: %@", self.checkpointId];
+    NSString *ds = [NSString stringWithFormat:@"Created At: %@", self.createdAt];
+    NSString *is = [NSString stringWithFormat:@"Info: %@", self.info];
+    NSString *ls = [NSString stringWithFormat:@"Link: %@", self.link];
+    return [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@", ms, hs, cs, ds, is, ls];
 }
 
 @end

@@ -32,4 +32,8 @@
     return self;
 }
 
+- (NSString*)description {
+    return [NSString stringWithFormat:@"Model Ids: %@", self.modelIds.description];
+}
+
 @end

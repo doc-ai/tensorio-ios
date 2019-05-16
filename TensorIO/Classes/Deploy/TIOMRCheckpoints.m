@@ -43,4 +43,11 @@
     return self;
 }
 
+- (NSString*)description {
+    NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
+    NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
+    NSString *cs = [NSString stringWithFormat:@"Checkpoint IDs: %@", self.checkpointIds];
+    return [NSString stringWithFormat:@"%@\n%@\n%@", ms, hs, cs];
+}
+
 @end

@@ -17,6 +17,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+//  TODO: canonicalCheckpoint may be nil, and test
 
 #import "TIOMRHyperparameter.h"
 
@@ -51,6 +52,15 @@
         }
     }
     return self;
+}
+
+- (NSString*)description {
+    NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
+    NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
+    NSString *is = [NSString stringWithFormat:@"Hyperparameters: %@", self.hyperparameters];
+    NSString *us = [NSString stringWithFormat:@"Upgrade To: %@", self.upgradeTo];
+    NSString *cs = [NSString stringWithFormat:@"Canonical Checkpoints: %@", self.canonicalCheckpoint];
+    return [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", ms, hs, is, us, cs];
 }
 
 @end

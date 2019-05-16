@@ -18,6 +18,8 @@
 //  limitations under the License.
 //
 
+//  TODO: canonicalHyperparameters may be nil and test for either
+
 #import "TIOMRModel.h"
 
 @implementation TIOMRModel
@@ -35,11 +37,11 @@
             _modelId = JSON[@"model"][@"modelId"];
         }
         
-        if ( JSON[@"model"][@"description"] == nil || ![JSON[@"model"][@"description"] isKindOfClass:NSString.class] ) {
+        if ( JSON[@"model"][@"details"] == nil || ![JSON[@"model"][@"details"] isKindOfClass:NSString.class] ) {
             return nil;
         }
         else {
-            _details = JSON[@"model"][@"description"];
+            _details = JSON[@"model"][@"details"];
         }
         
         if ( JSON[@"model"][@"canonicalHyperparameters"] == nil || ![JSON[@"model"][@"canonicalHyperparameters"] isKindOfClass:NSString.class] ) {
@@ -50,6 +52,13 @@
         }
     }
     return self;
+}
+
+- (NSString*)description {
+    NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
+    NSString *ds = [NSString stringWithFormat:@"Details: %@", self.details];
+    NSString *cs = [NSString stringWithFormat:@"Canonical Hyperparameters: %@", self.canonicalHyperparameters];
+    return [NSString stringWithFormat:@"%@\n%@\n%@", ms, ds, cs];
 }
 
 @end

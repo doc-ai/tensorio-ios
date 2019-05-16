@@ -52,4 +52,11 @@
     return [self initWithModelId:components[2] hyperparametersId:components[4] checkpointsId:components[6]];
 }
 
+- (NSString*)description {
+    NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
+    NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
+    NSString *cs = [NSString stringWithFormat:@"Checkpoint ID: %@", self.checkpointId];
+    return [NSString stringWithFormat:@"%@\n%@\n%@", ms, hs, cs];
+}
+
 @end
