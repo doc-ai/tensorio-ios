@@ -31,3 +31,11 @@ NSError * const TIOTensorFlowModelExportURLNotFilePath = [NSError errorWithDomai
 NSError * const TIOTensorFlowModelExportURLDoesNotExist = [NSError errorWithDomain:@"ai.doc.tensorio" code:103 userInfo:@{
     NSLocalizedDescriptionKey: @"Export URL must point to a directory that already exists"
 }];
+
+NSError * const TIOTensorFlowModelLoadSavedModelError = [NSError errorWithDomain:@"ai.doc.tensorio" code:104 userInfo:@{
+    NSLocalizedDescriptionKey: @"Saved model could not be loaded from the model bundle"
+}];
+
+NSError * const TIOTensorFlowModelExportError = [NSError errorWithDomain:@"ai.doc.tensorio" code:105 userInfo:@{
+    NSLocalizedDescriptionKey: @"Unable to export the modelx"
+}];

@@ -43,4 +43,16 @@ extern NSError * const TIOTensorFlowModelExportURLNotFilePath;
 
 extern NSError * const TIOTensorFlowModelExportURLDoesNotExist;
 
+/**
+ * Occurs when the `LoadSavedModel` command fails.
+ */
+
+extern NSError * const TIOTensorFlowModelLoadSavedModelError;
+
+/**
+ * Occurs when the meta_graph_def saver fails to export the model
+ */
+
+extern NSError * const TIOTensorFlowModelExportError;
+
 NS_ASSUME_NONNULL_END
