@@ -199,7 +199,7 @@
         @"modelId": self.modelId,
         @"hyperparametersId": self.hyperparametersId,
         @"checkpointId": self.canonicalCheckpoint,
-        @"createdAt": @"1549868901",
+        @"createdAt": @"2019-04-20T16:20:00.000+0000",
         @"info": @{
             @"standard-1-accuracy": @"0.934"
         },
@@ -248,7 +248,7 @@
         @"modelId": self.modelId,
         @"hyperparametersId": self.hyperparametersId,
         @"checkpointId": self.canonicalCheckpoint,
-        @"createdAt": @"1549868901",
+        @"createdAt": @"2019-04-20T16:20:00.000+0000",
         @"info": @{
             @"standard-1-accuracy": @"0.934"
         },
@@ -393,7 +393,7 @@
         @"modelId": self.modelId,
         @"hyperparametersId": self.upgradeTo,
         @"checkpointId": self.canonicalCheckpoint,
-        @"createdAt": @"1549868901",
+        @"createdAt": @"2019-04-20T16:20:00.000+0000",
         @"info": @{
             @"standard-1-accuracy": @"0.934"
         },
@@ -452,7 +452,7 @@
         @"modelId": self.modelId,
         @"hyperparametersId": self.upgradeTo,
         @"checkpointId": self.canonicalCheckpoint,
-        @"createdAt": @"1549868901",
+        @"createdAt": @"2019-04-20T16:20:00.000+0000",
         @"info": @{
             @"standard-1-accuracy": @"0.934"
         },

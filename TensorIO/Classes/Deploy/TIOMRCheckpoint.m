@@ -17,7 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  TODO: update tests for new createdAt format
 
 #import "TIOMRCheckpoint.h"
 

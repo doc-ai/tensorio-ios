@@ -41,11 +41,17 @@
 - (void)testGETCheckpointWithCheckpointPropertieSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoint response"];
     
+    NSDateFormatter *RFC3339DateFormatter = [[NSDateFormatter alloc] init];
+    RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    NSDate *date = [RFC3339DateFormatter dateFromString:@"2019-04-20T16:20:00.000+0000"];
+    
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
         @"hyperparametersId": @"batch-9-2-0-1-5",
         @"checkpointId": @"model.ckpt-321312",
-        @"createdAt": @"1549868901",
+        @"createdAt": @"2019-04-20T16:20:00.000+0000",
         @"info": @{
             @"standard-1-accuracy": @"0.934"
         },
@@ -60,7 +66,7 @@
         XCTAssertEqualObjects(checkpoint.modelId, @"happy-face");
         XCTAssertEqualObjects(checkpoint.hyperparametersId, @"batch-9-2-0-1-5");
         XCTAssertEqualObjects(checkpoint.checkpointId, @"model.ckpt-321312");
-        XCTAssertEqualObjects(checkpoint.createdAt, [NSDate dateWithTimeIntervalSince1970:[@"1549868901" doubleValue]]);
+        XCTAssertEqualObjects(checkpoint.createdAt, date);
         XCTAssertEqualObjects(checkpoint.link, [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/happy-face/batch-9-2-0-9-2-0/model.ckpt-322405.zip"]);
         [expectation fulfill];
     }];
