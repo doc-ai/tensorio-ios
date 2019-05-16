@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  * single value from a TensorFlow tensor.
  */
 
-@interface NSNumber (TIOTensorFlowData)
+@interface NSNumber (TIOTensorFlowData) <TIOTensorFlowData>
 
 /**
  * Initializes an `NSNumber` with bytes from a TensorFlow tensor.

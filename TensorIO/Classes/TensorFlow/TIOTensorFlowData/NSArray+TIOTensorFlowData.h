@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
  * or capture bytes from a TensorFlow tensor.
  */
 
-@interface NSArray (TIOTensorFlowData)
+@interface NSArray (TIOTensorFlowData) <TIOTensorFlowData>
 
 /**
  * Initializes an `NSArray` object with bytes from a TensorFlow tensor.

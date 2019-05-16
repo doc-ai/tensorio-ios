@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  * pixel values from one.
  */
 
-@interface TIOPixelBuffer (TIOTensorFlowData)
+@interface TIOPixelBuffer (TIOTensorFlowData) <TIOTensorFlowData>
 
 /**
  * Initializes `TIOPixelBuffer` with bytes from a TensorFlow tensor.
