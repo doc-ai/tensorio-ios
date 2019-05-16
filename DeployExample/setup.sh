@@ -11,7 +11,7 @@ echo "Setting up API instance at: $API_URL"
 echo "Creating model: $MODEL..."
 curl -X POST \
     -H "Content-Type: application/json" \
-    -d "{\"model\": {\"modelId\": \"$MODEL\", \"description\": \"This model is a test\"}}" \
+    -d "{\"model\": {\"modelId\": \"$MODEL\", \"details\": \"This model is a test\", \"canonicalHyperparameters\": \"hyperparameters-2\"}}" \
     $API_URL/v1/repository/models
 
 echo
