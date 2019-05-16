@@ -1,0 +1,37 @@
+{
+	"name": "Upgradable Model For Testing",
+	"details": "An upgradable model",
+	"id": "tio:///models/TestModel-1558049870/hyperparameters/hyperparameters-1/checkpoints/checkpoint-1",
+	"version": "1",
+	"author": "doc.ai",
+	"license": "Apache 2.0",
+	"model": {
+		"file": "touch.tflite",
+		"quantized": false,
+		"type": "image.classification.imagenet",
+		"backend": "tflite"
+	},
+	"inputs": [
+		{
+			"name": "image",
+			"type": "image",
+			"shape": [128,128,3],
+			"format": "RGB"
+		}
+	],
+	"outputs": [
+		{
+			"name": "classification",
+			"type": "array",
+			"shape": [1,1000],
+			"labels": "labels.txt",
+			"dequantize": {
+				"standard": "[0,1]"
+			}
+		}
+	],
+	"options": {
+		"device_position": "back",
+		"output_format": "image.classification.imagenet"
+	}
+}

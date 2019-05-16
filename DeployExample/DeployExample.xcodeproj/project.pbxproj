@@ -28,6 +28,7 @@
 		E3E16D66228CA1D40087197A /* upgradable.tiobundle in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D65228CA1D40087197A /* upgradable.tiobundle */; };
 		E3E16D69228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */; };
 		E3E16D6A228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */; };
+		E3E16D6C228E2C160087197A /* testsetup.tiobundle in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D6B228E2C150087197A /* testsetup.tiobundle */; };
 		EAA7DE30289C1CCB260A724D /* Pods_DeployExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4B23D05029FBB46E3679F1B /* Pods_DeployExampleTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,7 @@
 		E3E16D65228CA1D40087197A /* upgradable.tiobundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = upgradable.tiobundle; sourceTree = "<group>"; };
 		E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "upgradable-checkpoint.tiobundle.zip"; sourceTree = "<group>"; };
 		E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "upgradable-hyperparameters.tiobundle.zip"; sourceTree = "<group>"; };
+		E3E16D6B228E2C150087197A /* testsetup.tiobundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = testsetup.tiobundle; sourceTree = "<group>"; };
 		E4B23D05029FBB46E3679F1B /* Pods_DeployExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DeployExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -149,6 +151,7 @@
 				E34F12ED227BB5F2000A0DD7 /* LaunchScreen.storyboard */,
 				E34F12F0227BB5F2000A0DD7 /* Info.plist */,
 				E34F12F1227BB5F2000A0DD7 /* main.m */,
+				E3E16D6B228E2C150087197A /* testsetup.tiobundle */,
 				E3E16D65228CA1D40087197A /* upgradable.tiobundle */,
 				E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */,
 				E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */,
@@ -260,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3E16D6C228E2C160087197A /* testsetup.tiobundle in Resources */,
 				E34F12EF227BB5F2000A0DD7 /* LaunchScreen.storyboard in Resources */,
 				E34F12EC227BB5F2000A0DD7 /* Assets.xcassets in Resources */,
 				E34F12EA227BB5F0000A0DD7 /* Main.storyboard in Resources */,

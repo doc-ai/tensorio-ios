@@ -27,7 +27,7 @@ echo
 echo "Creating checkpoint-1 for hyperparameters-1..."
 curl -X POST \
     -H "Content-Type: application/json" \
-    -d '{"checkpointId": "checkpoint-1", "createdAt": "1557790163", "info": {"accuracy": "0.934"}, "link": "https://example.com/h1c1.tiobundle.zip"}' \
+    -d '{"checkpointId": "checkpoint-1", "createdAt": "1557790163", "info": {"accuracy": "0.934"}, "link": "http://localhost:8000/h1c1.tiobundle.zip"}' \
     $API_URL/v1/repository/models/$MODEL/hyperparameters/hyperparameters-1/checkpoints
 
 echo
@@ -51,7 +51,7 @@ echo
 echo "Creating checkpoint-1 for hyperparameters-2..."
 curl -X POST \
     -H "Content-Type: application/json" \
-    -d '{"checkpointId": "checkpoint-1", "createdAt": "1557790252", "info": {"accuracy": "0.921"}, "link": "https://example.com/h2c1.tiobundle.zip"}' \
+    -d '{"checkpointId": "checkpoint-1", "createdAt": "1557790252", "info": {"accuracy": "0.921"}, "link": "http://localhost:8000/h2c1.tiobundle.zip"}' \
     $API_URL/v1/repository/models/$MODEL/hyperparameters/hyperparameters-2/checkpoints
 
 echo
@@ -59,7 +59,7 @@ echo
 echo "Creating checkpoint-2 for hyperparameters-2..."
 curl -X POST \
     -H "Content-Type: application/json" \
-    -d '{"checkpointId": "checkpoint-2", "createdAt": "1557790268", "info": {"accuracy": "0.959"}, "link": "https://example.com/h2c2.tiobundle.zip"}' \
+    -d '{"checkpointId": "checkpoint-2", "createdAt": "1557790268", "info": {"accuracy": "0.959"}, "link": "http://localhost:8000/h2c2.tiobundle.zip"}' \
     $API_URL/v1/repository/models/$MODEL/hyperparameters/hyperparameters-2/checkpoints
 
 echo
