@@ -18,6 +18,8 @@
 //  limitations under the License.
 //
 
+//  TODO: Test nil upgradeTo
+
 #import "TIOMRHyperparameter.h"
 
 @implementation TIOMRHyperparameter
@@ -36,10 +38,12 @@
             _hyperparametersId = JSON[@"hyperparametersId"];
         }
         
-        if ( JSON[@"upgradeTo"] == nil || !([JSON[@"upgradeTo"] isKindOfClass:NSString.class] || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class]) ) {
+        if ( JSON[@"upgradeTo"] == nil || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class] ) {
+            _upgradeTo = nil;
+        } else if ( ![JSON[@"upgradeTo"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
-            _upgradeTo = [JSON[@"upgradeTo"] isEqual:NSNull.null] ? nil : JSON[@"upgradeTo"];
+            _upgradeTo = JSON[@"upgradeTo"];
         }
         
         if ( JSON[@"hyperparameters"] == nil || ![JSON[@"hyperparameters"] isKindOfClass:NSDictionary.class] ) {
@@ -48,7 +52,7 @@
             _hyperparameters = JSON[@"hyperparameters"];
         }
         
-        if ( JSON[@"canonicalCheckpoint"] == nil ) {
+        if ( JSON[@"canonicalCheckpoint"] == nil || [JSON[@"canonicalCheckpoint"] isKindOfClass:NSNull.class] ) {
             _canonicalCheckpoint = nil;
         } else if ( ![JSON[@"canonicalCheckpoint"] isKindOfClass:NSString.class] ) {
             return nil;

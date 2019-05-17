@@ -42,7 +42,7 @@
             _details = JSON[@"model"][@"details"];
         }
         
-        if ( JSON[@"model"][@"canonicalHyperparameters"] == nil ) {
+        if ( JSON[@"model"][@"canonicalHyperparameters"] == nil || [JSON[@"model"][@"canonicalHyperparameters"] isKindOfClass:NSNull.class] ) {
             _canonicalHyperparameters = nil;
         } else if ( ![JSON[@"model"][@"canonicalHyperparameters"] isKindOfClass:NSString.class] ) {
             return nil;
