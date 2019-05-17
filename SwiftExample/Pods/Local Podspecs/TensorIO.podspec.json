@@ -1,6 +1,6 @@
 {
   "name": "TensorIO",
-  "version": "0.7.6",
+  "version": "0.8.0",
   "summary": "An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow.",
   "description": "Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift",
   "homepage": "https://github.com/doc-ai/tensorio-ios",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/doc-ai/tensorio-ios.git",
-    "tag": "0.7.6"
+    "tag": "0.8.0"
   },
   "platforms": {
     "ios": "9.3"
@@ -47,10 +47,10 @@
     {
       "name": "TFLite",
       "dependencies": {
-        "TensorFlowLite": [
+        "TensorIO/Core": [
 
         ],
-        "TensorIO/Core": [
+        "TensorFlowLite": [
 
         ]
       },
@@ -68,10 +68,10 @@
     {
       "name": "TensorFlow",
       "dependencies": {
-        "TensorIOTensorFlow": [
+        "TensorIO/Core": [
 
         ],
-        "TensorIO/Core": [
+        "TensorIOTensorFlow": [
 
         ]
       },
@@ -88,6 +88,21 @@
       },
       "pod_target_xcconfig": {
         "GCC_PREPROCESSOR_DEFINITIONS": "TIO_TENSORFLOW=1"
+      }
+    },
+    {
+      "name": "Deploy",
+      "dependencies": {
+        "TensorIO/Core": [
+
+        ],
+        "SSZipArchive": [
+
+        ]
+      },
+      "source_files": "TensorIO/Classes/Deploy/**/*",
+      "pod_target_xcconfig": {
+        "GCC_PREPROCESSOR_DEFINITIONS": "TIO_DEPLOY=1"
       }
     }
   ]

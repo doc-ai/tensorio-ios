@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.7.6'
+  s.version          = '0.8.0'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow.'
   s.description      = 'Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -38,8 +38,8 @@ Pod::Spec.new do |s|
   # TFLite subspec contains the TensorFlow Lite implementation
   
   s.subspec 'TFLite' do |ss|
-    ss.dependency 'TensorFlowLite'
     ss.dependency 'TensorIO/Core'
+    ss.dependency 'TensorFlowLite'
     
     ss.source_files = 'TensorIO/Classes/TFLite/**/*'
     ss.resource_bundles = { 
@@ -56,8 +56,8 @@ Pod::Spec.new do |s|
   # TensorFlow subspec contains a full TensorFlow implementation
 
   s.subspec 'TensorFlow' do |ss|
-    ss.dependency 'TensorIOTensorFlow'
     ss.dependency 'TensorIO/Core'
+    ss.dependency 'TensorIOTensorFlow'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
@@ -72,6 +72,18 @@ Pod::Spec.new do |s|
     }
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_TENSORFLOW=1'
+    }
+  end
+
+  # The deploy subspec contains the tensorio-models repository client side code
+
+  s.subspec 'Deploy' do |ss|
+    ss.dependency 'TensorIO/Core'
+    ss.dependency 'SSZipArchive'
+
+    ss.source_files = 'TensorIO/Classes/Deploy/**/*'
+    ss.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_DEPLOY=1'
     }
   end
 

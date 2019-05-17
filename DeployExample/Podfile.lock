@@ -1,25 +1,31 @@
 PODS:
   - DSJSONSchemaValidation (2.0.5)
+  - SSZipArchive (2.1.5)
+  - TensorFlowLite (1.13.1)
   - TensorIO (0.8.0):
     - DSJSONSchemaValidation
     - TensorIO/Core (= 0.8.0)
   - TensorIO/Core (0.8.0):
     - DSJSONSchemaValidation
-  - TensorIO/TensorFlow (0.8.0):
+  - TensorIO/Deploy (0.8.0):
     - DSJSONSchemaValidation
+    - SSZipArchive
     - TensorIO/Core
-    - TensorIOTensorFlow
-  - TensorIOTensorFlow (0.1.1)
+  - TensorIO/TFLite (0.8.0):
+    - DSJSONSchemaValidation
+    - TensorFlowLite
+    - TensorIO/Core
 
 DEPENDENCIES:
   - TensorIO (from `../`)
-  - TensorIO/TensorFlow (from `../`)
-  - TensorIOTensorFlow (~> 0.1.1)
+  - TensorIO/Deploy (from `../`)
+  - TensorIO/TFLite (from `../`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - DSJSONSchemaValidation
-    - TensorIOTensorFlow
+    - SSZipArchive
+    - TensorFlowLite
 
 EXTERNAL SOURCES:
   TensorIO:
@@ -27,9 +33,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DSJSONSchemaValidation: a0d791d3c8a4801cb3c72f3c8701342e2cb66f58
+  SSZipArchive: cefe1364104a0231268a5deb8495bdf2861f52f0
+  TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
   TensorIO: b5cbf584791e288c54adfe575f5e41794827f3f1
-  TensorIOTensorFlow: cc1344119f0d724bd47676fc5932d2289e91f856
 
-PODFILE CHECKSUM: b8fb1006eb4db26d618c789b95d961e22837793f
+PODFILE CHECKSUM: ee39b343878a4200f1efe3cc18288e1d7b269259
 
 COCOAPODS: 1.6.0
