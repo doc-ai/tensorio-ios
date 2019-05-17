@@ -71,4 +71,45 @@
     ]));
 }
 
+- (void)testInitBatchWithSingleItem {
+    TIOBatch *batch = [[TIOBatch alloc] initWithItem:@{
+        @"image": @[@1,@2,@3],
+        @"label": @[@0]
+    }];
+    
+    XCTAssert(batch.count == 1);
+    
+    XCTAssertEqualObjects([batch itemAtIndex:0], (@{
+        @"image": @[@1,@2,@3],
+        @"label": @[@0]
+    }));
+    
+    [batch addItem:@{
+        @"image": @[@4,@5,@6],
+        @"label": @[@1]
+    }];
+    
+    XCTAssert(batch.count == 2);
+    
+    XCTAssertEqualObjects([batch itemAtIndex:0], (@{
+        @"image": @[@1,@2,@3],
+        @"label": @[@0]
+    }));
+    
+    XCTAssertEqualObjects([batch itemAtIndex:1], (@{
+        @"image": @[@4,@5,@6],
+        @"label": @[@1]
+    }));
+    
+    XCTAssertEqualObjects([batch valuesForKey:@"image"], (@[
+        @[@1,@2,@3],
+        @[@4,@5,@6]
+    ]));
+    
+    XCTAssertEqualObjects([batch valuesForKey:@"label"], (@[
+        @[@0],
+        @[@1]
+    ]));
+}
+
 @end

@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 
-@interface NSData (TIOTensorFlowData)
+@interface NSData (TIOTensorFlowData) <TIOTensorFlowData>
 
 /**
  * Initializes an `NSData` object with bytes from a TensorFlow tensor.

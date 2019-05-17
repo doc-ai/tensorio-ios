@@ -29,4 +29,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern NSError * const TIOTensorFlowModelModeError;
 
+/**
+ * Set the `TIOTrainableModel` export error to `TIOTensorFlowModelExportURLNotFilePath`
+ * when the URL is not a file URL.
+ */
+
+extern NSError * const TIOTensorFlowModelExportURLNotFilePath;
+
+/**
+ * Set the `TIOTrainableModel` export error to `TIOTensorFlowModelExportURLDoesNotExist`
+ * when the path at URL does not exist or is not a directory.
+ */
+
+extern NSError * const TIOTensorFlowModelExportURLDoesNotExist;
+
+/**
+ * Occurs when the `LoadSavedModel` command fails.
+ */
+
+extern NSError * const TIOTensorFlowModelLoadSavedModelError;
+
+/**
+ * Occurs when the meta_graph_def saver fails to export the model
+ */
+
+extern NSError * const TIOTensorFlowModelExportError;
+
 NS_ASSUME_NONNULL_END

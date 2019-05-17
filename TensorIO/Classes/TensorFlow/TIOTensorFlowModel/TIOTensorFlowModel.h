@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TIOTensorFlowModel : NSObject <TIOModel>
 
++ (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
+
 // Model Protocol Properties
 
 @property (readonly) TIOModelBundle *bundle;
@@ -88,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - Training
 
-@interface TIOTensorFlowModel (TIOTrainableModel)
+@interface TIOTensorFlowModel (TIOTrainableModel) <TIOTrainableModel>
 
 /**
  * Calls the underlying training op with a single batch.
@@ -99,6 +101,24 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (id<TIOData>)train:(TIOBatch*)batch;
+
+/**
+ * Exports the results of training to the specified directory. The directory
+ * must already exist.
+ *
+ * A TensorFlow export appends "checkpoint" to the file URL and exports two
+ * files into that dirctory:
+ *
+ * checkpoint.index
+ * checkpoint.data-XXXXX-of-YYYYY, e.g. checkpoint.data-00000-of-00001
+ *
+ * @param fileURL File URL to the directory in which the export will be saved
+ * @param error Set to any error that occurs during the export, otherwise `nil`
+ *
+ * @return `YES` if the export was successful,`NO` otherwise
+ */
+
+- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error;
 
 @end
 

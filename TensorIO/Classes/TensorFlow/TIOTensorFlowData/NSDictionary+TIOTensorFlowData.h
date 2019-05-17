@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  * to do so.
  */
 
-@interface NSDictionary (TIOTensorFlowData)
+@interface NSDictionary (TIOTensorFlowData) <TIOTensorFlowData>
 
 /**
  * Initializes an `NSDictionary` object with bytes from a TensorFlow tensor.

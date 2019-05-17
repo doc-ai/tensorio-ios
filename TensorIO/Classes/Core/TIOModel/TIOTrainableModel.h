@@ -40,6 +40,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TIOData>)train:(TIOBatch*)batch;
 
+/**
+ * Exports the results of training to the specified directory. The directory
+ * must already exist.
+ *
+ * @param fileURL File URL to the directory in which the export will be saved
+ * @param error Set to any error that occurs during the export, otherwise `nil`
+ *
+ * @return `YES` if the export was successful,`NO` otherwise
+ */
+
+- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error;
+
 @end
 
 NS_ASSUME_NONNULL_END

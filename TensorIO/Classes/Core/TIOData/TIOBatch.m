@@ -38,6 +38,10 @@
 }
 
 - (instancetype)initWithKeys:(NSArray<NSString*>*)keys {
+#if DEBUG
+    assert(keys.count > 0);
+#endif
+
     if ((self=[super init])) {
         _items = [[NSMutableDictionary alloc] init];
         _keys = keys;
@@ -50,8 +54,15 @@
     return self;
 }
 
+- (instancetype)initWithItem:(TIOBatchItem *)item {
+    if ((self=[self initWithKeys:item.allKeys])) {
+        [self addItem:item];
+    }
+    return self;
+}
+
 - (NSUInteger)count {
-    return _items.count;
+    return _items[_keys[0]].count;
 }
 
 - (void)addItem:(TIOBatchItem*)item {

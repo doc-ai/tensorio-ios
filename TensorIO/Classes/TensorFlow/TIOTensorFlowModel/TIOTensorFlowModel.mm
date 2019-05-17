@@ -82,7 +82,7 @@ typedef std::vector<std::string> TensorNames;
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
-    return [[[TIOModelBundle alloc] initWithPath:path] newModel];
+    return [[TIOTensorFlowModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
 
 - (void)dealloc {
@@ -310,8 +310,15 @@ typedef std::vector<std::string> TensorNames;
     
     tensorflow::SessionOptions session_opts;
     tensorflow::RunOptions run_opts;
+    tensorflow::Status status;
     
-    TF_CHECK_OK(LoadSavedModel(session_opts, run_opts, model_dir, tags, &_saved_model_bundle));
+    status = LoadSavedModel(session_opts, run_opts, model_dir, tags, &_saved_model_bundle);
+    
+    if ( status != tensorflow::Status::OK() ) {
+        NSLog(@"Unable to load saved model, status: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
+        *error = TIOTensorFlowModelLoadSavedModelError;
+        return NO;
+    }
     
     _loaded = YES;
     
@@ -710,6 +717,42 @@ typedef std::vector<std::string> TensorNames;
         }];
     
     return data;
+}
+
+- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error {
+    NSFileManager *fm = NSFileManager.defaultManager;
+    BOOL isDirectory;
+    
+    if ( !fileURL.isFileURL ) {
+        *error = TIOTensorFlowModelExportURLNotFilePath;
+        return NO;
+    }
+    
+    if ( ![fm fileExistsAtPath:fileURL.path isDirectory:&isDirectory] || !isDirectory ) {
+        *error = TIOTensorFlowModelExportURLDoesNotExist;
+        return NO;
+    }
+    
+    // Save checkpoint
+    
+    NSURL *checkpointURL = [fileURL URLByAppendingPathComponent:@"checkpoint"];
+    
+    tensorflow::Tensor checkpoint_tensor(tensorflow::DT_STRING, tensorflow::TensorShape());
+    checkpoint_tensor.scalar<std::string>()() = checkpointURL.path.UTF8String;
+
+    tensorflow::Session *session = _saved_model_bundle.session.get();
+    tensorflow::MetaGraphDef meta_graph_def = _saved_model_bundle.meta_graph_def;
+
+    NamedTensors checkpoint_feed_dict = {{meta_graph_def.saver_def().filename_tensor_name(), checkpoint_tensor}};
+    tensorflow::Status status = session->Run(checkpoint_feed_dict, {}, {meta_graph_def.saver_def().save_tensor_name()}, nullptr);
+    
+    if ( status != tensorflow::Status::OK() ) {
+        NSLog(@"Unable to export model, status: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
+        *error = TIOTensorFlowModelExportError;
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end
