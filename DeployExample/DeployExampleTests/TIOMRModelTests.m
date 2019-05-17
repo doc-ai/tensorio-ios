@@ -42,11 +42,9 @@
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for model response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
-        @"model": @{
-            @"modelId": @"happy-face",
-            @"details": @"Accepts images of an individual's face and infers their emotion from it.",
-            @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
-        }
+        @"modelId": @"happy-face",
+        @"details": @"Accepts images of an individual's face and infers their emotion from it.",
+        @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
     }];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
@@ -68,10 +66,8 @@
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for model response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
-        @"model": @{
-            @"details": @"Accepts images of an individual's face and infers their emotion from it.",
-            @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
-        }
+        @"details": @"Accepts images of an individual's face and infers their emotion from it.",
+        @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
     }];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
@@ -90,10 +86,8 @@
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for model response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
-        @"model": @{
-            @"modelId": @"happy-face",
-            @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
-        }
+        @"modelId": @"happy-face",
+        @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
     }];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
@@ -112,10 +106,8 @@
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for model response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
-        @"model": @{
-            @"modelId": @"happy-face",
-            @"details": @"Accepts images of an individual's face and infers their emotion from it."
-        }
+        @"modelId": @"happy-face",
+        @"details": @"Accepts images of an individual's face and infers their emotion from it."
     }];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
@@ -151,9 +143,7 @@
 - (void)testGETModelWithEmptyModelFails {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for model response"];
     
-    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
-       @"model": @{ }
-    }];
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{ }];
     
     TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     

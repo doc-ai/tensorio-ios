@@ -24,30 +24,26 @@
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
     if ((self=[super init])) {
-        if ( JSON[@"model"] == nil || ![JSON[@"model"] isKindOfClass:NSDictionary.class] ) {
-            return nil;
-        }
-        
-        if ( JSON[@"model"][@"modelId"] == nil || ![JSON[@"model"][@"modelId"] isKindOfClass:NSString.class] ) {
+        if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
             return nil;
         }
         else {
-            _modelId = JSON[@"model"][@"modelId"];
+            _modelId = JSON[@"modelId"];
         }
         
-        if ( JSON[@"model"][@"details"] == nil || ![JSON[@"model"][@"details"] isKindOfClass:NSString.class] ) {
+        if ( JSON[@"details"] == nil || ![JSON[@"details"] isKindOfClass:NSString.class] ) {
             return nil;
         }
         else {
-            _details = JSON[@"model"][@"details"];
+            _details = JSON[@"details"];
         }
         
-        if ( JSON[@"model"][@"canonicalHyperparameters"] == nil || [JSON[@"model"][@"canonicalHyperparameters"] isKindOfClass:NSNull.class] ) {
+        if ( JSON[@"canonicalHyperparameters"] == nil || [JSON[@"canonicalHyperparameters"] isKindOfClass:NSNull.class] ) {
             _canonicalHyperparameters = nil;
-        } else if ( ![JSON[@"model"][@"canonicalHyperparameters"] isKindOfClass:NSString.class] ) {
+        } else if ( ![JSON[@"canonicalHyperparameters"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
-            _canonicalHyperparameters = JSON[@"model"][@"canonicalHyperparameters"];
+            _canonicalHyperparameters = JSON[@"canonicalHyperparameters"];
         }
     }
     return self;
