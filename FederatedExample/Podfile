@@ -1,0 +1,13 @@
+platform :ios, '9.3'
+
+target 'FederatedExample' do
+  use_frameworks!
+
+  pod 'TensorIO', :path => '../'
+  pod 'TensorIO/Federated', :path => '../'
+
+  target 'FederatedExampleTests' do
+    inherit! :search_paths
+  end
+
+end

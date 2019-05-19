@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  * manage deployment of TensorIO models.
  *
  * All repository HTTP requests are run on a background thread and
- * execute their callbacks on the main thread.
+ * execute their callbacks on a background thread.
  */
 
 @interface TIOModelRepository : NSObject

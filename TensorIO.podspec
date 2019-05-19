@@ -87,4 +87,15 @@ Pod::Spec.new do |s|
     }
   end
 
+  # The federated subspect contains federated learning classes and flea client side code
+
+  s.subspec 'Federated' do |ss|
+    ss.dependency 'TensorIO/Core'
+
+    ss.source_files = 'TensorIO/Classes/Federated/**/*'
+    ss.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_FEDERATED=1'
+    }
+  end
+
 end
