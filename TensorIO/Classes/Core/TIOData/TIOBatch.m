@@ -76,7 +76,7 @@
 }
 
 - (TIOBatchItem*)itemAtIndex:(NSUInteger)index {
-    assert(index < _items.count);
+    assert(index < self.count);
     
     NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
     
