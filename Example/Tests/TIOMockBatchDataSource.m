@@ -1,8 +1,8 @@
 //
-//  TIOInMemoryBatchDataSource.m
-//  TensorIO
+//  TIOMockBatchDataSource.m
+//  TensorIO_Tests
 //
-//  Created by Phil Dow on 5/19/19.
+//  Created by Phil Dow on 5/20/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,31 +18,44 @@
 //  limitations under the License.
 //
 
-#import "TIOInMemoryBatchDataSource.h"
+#import "TIOMockBatchDataSource.h"
 
-@implementation TIOInMemoryBatchDataSource
+@implementation TIOMockBatchDataSource {
+    NSUInteger _itemCount;
+}
 
-- (instancetype)initWithBatch:(TIOBatch*)batch {
+- (instancetype)initWithItemCount:(NSUInteger)count {
     if ((self=[super init])) {
-        _batch = batch;
+        _itemAtIndexCount = [[NSMutableArray alloc] init];
+        _itemCount = count;
+        
+        for (NSUInteger i = 0; i < _itemCount; i++) {
+            ((NSMutableArray*)_itemAtIndexCount)[i] = @(0);
+        }
     }
     return self;
 }
 
-- (instancetype)initWithItem:(TIOBatchItem*)item {
-    return [self initWithBatch:[[TIOBatch alloc] initWithItem:item]];
+- (NSUInteger)itemAtIndexCountAtIndex:(NSUInteger)index {
+    return _itemAtIndexCount[index].unsignedIntegerValue;
 }
 
+// MARK: - TIOBatchDataSource
+
 - (NSArray<NSString*>*)keys {
-    return self.batch.keys;
+    return @[@"foo"];
 }
 
 - (NSUInteger)numberOfItems {
-    return self.batch.count;
+    return _itemCount;
 }
 
 - (TIOBatchItem*)itemAtIndex:(NSUInteger)index {
-    return [self.batch itemAtIndex:index];
+    ((NSMutableArray*)_itemAtIndexCount)[index] = @(_itemAtIndexCount[index].unsignedIntegerValue+1);
+    
+    return @{
+        @"foo": @[@(1)]
+    };
 }
 
 @end
