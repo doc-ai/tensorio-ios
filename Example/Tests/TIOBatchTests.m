@@ -48,7 +48,12 @@
         @"label": @[@1]
     }];
     
-    XCTAssert(batch.count == 2);
+    [batch addItem:@{
+        @"image": @[@7,@8,@9],
+        @"label": @[@1]
+    }];
+    
+    XCTAssert(batch.count == 3);
     
     XCTAssertEqualObjects([batch itemAtIndex:0], (@{
         @"image": @[@1,@2,@3],
@@ -60,13 +65,20 @@
         @"label": @[@1]
     }));
     
+    XCTAssertEqualObjects([batch itemAtIndex:2], (@{
+        @"image": @[@7,@8,@9],
+        @"label": @[@1]
+    }));
+    
     XCTAssertEqualObjects([batch valuesForKey:@"image"], (@[
         @[@1,@2,@3],
-        @[@4,@5,@6]
+        @[@4,@5,@6],
+        @[@7,@8,@9]
     ]));
     
     XCTAssertEqualObjects([batch valuesForKey:@"label"], (@[
         @[@0],
+        @[@1],
         @[@1]
     ]));
 }
