@@ -37,6 +37,12 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol TIOBatchDataSource <NSObject>
 
 /**
+ * The batch keys.
+ */
+
+@property (readonly) NSArray<NSString*> *keys;
+
+/**
  * The total number of items that will be vended by the data source.
  */
 
