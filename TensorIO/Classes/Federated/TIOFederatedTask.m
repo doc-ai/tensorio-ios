@@ -22,4 +22,23 @@
 
 @implementation TIOFederatedTask
 
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+    if ((self=[super init])) {
+        _identifier = JSON[@"id"];
+        _name = JSON[@"name"];
+        _details = JSON[@"details"];
+        _modelIdentifier = JSON[@"model"][@"id"];
+        _epochs = ((NSNumber*)JSON[@"hyperparameters"][@"numEpochs"]).unsignedIntegerValue;
+        _batchSize = ((NSNumber*)JSON[@"hyperparameters"][@"batchSize"]).unsignedIntegerValue;
+        
+        [self parsePlacholders:JSON[@"hyperparameters"][@"placeholders"]];
+    }
+    return self;
+}
+
+- (void)parsePlacholders:(NSArray*)placeholders {
+    // Currently unused
+    _placeholders = nil;
+}
+
 @end

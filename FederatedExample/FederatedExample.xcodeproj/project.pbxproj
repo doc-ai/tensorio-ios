@@ -15,7 +15,9 @@
 		E3E16D8322910BE80087197A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D8222910BE80087197A /* Assets.xcassets */; };
 		E3E16D8622910BE80087197A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D8422910BE80087197A /* LaunchScreen.storyboard */; };
 		E3E16D8922910BE80087197A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D8822910BE80087197A /* main.m */; };
-		E3E16D9322910BE80087197A /* FederatedExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D9222910BE80087197A /* FederatedExampleTests.m */; };
+		E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */; };
+		E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */; };
+		E3E16DDF229477620087197A /* test.tiotask in Resources */ = {isa = PBXBuildFile; fileRef = E3E16DDE229477620087197A /* test.tiotask */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,8 +48,10 @@
 		E3E16D8722910BE80087197A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3E16D8822910BE80087197A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E3E16D8E22910BE80087197A /* FederatedExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FederatedExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E3E16D9222910BE80087197A /* FederatedExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FederatedExampleTests.m; sourceTree = "<group>"; };
 		E3E16D9422910BE80087197A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskTests.m; sourceTree = "<group>"; };
+		E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskBundleTests.m; sourceTree = "<group>"; };
+		E3E16DDE229477620087197A /* test.tiotask */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test.tiotask; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +91,6 @@
 				0005F26C5CB6B16EFCDE2672 /* Pods-FederatedExampleTests.debug.xcconfig */,
 				30C35109E270166184B9A0F7 /* Pods-FederatedExampleTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -123,6 +126,7 @@
 				E3E16D8422910BE80087197A /* LaunchScreen.storyboard */,
 				E3E16D8722910BE80087197A /* Info.plist */,
 				E3E16D8822910BE80087197A /* main.m */,
+				E3E16DDE229477620087197A /* test.tiotask */,
 			);
 			path = FederatedExample;
 			sourceTree = "<group>";
@@ -130,8 +134,9 @@
 		E3E16D9122910BE80087197A /* FederatedExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				E3E16D9222910BE80087197A /* FederatedExampleTests.m */,
 				E3E16D9422910BE80087197A /* Info.plist */,
+				E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */,
+				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */,
 			);
 			path = FederatedExampleTests;
 			sourceTree = "<group>";
@@ -220,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3E16D8622910BE80087197A /* LaunchScreen.storyboard in Resources */,
+				E3E16DDF229477620087197A /* test.tiotask in Resources */,
 				E3E16D8322910BE80087197A /* Assets.xcassets in Resources */,
 				E3E16D8122910BE60087197A /* Main.storyboard in Resources */,
 			);
@@ -318,7 +324,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3E16D9322910BE80087197A /* FederatedExampleTests.m in Sources */,
+				E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.m in Sources */,
+				E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

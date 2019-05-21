@@ -1,18 +1,18 @@
 //
-//  FederatedExampleTests.m
+//  TIOFederatedTaskBundleTests.m
 //  FederatedExampleTests
 //
-//  Created by Phil Dow on 5/18/19.
+//  Created by Phil Dow on 5/21/19.
 //  Copyright © 2019 doc.ai. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface FederatedExampleTests : XCTestCase
+@interface TIOFederatedTaskBundleTests : XCTestCase
 
 @end
 
-@implementation FederatedExampleTests
+@implementation TIOFederatedTaskBundleTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
