@@ -1,0 +1,26 @@
+{
+  "id": "tio://...",
+  "name": "",
+  "details": "",
+  "model": {
+    "id": "tio://models/<id>/hyperparameters/<id>/checkpoints/<id>"
+  },
+  "hyperparameters": {
+    "numEpochs": 1,
+    "batchSize": 8,
+    "placeholders": [
+      {
+        "name": "adam-alpha",
+        "type": "array",
+        "dtype": "float32",
+        "value": 0.001
+      },
+      {
+        "name": "adam-epsiolon",
+        "type": "array",
+        "dtype": "float32",
+        "value": 0.0001
+      }
+    ]
+  }
+}
