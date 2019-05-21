@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2AC7945CDD8FF54C5EBD5A7D /* Pods_FederatedExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */; };
 		CFD8D77A36D8D7900730D734 /* Pods_FederatedExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */; };
+		E3D2658E2294C13A0087DB31 /* task-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3D2658D2294C13A0087DB31 /* task-tests */; };
 		E3E16D7B22910BE60087197A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D7A22910BE60087197A /* AppDelegate.m */; };
 		E3E16D7E22910BE60087197A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D7D22910BE60087197A /* ViewController.m */; };
 		E3E16D8122910BE60087197A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D7F22910BE60087197A /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 		E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */; };
 		E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */; };
 		E3E16DDF229477620087197A /* test.tiotask in Resources */ = {isa = PBXBuildFile; fileRef = E3E16DDE229477620087197A /* test.tiotask */; };
+		E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +39,7 @@
 		8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB4B6F0277C83C841E725D72 /* Pods-FederatedExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FederatedExample.debug.xcconfig"; path = "Target Support Files/Pods-FederatedExample/Pods-FederatedExample.debug.xcconfig"; sourceTree = "<group>"; };
 		E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3D2658D2294C13A0087DB31 /* task-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "task-tests"; sourceTree = "<group>"; };
 		E3E16D7622910BE60087197A /* FederatedExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FederatedExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3E16D7922910BE60087197A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E3E16D7A22910BE60087197A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -52,6 +55,7 @@
 		E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskTests.m; sourceTree = "<group>"; };
 		E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskBundleTests.m; sourceTree = "<group>"; };
 		E3E16DDE229477620087197A /* test.tiotask */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test.tiotask; sourceTree = "<group>"; };
+		E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskBundleValidatorTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,7 @@
 				E3E16D8722910BE80087197A /* Info.plist */,
 				E3E16D8822910BE80087197A /* main.m */,
 				E3E16DDE229477620087197A /* test.tiotask */,
+				E3D2658D2294C13A0087DB31 /* task-tests */,
 			);
 			path = FederatedExample;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 				E3E16D9422910BE80087197A /* Info.plist */,
 				E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */,
 				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */,
+				E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m */,
 			);
 			path = FederatedExampleTests;
 			sourceTree = "<group>";
@@ -153,6 +159,7 @@
 				E3E16D7322910BE60087197A /* Frameworks */,
 				E3E16D7422910BE60087197A /* Resources */,
 				7ED4447844A4A1809A1EAB77 /* [CP] Embed Pods Frameworks */,
+				EE9994A92ECAC5C89728502A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -228,6 +235,7 @@
 				E3E16DDF229477620087197A /* test.tiotask in Resources */,
 				E3E16D8322910BE80087197A /* Assets.xcassets in Resources */,
 				E3E16D8122910BE60087197A /* Main.storyboard in Resources */,
+				E3D2658E2294C13A0087DB31 /* task-tests in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +315,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EE9994A92ECAC5C89728502A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FederatedExample/Pods-FederatedExample-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TensorIO/Federated.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Federated.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FederatedExample/Pods-FederatedExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -326,6 +356,7 @@
 			files = (
 				E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.m in Sources */,
 				E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.m in Sources */,
+				E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

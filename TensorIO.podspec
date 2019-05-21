@@ -93,6 +93,9 @@ Pod::Spec.new do |s|
     ss.dependency 'TensorIO/Core'
 
     ss.source_files = 'TensorIO/Classes/Federated/**/*'
+    ss.resource_bundles = { 
+      'Federated' => 'TensorIO/Assets/Federated/**/*' 
+    }
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_FEDERATED=1'
     }
