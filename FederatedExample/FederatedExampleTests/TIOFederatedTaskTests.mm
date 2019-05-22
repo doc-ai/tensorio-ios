@@ -37,7 +37,7 @@
         @"model": @{
             @"id": @"tio://modelid"
         },
-        @"hyperparameters": @{
+        @"taskParameters": @{
             @"numEpochs": @(1),
             @"batchSize": @(8),
             @"placeholders": @[]

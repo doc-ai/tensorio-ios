@@ -28,10 +28,10 @@
         _name = JSON[@"name"];
         _details = JSON[@"details"];
         _modelIdentifier = JSON[@"model"][@"id"];
-        _epochs = ((NSNumber*)JSON[@"hyperparameters"][@"numEpochs"]).unsignedIntegerValue;
-        _batchSize = ((NSNumber*)JSON[@"hyperparameters"][@"batchSize"]).unsignedIntegerValue;
+        _epochs = ((NSNumber*)JSON[@"taskParameters"][@"numEpochs"]).unsignedIntegerValue;
+        _batchSize = ((NSNumber*)JSON[@"taskParameters"][@"batchSize"]).unsignedIntegerValue;
         
-        [self parsePlacholders:JSON[@"hyperparameters"][@"placeholders"]];
+        [self parsePlacholders:JSON[@"taskParameters"][@"placeholders"]];
     }
     return self;
 }
