@@ -9,17 +9,22 @@
 /* Begin PBXBuildFile section */
 		2AC7945CDD8FF54C5EBD5A7D /* Pods_FederatedExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */; };
 		CFD8D77A36D8D7900730D734 /* Pods_FederatedExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */; };
+		E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */; };
 		E3D2658E2294C13A0087DB31 /* task-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3D2658D2294C13A0087DB31 /* task-tests */; };
+		E3D265942295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */; };
+		E3D2BCD72295BE75004493C4 /* model-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3D2BCD62295BE75004493C4 /* model-tests */; };
+		E3D2BCDE2295C0FE004493C4 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3D2BCDC2295C0FE004493C4 /* cat.jpg */; };
+		E3D2BCDF2295C0FE004493C4 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3D2BCDD2295C0FE004493C4 /* dog.jpg */; };
 		E3E16D7B22910BE60087197A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D7A22910BE60087197A /* AppDelegate.m */; };
 		E3E16D7E22910BE60087197A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D7D22910BE60087197A /* ViewController.m */; };
 		E3E16D8122910BE60087197A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D7F22910BE60087197A /* Main.storyboard */; };
 		E3E16D8322910BE80087197A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D8222910BE80087197A /* Assets.xcassets */; };
 		E3E16D8622910BE80087197A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D8422910BE80087197A /* LaunchScreen.storyboard */; };
 		E3E16D8922910BE80087197A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D8822910BE80087197A /* main.m */; };
-		E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */; };
-		E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */; };
+		E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.mm */; };
+		E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */; };
 		E3E16DDF229477620087197A /* test.tiotask in Resources */ = {isa = PBXBuildFile; fileRef = E3E16DDE229477620087197A /* test.tiotask */; };
-		E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m */; };
+		E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +44,12 @@
 		8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB4B6F0277C83C841E725D72 /* Pods-FederatedExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FederatedExample.debug.xcconfig"; path = "Target Support Files/Pods-FederatedExample/Pods-FederatedExample.debug.xcconfig"; sourceTree = "<group>"; };
 		E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedManagerTests.mm; sourceTree = "<group>"; };
 		E3D2658D2294C13A0087DB31 /* task-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "task-tests"; sourceTree = "<group>"; };
+		E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedTaskTrainerIntegrationTests.mm; sourceTree = "<group>"; };
+		E3D2BCD62295BE75004493C4 /* model-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "model-tests"; sourceTree = "<group>"; };
+		E3D2BCDC2295C0FE004493C4 /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
+		E3D2BCDD2295C0FE004493C4 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = "<group>"; };
 		E3E16D7622910BE60087197A /* FederatedExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FederatedExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3E16D7922910BE60087197A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E3E16D7A22910BE60087197A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -52,10 +62,10 @@
 		E3E16D8822910BE80087197A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E3E16D8E22910BE80087197A /* FederatedExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FederatedExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3E16D9422910BE80087197A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskTests.m; sourceTree = "<group>"; };
-		E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskBundleTests.m; sourceTree = "<group>"; };
+		E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedTaskTests.mm; sourceTree = "<group>"; };
+		E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedTaskBundleTests.mm; sourceTree = "<group>"; };
 		E3E16DDE229477620087197A /* test.tiotask */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test.tiotask; sourceTree = "<group>"; };
-		E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOFederatedTaskBundleValidatorTests.m; sourceTree = "<group>"; };
+		E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedTaskBundleValidatorTests.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +140,10 @@
 				E3E16D8422910BE80087197A /* LaunchScreen.storyboard */,
 				E3E16D8722910BE80087197A /* Info.plist */,
 				E3E16D8822910BE80087197A /* main.m */,
+				E3D2BCDC2295C0FE004493C4 /* cat.jpg */,
+				E3D2BCDD2295C0FE004493C4 /* dog.jpg */,
 				E3E16DDE229477620087197A /* test.tiotask */,
+				E3D2BCD62295BE75004493C4 /* model-tests */,
 				E3D2658D2294C13A0087DB31 /* task-tests */,
 			);
 			path = FederatedExample;
@@ -140,9 +153,11 @@
 			isa = PBXGroup;
 			children = (
 				E3E16D9422910BE80087197A /* Info.plist */,
-				E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.m */,
-				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.m */,
-				E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m */,
+				E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */,
+				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.mm */,
+				E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */,
+				E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */,
+				E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */,
 			);
 			path = FederatedExampleTests;
 			sourceTree = "<group>";
@@ -231,10 +246,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3D2BCDF2295C0FE004493C4 /* dog.jpg in Resources */,
 				E3E16D8622910BE80087197A /* LaunchScreen.storyboard in Resources */,
 				E3E16DDF229477620087197A /* test.tiotask in Resources */,
 				E3E16D8322910BE80087197A /* Assets.xcassets in Resources */,
 				E3E16D8122910BE60087197A /* Main.storyboard in Resources */,
+				E3D2BCD72295BE75004493C4 /* model-tests in Resources */,
+				E3D2BCDE2295C0FE004493C4 /* cat.jpg in Resources */,
 				E3D2658E2294C13A0087DB31 /* task-tests in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,12 +343,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FederatedExample/Pods-FederatedExample-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TensorIO/Federated.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TensorIO/TensorFlow.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Federated.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TensorFlow.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -354,9 +374,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.m in Sources */,
-				E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.m in Sources */,
-				E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.m in Sources */,
+				E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.mm in Sources */,
+				E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */,
+				E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.mm in Sources */,
+				E3D265942295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm in Sources */,
+				E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
