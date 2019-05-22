@@ -34,6 +34,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property NSDictionary<NSString*,TIOMockBatchDataSource*> *dataSources;
 
+/**
+ * Tracks number of times dataSourceForTaskWithId: has been called for a
+ * particular task.
+ */
+
+@property NSDictionary<NSString*,NSNumber*> *dataSourceForTaskWithIdCount;
+- (NSUInteger)dataSourceForTaskWithIdCountForTaskId:(NSString*)taskIdentifier;
+
 - (instancetype)initWithDataSource:(TIOMockBatchDataSource*)dataSource taskIdentifier:(NSString*)tastaskIdentifierkId NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;

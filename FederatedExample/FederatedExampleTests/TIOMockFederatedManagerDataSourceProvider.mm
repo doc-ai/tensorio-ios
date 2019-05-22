@@ -18,29 +18,39 @@
 //  limitations under the License.
 //
 
-#import "TIOFederatedManagerDataSourceProvider.h"
+#import "TIOMockFederatedManagerDataSourceProvider.h"
 
-@implementation TIOFederatedManagerDataSourceProvider
+@implementation TIOMockFederatedManagerDataSourceProvider
 
 - (id)initWithDataSource:(TIOMockBatchDataSource*)dataSource taskIdentifier:(NSString*)taskIdentifier {
     if ((self=[super init])) {
         _dataSources = NSMutableDictionary.dictionary;
         ((NSMutableDictionary*)_dataSources)[taskIdentifier] = dataSource;
+        
+        _dataSourceForTaskWithIdCount = NSMutableDictionary.dictionary;
+        ((NSMutableDictionary*)_dataSourceForTaskWithIdCount)[taskIdentifier] = @(0);
     }
     return self;
 }
 
 - (void)addDataSource:(TIOMockBatchDataSource*)dataSource forTaskId:(NSString*)taskIdentifier {
     ((NSMutableDictionary*)_dataSources)[taskIdentifier] = dataSource;
+    ((NSMutableDictionary*)_dataSourceForTaskWithIdCount)[taskIdentifier] = @(0);
 }
 
 - (void)removeDataSource:(TIOMockBatchDataSource*)dataSource forTaskId:(NSString*)taskIdentifier {
     [(NSMutableDictionary*)_dataSources removeObjectForKey:taskIdentifier];
+    [(NSMutableDictionary*)_dataSourceForTaskWithIdCount removeObjectForKey:taskIdentifier];
+}
+
+- (NSUInteger)dataSourceForTaskWithIdCountForTaskId:(NSString*)taskIdentifier {
+    return _dataSourceForTaskWithIdCount[taskIdentifier].unsignedIntegerValue;
 }
 
 // MARK: -
 
 - (id<TIOBatchDataSource>)dataSourceForTaskWithId:(NSString*)taskIdentifier {
+    ((NSMutableDictionary*)_dataSourceForTaskWithIdCount)[taskIdentifier] = @(_dataSourceForTaskWithIdCount[taskIdentifier].unsignedIntegerValue+1);
     return self.dataSources[taskIdentifier];
 }
 

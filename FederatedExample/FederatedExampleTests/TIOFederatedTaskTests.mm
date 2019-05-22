@@ -31,11 +31,11 @@
 
 - (void)setUp {
     self.JSON = @{
-        @"id": @"tio://taskid",
+        @"id": @"tio:///taskid",
         @"name": @"foo",
         @"details": @"bar",
         @"model": @{
-            @"id": @"tio://modelid"
+            @"id": @"tio:///modelid"
         },
         @"taskParameters": @{
             @"numEpochs": @(1),
@@ -49,7 +49,7 @@
 
 - (void)testParsersIdentifier {
     TIOFederatedTask *task = [[TIOFederatedTask alloc] initWithJSON:self.JSON];
-    XCTAssertEqualObjects(task.identifier, @"tio://taskid");
+    XCTAssertEqualObjects(task.identifier, @"tio:///taskid");
 }
 
 - (void)testParsesName {
@@ -64,7 +64,7 @@
 
 - (void)testParsesModelIdentifier {
     TIOFederatedTask *task = [[TIOFederatedTask alloc] initWithJSON:self.JSON];
-    XCTAssertEqualObjects(task.modelIdentifier, @"tio://modelid");
+    XCTAssertEqualObjects(task.modelIdentifier, @"tio:///modelid");
 }
 
 - (void)testParsesNumEpochs {

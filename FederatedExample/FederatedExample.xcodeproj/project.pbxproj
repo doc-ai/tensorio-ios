@@ -10,6 +10,9 @@
 		2AC7945CDD8FF54C5EBD5A7D /* Pods_FederatedExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */; };
 		CFD8D77A36D8D7900730D734 /* Pods_FederatedExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */; };
 		E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */; };
+		E3D16B002295ED3500BA4346 /* TIOMockBatchDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16AFC2295ED3500BA4346 /* TIOMockBatchDataSource.mm */; };
+		E3D16B012295ED3500BA4346 /* TIOMockTrainableModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16AFF2295ED3500BA4346 /* TIOMockTrainableModel.mm */; };
+		E3D16B042295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16B032295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm */; };
 		E3D2658E2294C13A0087DB31 /* task-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3D2658D2294C13A0087DB31 /* task-tests */; };
 		E3D265942295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */; };
 		E3D2BCD72295BE75004493C4 /* model-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3D2BCD62295BE75004493C4 /* model-tests */; };
@@ -45,6 +48,12 @@
 		CB4B6F0277C83C841E725D72 /* Pods-FederatedExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FederatedExample.debug.xcconfig"; path = "Target Support Files/Pods-FederatedExample/Pods-FederatedExample.debug.xcconfig"; sourceTree = "<group>"; };
 		E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedManagerTests.mm; sourceTree = "<group>"; };
+		E3D16AFC2295ED3500BA4346 /* TIOMockBatchDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOMockBatchDataSource.mm; sourceTree = "<group>"; };
+		E3D16AFD2295ED3500BA4346 /* TIOMockTrainableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TIOMockTrainableModel.h; sourceTree = "<group>"; };
+		E3D16AFE2295ED3500BA4346 /* TIOMockBatchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TIOMockBatchDataSource.h; sourceTree = "<group>"; };
+		E3D16AFF2295ED3500BA4346 /* TIOMockTrainableModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOMockTrainableModel.mm; sourceTree = "<group>"; };
+		E3D16B022295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TIOMockFederatedManagerDataSourceProvider.h; sourceTree = "<group>"; };
+		E3D16B032295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOMockFederatedManagerDataSourceProvider.mm; sourceTree = "<group>"; };
 		E3D2658D2294C13A0087DB31 /* task-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "task-tests"; sourceTree = "<group>"; };
 		E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedTaskTrainerIntegrationTests.mm; sourceTree = "<group>"; };
 		E3D2BCD62295BE75004493C4 /* model-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "model-tests"; sourceTree = "<group>"; };
@@ -153,6 +162,12 @@
 			isa = PBXGroup;
 			children = (
 				E3E16D9422910BE80087197A /* Info.plist */,
+				E3D16AFE2295ED3500BA4346 /* TIOMockBatchDataSource.h */,
+				E3D16AFC2295ED3500BA4346 /* TIOMockBatchDataSource.mm */,
+				E3D16B022295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.h */,
+				E3D16B032295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm */,
+				E3D16AFD2295ED3500BA4346 /* TIOMockTrainableModel.h */,
+				E3D16AFF2295ED3500BA4346 /* TIOMockTrainableModel.mm */,
 				E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */,
 				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.mm */,
 				E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */,
@@ -375,9 +390,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.mm in Sources */,
+				E3D16B012295ED3500BA4346 /* TIOMockTrainableModel.mm in Sources */,
 				E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */,
+				E3D16B042295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */,
 				E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.mm in Sources */,
 				E3D265942295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm in Sources */,
+				E3D16B002295ED3500BA4346 /* TIOMockBatchDataSource.mm in Sources */,
 				E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
