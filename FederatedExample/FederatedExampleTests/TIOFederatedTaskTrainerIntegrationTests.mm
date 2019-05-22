@@ -1,5 +1,5 @@
 //
-//  TIOFederatedTaskAndTrainerTests.m
+//  TIOFederatedTaskTrainerIntegrationTests.m
 //  FederatedExampleTests
 //
 //  Created by Phil Dow on 5/22/19.
@@ -25,7 +25,6 @@
 
 @property NSString *modelsPath;
 @property NSString *tasksPath;
-@property NSDictionary *JSON;
 
 @end
 
@@ -34,20 +33,6 @@
 - (void)setUp {
     self.modelsPath = [[NSBundle mainBundle] pathForResource:@"model-tests" ofType:nil];
     self.tasksPath = [[NSBundle mainBundle] pathForResource:@"task-tests" ofType:nil];
-    
-    self.JSON = @{
-        @"id": @"tio://taskid",
-        @"name": @"foo",
-        @"details": @"bar",
-        @"model": @{
-            @"id": @"tio://modelid"
-        },
-        @"hyperparameters": @{
-            @"numEpochs": @(1),
-            @"batchSize": @(8),
-            @"placeholders": @[]
-        }
-    };
 }
 
 - (void)tearDown { }
@@ -100,8 +85,54 @@
     XCTAssertNotNil(taskBundle);
     XCTAssertNotNil(task);
     
+    TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithItem:@{
+        @"foo": @[@(1)],
+        @"bar": @[@(1)]
+    }];
     
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
     
+    XCTAssert(trainer.epochs == task.epochs);
+    XCTAssert(trainer.batchSize == task.batchSize);
+    
+    XCTAssert(trainer.epochs == 10);
+    XCTAssert(trainer.batchSize == 2);
+}
+
+- (void)testTrainerWithTaskIntegration {
+    TIOModelBundle *modelBundle = [self modelBundleWithName:@"cats-vs-dogs-train.tiobundle"];
+    id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:modelBundle];
+    
+    TIOFederatedTaskBundle *taskBundle = [self taskBundleWithName:@"cats-vs-dogs-train.tiotask"];
+    TIOFederatedTask *task = taskBundle.task;
+    
+    XCTAssertNotNil(modelBundle);
+    XCTAssertNotNil(model);
+    
+    XCTAssertNotNil(taskBundle);
+    XCTAssertNotNil(task);
+    
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
+    
+    [batch addItem:@{
+        @"image": cat,
+        @"labels": @(0)
+    }];
+    
+    [batch addItem:@{
+        @"image": dog,
+        @"labels": @(1)
+    }];
+    
+    TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithBatch:batch];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
+    NSDictionary *results = (NSDictionary*)[trainer train];
+    
+    XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
+    XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
 }
 
 @end

@@ -3,8 +3,12 @@ platform :ios, '9.3'
 target 'FederatedExample' do
   use_frameworks!
 
+  # downgrade TensorIOTensorFlow until https://github.com/doc-ai/tensorio-tensorflow-ios/issues/3 is resolved
+  pod 'TensorIOTensorFlow', '~> 0.1.1'
+
   pod 'TensorIO', :path => '../'
   pod 'TensorIO/Federated', :path => '../'
+  pod 'TensorIO/TensorFlow', :path => '../'
 
   target 'FederatedExampleTests' do
     inherit! :search_paths
