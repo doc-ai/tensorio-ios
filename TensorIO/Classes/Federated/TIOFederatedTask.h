@@ -24,10 +24,70 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * A federated task represents a federated learning task for a specific
- * TensorIO model.
+ * TensorIO model. You should not need to instantiate this class directly.
+ * Instead load a task from a bundle with `TIOFederatedTaskBundle`.
  */
 
 @interface TIOFederatedTask : NSObject
+
+/**
+ * The task's unique identifier.
+ */
+
+@property (readonly) NSString *identifier;
+
+/**
+ * Human readable name of the task.
+ */
+
+@property (readonly) NSString *name;
+
+/**
+ * Additional information about the task represented.
+ */
+
+@property (readonly) NSString *details;
+
+/**
+ * The unique identifier of the model to which this task will be applied.
+ */
+
+@property (readonly) NSString *modelIdentifier;
+
+/**
+ * The number of training epochs for this task.
+ */
+
+@property (readonly) NSUInteger epochs;
+
+/**
+ * The batch size to use for each training pass for this task.
+ */
+
+@property (readonly) NSUInteger batchSize;
+
+/**
+ * The placeholder values, e.g. hyperparameters, to be injected into the model
+ * when executing the task. Currently unused.
+ */
+
+@property (nullable, readonly) NSArray *placeholders;
+
+/**
+ * Designated initializer.
+ *
+ * @param JSON Previously validated JSON that describes a federated learning task
+ *
+ * @return An instance of a `TIOFederatedTask`.
+ */
+
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
+
+/**
+ * Use the designated initializer.
+ */
+
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 

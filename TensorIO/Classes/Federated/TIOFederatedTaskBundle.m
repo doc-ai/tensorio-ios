@@ -19,7 +19,52 @@
 //
 
 #import "TIOFederatedTaskBundle.h"
+#import "TIOFederatedTask.h"
+
+NSString * const TIOFederatedTaskBundleExtension = @"tiotask";
+NSString * const TIOTaskInfoFile = @"task.json";
 
 @implementation TIOFederatedTaskBundle
+
+- (nullable instancetype)initWithPath:(NSString*)path {
+    if ((self=[super init])) {
+        
+        NSFileManager *fm = NSFileManager.defaultManager;
+        BOOL isDir;
+        
+        // Valid bundle path
+        
+        if ( ![fm fileExistsAtPath:path isDirectory:&isDir] || !isDir ) {
+            NSLog(@"No tiotask bundle exists at path %@", path);
+            return nil;
+        }
+        
+        // Valid JSON path
+        
+        NSString *JSONPath = [path stringByAppendingPathComponent:TIOTaskInfoFile];
+        
+        if ( ![fm fileExistsAtPath:JSONPath] ) {
+            NSLog(@"No task.json exists at path %@", JSONPath);
+            return nil;
+        }
+        
+        // Valid JSON
+        
+        NSError *JSONError;
+        NSData *JSONData = [NSData dataWithContentsOfFile:JSONPath];
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:JSONData options:0 error:&JSONError];
+        
+        if ( JSON == nil ) {
+            NSLog(@"Error reading json file at path %@, error %@", JSONPath, JSONError);
+            return nil;
+        }
+        
+        // Bundle properties
+        
+        _task = [[TIOFederatedTask alloc] initWithJSON:JSON];
+        _path = path;
+    }
+    return self;
+}
 
 @end
