@@ -64,7 +64,7 @@
     return model;
 }
 
-// MARK: -
+// MARK: - Model Train Method
 
 - (void)testConformsToModel {
     TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
@@ -137,6 +137,39 @@
     
     XCTAssert([contents containsObject:@"checkpoint.index"]);
     XCTAssert([contents containsObject:@"checkpoint.data-00000-of-00001"]);
+}
+
+// MARK: - Model Trainer
+
+- (void)testModelTrainer {
+    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
+    id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
+    
+    [batch addItem:@{
+        @"image": cat,
+        @"labels": @(0)
+    }];
+    
+    [batch addItem:@{
+        @"image": dog,
+        @"labels": @(1)
+    }];
+    
+    TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithBatch:batch];
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:10 batchSize:2];
+    NSDictionary *results = (NSDictionary*)[trainer train];
+    
+    XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
+    XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
 }
 
 @end
