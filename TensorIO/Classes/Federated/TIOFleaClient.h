@@ -22,6 +22,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TIOFleaStatus;
+
 /**
  * Encapsulates requests to a TensorIO Flea repository, allowing users to
  * acquire federated learning tasks associated with TensorIO models. You should
@@ -33,6 +35,38 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @interface TIOFleaClient : NSObject
+
+/**
+ * The base URL of the model repository
+ */
+
+@property (readonly) NSURL *baseURL;
+
+/**
+ * The URL session used by the model respository
+ */
+
+@property (readonly) NSURLSession *URLSession;
+
+/**
+ * Initializes a model repository with a base URL
+ *
+ * You may inject your own URL Session into the model respository object for
+ * custom request handling and downloads, but this behavior exists in order to
+ * test the object and passing `nil` is sufficient.
+ */
+
+- (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession NS_DESIGNATED_INITIALIZER;
+
+/**
+ * Use the designated initializer
+ */
+
+- (instancetype)init NS_UNAVAILABLE;
+
+// MARK: - Primitive Repository Methods
+
+- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOFleaStatus * _Nullable status, NSError * _Nullable error))responseBlock;
 
 @end
 
