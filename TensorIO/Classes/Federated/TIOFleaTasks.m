@@ -20,9 +20,6 @@
 
 #import "TIOFleaTasks.h"
 
-NSString * const TIOFleaTasksArrayTaskId = @"taskId";
-NSString * const TIOFleaTasksArrayModelURL = @"modelURL";
-
 @implementation TIOFleaTasks
 
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
@@ -39,49 +36,20 @@ NSString * const TIOFleaTasksArrayModelURL = @"modelURL";
             _maxItems = ((NSNumber*)JSON[@"maxItems"]).unsignedIntegerValue;
         }
         
-        if ( JSON[@"repositoryBaseUrl"] == nil || ![JSON[@"repositoryBaseUrl"] isKindOfClass:NSString.class] ) {
+        if ( JSON[@"taskIds"] == nil || ![JSON[@"taskIds"] isKindOfClass:NSArray.class] ) {
             return nil;
         } else {
-            _baseRepositoryURL = [NSURL URLWithString:JSON[@"repositoryBaseUrl"]];
-        }
-        
-        if ( JSON[@"taskIds"] == nil || ![JSON[@"taskIds"] isKindOfClass:NSDictionary.class] ) {
-            return nil;
-        } else {
-            _taskIds = [self _parseTaskIds:JSON[@"taskIds"]];
-            if (_taskIds == nil) {
-                return nil;
-            }
+            _taskIds = JSON[@"taskIds"];
         }
     }
     return self;
-}
-
-- (nullable NSArray<NSDictionary<NSString*,id>*>*)_parseTaskIds:(NSDictionary<NSString*,NSString*>*)taskIds; {
-    NSMutableArray *array = NSMutableArray.array;
-    
-    for (NSString *key in [taskIds.allKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]) {
-        NSURL *URL = [_baseRepositoryURL URLByAppendingPathComponent:taskIds[key]];
-        
-        if (URL == nil) {
-            return nil;
-        }
-        
-        [array addObject:@{
-            TIOFleaTasksArrayTaskId: key,
-            TIOFleaTasksArrayModelURL:URL
-        }];
-    }
-    
-    return array.copy;
 }
 
 - (NSString*)description {
     NSString *ss = [NSString stringWithFormat:@"Start Task ID: %@", self.startTaskId];
     NSString *ms = [NSString stringWithFormat:@"Max Items: %lu", (unsigned long)self.maxItems];
     NSString *ts = [NSString stringWithFormat:@"Task IDs: %@", self.taskIds];
-    NSString *bs = [NSString stringWithFormat:@"Base Repository URL: %@", self.baseRepositoryURL];
-    return [NSString stringWithFormat:@"%@\n%@\n%@\n%@", ss, ms, ts, bs];
+    return [NSString stringWithFormat:@"%@\n%@\n%@", ss, ms, ts];
 }
 
 @end

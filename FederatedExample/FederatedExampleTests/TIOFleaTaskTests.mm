@@ -59,7 +59,8 @@
         @"taskId": @"task-id",
         @"deadline": @"2019-04-20T16:20:00.000+0000",
         @"active": @(YES),
-        @"taskSpec": @"http://goo.gl/Tx3.zip"
+        @"link": @"http://goo.gl/Tx3.zip",
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
@@ -76,7 +77,8 @@
         XCTAssertEqualObjects(task.taskId, @"task-id");
         XCTAssertEqualObjects(task.deadline, date);
         XCTAssertTrue(task.active);
-        XCTAssertEqualObjects(task.taskSpec, [NSURL URLWithString:@"http://goo.gl/Tx3.zip"]);
+        XCTAssertEqualObjects(task.link, [NSURL URLWithString:@"http://goo.gl/Tx3.zip"]);
+        XCTAssertEqualObjects(task.checkpointLink, [NSURL URLWithString:@"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"]);
     }];
     
     XCTAssert(task.calledResume);

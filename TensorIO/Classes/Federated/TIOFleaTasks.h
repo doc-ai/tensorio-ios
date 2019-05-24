@@ -22,9 +22,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const TIOFleaTasksArrayTaskId;
-extern NSString * const TIOFleaTasksArrayModelURL;
-
 /**
  * Encapsulates information about the tasks available from a flea server. May
  * contain information about all task available or only a subset of tasks
@@ -51,14 +48,7 @@ extern NSString * const TIOFleaTasksArrayModelURL;
  * `TIOFleaTasksArrayModelURL` key pointing to a URL.
  */
 
-@property (readonly) NSArray<NSDictionary<NSString*,id>*> *taskIds;
-
-/**
- * The base URL of the repository which stores the task bundles for ids
- * in this list.
- */
-
-@property (readonly) NSURL *baseRepositoryURL;
+@property (readonly) NSArray<NSString*> *taskIds;
 
 /**
  * The designated initializer. You should not need to instantiate instances of

@@ -40,24 +40,25 @@
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"startTaskId": @"taskid-1",
         @"maxItems": @(2),
-        @"taskIds": @{
-            @"taskid-1": @"/models/Model-bozo5/hyperparameters/hpset1/checkpoints/ckpt-52",
-            @"taskid-2": @"/models/Model17/hyperparameters/hpset5/checkpoints/ckpt-7"
-        },
-        @"repositoryBaseUrl": @"http://example.com:8081/v1/repository"
+        @"taskIds": @[
+            @"taskid-1",
+            @"taskid-2"
+        ]
     }];
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(tasks);
+        
         XCTAssert(tasks.taskIds.count == 2);
-        XCTAssertEqualObjects(tasks.taskIds[0][TIOFleaTasksArrayTaskId], @"taskid-1");
-        XCTAssertEqualObjects(tasks.taskIds[0][TIOFleaTasksArrayModelURL], [NSURL URLWithString:@"http://example.com:8081/v1/repository/models/Model-bozo5/hyperparameters/hpset1/checkpoints/ckpt-52"]);
-        XCTAssertEqualObjects(tasks.taskIds[1][TIOFleaTasksArrayTaskId], @"taskid-2");
-         XCTAssertEqualObjects(tasks.taskIds[1][TIOFleaTasksArrayModelURL], [NSURL URLWithString:@"http://example.com:8081/v1/repository/models/Model17/hyperparameters/hpset5/checkpoints/ckpt-7"]);
-        [expectation fulfill];
+        XCTAssertEqualObjects(tasks.taskIds, (@[
+            @"taskid-1",
+            @"taskid-2"
+        ]));
     }];
     
     XCTAssert(task.calledResume);

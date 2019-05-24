@@ -34,7 +34,10 @@
     
     // Live Tests, uncomment as you go
     
-    // Install docker and run setup.sh in the DeployExample root directory
+    // Install docker
+    // In tensorio-models: $ make run-models
+    // In tensorio-models: $ ./e2e/setup.sh
+    
     // Copy the testsetup.tiobundle three times to some directory, rename it to h1c1.tiobundle.zip, h2c1.tiobundle.zip and h2c2.tiobundle.zip
     // Then run python -m SimpleHTTPServer from that directory
     

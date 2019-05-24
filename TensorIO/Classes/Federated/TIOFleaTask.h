@@ -68,8 +68,15 @@ NS_ASSUME_NONNULL_BEGIN
  * A link to the task bundle for this task
  */
 
-@property (readonly) NSURL *taskSpec;
+@property (readonly) NSURL *link;
 
+/**
+ * A link to the (model, hyperparameter, checkpoint) item in a tensorio models
+ * repository for this task. This is the model being targeted by the federated
+ * task.
+ */
+
+@property (readonly) NSURL *checkpointLink;
 
 /**
  * The designated initializer. You should not need to instantiate instances of

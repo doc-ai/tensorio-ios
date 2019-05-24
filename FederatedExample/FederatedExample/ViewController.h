@@ -19,6 +19,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TensorIO/TensorIO-umbrella.h>
 
 @interface ViewController : UIViewController
 

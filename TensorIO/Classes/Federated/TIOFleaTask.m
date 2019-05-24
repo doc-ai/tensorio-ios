@@ -76,11 +76,20 @@
             }
         }
         
-        if ( JSON[@"taskSpec"] == nil || ![JSON[@"taskSpec"] isKindOfClass:NSString.class] ) {
+        if ( JSON[@"link"] == nil || ![JSON[@"link"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
-            _taskSpec = [NSURL URLWithString:JSON[@"taskSpec"]];
-            if ( _taskSpec == nil ) {
+            _link = [NSURL URLWithString:JSON[@"link"]];
+            if ( _link == nil ) {
+                return nil;
+            }
+        }
+        
+        if ( JSON[@"checkpointLink"] == nil || ![JSON[@"checkpointLink"] isKindOfClass:NSString.class] ) {
+            return nil;
+        } else {
+            _checkpointLink = [NSURL URLWithString:JSON[@"checkpointLink"]];
+            if ( _checkpointLink == nil ) {
                 return nil;
             }
         }
@@ -95,8 +104,9 @@
     NSString *ts = [NSString stringWithFormat:@"Task ID: %@", self.taskId];
     NSString *as = [NSString stringWithFormat:@"Active: %@", self.active?@"YES":@"NO"];
     NSString *ds = [NSString stringWithFormat:@"Deadline: %@", self.deadline];
-    NSString *ls = [NSString stringWithFormat:@"Link: %@", self.taskSpec];
-    return [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@\n%@", ms, hs, cs, ts, as, ds, ls];
+    NSString *ls = [NSString stringWithFormat:@"Link: %@", self.link];
+    NSString *chs = [NSString stringWithFormat:@"Checkpoint: %@", self.checkpointLink];
+    return [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@\n%@\n%@", ms, hs, cs, ts, as, ds, ls, chs];
 }
 
 @end
