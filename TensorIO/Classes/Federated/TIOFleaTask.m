@@ -22,4 +22,81 @@
 
 @implementation TIOFleaTask
 
++ (NSDateFormatter*)JSONDateFormatter {
+    static NSDateFormatter *RFC3339DateFormatter;
+    
+    if ( RFC3339DateFormatter == nil ) {
+        RFC3339DateFormatter = [[NSDateFormatter alloc] init];
+        RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+        RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    }
+    
+    return RFC3339DateFormatter;
+}
+
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+    if ((self=[super init])) {
+        if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
+            return nil;
+        } else {
+            _modelId = JSON[@"modelId"];
+        }
+        
+        if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
+            return nil;
+        } else {
+            _hyperparametersId = JSON[@"hyperparametersId"];
+        }
+        
+        if ( JSON[@"checkpointId"] == nil || ![JSON[@"checkpointId"] isKindOfClass:NSString.class] ) {
+            return nil;
+        } else {
+            _checkpointId = JSON[@"checkpointId"];
+        }
+        
+        if ( JSON[@"taskId"] == nil || ![JSON[@"taskId"] isKindOfClass:NSString.class] ) {
+            return nil;
+        } else {
+            _taskId = JSON[@"taskId"];
+        }
+        
+        if ( JSON[@"active"] == nil || ![JSON[@"active"] isKindOfClass:NSNumber.class] ) {
+            return nil;
+        } else {
+            _active = ((NSNumber*)JSON[@"active"]).boolValue;
+        }
+        
+        if ( JSON[@"deadline"] == nil || ![JSON[@"deadline"] isKindOfClass:NSString.class] ) {
+            return nil;
+        } else {
+            _deadline = [[TIOFleaTask JSONDateFormatter] dateFromString:JSON[@"deadline"]];
+            if ( _deadline == nil ) { // bad dates
+                return nil;
+            }
+        }
+        
+        if ( JSON[@"taskSpec"] == nil || ![JSON[@"taskSpec"] isKindOfClass:NSString.class] ) {
+            return nil;
+        } else {
+            _taskSpec = [NSURL URLWithString:JSON[@"taskSpec"]];
+            if ( _taskSpec == nil ) {
+                return nil;
+            }
+        }
+    }
+    return self;
+}
+
+- (NSString*)description {
+    NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
+    NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
+    NSString *cs = [NSString stringWithFormat:@"Checkpoint IDs: %@", self.checkpointId];
+    NSString *ts = [NSString stringWithFormat:@"Task ID: %@", self.taskId];
+    NSString *as = [NSString stringWithFormat:@"Active: %@", self.active?@"YES":@"NO"];
+    NSString *ds = [NSString stringWithFormat:@"Deadline: %@", self.deadline];
+    NSString *ls = [NSString stringWithFormat:@"Link: %@", self.taskSpec];
+    return [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@\n%@\n%@", ms, hs, cs, ts, as, ds, ls];
+}
+
 @end

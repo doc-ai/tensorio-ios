@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TIOFleaStatus;
 @class TIOFleaTasks;
+@class TIOFleaTask;
 
 /**
  * Encapsulates requests to a TensorIO Flea repository, allowing users to
@@ -67,9 +68,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - Primitive Repository Methods
 
+/**
+ * Checks if the repository is up and correctly running
+ */
+
 - (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOFleaStatus * _Nullable status, NSError * _Nullable error))responseBlock;
 
+/**
+ * Retrieves a list of tasks ids for a (model, hyperparameters, checkpoint) tuple.
+ * Any of the tuple values may be nil.
+ */
+
 - (NSURLSessionTask*)GETTasksWithModelId:(nullable NSString*)modelId hyperparametersId:(nullable NSString*)hyperparametersId checkpointId:(nullable NSString*)checkpointId callback:(void(^)(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error))responseBlock;
+
+/**
+ * Retrieves metadata for a task with id, including a link to the task bundle
+ */
+
+- (NSURLSessionTask*)GETTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTask * _Nullable task, NSError * _Nullable error))responseBlock;
 
 @end
 

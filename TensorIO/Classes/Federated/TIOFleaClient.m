@@ -21,6 +21,7 @@
 #import "TIOFleaClient.h"
 #import "TIOFleaStatus.h"
 #import "TIOFleaTasks.h"
+#import "TIOFleaTask.h"
 
 static NSString *TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
 
@@ -165,6 +166,29 @@ static NSInteger TIOFleaDownloadError = 200;
         }
     
         responseBlock(tasks, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionTask*)GETTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTask * _Nullable task, NSError * _Nullable error))responseBlock {
+    NSURL *endpoint = [[self.baseURL
+        URLByAppendingPathComponent:@"tasks"]
+        URLByAppendingPathComponent:taskId];
+    
+    NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSError *parseError;
+        TIOFleaJSONResponseParser<TIOFleaTask*> *parser = [[TIOFleaJSONResponseParser alloc] initWithClass:TIOFleaTask.class];
+        TIOFleaTask *task = [parser parseData:data response:response requestError:error error:&parseError];
+        
+        if ( task == nil ) {
+            responseBlock(nil, parseError);
+            return;
+        }
+        
+        responseBlock(task, nil);
     }];
     
     [task resume];

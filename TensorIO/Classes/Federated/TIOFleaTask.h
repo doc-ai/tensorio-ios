@@ -28,6 +28,62 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TIOFleaTask : NSObject
 
+/**
+ * The id of the model with which this task is associated
+ */
+
+@property (readonly) NSString *modelId;
+
+/**
+ * The hyperparameter id for which this task is associated
+ */
+
+@property (readonly) NSString *hyperparametersId;
+
+/**
+ * The checkpoint id for which this task is associated
+ */
+
+@property (readonly) NSString *checkpointId;
+
+/**
+ * The uniquely identifying task id
+ */
+
+@property (readonly) NSString *taskId;
+
+/**
+ * `YES` if this task is currently active, `NO` otherwise
+ */
+
+@property (readonly, getter=isActive) BOOL active;
+
+/**
+ * The end date for the task
+ */
+
+@property (readonly) NSDate *deadline;
+
+/**
+ * A link to the task bundle for this task
+ */
+
+@property (readonly) NSURL *taskSpec;
+
+
+/**
+ * The designated initializer. You should not need to instantiate instances of
+ * this class yourself.
+ */
+
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
+
+/**
+ * Use the designated initializer.
+ */
+
+- (instancetype)init NS_UNAVAILABLE;
+
 @end
 
 NS_ASSUME_NONNULL_END

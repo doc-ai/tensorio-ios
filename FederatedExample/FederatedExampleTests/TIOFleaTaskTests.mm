@@ -30,24 +30,66 @@
 
 @implementation TIOFleaTaskTests
 
-- (void)setUp {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
++ (NSDateFormatter*)JSONDateFormatter {
+    static NSDateFormatter *RFC3339DateFormatter;
+    
+    if (RFC3339DateFormatter == nil) {
+        RFC3339DateFormatter = [[NSDateFormatter alloc] init];
+        RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+        RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    }
+    
+    return RFC3339DateFormatter;
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-}
+- (void)setUp { }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-}
+- (void)tearDown { }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
+- (void)testGETTask  {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    NSDate *date = [TIOFleaTaskTests.JSONDateFormatter dateFromString:@"2019-04-20T16:20:00.000+0000"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"hyperparametersId": @"hyperparameters-id",
+        @"checkpointId": @"checkpoint-id",
+        @"taskId": @"task-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"active": @(YES),
+        @"taskSpec": @"http://goo.gl/Tx3.zip"
     }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertNotNil(task);
+        
+        XCTAssertEqualObjects(task.modelId, @"model-id");
+        XCTAssertEqualObjects(task.hyperparametersId, @"hyperparameters-id");
+        XCTAssertEqualObjects(task.checkpointId, @"checkpoint-id");
+        XCTAssertEqualObjects(task.taskId, @"task-id");
+        XCTAssertEqualObjects(task.deadline, date);
+        XCTAssertTrue(task.active);
+        XCTAssertEqualObjects(task.taskSpec, [NSURL URLWithString:@"http://goo.gl/Tx3.zip"]);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskURL {
+    MockURLSession *session = [[MockURLSession alloc] init];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://foo.com"] session:session];
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) { }];
+    
+    NSURL *expectedURL = [NSURL URLWithString:@"https://foo.com/tasks/task-id"];
+    XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
 }
 
 @end
