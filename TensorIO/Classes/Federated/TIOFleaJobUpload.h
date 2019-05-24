@@ -1,5 +1,5 @@
 //
-//  TIOFleaJob.h
+//  TIOFleaJobUpload.h
 //  TensorIO
 //
 //  Created by Phil Dow on 5/24/19.
@@ -23,43 +23,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum : NSUInteger {
-    TIOFleaJobStatusUnknown,
-    TIOFleaJobStatusApproved
-} TIOFleaJobStatus;
+    TIOFleaJobUploadStatusUnknown,
+    TIOFleaJobUploadStatusSuccess
+} TIOFleaJobUploadStatus;
 
-@interface TIOFleaJob : NSObject
+@interface TIOFleaJobUpload : NSObject
 
-/**
- * The job status, normally `TIOFleaJobValueApproved`
- */
-
-@property (readonly) TIOFleaJobStatus status;
-
-/**
- * A string uniquely identifying this job
- */
-
-@property (readonly) NSString *jobId;
-
-/**
- * A URL indicating where job results should be uploaded to, e.g. the results
- * of a federated training task.
- */
-
-@property (readonly) NSURL *uploadTo;
-
-/**
- * The designated initializer. You should not need to instantiate instances of
- * this class yourself.
- */
-
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
-
-/**
- * Use the designated initializer.
- */
-
-- (instancetype)init NS_UNAVAILABLE;
+@property (readonly) TIOFleaJobUploadStatus status;
 
 @end
 

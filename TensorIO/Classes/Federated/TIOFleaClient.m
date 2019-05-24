@@ -24,6 +24,7 @@
 #import "TIOFleaTask.h"
 #import "TIOFleaJob.h"
 #import "TIOFleaTaskDownload.h"
+#import "TIOFleaJobUpload.h"
 
 static NSString *TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
 
@@ -35,6 +36,8 @@ static NSInteger TIOFleaDeserializationError = 3;
 static NSInteger TIOFleaHealthStatusNotServingError = 100;
 static NSInteger TIOFleaJobStatusNotApprovedError = 200;
 static NSInteger TIOFleaDownloadError = 300;
+static NSInteger TIOFleaUploadError = 400;
+static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
 
 /**
  * Parses a JSON response from a tensorio flea repository
@@ -214,7 +217,7 @@ static NSInteger TIOFleaDownloadError = 300;
             return;
         }
         
-        if ( job.status != TIOFleaJobValueApproved ) {
+        if ( job.status != TIOFleaJobStatusApproved ) {
             NSLog(@"Start task returned value other than approved");
             responseBlock(job, [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaJobStatusNotApprovedError userInfo:nil]);
             return;
@@ -247,6 +250,33 @@ static NSInteger TIOFleaDownloadError = 300;
         
         TIOFleaTaskDownload *download = [[TIOFleaTaskDownload alloc] initWithURL:location taskId:taskId];
         responseBlock(download, 1, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (nullable NSURLSessionUploadTask*)uploadJobResultsAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL withJobId:(NSString*)jobId callback:(void(^)(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error))responseBlock {
+    
+    if ( ![NSFileManager.defaultManager fileExistsAtPath:sourceURL.path] ) {
+        NSLog(@"No file at source URL: %@", sourceURL);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaUploadSourceDoesNotExistsError userInfo:nil];
+        responseBlock(nil, 0, error);
+        return nil;
+    }
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:destinationURL];
+    NSURLSessionUploadTask *task = [self.URLSession uploadTaskWithRequest:request fromFile:sourceURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+        
+        if ( requestError != nil ) {
+            NSLog(@"Request error for request with URL: %@", response.URL);
+            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaUploadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
+        TIOFleaJobUpload *upload = [[TIOFleaJobUpload alloc] init];
+        responseBlock(upload, 1, nil);
     }];
     
     [task resume];

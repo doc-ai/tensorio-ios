@@ -69,6 +69,31 @@
 
 @end
 
+@implementation MockSessionUploadTask {
+    NSURLRequest *_mockRequest;
+}
+
+- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest {
+    if ((self=[super init])) {
+        _mockRequest = mockRequest;
+    }
+    return self;
+}
+
+- (void)resume {
+    _calledResume = YES;
+}
+
+- (NSURLRequest*)originalRequest {
+    return _mockRequest;
+}
+
+- (NSURLRequest*)currentRequest {
+    return _mockRequest;
+}
+
+@end
+
 // MARK: -
 
 @implementation MockURLSession {
@@ -97,6 +122,13 @@
 - (instancetype)initWithDownload:(NSURL*)download {
     if ((self=[super init])) {
         _download = download;
+    }
+    return self;
+}
+
+- (instancetype)initWithUpload:(NSURL*)upload {
+    if ((self=[super init])) {
+        _upload = upload;
     }
     return self;
 }
@@ -131,6 +163,7 @@
         _JSONData = (NSData*)next;
     } else if ( [next isKindOfClass:NSURL.class] ) {
         _download = (NSURL*)next;
+        _upload = (NSURL*)next;
     } else if ( [next isKindOfClass:NSError.class] ) {
         _error = (NSError*)next;
     }
@@ -184,6 +217,24 @@
     
     return [[MockSessionDownloadTask alloc] initWithMockURLRequest:URLRequest];
 }
+
+ - (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.error) {
+            completionHandler(nil, nil, self.error);
+        }
+        else {
+            completionHandler(nil, nil, nil);
+        }
+        
+        [self prepareNextResponse]; // works because of dispatch_after
+    });
+    
+    return [[MockSessionUploadTask alloc] initWithMockURLRequest:request];
+ }
+
+// MARK: -
 
 - (nullable NSURL*)copyToTemporaryDirectory:(NSURL*)URL {
     NSURL *tempDir = [NSURL fileURLWithPath:NSTemporaryDirectory()];

@@ -52,7 +52,7 @@
         XCTAssertNotNil(job);
         
         XCTAssertEqualObjects(job.jobId, @"job-id");
-        XCTAssertEqual(job.status, TIOFleaJobValueApproved);
+        XCTAssertEqual(job.status, TIOFleaJobStatusApproved);
         XCTAssertEqualObjects(job.uploadTo, [NSURL URLWithString:@"http://goo.gl/Tx3.zip"]);
     }];
     

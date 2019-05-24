@@ -27,9 +27,9 @@
         if ( JSON[@"status"] == nil || ![JSON[@"status"] isKindOfClass:NSString.class] ) {
             return nil;
         } else if ( [JSON[@"status"] isEqualToString:@"APPROVED"] ) {
-            _status = TIOFleaJobValueApproved;
+            _status = TIOFleaJobStatusApproved;
         } else {
-            _status = TIOFleaJobValueUnknown;
+            _status = TIOFleaJobStatusUnknown;
         }
         
         if ( JSON[@"jobId"] == nil || ![JSON[@"jobId"] isKindOfClass:NSString.class] ) {
@@ -52,7 +52,7 @@
 
 - (NSString*)description {
     NSString *js = [NSString stringWithFormat:@"Job ID: %@", self.jobId];
-    NSString *ss = [NSString stringWithFormat:@"Status: %@", self.status==TIOFleaJobValueApproved?@"APPROVED":@"UNKNOWN"];
+    NSString *ss = [NSString stringWithFormat:@"Status: %@", self.status==TIOFleaJobStatusApproved?@"APPROVED":@"UNKNOWN"];
     NSString *us = [NSString stringWithFormat:@"Upload To: %@", self.uploadTo];
     return [NSString stringWithFormat:@"%@\n%@\n%@", js, ss, us];
 }
