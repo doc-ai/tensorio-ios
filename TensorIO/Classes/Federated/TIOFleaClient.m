@@ -22,6 +22,7 @@
 #import "TIOFleaStatus.h"
 #import "TIOFleaTasks.h"
 #import "TIOFleaTask.h"
+#import "TIOFleaTaskDownload.h"
 
 static NSString *TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
 
@@ -189,6 +190,32 @@ static NSInteger TIOFleaDownloadError = 200;
         }
         
         responseBlock(task, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionDownloadTask*)downloadTaskBundleAtURL:(NSURL*)URL withTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
+    
+    NSURLSessionDownloadTask *task = [self.URLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+        
+        if ( requestError != nil ) {
+            NSLog(@"Request error for request with URL: %@", response.URL);
+            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDownloadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
+        if ( location == nil ) {
+            NSLog(@"File error for request with URL: %@", response.URL);
+            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDownloadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
+        TIOFleaTaskDownload *download = [[TIOFleaTaskDownload alloc] initWithURL:location taskId:taskId];
+        responseBlock(download, 1, nil);
     }];
     
     [task resume];
