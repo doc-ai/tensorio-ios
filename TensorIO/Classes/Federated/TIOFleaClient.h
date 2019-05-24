@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class TIOFleaTasks;
 @class TIOFleaTask;
 @class TIOFleaTaskDownload;
+@class TIOFleaJob;
 
 /**
  * Encapsulates requests to a TensorIO Flea repository, allowing users to
@@ -89,6 +90,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionTask*)GETTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTask * _Nullable task, NSError * _Nullable error))responseBlock;
 
 /**
+ * Informs the server that the client will begin working on a task
+ */
+
+ - (NSURLSessionTask*)GETStartTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaJob * _Nullable job, NSError * _Nullable error))responseBlock;
+
+/**
  * Downloads a zipped task bundle.
  *
  * The progress parameter is currently ignored and the download reports 0 or 1
@@ -96,7 +103,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (NSURLSessionDownloadTask*)downloadTaskBundleAtURL:(NSURL*)URL withTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock;
-
 
 @end
 

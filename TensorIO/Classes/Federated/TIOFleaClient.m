@@ -22,6 +22,7 @@
 #import "TIOFleaStatus.h"
 #import "TIOFleaTasks.h"
 #import "TIOFleaTask.h"
+#import "TIOFleaJob.h"
 #import "TIOFleaTaskDownload.h"
 
 static NSString *TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
@@ -32,7 +33,8 @@ static NSInteger TIOFleaJSONError = 2;
 static NSInteger TIOFleaDeserializationError = 3;
 
 static NSInteger TIOFleaHealthStatusNotServingError = 100;
-static NSInteger TIOFleaDownloadError = 200;
+static NSInteger TIOFleaJobStatusNotApprovedError = 200;
+static NSInteger TIOFleaDownloadError = 300;
 
 /**
  * Parses a JSON response from a tensorio flea repository
@@ -190,6 +192,35 @@ static NSInteger TIOFleaDownloadError = 200;
         }
         
         responseBlock(task, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionTask*)GETStartTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaJob * _Nullable job, NSError * _Nullable error))responseBlock {
+    NSURL *endpoint = [[self.baseURL
+        URLByAppendingPathComponent:@"start_task"]
+        URLByAppendingPathComponent:taskId];
+    
+    NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSError *parseError;
+        TIOFleaJSONResponseParser<TIOFleaJob*> *parser = [[TIOFleaJSONResponseParser alloc] initWithClass:TIOFleaJob.class];
+        TIOFleaJob *job = [parser parseData:data response:response requestError:error error:&parseError];
+        
+        if ( job == nil ) {
+            responseBlock(nil, parseError);
+            return;
+        }
+        
+        if ( job.status != TIOFleaJobValueApproved ) {
+            NSLog(@"Start task returned value other than approved");
+            responseBlock(job, [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaJobStatusNotApprovedError userInfo:nil]);
+            return;
+        }
+        
+        responseBlock(job, nil);
     }];
     
     [task resume];
