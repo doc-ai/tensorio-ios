@@ -20,6 +20,7 @@
 
 #import "TIOFleaClient.h"
 #import "TIOFleaStatus.h"
+#import "TIOFleaTasks.h"
 
 static NSString *TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
 
@@ -126,6 +127,44 @@ static NSInteger TIOFleaDownloadError = 200;
         }
         
         responseBlock(status, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+- (NSURLSessionTask*)GETTasksWithModelId:(nullable NSString*)modelId hyperparametersId:(nullable NSString*)hyperparametersId checkpointId:(nullable NSString*)checkpointId callback:(void(^)(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error))responseBlock {
+    NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"tasks"];
+    
+    NSURLComponents *components = [[NSURLComponents alloc] initWithURL:endpoint resolvingAgainstBaseURL:NO];
+    NSMutableArray<NSURLQueryItem*> *queryItems = NSMutableArray.array;
+    
+    if (modelId != nil) {
+        [queryItems addObject:[NSURLQueryItem queryItemWithName:@"modelId" value:modelId]];
+    }
+    if (hyperparametersId != nil) {
+        [queryItems addObject:[NSURLQueryItem queryItemWithName:@"hyperparametersId" value:hyperparametersId]];
+    }
+    if (checkpointId != nil) {
+        [queryItems addObject:[NSURLQueryItem queryItemWithName:@"checkpointId" value:checkpointId]];
+    }
+    
+    if (queryItems.count > 0) {
+        components.queryItems = queryItems;
+    }
+    
+    NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:components.URL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSError *parseError;
+        TIOFleaJSONResponseParser<TIOFleaTasks*> *parser = [[TIOFleaJSONResponseParser alloc] initWithClass:TIOFleaTasks.class];
+        TIOFleaTasks *tasks = [parser parseData:data response:response requestError:error error:&parseError];
+        
+        if ( tasks == nil ) {
+            responseBlock(nil, parseError);
+            return;
+        }
+    
+        responseBlock(tasks, nil);
     }];
     
     [task resume];

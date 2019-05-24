@@ -22,6 +22,19 @@
 
 @implementation TIOMRCheckpoint
 
++ (NSDateFormatter*)JSONDateFormatter {
+    static NSDateFormatter *RFC3339DateFormatter;
+    
+    if ( RFC3339DateFormatter == nil ) {
+        RFC3339DateFormatter = [[NSDateFormatter alloc] init];
+        RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+        RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    }
+    
+    return RFC3339DateFormatter;
+}
+
 - (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
     if ((self=[super init])) {
         if ( JSON[@"checkpointId"] == nil || ![JSON[@"checkpointId"] isKindOfClass:NSString.class] ) {
@@ -42,12 +55,7 @@
         if ( JSON[@"createdAt"] == nil || ![JSON[@"createdAt"] isKindOfClass:NSString.class] ) {
             return nil;
         } else {
-            NSDateFormatter *RFC3339DateFormatter = [[NSDateFormatter alloc] init];
-            RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-            RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-            RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-            
-            _createdAt = [RFC3339DateFormatter dateFromString:JSON[@"createdAt"]];
+            _createdAt = [TIOMRCheckpoint.JSONDateFormatter dateFromString:JSON[@"createdAt"]];
             if ( _createdAt == nil ) { // bad dates
                 return nil;
             }

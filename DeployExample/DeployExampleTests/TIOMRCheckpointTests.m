@@ -28,6 +28,19 @@
 
 @implementation TIOMRCheckpointTests
 
++ (NSDateFormatter*)JSONDateFormatter {
+    static NSDateFormatter *RFC3339DateFormatter;
+    
+    if (RFC3339DateFormatter == nil) {
+        RFC3339DateFormatter = [[NSDateFormatter alloc] init];
+        RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+        RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    }
+    
+    return RFC3339DateFormatter;
+}
+
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
@@ -41,11 +54,7 @@
 - (void)testGETCheckpointWithCheckpointPropertieSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for checkpoint response"];
     
-    NSDateFormatter *RFC3339DateFormatter = [[NSDateFormatter alloc] init];
-    RFC3339DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-    RFC3339DateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    RFC3339DateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-    NSDate *date = [RFC3339DateFormatter dateFromString:@"2019-04-20T16:20:00.000+0000"];
+    NSDate *date = [TIOMRCheckpointTests.JSONDateFormatter dateFromString:@"2019-04-20T16:20:00.000+0000"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
         @"modelId": @"happy-face",
