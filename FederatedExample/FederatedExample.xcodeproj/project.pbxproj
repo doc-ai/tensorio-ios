@@ -136,6 +136,39 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E3CC34552298DCAC0017462D /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E3D16AFE2295ED3500BA4346 /* TIOMockBatchDataSource.h */,
+				E3D16AFC2295ED3500BA4346 /* TIOMockBatchDataSource.mm */,
+				E3D16B022295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.h */,
+				E3D16B032295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm */,
+				E3D16AFD2295ED3500BA4346 /* TIOMockTrainableModel.h */,
+				E3D16AFF2295ED3500BA4346 /* TIOMockTrainableModel.mm */,
+				E3D16B0C22972C2D00BA4346 /* MockURLSession.h */,
+				E3D16B0B22972C2D00BA4346 /* MockURLSession.m */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		E3CC34562298DCD00017462D /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */,
+				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.mm */,
+				E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */,
+				E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */,
+				E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */,
+				E3D16B0922972B1400BA4346 /* TIOFleaStatusTest.mm */,
+				E3D16B1222977FAA00BA4346 /* TIOFleaTasksTests.mm */,
+				E3D16B1422984B1400BA4346 /* TIOFleaTaskTests.mm */,
+				E3D16B2222985E7C00BA4346 /* TIOFleaJobTests.mm */,
+				E3D16B1A2298561100BA4346 /* TIOFleaTaskDownloadTests.mm */,
+				E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		E3E16D6D22910BE60087197A = {
 			isa = PBXGroup;
 			children = (
@@ -183,25 +216,8 @@
 			isa = PBXGroup;
 			children = (
 				E3E16D9422910BE80087197A /* Info.plist */,
-				E3D16AFE2295ED3500BA4346 /* TIOMockBatchDataSource.h */,
-				E3D16AFC2295ED3500BA4346 /* TIOMockBatchDataSource.mm */,
-				E3D16B022295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.h */,
-				E3D16B032295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm */,
-				E3D16AFD2295ED3500BA4346 /* TIOMockTrainableModel.h */,
-				E3D16AFF2295ED3500BA4346 /* TIOMockTrainableModel.mm */,
-				E3D16B0C22972C2D00BA4346 /* MockURLSession.h */,
-				E3D16B0B22972C2D00BA4346 /* MockURLSession.m */,
-				E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */,
-				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.mm */,
-				E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */,
-				E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */,
-				E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */,
-				E3D16B0922972B1400BA4346 /* TIOFleaStatusTest.mm */,
-				E3D16B1222977FAA00BA4346 /* TIOFleaTasksTests.mm */,
-				E3D16B1422984B1400BA4346 /* TIOFleaTaskTests.mm */,
-				E3D16B2222985E7C00BA4346 /* TIOFleaJobTests.mm */,
-				E3D16B1A2298561100BA4346 /* TIOFleaTaskDownloadTests.mm */,
-				E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */,
+				E3CC34552298DCAC0017462D /* Mocks */,
+				E3CC34562298DCD00017462D /* Tests */,
 			);
 			path = FederatedExampleTests;
 			sourceTree = "<group>";
