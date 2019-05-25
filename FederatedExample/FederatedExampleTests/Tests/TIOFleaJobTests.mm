@@ -18,8 +18,6 @@
 //  limitations under the License.
 //
 
-//  TODO: More tests, will be added to this PR
-
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
 #import "MockURLSession.h"
@@ -67,6 +65,91 @@
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://foo.com/start_task/task-id"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
+
+- (void)testGETStartTaskWithoutStatusFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"status": @"APPROVED",
+        @"uploadTo": @"http://goo.gl/Tx3.zip"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(job);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETStartTaskWithoutJobIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for job response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"jobId": @"job-id",
+        @"uploadTo": @"http://goo.gl/Tx3.zip"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(job);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETStartTaskWithoutUploadToFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for job response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"jobId": @"job-id",
+        @"status": @"APPROVED"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(job);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+// MARK: -
+
+- (void)testGETStartTaskWithErrorFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for job response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(job);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
 @end

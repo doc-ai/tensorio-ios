@@ -18,8 +18,6 @@
 //  limitations under the License.
 //
 
-//  TODO: More tests, will be added to this PR
-
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
 #import "MockURLSession.h"
@@ -34,7 +32,9 @@
 
 - (void)tearDown { }
 
-- (void)testGETTasks {
+// MARK: -
+
+- (void)testGETTasksSucceeds {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for tasks response"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
@@ -64,6 +64,8 @@
     XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
+
+// MARK: -
 
 - (void)testGETTasksURL {
     MockURLSession *session = [[MockURLSession alloc] init];
@@ -108,6 +110,97 @@
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/tasks?modelId=model-foo&hyperparametersId=hyperparameters-foo&checkpointId=checkpoint-foo"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
+
+- (void)testGETTasksWithoutStartTaskIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for tasks response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"maxItems": @(2),
+        @"taskIds": @[
+            @"taskid-1",
+            @"taskid-2"
+        ]
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(tasks);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTasksWithoutMaxItemsFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for tasks response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"startTaskId": @"taskid-1",
+        @"taskIds": @[
+            @"taskid-1",
+            @"taskid-2"
+        ]
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(tasks);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTasksWithoutTaskIdsFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for tasks response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"startTaskId": @"taskid-1",
+        @"maxItems": @(2)
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(tasks);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+// MARK: -
+
+- (void)testGETTasksWithErrorFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for tasks response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(tasks);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
 @end

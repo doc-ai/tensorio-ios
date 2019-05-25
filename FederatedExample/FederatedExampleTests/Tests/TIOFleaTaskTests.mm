@@ -18,8 +18,6 @@
 //  limitations under the License.
 //
 
-//  TODO: More tests, will be added to this PR
-
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
 #import "MockURLSession.h"
@@ -43,9 +41,13 @@
     return RFC3339DateFormatter;
 }
 
+// MARK: -
+
 - (void)setUp { }
 
 - (void)tearDown { }
+
+// MARK: -
 
 - (void)testGETTask  {
     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
@@ -92,6 +94,236 @@
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://foo.com/tasks/task-id"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
+}
+
+// MARK: -
+
+- (void)testGETTaskWithoutModelIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"hyperparametersId": @"hyperparameters-id",
+        @"checkpointId": @"checkpoint-id",
+        @"taskId": @"task-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"active": @(YES),
+        @"link": @"http://goo.gl/Tx3.zip",
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskWithoutHyperparametersIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"checkpointId": @"checkpoint-id",
+        @"taskId": @"task-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"active": @(YES),
+        @"link": @"http://goo.gl/Tx3.zip",
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskWithoutCheckpointIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"hyperparametersId": @"hyperparameters-id",
+        @"taskId": @"task-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"active": @(YES),
+        @"link": @"http://goo.gl/Tx3.zip",
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskWithoutTaskIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"hyperparametersId": @"hyperparameters-id",
+        @"checkpointId": @"checkpoint-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"active": @(YES),
+        @"link": @"http://goo.gl/Tx3.zip",
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskWithoutDeadlineIdFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"hyperparametersId": @"hyperparameters-id",
+        @"checkpointId": @"checkpoint-id",
+        @"taskId": @"task-id",
+        @"active": @(YES),
+        @"link": @"http://goo.gl/Tx3.zip",
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskWithoutActiveFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"hyperparametersId": @"hyperparameters-id",
+        @"checkpointId": @"checkpoint-id",
+        @"taskId": @"task-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"link": @"http://goo.gl/Tx3.zip",
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskWithoutLinkFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"hyperparametersId": @"hyperparameters-id",
+        @"checkpointId": @"checkpoint-id",
+        @"taskId": @"task-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"active": @(YES),
+        @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testGETTaskWithoutCheckpointLinkFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"model-id",
+        @"hyperparametersId": @"hyperparameters-id",
+        @"checkpointId": @"checkpoint-id",
+        @"taskId": @"task-id",
+        @"deadline": @"2019-04-20T16:20:00.000+0000",
+        @"active": @(YES),
+        @"link": @"http://goo.gl/Tx3.zip",
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+// MARK: -
+
+- (void)testGETTaskWithErrorFails {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for task response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertNil(task);
+    }];
+    
+    XCTAssert(task.calledResume);
+    [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
 @end

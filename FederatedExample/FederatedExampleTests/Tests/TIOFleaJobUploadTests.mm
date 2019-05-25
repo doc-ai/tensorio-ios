@@ -56,7 +56,7 @@
 }
 
 - (void)testUploadJobResultWithErrorFails {
-    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for download response"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for upload response"];
     
     NSURL *sourceURL = [NSBundle.mainBundle URLForResource:@"test-job-results" withExtension:@"zip"];
     NSURL *destinationURL = [NSURL URLWithString:@"http://foo.com/upload.zip"];
@@ -76,7 +76,7 @@
 }
 
 - (void)testUploadJobResultWithoutValidSourceFileFails {
-    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for download response"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for upload response"];
 
     NSURL *sourceURL = [NSBundle.mainBundle URLForResource:@"doesnotexist" withExtension:@"zip"];
     NSURL *destinationURL = [NSURL URLWithString:@"http://foo.com/upload.zip"];
