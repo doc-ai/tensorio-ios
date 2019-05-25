@@ -31,7 +31,7 @@
 static NSString *TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 
 static NSInteger TIOMRURLSessionErrorCode = 0;
-static NSInteger TIOMNoDataErrorCode = 1;
+static NSInteger TIOMRNoDataErrorCode = 1;
 static NSInteger TIOMRJSONError = 2;
 static NSInteger TIOMRDeserializationError = 3;
 
@@ -72,7 +72,7 @@ static NSInteger TIOMRDownloadError = 200;
     
     if ( data == nil ) {
         NSLog(@"No data for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMNoDataErrorCode userInfo:nil];
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRNoDataErrorCode userInfo:nil];
         return nil;
     }
     

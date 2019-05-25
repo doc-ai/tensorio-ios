@@ -20,6 +20,9 @@
 
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
+#import "TIOMockBatchDataSource.h"
+#import "TIOMockTrainableModel.h"
+#import "TIOMockFederatedManagerDataSourceProvider.h"
 
 /**
  * (Temporarily?) expose some of the private methods for tests as we go
@@ -35,11 +38,27 @@
 
 @interface TIOFederatedManagerTests : XCTestCase
 
+@property NSDictionary *taskJSON;
+
 @end
 
 @implementation TIOFederatedManagerTests
 
-- (void)setUp { }
+- (void)setUp {
+    self.taskJSON = @{
+        @"id": @"tio:///taskid",
+        @"name": @"foo",
+        @"details": @"bar",
+        @"model": @{
+            @"id": @"tio:///modelid"
+        },
+        @"taskParameters": @{
+            @"numEpochs": @(1),
+            @"batchSize": @(8),
+            @"placeholders": @[]
+        }
+    };
+}
 
 - (void)tearDown { }
 
@@ -51,6 +70,20 @@
     
     [manager unregisterForTasksForModelWithId:@"tio:///modelid"];
     XCTAssert(![manager.registeredModelIds containsObject:@"tio:///modelid"]);
+}
+
+- (void)testRequestsDataSourceForTaskIdentifier {
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    TIOFederatedTask *task = [[TIOFederatedTask alloc] initWithJSON:self.taskJSON];
+    
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:1];
+    TIOMockFederatedManagerDataSourceProvider *dataSourceProvider = [[TIOMockFederatedManagerDataSourceProvider alloc] initWithDataSource:dataSource taskIdentifier:@"tio:///taskid"];
+    
+    TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithDataSourceProvider:dataSourceProvider delegate:nil];
+    
+    [manager executeTask:task model:model];
+    
+    XCTAssert([dataSourceProvider dataSourceForTaskWithIdCountForTaskId:@"tio:///taskid"] == 1);
 }
 
 @end

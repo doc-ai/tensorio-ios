@@ -1,8 +1,8 @@
 //
-//  ViewController.h
-//  FederatedExample
+//  TIOFleaJobUpload.h
+//  TensorIO
 //
-//  Created by Phil Dow on 5/18/19.
+//  Created by Phil Dow on 5/24/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +18,19 @@
 //  limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
-#import <TensorIO/TensorIO-umbrella.h>
+#import <Foundation/Foundation.h>
 
-@interface ViewController : UIViewController
+NS_ASSUME_NONNULL_BEGIN
 
+typedef enum : NSUInteger {
+    TIOFleaJobUploadStatusUnknown,
+    TIOFleaJobUploadStatusSuccess
+} TIOFleaJobUploadStatus;
+
+@interface TIOFleaJobUpload : NSObject
+
+@property (readonly) TIOFleaJobUploadStatus status;
 
 @end
 
+NS_ASSUME_NONNULL_END

@@ -1,8 +1,8 @@
 //
-//  ViewController.h
-//  FederatedExample
+//  TIOFleaTaskDownload.m
+//  TensorIO
 //
-//  Created by Phil Dow on 5/18/19.
+//  Created by Phil Dow on 5/24/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,11 +18,22 @@
 //  limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
-#import <TensorIO/TensorIO-umbrella.h>
+#import "TIOFleaTaskDownload.h"
 
-@interface ViewController : UIViewController
+@implementation TIOFleaTaskDownload
 
+- (instancetype)initWithURL:(NSURL*)URL taskId:(NSString*)taskId {
+    if ((self=[super init])) {
+        _taskId = taskId;
+        _URL = URL;
+    }
+    return self;
+}
+
+- (NSString*)description {
+    NSString *ts = [NSString stringWithFormat:@"Task ID: %@", self.taskId];
+    NSString *us = [NSString stringWithFormat:@"URL: %@", self.URL];
+    return [NSString stringWithFormat:@"%@\n%@", ts, us];
+}
 
 @end
-

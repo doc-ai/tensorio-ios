@@ -71,7 +71,7 @@
     NSUInteger start = index * self.batchSize;
     
     if ( (start + self.batchSize) > numberOfItems ) {
-        itemRange = NSMakeRange(start, start + self.batchSize - numberOfItems);
+        itemRange = NSMakeRange(start, numberOfItems - start);
     } else {
         itemRange = NSMakeRange(start, self.batchSize);
     }

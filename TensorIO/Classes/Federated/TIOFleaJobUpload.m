@@ -1,8 +1,8 @@
 //
-//  ViewController.m
-//  FederatedExample
+//  TIOFleaJobUpload.m
+//  TensorIO
 //
-//  Created by Phil Dow on 5/18/19.
+//  Created by Phil Dow on 5/24/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,18 +18,15 @@
 //  limitations under the License.
 //
 
-#import "ViewController.h"
+#import "TIOFleaJobUpload.h"
 
-@interface ViewController ()
+@implementation TIOFleaJobUpload
 
-@end
-
-@implementation ViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+- (instancetype)init {
+    if ((self=[super init])) {
+        _status = TIOFleaJobUploadStatusSuccess;
+    }
+    return self;
 }
-
 
 @end
