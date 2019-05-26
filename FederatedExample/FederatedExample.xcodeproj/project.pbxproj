@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2AC7945CDD8FF54C5EBD5A7D /* Pods_FederatedExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */; };
 		CFD8D77A36D8D7900730D734 /* Pods_FederatedExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */; };
+		E33CC3A72299BB70007F4A7B /* DockerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E33CC3A62299BB70007F4A7B /* DockerTests.mm */; };
+		E33CC3AA2299CBD3007F4A7B /* build_scripts in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3A92299CBD2007F4A7B /* build_scripts */; };
 		E3CC3452229874440017462D /* TIOFleaJobUploadTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */; };
 		E3CC34542298787A0017462D /* test-job-results.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3CC3453229878790017462D /* test-job-results.zip */; };
 		E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */; };
@@ -56,6 +58,8 @@
 		8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB4B6F0277C83C841E725D72 /* Pods-FederatedExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FederatedExample.debug.xcconfig"; path = "Target Support Files/Pods-FederatedExample/Pods-FederatedExample.debug.xcconfig"; sourceTree = "<group>"; };
 		E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E33CC3A62299BB70007F4A7B /* DockerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DockerTests.mm; sourceTree = "<group>"; };
+		E33CC3A92299CBD2007F4A7B /* build_scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build_scripts; sourceTree = SOURCE_ROOT; };
 		E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFleaJobUploadTests.mm; sourceTree = "<group>"; };
 		E3CC3453229878790017462D /* test-job-results.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "test-job-results.zip"; sourceTree = "<group>"; };
 		E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedManagerTests.mm; sourceTree = "<group>"; };
@@ -136,6 +140,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E33CC3A82299BB76007F4A7B /* DockerTests */ = {
+			isa = PBXGroup;
+			children = (
+				E33CC3A62299BB70007F4A7B /* DockerTests.mm */,
+			);
+			path = DockerTests;
+			sourceTree = "<group>";
+		};
 		E3CC34552298DCAC0017462D /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +204,7 @@
 		E3E16D7822910BE60087197A /* FederatedExample */ = {
 			isa = PBXGroup;
 			children = (
+				E33CC3A92299CBD2007F4A7B /* build_scripts */,
 				E3E16D7922910BE60087197A /* AppDelegate.h */,
 				E3E16D7A22910BE60087197A /* AppDelegate.m */,
 				E3E16D7C22910BE60087197A /* ViewController.h */,
@@ -218,6 +231,7 @@
 				E3E16D9422910BE80087197A /* Info.plist */,
 				E3CC34552298DCAC0017462D /* Mocks */,
 				E3CC34562298DCD00017462D /* Tests */,
+				E33CC3A82299BB76007F4A7B /* DockerTests */,
 			);
 			path = FederatedExampleTests;
 			sourceTree = "<group>";
@@ -312,6 +326,7 @@
 				E3D16B1D229857DA00BA4346 /* test.tiotask.zip in Resources */,
 				E3E16DDF229477620087197A /* test.tiotask in Resources */,
 				E3E16D8322910BE80087197A /* Assets.xcassets in Resources */,
+				E33CC3AA2299CBD3007F4A7B /* build_scripts in Resources */,
 				E3E16D8122910BE60087197A /* Main.storyboard in Resources */,
 				E3D2BCD72295BE75004493C4 /* model-tests in Resources */,
 				E3D2BCDE2295C0FE004493C4 /* cat.jpg in Resources */,
@@ -439,6 +454,7 @@
 				E3D16B1B2298561100BA4346 /* TIOFleaTaskDownloadTests.mm in Sources */,
 				E3CC3452229874440017462D /* TIOFleaJobUploadTests.mm in Sources */,
 				E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.mm in Sources */,
+				E33CC3A72299BB70007F4A7B /* DockerTests.mm in Sources */,
 				E3D16B012295ED3500BA4346 /* TIOMockTrainableModel.mm in Sources */,
 				E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */,
 				E3D16B042295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */,
