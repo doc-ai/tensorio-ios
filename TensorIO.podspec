@@ -87,10 +87,11 @@ Pod::Spec.new do |s|
     }
   end
 
-  # The federated subspect contains federated learning classes and flea client side code
+  # The federated subspec contains federated learning classes and flea client side code
 
   s.subspec 'Federated' do |ss|
     ss.dependency 'TensorIO/Core'
+    ss.dependency 'SSZipArchive'
 
     ss.source_files = 'TensorIO/Classes/Federated/**/*'
     ss.resource_bundles = { 
