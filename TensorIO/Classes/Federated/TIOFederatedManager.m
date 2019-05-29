@@ -52,6 +52,9 @@
 
 #import <sys/utsname.h>
 
+#define TIO_NSStringize_helper(x) #x
+#define TIO_NSStringize(x) @TIO_NSStringize_helper(x)
+
 static NSString * TIOFederatedManagerErrorDomain = @"ai.doc.tensorio.federated-manager";
 
 static NSInteger TIOFederatedManagerTaskUnzipError = 200;
@@ -71,14 +74,12 @@ NSString * TIODeviceInfo() {
     struct utsname systemInfo;
     uname(&systemInfo);
     
-    NSString *deviceModel = [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
-    
-    return deviceModel;
+    return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
 }
 
 NSString * TIOFrameworkVersion() {
-    // TODO: Pull it from the embedded framework bundle (#118)
-    return @"0.8.0";
+    NSString *frameworkVersion = TIO_NSStringize(TIO_VERSION);
+    return frameworkVersion != nil ? frameworkVersion : @"UNKNOWN";
 }
 
 // MARK: -
