@@ -27,6 +27,10 @@
 //  passed across methods, e.g. taskId=>jobId, taskId=>taskBundleURL should be
 //  stored and read as needed
 
+//  TODO: How to handle tasks that have already been executed or completed, and
+//  cleaning up the contents of temporary directories, for example, if a job is
+//  executing again, a folder with that job id will already exist on the filesystem
+
 #import "TIOFederatedManager.h"
 #import "TIOFederatedManagerDataSourceProvider.h"
 #import "TIOFederatedManagerDelegate.h"
@@ -44,6 +48,7 @@
 #import "TIOFederatedTask.h"
 #import "TIOModelTrainer+FederatedTask.h"
 #import "TIOBatchDataSource.h"
+#import "TIOMeasurable.h"
 
 #import <sys/utsname.h>
 
@@ -107,8 +112,7 @@ NSString * TIOFrameworkVersion() {
     // Assuming 1) The model has already been downloaded
     // Assuming 2) The model has been updated to its latest version
     
-    // Note that error handling takes place in each specific method
-    // For each registered model, acquire available tasks
+    // For each registered model, get tasks associated with it and process them
     
     for ( NSString *modelId in self.registeredModelIds ) {
         [self tasksForModelId:modelId callback:^(TIOFleaTasks * _Nullable tasks) {
@@ -116,59 +120,60 @@ NSString * TIOFrameworkVersion() {
                 return;
             }
             
-            // For each available task, acquire information about the task
-            
             for ( NSString *taskId in tasks.taskIds ) {
+                [self processTask:taskId forModel:modelId];
+            }
+        }];
+    }
+}
+
+- (void)processTask:(NSString*)taskId forModel:(NSString*)modelId {
+    [self informDelegateTaskWillBeginProcessing:taskId];
+    
+    [self taskForTaskId:taskId callback:^(TIOFleaTask * _Nullable task) {
+        if (task == nil) {
+            return;
+        }
+
+        // Once we have information about the task, acquire the task bundle
+
+        [self taskBundleForTaskId:task.taskId URL:task.link callback:^(TIOFleaTaskDownload * _Nullable taskDownload, NSURL * _Nullable bundleURL) {
+            if (taskDownload == nil) {
+                return;
+            }
+            
+            // TODO: Move the task bundle to a cached location (could take place in taskBundleForTaskId method)
+            // Once we have the task bundle, start the task
+            
+            [self startTaskWithTaskId:task.taskId callback:^(TIOFleaJob * _Nullable job) {
+                if (job == nil) {
+                    return;
+                }
                 
-                [self taskForTaskId:taskId callback:^(TIOFleaTask * _Nullable task) {
-                    if (task == nil) {
+                // TODO: Store the job info, especially the (task id, job id, upload to) tuple
+                // Once we have a job, acquire task and model bundles and execute the task
+                
+                [self executeTaskWithTaskId:task.taskId modelId:modelId taskDownload:taskDownload job:job taskBundleURL:bundleURL callback:^(NSURL * _Nullable resultsBundleZip) {
+                    if (resultsBundleZip == nil) {
                         return;
                     }
                     
-                    [self informDelegateTaskWillBeginProcessing:taskId];
+                    // Once the task has been executed, upload the results
                     
-                    // Once we have information about the task, acquire the task bundle
-                    
-                    [self taskBundleForTaskId:task.taskId URL:task.link callback:^(TIOFleaTaskDownload * _Nullable taskDownload, NSURL * _Nullable bundleURL) {
-                        if (taskDownload == nil) {
+                    [self uploadJobResultsAtURL:resultsBundleZip toURL:job.uploadTo withJobId:job.jobId callback:^(BOOL success) {
+                        if (!success) {
                             return;
                         }
                         
-                        // TODO: Move the task bundle to a cached location (could take place in taskBundleForTaskId method)
-                        // Once we have the task bundle, start the task
+                        // Nice job everyone!
                         
-                        [self startTaskWithTaskId:task.taskId callback:^(TIOFleaJob * _Nullable job) {
-                            if (job == nil) {
-                                return;
-                            }
-                            
-                            // TODO: Store the job info, especially the (task id, job id, upload to) tuple
-                            // Once we have a job, acquire task and model bundles and execute the task
-                            
-                            [self executeTaskWithTaskId:task.taskId modelId:modelId taskDownload:taskDownload job:job taskBundleURL:bundleURL callback:^(NSURL * _Nullable resultsBundleZip) {
-                                if (resultsBundleZip == nil) {
-                                    return;
-                                }
-                                
-                                // Once the task has been executed, upload the results
-                                
-                                [self uploadJobResultsAtURL:resultsBundleZip toURL:job.uploadTo withJobId:job.jobId callback:^(BOOL success) {
-                                    if (!success) {
-                                        return;
-                                    }
-                                    
-                                    // Nice job everyone!
-                                    
-                                    [self informDelegateTaskHasCompleted:taskId];
-                                    
-                                }]; // uploadJobResultsAtURL
-                            }]; // executeTaskWithTaskId
-                        }]; // startTaskWithTaskId
-                    }]; // taskBundleForTaskId
-                }]; // taskForTaskId
-            } // for tasks
-        }];// tasksForModelId
-    } // for models
+                        [self informDelegateTaskHasCompleted:taskId];
+                        
+                    }]; // uploadJobResultsAtURL
+                }]; // executeTaskWithTaskId
+            }]; // startTaskWithTaskId
+        }]; // taskBundleForTaskId
+    }]; // taskForTaskId
 }
 
 - (void)tasksForModelId:(NSString*)modelId callback:(void(^)(TIOFleaTasks * _Nullable tasks))callback {
@@ -382,44 +387,20 @@ NSString * TIOFrameworkVersion() {
     }
     
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
-    id<TIOData> results = [trainer train];
+    __block id<TIOData> results;
+    double cpuLatency;
     
-    // TODO: Save model: move to separate method
+    tio_measuring_latency(&cpuLatency, ^{
+        results = [trainer train];
+    });
     
-    NSFileManager *fm = NSFileManager.defaultManager;
-    NSError *fmError;
-    
-    NSString *UUID = job.jobId;
-    NSURL *resultsDir = [[[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:UUID] URLByAppendingPathExtension:@"tioresults"];
-    NSURL *checkpointsDir = [resultsDir URLByAppendingPathComponent:@"checkpoints"];
-    NSURL *resultsJSONFile = [resultsDir URLByAppendingPathComponent:@"results.json"];
-    NSURL *zipFile = [resultsDir URLByAppendingPathExtension:@"zip"];
-    
-    [fm createDirectoryAtURL:resultsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
-    
-    if ( fmError != nil ) {
-        // TODO: handle error
-    }
-    
-    [fm createDirectoryAtURL:checkpointsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
-    
-    if ( fmError != nil ) {
-        // TODO: handle error
-    }
-    
-    NSError *exportError;
-    [model exportTo:checkpointsDir error:&exportError];
-    
-    if ( exportError != nil ) {
-        // TODO: handle error
-    }
-    
-    // TODO: fucking JSON encode, fix escaped forward slashes in URL strings
+    // Prepare JSON result and save the job output
     
     NSDictionary *JSON = @{
         @"taskId": taskId,
+        @"clientId": @"",
         @"numSamples": @(dataSource.numberOfItems),
-        @"results": results,
+        @"output": results,
         @"taskParameters": @{
             @"numEpochs": @(task.epochs),
             @"batchSize": @(task.batchSize),
@@ -431,15 +412,59 @@ NSString * TIOFrameworkVersion() {
             @"tensorIOVersion": TIOFrameworkVersion()
         },
         @"profiling": @{
-        
+            @"cpuTime": @(cpuLatency)
         }
     };
+    
+    [self saveJobResults:job.jobId JSON:JSON model:model callback:^(NSURL * _Nullable zipFileURL) {
+        callback(zipFileURL);
+    }];
+}
+
+- (void)saveJobResults:(NSString*)jobId JSON:(NSDictionary*)JSON model:(id<TIOTrainableModel>)model callback:(void(^)(NSURL * _Nullable zipFileURL))callback {
+    NSFileManager *fm = NSFileManager.defaultManager;
+    NSError *fmError;
+    
+    NSString *UUID = jobId;
+    NSURL *resultsDir = [[[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:UUID] URLByAppendingPathExtension:@"tioresult"];
+    NSURL *checkpointsDir = [resultsDir URLByAppendingPathComponent:@"checkpoints"];
+    NSURL *resultsJSONFile = [resultsDir URLByAppendingPathComponent:@"result.json"];
+    NSURL *zipFile = [resultsDir URLByAppendingPathExtension:@"zip"];
+    
+    [fm createDirectoryAtURL:resultsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
+    
+    if ( fmError != nil ) {
+        // TODO: handle error
+        callback(nil);
+        return;
+    }
+    
+    [fm createDirectoryAtURL:checkpointsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
+    
+    if ( fmError != nil ) {
+        // TODO: handle error
+        callback(nil);
+        return;
+    }
+    
+    NSError *exportError;
+    [model exportTo:checkpointsDir error:&exportError];
+    
+    if ( exportError != nil ) {
+        // TODO: handle error
+        callback(nil);
+        return;
+    }
+    
+    // TODO: fucking JSON encode, fix escaped forward slashes in URL strings
     
     NSError *JSONError;
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&JSONError];
     
     if ( JSONError != nil ) {
         // TODO: handle error
+        callback(nil);
+        return;
     }
     
     NSError *writeError;
@@ -447,12 +472,16 @@ NSString * TIOFrameworkVersion() {
     
     if ( writeError != nil ) {
         // TODO: handle error
+        callback(nil);
+        return;
     }
     
     BOOL didZip = [SSZipArchive createZipFileAtPath:zipFile.path withContentsOfDirectory:resultsDir.path];
     
     if ( !didZip ) {
         // TODO: handle error
+        callback(nil);
+        return;
     }
     
     callback(zipFile);
