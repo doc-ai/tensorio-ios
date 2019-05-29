@@ -42,6 +42,7 @@
     if ((self=[super init])) {
         _runCount = 0;
         _trainCount = 0;
+        _exportCount = 0;
     }
     return self;
 }
@@ -86,6 +87,32 @@
 }
 
 - (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error {
+    _trainCount++;
+    
+    // Dummy export
+    if ( _mockExportsURL != nil ) {
+        NSFileManager *fm = NSFileManager.defaultManager;
+        NSError *fmError;
+        NSArray<NSURL*> *mockContents = [fm contentsOfDirectoryAtURL:self.mockExportsURL includingPropertiesForKeys:nil options:0 error:&fmError];
+        
+        if ( fmError != nil ) {
+            NSLog(@"Unable to acquire contents of mock exports url: %@, error: %@", self.mockExportsURL, fmError);
+            *error = fmError;
+            return NO;
+        }
+        
+        for ( NSURL *sourceURL in mockContents ) {
+            NSURL *destURL = [fileURL URLByAppendingPathComponent:sourceURL.lastPathComponent];
+            [fm copyItemAtURL:sourceURL toURL:destURL error:&fmError];
+            
+            if ( fmError != nil ) {
+                NSLog(@"Unable to copy some mock content at url: %@, to url: %@, error: %@", sourceURL, destURL, fmError);
+                *error = fmError;
+                return NO;
+            }
+        }
+    }
+    
     return YES;
 }
 
