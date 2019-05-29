@@ -57,6 +57,10 @@ static NSString * TIOFederatedManagerErrorDomain = @"ai.doc.tensorio.federated-m
 static NSInteger TIOFederatedManagerTaskUnzipError = 200;
 static NSInteger TIOFederatedManagerTaskContentsError = 201;
 static NSInteger TIOFederatedManagerFileSystemError = 202;
+static NSInteger TIOFederatedManagerTaskBundleError = 203;
+static NSInteger TIOFederatedManagerModelBundleError = 204;
+static NSInteger TIOFederatedManagerDataSourceProviderError = 205;
+static NSInteger TIOFederatedManagerZipError = 207;
 
 NSString * TIOOSVersionString() {
     NSOperatingSystemVersion osVersion = NSProcessInfo.processInfo.operatingSystemVersion;
@@ -337,8 +341,9 @@ NSString * TIOFrameworkVersion() {
     TIOFederatedTaskBundle *taskBundle = [[TIOFederatedTaskBundle alloc] initWithPath:taskBundleURL.path];
     
     if (taskBundle == nil) {
-        // TODO: construct error
-        [self informDelegateOfError:nil forAction:TIOFederatedManagerLoadTask];
+        NSLog(@"Unable to load task bundle at path: %@", taskBundleURL);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerTaskBundleError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerLoadTask];
         callback(nil);
         return;
     }
@@ -346,8 +351,9 @@ NSString * TIOFrameworkVersion() {
     TIOFederatedTask *task = taskBundle.task;
     
     if (task == nil) {
-        // TODO: construct error
-        [self informDelegateOfError:nil forAction:TIOFederatedManagerLoadTask];
+        NSLog(@"Unable to acquire task from task bundle at path: %@", taskBundleURL);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerTaskBundleError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerLoadTask];
         callback(nil);
         return;
     }
@@ -359,8 +365,9 @@ NSString * TIOFrameworkVersion() {
     TIOModelBundle *modelBundle = [self modelBundleForId:modelId];
     
     if (modelBundle == nil) {
-        // TODO: construct error
-        [self informDelegateOfError:nil forAction:TIOFederatedManagerLoadModel];
+        NSLog(@"Unable to load model bundle from data source for model with id: %@", modelId);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerModelBundleError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerLoadModel];
         callback(nil);
         return;
     }
@@ -368,8 +375,9 @@ NSString * TIOFrameworkVersion() {
     id<TIOTrainableModel> model = (id<TIOTrainableModel>)modelBundle.newModel;
     
     if (model == nil) {
-        // TODO: construct error
-        [self informDelegateOfError:nil forAction:TIOFederatedManagerLoadModel];
+        NSLog(@"Unable to instantiate new model for model with id: %@", modelId);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerModelBundleError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerLoadModel];
         callback(nil);
         return;
     }
@@ -381,9 +389,11 @@ NSString * TIOFrameworkVersion() {
     id<TIOBatchDataSource> dataSource = [self dataSourceForTask:task];
     
     if (dataSource == nil) {
-        // TODO: construct error
-        [self informDelegateOfError:nil forAction:TIOFederatedManagerTrainModel];
+        NSLog(@"Data source provider failed to provide data source for task with id: %@", task.identifier);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerDataSourceProviderError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerTrainModel];
         callback(nil);
+        return;
     }
     
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
@@ -434,7 +444,9 @@ NSString * TIOFrameworkVersion() {
     [fm createDirectoryAtURL:resultsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
     
     if ( fmError != nil ) {
-        // TODO: handle error
+        NSLog(@"During save job, failed to create directory at path: %@", resultsDir);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerFileSystemError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerTrainModel];
         callback(nil);
         return;
     }
@@ -442,7 +454,9 @@ NSString * TIOFrameworkVersion() {
     [fm createDirectoryAtURL:checkpointsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
     
     if ( fmError != nil ) {
-        // TODO: handle error
+        NSLog(@"During save job, failed to create directory at path: %@", checkpointsDir);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerFileSystemError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerTrainModel];
         callback(nil);
         return;
     }
@@ -451,7 +465,8 @@ NSString * TIOFrameworkVersion() {
     [model exportTo:checkpointsDir error:&exportError];
     
     if ( exportError != nil ) {
-        // TODO: handle error
+        NSLog(@"During save job, failed to export model to path: %@, error: %@", checkpointsDir, exportError);
+        [self informDelegateOfError:exportError forAction:TIOFederatedManagerTrainModel];
         callback(nil);
         return;
     }
@@ -462,7 +477,8 @@ NSString * TIOFrameworkVersion() {
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&JSONError];
     
     if ( JSONError != nil ) {
-        // TODO: handle error
+        NSLog(@"During save job, failed to encode JSON: %@, error: %@", JSON, JSONError);
+        [self informDelegateOfError:JSONError forAction:TIOFederatedManagerTrainModel];
         callback(nil);
         return;
     }
@@ -471,7 +487,8 @@ NSString * TIOFrameworkVersion() {
     [JSONData writeToURL:resultsJSONFile options:NSDataWritingAtomic error:&writeError];
     
     if ( writeError != nil ) {
-        // TODO: handle error
+        NSLog(@"During save job, failed to write JSON: %@, to path: %@, error: %@", JSON, resultsJSONFile, writeError);
+        [self informDelegateOfError:writeError forAction:TIOFederatedManagerTrainModel];
         callback(nil);
         return;
     }
@@ -479,7 +496,9 @@ NSString * TIOFrameworkVersion() {
     BOOL didZip = [SSZipArchive createZipFileAtPath:zipFile.path withContentsOfDirectory:resultsDir.path];
     
     if ( !didZip ) {
-        // TODO: handle error
+        NSLog(@"During save job, failed to zip contents of directory: %@, to zip file: %@", resultsDir, zipFile);
+        NSError *error = [[NSError alloc] initWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerZipError userInfo:nil];
+        [self informDelegateOfError:error forAction:TIOFederatedManagerTrainModel];
         callback(nil);
         return;
     }
