@@ -93,14 +93,12 @@ NSString * TIOFrameworkVersion() {
 
 - (void)registerForTasksForModelWithId:(NSString*)modelId {
     // TODO: update in data store
-    // TODO: don't duplicate
-    [[self mutableArrayValueForKey:@"registeredModelIds"] addObject:modelId];
+    [[self mutableSetValueForKey:@"registeredModelIds"] addObject:modelId];
 }
-
 
 - (void)unregisterForTasksForModelWithId:(NSString*)modelId {
     // TODO: update in data store
-    [[self mutableArrayValueForKey:@"registeredModelIds"] removeObject:modelId];
+    [[self mutableSetValueForKey:@"registeredModelIds"] removeObject:modelId];
 }
 
 - (void)checkForTasks {

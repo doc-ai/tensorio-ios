@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The model ids that are being tracked for tasks against a TensorIO-Flea repository
  */
 
-@property (readonly) NSArray<NSString*> *registeredModelIds;
+@property (readonly) NSSet<NSString*> *registeredModelIds;
 
 /**
  * Informs the manager to check for tasks for a model with a given id whenever
