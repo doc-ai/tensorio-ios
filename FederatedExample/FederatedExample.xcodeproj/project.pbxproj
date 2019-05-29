@@ -11,6 +11,9 @@
 		CFD8D77A36D8D7900730D734 /* Pods_FederatedExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */; };
 		E33CC3A72299BB70007F4A7B /* DockerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E33CC3A62299BB70007F4A7B /* DockerTests.mm */; };
 		E33CC3AA2299CBD3007F4A7B /* build_scripts in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3A92299CBD2007F4A7B /* build_scripts */; };
+		E33CC3BF229DAA89007F4A7B /* TIOMockModelBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E33CC3BE229DAA89007F4A7B /* TIOMockModelBundle.mm */; };
+		E33CC3C1229DAF8C007F4A7B /* test.tiobundle in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3C0229DAF8C007F4A7B /* test.tiobundle */; };
+		E33CC3C3229DC35A007F4A7B /* mock-training-export in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3C2229DC35A007F4A7B /* mock-training-export */; };
 		E3CC3452229874440017462D /* TIOFleaJobUploadTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */; };
 		E3CC34542298787A0017462D /* test-job-results.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3CC3453229878790017462D /* test-job-results.zip */; };
 		E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */; };
@@ -39,6 +42,7 @@
 		E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */; };
 		E3E16DDF229477620087197A /* test.tiotask in Resources */ = {isa = PBXBuildFile; fileRef = E3E16DDE229477620087197A /* test.tiotask */; };
 		E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */; };
+		E3E43E7E229E28BF005706E9 /* TIOMockFederatedManagerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3E43E7D229E28BF005706E9 /* TIOMockFederatedManagerDelegate.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,10 @@
 		E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E33CC3A62299BB70007F4A7B /* DockerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DockerTests.mm; sourceTree = "<group>"; };
 		E33CC3A92299CBD2007F4A7B /* build_scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build_scripts; sourceTree = SOURCE_ROOT; };
+		E33CC3BD229DAA89007F4A7B /* TIOMockModelBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TIOMockModelBundle.h; sourceTree = "<group>"; };
+		E33CC3BE229DAA89007F4A7B /* TIOMockModelBundle.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOMockModelBundle.mm; sourceTree = "<group>"; };
+		E33CC3C0229DAF8C007F4A7B /* test.tiobundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test.tiobundle; sourceTree = "<group>"; };
+		E33CC3C2229DC35A007F4A7B /* mock-training-export */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "mock-training-export"; sourceTree = "<group>"; };
 		E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFleaJobUploadTests.mm; sourceTree = "<group>"; };
 		E3CC3453229878790017462D /* test-job-results.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "test-job-results.zip"; sourceTree = "<group>"; };
 		E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedManagerTests.mm; sourceTree = "<group>"; };
@@ -98,6 +106,8 @@
 		E3E16DDC229476190087197A /* TIOFederatedTaskBundleTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedTaskBundleTests.mm; sourceTree = "<group>"; };
 		E3E16DDE229477620087197A /* test.tiotask */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test.tiotask; sourceTree = "<group>"; };
 		E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedTaskBundleValidatorTests.mm; sourceTree = "<group>"; };
+		E3E43E7C229E28BF005706E9 /* TIOMockFederatedManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TIOMockFederatedManagerDelegate.h; sourceTree = "<group>"; };
+		E3E43E7D229E28BF005706E9 /* TIOMockFederatedManagerDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOMockFederatedManagerDelegate.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,8 +165,12 @@
 				E3D16AFC2295ED3500BA4346 /* TIOMockBatchDataSource.mm */,
 				E3D16B022295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.h */,
 				E3D16B032295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm */,
+				E3E43E7C229E28BF005706E9 /* TIOMockFederatedManagerDelegate.h */,
+				E3E43E7D229E28BF005706E9 /* TIOMockFederatedManagerDelegate.mm */,
 				E3D16AFD2295ED3500BA4346 /* TIOMockTrainableModel.h */,
 				E3D16AFF2295ED3500BA4346 /* TIOMockTrainableModel.mm */,
+				E33CC3BD229DAA89007F4A7B /* TIOMockModelBundle.h */,
+				E33CC3BE229DAA89007F4A7B /* TIOMockModelBundle.mm */,
 				E3D16B0C22972C2D00BA4346 /* MockURLSession.h */,
 				E3D16B0B22972C2D00BA4346 /* MockURLSession.m */,
 			);
@@ -170,13 +184,13 @@
 				E3E16DDA229473ED0087197A /* TIOFederatedTaskTests.mm */,
 				E3E16DE42294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm */,
 				E3D265932295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm */,
-				E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */,
 				E3D16B0922972B1400BA4346 /* TIOFleaStatusTest.mm */,
 				E3D16B1222977FAA00BA4346 /* TIOFleaTasksTests.mm */,
 				E3D16B1422984B1400BA4346 /* TIOFleaTaskTests.mm */,
 				E3D16B2222985E7C00BA4346 /* TIOFleaJobTests.mm */,
 				E3D16B1A2298561100BA4346 /* TIOFleaTaskDownloadTests.mm */,
 				E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */,
+				E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -219,8 +233,10 @@
 				E3D16B1C229857DA00BA4346 /* test.tiotask.zip */,
 				E3CC3453229878790017462D /* test-job-results.zip */,
 				E3E16DDE229477620087197A /* test.tiotask */,
+				E33CC3C0229DAF8C007F4A7B /* test.tiobundle */,
 				E3D2BCD62295BE75004493C4 /* model-tests */,
 				E3D2658D2294C13A0087DB31 /* task-tests */,
+				E33CC3C2229DC35A007F4A7B /* mock-training-export */,
 			);
 			path = FederatedExample;
 			sourceTree = "<group>";
@@ -322,6 +338,7 @@
 			files = (
 				E3D2BCDF2295C0FE004493C4 /* dog.jpg in Resources */,
 				E3E16D8622910BE80087197A /* LaunchScreen.storyboard in Resources */,
+				E33CC3C1229DAF8C007F4A7B /* test.tiobundle in Resources */,
 				E3CC34542298787A0017462D /* test-job-results.zip in Resources */,
 				E3D16B1D229857DA00BA4346 /* test.tiotask.zip in Resources */,
 				E3E16DDF229477620087197A /* test.tiotask in Resources */,
@@ -331,6 +348,7 @@
 				E3D2BCD72295BE75004493C4 /* model-tests in Resources */,
 				E3D2BCDE2295C0FE004493C4 /* cat.jpg in Resources */,
 				E3D2658E2294C13A0087DB31 /* task-tests in Resources */,
+				E33CC3C3229DC35A007F4A7B /* mock-training-export in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,12 +372,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FederatedExample/Pods-FederatedExample-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DSJSONSchemaValidation/DSJSONSchemaValidation.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DSJSONSchemaValidation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -459,7 +479,9 @@
 				E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */,
 				E3D16B042295ED8100BA4346 /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */,
 				E3D16B0D22972C2D00BA4346 /* MockURLSession.m in Sources */,
+				E33CC3BF229DAA89007F4A7B /* TIOMockModelBundle.mm in Sources */,
 				E3E16DDB229473ED0087197A /* TIOFederatedTaskTests.mm in Sources */,
+				E3E43E7E229E28BF005706E9 /* TIOMockFederatedManagerDelegate.mm in Sources */,
 				E3D265942295BD310087DB31 /* TIOFederatedTaskTrainerIntegrationTests.mm in Sources */,
 				E3D16B002295ED3500BA4346 /* TIOMockBatchDataSource.mm in Sources */,
 				E3E16DE52294BE0D0087197A /* TIOFederatedTaskBundleValidatorTests.mm in Sources */,
