@@ -72,6 +72,8 @@ NSString * TIOFrameworkVersion() {
     return @"0.8.0";
 }
 
+// MARK: -
+
 @implementation TIOFederatedManager
 
 - (instancetype)initWithClient:(TIOFleaClient*)client {
@@ -91,6 +93,7 @@ NSString * TIOFrameworkVersion() {
 
 - (void)registerForTasksForModelWithId:(NSString*)modelId {
     // TODO: update in data store
+    // TODO: don't duplicate
     [[self mutableArrayValueForKey:@"registeredModelIds"] addObject:modelId];
 }
 
@@ -388,7 +391,7 @@ NSString * TIOFrameworkVersion() {
     NSFileManager *fm = NSFileManager.defaultManager;
     NSError *fmError;
     
-    NSString *UUID = NSUUID.UUID.UUIDString;
+    NSString *UUID = job.jobId;
     NSURL *resultsDir = [[[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:UUID] URLByAppendingPathExtension:@"tioresults"];
     NSURL *checkpointsDir = [resultsDir URLByAppendingPathComponent:@"checkpoints"];
     NSURL *resultsJSONFile = [resultsDir URLByAppendingPathComponent:@"results.json"];
@@ -422,7 +425,7 @@ NSString * TIOFrameworkVersion() {
         @"taskParameters": @{
             @"numEpochs": @(task.epochs),
             @"batchSize": @(task.batchSize),
-            @"placeholders": task.placeholders == nil ? @{} : task.placeholders
+            @"placeholders": task.placeholders == nil ? NSNull.null : task.placeholders
         },
         @"deviceInfo": @{
             @"deviceType": TIODeviceInfo(),
