@@ -22,4 +22,29 @@
 
 @implementation TIOMockFederatedManagerDelegate
 
+- (instancetype)initWithExpectation:(XCTestExpectation*)expectation {
+    if ((self=[super init])) {
+        _expectation = expectation;
+    }
+    return self;
+}
+
+// MARK: - Delegate Methods
+
+- (void)federatedManager:(TIOFederatedManager*)manager willBeginProcessingTaskWithId:(NSString*)taskId {
+
+}
+
+- (void)federatedManager:(TIOFederatedManager *)manager didCompleteTaskWithId:(NSString*)taskId {
+    [self.expectation fulfill];
+}
+
+- (void)federatedManager:(TIOFederatedManager*)manager didBeginAction:(TIOFederatedManagerAction)action {
+
+}
+
+- (void)federatedManager:(TIOFederatedManager*)manager didFailWithError:(NSError*)error forAction:(TIOFederatedManagerAction)action {
+    [self.expectation fulfill];
+}
+
 @end
