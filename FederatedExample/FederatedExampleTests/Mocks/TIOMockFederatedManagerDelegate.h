@@ -17,7 +17,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-//  TODO: And track delegate calls
 
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
@@ -35,6 +34,33 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (instancetype)initWithExpectation:(XCTestExpectation*)expectation;
+
+/**
+ * Number of times federatedManager:willBeginProcessingTaskWithId: is called
+ * for some taskId.
+ */
+
+- (NSUInteger)willBeginProcessingTaskWithIdCountForTaskId:(NSString*)taskId;
+
+/**
+ * Number of times federatedManager:didCompleteTaskWithId: is called for some
+ * taskId.
+ */
+
+- (NSUInteger)didCompleteTaskWithIdCountForTaskId:(NSString*)taskId;
+
+/**
+ * Number of times federatedManager:didBeginAction: is called for some action.
+ */
+
+- (NSUInteger)didBeginActionCountForAction:(TIOFederatedManagerAction)action;
+
+/**
+ * Number of times federatedManager:didFailWithError:forAction: is called for
+ * some action.
+ */
+
+- (NSUInteger)didFailWithErrorCountForAction:(TIOFederatedManagerAction)action;
 
 @end
 

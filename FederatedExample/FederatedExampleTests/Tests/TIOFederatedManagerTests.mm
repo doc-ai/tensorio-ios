@@ -17,6 +17,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+//  TODO: More comprehensive failure testing
+//  TODO: Verify changes to the local filesystem as tasks are executed
 
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
@@ -123,9 +125,39 @@
     [manager registerForTasksForModelWithId:@"tio:///models/1/hyperparameters/1/checkpoint/1"];
     [manager checkForTasks];
     
-    // TODO: Ensure all expected mock methods are called
+    // Wait for the federated activity to complete
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    
+    // Ensure expected mock data source provider methods are called
+    
+    XCTAssert([dataSourceProvider dataSourceForTaskWithIdCountForTaskId:@"tio:///tasks/1"] == 1);
+    XCTAssert([dataSourceProvider modelBundleForModelWithIdCountForModelId:@"tio:///models/1/hyperparameters/1/checkpoint/1"] == 1);
+    
+    // Ensure expected mock delegate methods are called
+    
+    XCTAssert([delegate willBeginProcessingTaskWithIdCountForTaskId:@"tio:///tasks/1"] == 1);
+    XCTAssert([delegate didCompleteTaskWithIdCountForTaskId:@"tio:///tasks/1"] == 1);
+    
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerGetTasks] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerGetTask] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerDownloadTaskBundle] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerUnpackageTaskBundle] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerStartTask] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerLoadTask] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerLoadModel] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerTrainModel] == 1);
+    XCTAssert([delegate didBeginActionCountForAction:TIOFederatedManagerUploadTaskResults] == 1);
+    
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerGetTasks] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerGetTask] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerDownloadTaskBundle] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerUnpackageTaskBundle] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerStartTask] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerLoadTask] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerLoadModel] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerTrainModel] == 0);
+    XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerUploadTaskResults] == 0);
 }
 
 @end
