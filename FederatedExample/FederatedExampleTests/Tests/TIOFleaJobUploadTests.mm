@@ -33,7 +33,7 @@
 - (void)tearDown { }
 
 - (void)testUploadJobResultWithFileSucceeds {
-     XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for upload response"];
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for upload response"];
     
     NSURL *sourceURL = [NSBundle.mainBundle URLForResource:@"test-job-results" withExtension:@"zip"];
     NSURL *destinationURL = [NSURL URLWithString:@"http://foo.com/upload.zip"];

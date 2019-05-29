@@ -19,7 +19,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SSZipArchive/SSZipArchive.h>
 
 @class TIOMRStatus;
 @class TIOMRModels;
