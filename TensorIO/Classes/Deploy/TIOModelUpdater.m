@@ -254,14 +254,14 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         NSArray *contents = [fm contentsOfDirectoryAtPath:destinationURL.path error:&fmError];
         
         if ( contents == nil || fmError ) {
-            NSLog(@"Zipped model bundle at :%@ contains no contents at: %@", sourceURL, destinationURL);
+            NSLog(@"Zipped model bundle at: %@ contains no contents at: %@", sourceURL, destinationURL);
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
             callback(nil, error);
             return;
         }
         
         if ( contents.count != 1 ) {
-            NSLog(@"Zipped model bundle at :%@ contains incorrect contents at: %@, contents: %@", sourceURL, destinationURL, contents);
+            NSLog(@"Zipped model bundle at: %@ contains incorrect contents at: %@, contents: %@", sourceURL, destinationURL, contents);
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
             callback(nil, error);
             return;

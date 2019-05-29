@@ -18,36 +18,52 @@
 //  limitations under the License.
 //
 
-
 #import <Foundation/Foundation.h>
 #import <TensorIO/TensorIO-umbrella.h>
 #import "TIOMockBatchDataSource.h"
+#import "TIOMockModelBundle.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- * Vends mock data sources to a federated manager and tracks how often requests
- * for a data source for a task are requested.
+ * Vends mock data sources and model bundles to a federated manager and tracks
+ * how often requests for a data source or bundle are requested.
  */
 
 @interface TIOMockFederatedManagerDataSourceProvider : NSObject <TIOFederatedManagerDataSourceProvider>
 
-@property NSDictionary<NSString*,TIOMockBatchDataSource*> *dataSources;
+@property (readonly) NSDictionary<NSString*,TIOMockBatchDataSource*> *dataSources;
+@property (readonly) NSDictionary<NSString*,TIOMockModelBundle*> *modelBundles;
 
 /**
- * Tracks number of times dataSourceForTaskWithId: has been called for a
+ * Tracks number of times federatedManager:dataSourceForTaskWithId: has been called for a
  * particular task.
  */
 
-@property NSDictionary<NSString*,NSNumber*> *dataSourceForTaskWithIdCount;
+@property (readonly) NSDictionary<NSString*,NSNumber*> *dataSourceForTaskWithIdCount;
 - (NSUInteger)dataSourceForTaskWithIdCountForTaskId:(NSString*)taskIdentifier;
 
-- (instancetype)initWithDataSource:(TIOMockBatchDataSource*)dataSource taskIdentifier:(NSString*)tastaskIdentifierkId NS_DESIGNATED_INITIALIZER;
+/**
+ * Tracks the number of times federatedManager:modelBundleForId: has been called
+ * for a particular model bundle.
+ */
 
-- (instancetype)init NS_UNAVAILABLE;
+@property (readonly) NSDictionary<NSString*,NSNumber*> *modelBundleForModelWithIdCount;
+- (NSUInteger)modelBundleForModelWithIdCountForModelId:(NSString*)modelIdentifier;
 
-- (void)addDataSource:(TIOMockBatchDataSource*)dataSource forTaskId:(NSString*)taskId;
-- (void)removeDataSource:(TIOMockBatchDataSource*)dataSource forTaskId:(NSString*)taskId;
+/**
+ * Sets and remove data sources
+ */
+
+- (void)setDataSource:(TIOMockBatchDataSource*)dataSource forTaskId:(NSString*)taskId;
+- (void)removeDataSourceForTaskId:(NSString*)taskId;
+
+/**
+ * Sets and removes model bundles
+ */
+
+- (void)setModelBundle:(TIOMockModelBundle*)modelBundel forModelId:(NSString*)modelId;
+- (void)removeModelBundleForModelId:(NSString*)modelId;
 
 @end
 

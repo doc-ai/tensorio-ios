@@ -22,7 +22,60 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ * Actions taken by the federated manager. The manager will inform the delegate
+ * any time it begins one of these actions or encounters an error during one
+ * of them
+ */
+
+typedef enum : NSUInteger {
+    TIOFederatedManagerGetTasks,
+    TIOFederatedManagerGetTask,
+    TIOFederatedManagerDownloadTaskBundle,
+    TIOFederatedManagerUnpackageTaskBundle,
+    TIOFederatedManagerStartTask,
+    TIOFederatedManagerLoadTask,
+    TIOFederatedManagerLoadModel,
+    TIOFederatedManagerTrainModel,
+    TIOFederatedManagerUploadTaskResults
+} TIOFederatedManagerAction;
+
+@class TIOFederatedManager;
+
 @protocol TIOFederatedManagerDelegate <NSObject>
+
+@optional
+
+/**
+ * Informs the delegate that it has begun some action. This method is optional.
+ * This method may be called on a separate thread.
+ */
+
+// TODO: Make sure the taskId is passed to the delegate as well, if available
+
+- (void)federatedManager:(TIOFederatedManager*)manager didBeginAction:(TIOFederatedManagerAction)action;
+
+/**
+ * Informs the delegate that the manager will begin processing a task.
+ */
+
+- (void)federatedManager:(TIOFederatedManager*)manager willBeginProcessingTaskWithId:(NSString*)taskId;
+
+/**
+ * Informs the delegate that the manager has successfully finished processing
+ * a task.
+ */
+
+- (void)federatedManager:(TIOFederatedManager *)manager didCompleteTaskWithId:(NSString*)taskId;
+
+/**
+ * Informs the delegate that some error occurred. This method is optional.
+ * This method may be called on a separate thread.
+ */
+
+// TODO: Make sure the taskId is passed to the delegate as well, if available
+
+- (void)federatedManager:(TIOFederatedManager*)manager didFailWithError:(NSError*)error forAction:(TIOFederatedManagerAction)action;
 
 @end
 

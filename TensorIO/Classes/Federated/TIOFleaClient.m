@@ -265,7 +265,9 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
         return nil;
     }
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:destinationURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:destinationURL];
+    [request addValue:@"application/zip" forHTTPHeaderField:@"Content-type"];
+    
     NSURLSessionUploadTask *task = [self.URLSession uploadTaskWithRequest:request fromFile:sourceURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {

@@ -19,11 +19,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SSZipArchive/SSZipArchive.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol TIOFederatedManagerDataSourceProvider;
 @protocol TIOFederatedManagerDelegate;
+
+@class TIOFleaClient;
 
 /**
  * Allows users to register for or request federated tasks from a TensorIO Flea
@@ -42,11 +45,31 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TIOFederatedManager : NSObject
 
 /**
- * A convenience initializer for instantiating a federated manager with a data
- * source provider and delegate;
+ * The designated initializer. You must also set a dataSourceProvider prior to
+ * registering for or checking for tasks with manager.
  */
 
-- (instancetype)initWithDataSourceProvider:(id<TIOFederatedManagerDataSourceProvider>)dataSourceProvider delegate:(nullable id<TIOFederatedManagerDelegate>)delegate;
+- (instancetype)initWithClient:(TIOFleaClient*)client NS_DESIGNATED_INITIALIZER;
+
+/**
+ * A convenience initializer for instantiating a federated manager with a data
+ * source provider and delegate as well as the required client.
+ */
+
+- (instancetype)initWithClient:(TIOFleaClient*)client dataSourceProvider:(id<TIOFederatedManagerDataSourceProvider>)dataSourceProvider delegate:(nullable id<TIOFederatedManagerDelegate>)delegate;
+
+/**
+ * Use the designated initializer or one of the convenience initializers.
+ */
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/**
+ * The Flea (Federated Learning) client responsible for the underlying
+ * client-server communications.
+ */
+
+@property (readonly) TIOFleaClient *client;
 
 /**
  * The data source provider is responsible for vending instances of
@@ -66,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
  * The model ids that are being tracked for tasks against a TensorIO-Flea repository
  */
 
-@property (readonly) NSArray<NSString*> *registeredModelIds;
+@property (readonly) NSSet<NSString*> *registeredModelIds;
 
 /**
  * Informs the manager to check for tasks for a model with a given id whenever

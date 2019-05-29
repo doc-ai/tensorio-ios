@@ -19,6 +19,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SSZipArchive/SSZipArchive.h>
+
 #import "TIOModelBundleValidator.h"
 
 @class TIOModelRepository;

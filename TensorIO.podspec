@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     ss.source_files = 'TensorIO/Classes/Core/**/*'
     ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_CORE=1'
+      'GCC_PREPROCESSOR_DEFINITIONS' => "TIO_CORE=1 TIO_VERSION=#{s.version}"
     }
   end
   
@@ -87,10 +87,11 @@ Pod::Spec.new do |s|
     }
   end
 
-  # The federated subspect contains federated learning classes and flea client side code
+  # The federated subspec contains federated learning classes and flea client side code
 
   s.subspec 'Federated' do |ss|
     ss.dependency 'TensorIO/Core'
+    ss.dependency 'SSZipArchive'
 
     ss.source_files = 'TensorIO/Classes/Federated/**/*'
     ss.resource_bundles = { 

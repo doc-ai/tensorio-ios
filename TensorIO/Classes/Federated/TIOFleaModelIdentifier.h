@@ -1,5 +1,5 @@
 //
-//  TIOMRModelIdentifier.h
+//  TIOFleaModelIdentifier.h
 //  TensorIO
 //
 //  Created by Phil Dow on 5/15/19.
@@ -19,6 +19,7 @@
 //
 
 //  TODO: Unify handling of TIO Model Identifiers and move to core (#106)
+//  This duplicates TIOMRModelIdentifier
 
 #import <Foundation/Foundation.h>
 
@@ -33,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  * model-hyperparameter configuration at a certain point in its training.
  */
 
-@interface TIOMRModelIdentifier : NSObject
+@interface TIOFleaModelIdentifier : NSObject
 
 @property (readonly) NSString *modelId;
 @property (readonly) NSString *hyperparametersId;

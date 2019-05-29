@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol TIOBatchDataSource;
 
+@class TIOFederatedManager;
+@class TIOModelBundle;
+
 @protocol TIOFederatedManagerDataSourceProvider <NSObject>
 
 /**
@@ -32,7 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
  * may also return itself as the canonical data source.
  */
 
-- (id<TIOBatchDataSource>)dataSourceForTaskWithId:(NSString*)taskIdentifier;
+- (id<TIOBatchDataSource>)federatedManager:(TIOFederatedManager*)manager dataSourceForTaskWithId:(NSString*)taskIdentifier;
+
+/**
+ * Returns the model bundle for a model id.
+ */
+
+- (nullable TIOModelBundle*)federatedManager:(TIOFederatedManager*)manager modelBundleForModelWithId:(NSString*)modelIdentifier;
 
 @end
 
