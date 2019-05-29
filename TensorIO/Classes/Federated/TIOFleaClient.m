@@ -103,9 +103,18 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
 
 @implementation TIOFleaClient
 
+// TODO: authentication (#120)
+
 - (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
     if ((self=[super init])) {
-        _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
+        NSURLSessionConfiguration *configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
+        configuration.HTTPAdditionalHeaders = @{
+            @"Authorization": @"Bearer ClientToken"
+        };
+        
+        _URLSession = [NSURLSession sessionWithConfiguration:configuration];
+        // _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
+        
         _baseURL = URL;
     }
     return self;

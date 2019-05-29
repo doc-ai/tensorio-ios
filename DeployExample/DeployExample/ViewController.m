@@ -42,15 +42,15 @@
     // Copy the testsetup.tiobundle three times to some directory, rename it to h1c1.tiobundle.zip, h2c1.tiobundle.zip and h2c2.tiobundle.zip
     // Then run python -m SimpleHTTPServer from that directory
     
-//    NSString *modelId = @"TestModel-1558049870";
+//    NSString *modelId = @"TestModel-1559154664";
 //    NSString *hyp1Id = @"hyperparameters-1";
 //    NSString *hyp2Id = @"hyperparameters-2";
 //    NSString *checkpoint1 = @"checkpoint-1";
 //    NSString *checkpoint2 = @"checkpoint-2";
     
-//    NSURL *URL = [NSURL URLWithString:@"http://localhost:8081/v1/repository"];
+//    NSURL *URL = [NSURL URLWithString:@"https://tio-models-test.dev.docai.beer/rest/v1/repository"];
 //    self.repository = [[TIOModelRepository alloc] initWithBaseURL:URL session:nil];
-    
+//
 //    [self.repository GETHealthStatus:^(TIOMRStatus * _Nullable response, NSError * _Nonnull error) {
 //        if (error) {
 //            NSLog(@"There was an error");

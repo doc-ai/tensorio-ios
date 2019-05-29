@@ -29,6 +29,46 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    NSString *taskId = @"b7";
+    
+//    NSURL *URL = [NSURL URLWithString:@"https://flea-test.dev.docai.beer/rest/v1/flea"];
+//    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:URL session:nil];
+
+//    [client GETHealthStatus:^(TIOFleaStatus * _Nullable response, NSError * _Nonnull error) {
+//        if (error) {
+//            NSLog(@"There was an error, %@", error);
+//            return;
+//        }
+//
+//        NSLog(@"HEALTH STATUS: %@", response);
+//    }];
+    
+//    [client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"There was an error, %@", error);
+//            return;
+//        }
+//
+//        NSLog(@"Tasks are: %@", tasks);
+//    }];
+
+//    [client GETTaskWithTaskId:taskId callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"There was an error, %@", error);
+//            return;
+//        }
+//
+//        NSLog(@"Task is: %@", task);
+//    }];
+
+//    [client GETStartTaskWithTaskId:taskId callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+//        if (error) {
+//            NSLog(@"There was an error, %@", error);
+//            return;
+//        }
+//
+//        NSLog(@"Job is: %@", job);
+//    }];
 }
 
 @end
