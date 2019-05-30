@@ -106,13 +106,12 @@
     [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
         [expectation fulfill];
         
-        XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
-        
         XCTAssertFalse(updateAvailable);
     }];
     
     [self waitForExpectations:@[expectation] timeout:1.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)testCheckForUpdateIsTrueWhenUpgradeToIsNilButCheckpointIsNotLatest {
@@ -136,13 +135,12 @@
     [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
         [expectation fulfill];
         
-        XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
-        
         XCTAssertTrue(updateAvailable);
     }];
     
     [self waitForExpectations:@[expectation] timeout:1.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)testCheckForUpdateIsTrueWhenUpgradeToIsNotNil {
@@ -166,13 +164,12 @@
     [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
         [expectation fulfill];
         
-        XCTAssert(session.responses.count == 0); // queue exhausted
         XCTAssertNil(error);
-        
         XCTAssertTrue(updateAvailable);
     }];
     
     [self waitForExpectations:@[expectation] timeout:1.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 // MARK: -
@@ -193,14 +190,15 @@
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test2 {
@@ -225,14 +223,15 @@
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test3 {
@@ -261,14 +260,15 @@
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test4 {
@@ -310,14 +310,15 @@
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test5 {
@@ -360,7 +361,7 @@
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         [expectation fulfill];
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        
         XCTAssertNil(error);
         XCTAssertNotNil(updatedBundleURL);
         XCTAssertTrue(updated);
@@ -372,6 +373,7 @@
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test6 {
@@ -400,14 +402,15 @@
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test7 {
@@ -446,14 +449,15 @@
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test8 {
@@ -505,14 +509,15 @@
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test9 {
@@ -565,7 +570,7 @@
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         [expectation fulfill];
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        
         XCTAssertNil(error);
         XCTAssertNotNil(updatedBundleURL);
         XCTAssertTrue(updated);
@@ -577,6 +582,7 @@
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 @end

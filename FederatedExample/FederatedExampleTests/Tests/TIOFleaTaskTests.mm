@@ -83,8 +83,10 @@
         XCTAssertEqualObjects(task.checkpointLink, [NSURL URLWithString:@"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"]);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskURL {
@@ -120,8 +122,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskWithoutHyperparametersIdFails {
@@ -146,8 +150,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskWithoutCheckpointIdFails {
@@ -172,8 +178,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskWithoutTaskIdFails {
@@ -198,8 +206,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskWithoutDeadlineIdFails {
@@ -224,8 +234,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskWithoutActiveFails {
@@ -250,8 +262,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskWithoutLinkFails {
@@ -276,8 +290,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETTaskWithoutCheckpointLinkFails {
@@ -302,8 +318,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 // MARK: -
@@ -322,8 +340,10 @@
         XCTAssertNil(task);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 @end

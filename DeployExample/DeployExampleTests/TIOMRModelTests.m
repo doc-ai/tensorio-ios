@@ -50,16 +50,20 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(model);
+        
         XCTAssertEqualObjects(model.modelId, @"happy-face");
         XCTAssertEqualObjects(model.details, @"Accepts images of an individual's face and infers their emotion from it.");
         XCTAssertEqualObjects(model.canonicalHyperparameters, @"batch-8-et-v2-140-224-ing-rate-1e-5");
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETModelWithoutModelIdFails {
@@ -73,13 +77,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(model);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETModelWithoutModelDetailsFails {
@@ -93,13 +100,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(model);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETModelWithoutCanonicalHyperparametersSucceeds {
@@ -113,16 +123,20 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(model);
+        
         XCTAssertEqualObjects(model.modelId, @"happy-face");
         XCTAssertEqualObjects(model.details, @"Accepts images of an individual's face and infers their emotion from it.");
         XCTAssertNil(model.canonicalHyperparameters);
-        [expectation fulfill];
     }];
     
     XCTAssert(task.calledResume);
-    [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETModelURL {
@@ -148,13 +162,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(model);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETModelWithoutModelFails {
@@ -167,13 +184,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(model);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 // MARK: -
@@ -186,13 +206,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(model);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHealthStatusWithoutDataFails {
@@ -203,13 +226,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(model);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 @end

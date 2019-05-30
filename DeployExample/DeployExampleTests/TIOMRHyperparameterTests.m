@@ -57,8 +57,11 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(hyperparameter);
+        
         XCTAssertEqualObjects(hyperparameter.modelId, @"happy-face");
         XCTAssertEqualObjects(hyperparameter.hyperparametersId, @"batch-9-2-0-1-5");
         XCTAssertEqualObjects(hyperparameter.upgradeTo, @"batch-9-2-0-1-6");
@@ -69,11 +72,12 @@
             @"evaluation-set-entropy-cutoff": @"2.0"
         }));
         XCTAssertEqualObjects(hyperparameter.canonicalCheckpoint, @"model.ckpt-321312");
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHyperparameterURL {
@@ -112,8 +116,11 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(hyperparameter);
+        
         XCTAssertEqualObjects(hyperparameter.modelId, @"happy-face");
         XCTAssertEqualObjects(hyperparameter.hyperparametersId, @"batch-9-2-0-1-5");
         XCTAssertNil(hyperparameter.upgradeTo);
@@ -124,11 +131,12 @@
             @"evaluation-set-entropy-cutoff": @"2.0"
         }));
         XCTAssertEqualObjects(hyperparameter.canonicalCheckpoint, @"model.ckpt-321312");
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHyperparameterWithoutModelIdFails {
@@ -149,13 +157,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(hyperparameter);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHyperparameterWithouthyperparametersIdFails {
@@ -176,13 +187,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(hyperparameter);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHyperparameterWithoutUpgradeToSucceeds {
@@ -203,8 +217,11 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(hyperparameter);
+        
         XCTAssertEqualObjects(hyperparameter.modelId, @"happy-face");
         XCTAssertEqualObjects(hyperparameter.hyperparametersId, @"batch-9-2-0-1-5");
         XCTAssertNil(hyperparameter.upgradeTo);
@@ -215,11 +232,12 @@
             @"evaluation-set-entropy-cutoff": @"2.0"
         }));
         XCTAssertEqualObjects(hyperparameter.canonicalCheckpoint, @"model.ckpt-321312");
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHyperparameterWithoutHyperparametersFails {
@@ -235,13 +253,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(hyperparameter);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHyperparameterWithoutCanonicalCheckpointSucceeds {
@@ -262,8 +283,11 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(hyperparameter);
+        
         XCTAssertEqualObjects(hyperparameter.modelId, @"happy-face");
         XCTAssertEqualObjects(hyperparameter.hyperparametersId, @"batch-9-2-0-1-5");
         XCTAssertEqualObjects(hyperparameter.upgradeTo, @"batch-9-2-0-1-6");
@@ -273,11 +297,12 @@
             @"training-set-entropy-cutoff": @"2.0",
             @"evaluation-set-entropy-cutoff": @"2.0"
         }));
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 // MARK: -
@@ -290,13 +315,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(hyperparameter);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHyperparameterWithoutDataFails {
@@ -307,13 +335,16 @@
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETHyperparameterForModelWithId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(hyperparameter);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 // MARK: -
