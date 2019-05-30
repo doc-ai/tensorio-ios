@@ -106,4 +106,28 @@
     [self waitForExpectations:@[expectation] timeout:1.0];
 }
 
+- (void)testPOSTErrorMessage {
+    XCTestExpectation *expectation1 = [[XCTestExpectation alloc] initWithDescription:@"Wait for start task response"];
+    XCTestExpectation *expectation2 = [[XCTestExpectation alloc] initWithDescription:@"Wait for post error response"];
+    NSString *taskId = @"b7"; // From mocks script
+    
+    [self.client GETStartTaskWithTaskId:taskId callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+        [expectation1 fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertNotNil(job);
+
+        NSLog(@"Job is: %@", job);
+        
+        [self.client POSTErrorMessage:@"Some error message" taskId:taskId jobId:job.jobId callback:^(BOOL success, NSError * _Nullable error) {
+            [expectation2 fulfill];
+        
+            XCTAssertNil(error);
+            XCTAssertTrue(success);
+        }];
+    }];
+    
+    [self waitForExpectations:@[expectation1,expectation2] timeout:1.0];
+}
+
 @end
