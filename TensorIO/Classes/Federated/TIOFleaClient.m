@@ -25,19 +25,9 @@
 #import "TIOFleaJob.h"
 #import "TIOFleaTaskDownload.h"
 #import "TIOFleaJobUpload.h"
+#import "TIOFleaErrors.h"
 
-static NSString *TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
-
-static NSInteger TIOFleaURLSessionErrorCode = 0;
-static NSInteger TIOFleaNoDataErrorCode = 1;
-static NSInteger TIOFleaJSONError = 2;
-static NSInteger TIOFleaDeserializationError = 3;
-
-static NSInteger TIOFleaHealthStatusNotServingError = 100;
-static NSInteger TIOFleaJobStatusNotApprovedError = 200;
-static NSInteger TIOFleaDownloadError = 300;
-static NSInteger TIOFleaUploadError = 400;
-static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
+static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 /**
  * Parses a JSON response from a tensorio flea repository
@@ -67,7 +57,14 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
     
     if ( requestError != nil ) {
         NSLog(@"Request error for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLSessionErrorCode userInfo:nil];
+        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLRequestErrorCode userInfo:nil];
+        return nil;
+    }
+    
+    if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+        NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
+        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
         return nil;
     }
     
@@ -86,11 +83,16 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
         return nil;
     }
     
-    id object = [[_klass alloc] initWithJSON:JSON];
+    NSError *parseError;
+    id object = [[_klass alloc] initWithJSON:JSON error:&parseError];
     
     if ( object == nil ) {
         NSLog(@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDeserializationError userInfo:nil];
+        if ( parseError != nil ) {
+            *error = parseError;
+        } else {
+            *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDeserializationError userInfo:nil];
+        }
         return nil;
     }
     
@@ -105,10 +107,20 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
 
 - (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
     if ((self=[super init])) {
+        [self acquireClientId];
          _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
         _baseURL = URL;
     }
     return self;
+}
+
+- (void)acquireClientId {
+    _clientId = [NSUserDefaults.standardUserDefaults stringForKey:TIOUserDefaultsClientIdKey];
+    
+    if ( _clientId == nil ) {
+        _clientId = NSUUID.UUID.UUIDString;
+        [NSUserDefaults.standardUserDefaults setObject:_clientId forKey:TIOUserDefaultsClientIdKey];
+    }
 }
 
 // MARK: -

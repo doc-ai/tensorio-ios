@@ -22,7 +22,7 @@
 
 @interface ViewController ()
 
-@property TIOModelRepository *repository;
+@property TIOModelRepositoryClient *repository;
 
 @end
 
@@ -59,7 +59,7 @@
     
     NSURLSession *URLSession = [NSURLSession sessionWithConfiguration:configuration];
     
-    self.repository = [[TIOModelRepository alloc] initWithBaseURL:URL session:URLSession];
+    self.repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:URL session:URLSession];
     
     // Begin Tests
     

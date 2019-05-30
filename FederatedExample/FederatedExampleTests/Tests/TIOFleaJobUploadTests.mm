@@ -51,8 +51,10 @@
         XCTAssert(upload.status == TIOFleaJobUploadStatusSuccess);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testUploadJobResultWithErrorFails {
@@ -71,8 +73,10 @@
         XCTAssertNil(upload);
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testUploadJobResultWithoutValidSourceFileFails {
@@ -91,8 +95,10 @@
         XCTAssertNil(upload);
     }];
     
-    XCTAssertNil(task);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssertNil(task);
 }
 
 @end

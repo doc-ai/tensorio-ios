@@ -1,5 +1,5 @@
 //
-//  TIOModelRepository.h
+//  TIOModelRepositoryClient.h
 //  TensorIO
 //
 //  Created by Philip Dow on 7/6/18.
@@ -33,13 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Encapsulates requests to a TensorIO model repository, allowing users to
- * manage deployment of TensorIO models.
+ * manage deployment of TensorIO models. You should not need to call client
+ * methods yourself but can instead use the `TIOModelUpdater` class.
  *
  * All repository HTTP requests are run on a background thread and
  * execute their callbacks on a background thread.
  */
 
-@interface TIOModelRepository : NSObject
+@interface TIOModelRepositoryClient : NSObject
 
 /**
  * The base URL of the model repository
@@ -54,11 +55,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSURLSession *URLSession;
 
 /**
+ * A unique ID associated with the client. Will be regenerated any time it is
+ * not available, for example, if the client application is re-installed. The
+ * unique ID is shared with the `TIOFleaClient` in the Federated module.
+ */
+
+ @property (readonly) NSString *clientId;
+
+/**
  * Initializes a model repository with a base URL
  *
- * You may inject your own URL Session into the model respository object for
- * custom request handling and downloads, but this behavior exists in order to
- * test the object and passing `nil` is sufficient.
+ * You may inject your own URL Session with a custom session configuration into
+ * the model respository object for custom request handling and downloads, but
+ * this behavior exists in order to test the object and passing `nil` is
+ * sufficient.
  */
 
 - (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession NS_DESIGNATED_INITIALIZER;

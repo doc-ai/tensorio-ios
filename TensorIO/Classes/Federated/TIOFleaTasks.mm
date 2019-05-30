@@ -19,24 +19,28 @@
 //
 
 #import "TIOFleaTasks.h"
+#import "TIOFleaErrors.h"
 
 @implementation TIOFleaTasks
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"startTaskId"] == nil || ![JSON[@"startTaskId"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"startTaskId", JSON);
             return nil;
         } else {
             _startTaskId = JSON[@"startTaskId"];
         }
         
         if ( JSON[@"maxItems"] == nil || ![JSON[@"maxItems"] isKindOfClass:NSNumber.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"maxItems", JSON);
             return nil;
         } else {
             _maxItems = ((NSNumber*)JSON[@"maxItems"]).unsignedIntegerValue;
         }
         
         if ( JSON[@"taskIds"] == nil || ![JSON[@"taskIds"] isKindOfClass:NSArray.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"taskIds", JSON);
             return nil;
         } else {
             _taskIds = JSON[@"taskIds"];

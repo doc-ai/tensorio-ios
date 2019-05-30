@@ -85,6 +85,95 @@
 
 // MARK: -
 
+- (void)testCheckForUpdateIsFalseWhenUpgradeToIsNilAndCheckpointIsLatest {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update"];
+    
+    NSDictionary *GETHyperParameterResponse = @{
+        @"modelId": self.modelId,
+        @"hyperparametersId": self.hyperparametersId,
+        @"upgradeTo": NSNull.null,
+        @"hyperparameters": @{},
+        @"canonicalCheckpoint": self.checkpointId
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETHyperParameterResponse
+    ]];
+    
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
+    
+    [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertFalse(updateAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:1.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
+}
+
+- (void)testCheckForUpdateIsTrueWhenUpgradeToIsNilButCheckpointIsNotLatest {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update"];
+    
+    NSDictionary *GETHyperParameterResponse = @{
+        @"modelId": self.modelId,
+        @"hyperparametersId": self.hyperparametersId,
+        @"upgradeTo": NSNull.null,
+        @"hyperparameters": @{},
+        @"canonicalCheckpoint": self.canonicalCheckpoint
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETHyperParameterResponse
+    ]];
+    
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
+    
+    [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertTrue(updateAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:1.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
+}
+
+- (void)testCheckForUpdateIsTrueWhenUpgradeToIsNotNil {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update"];
+    
+    NSDictionary *GETHyperParameterResponse = @{
+        @"modelId": self.modelId,
+        @"hyperparametersId": self.hyperparametersId,
+        @"upgradeTo": self.upgradeTo,
+        @"hyperparameters": @{},
+        @"canonicalCheckpoint": self.canonicalCheckpoint
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETHyperParameterResponse
+    ]];
+    
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
+    
+    [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertTrue(updateAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:1.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
+}
+
+// MARK: -
+
 - (void)test1 {
     // GET Hyperparameter -> Error
     // Error, No Update
@@ -97,18 +186,19 @@
         GETHyperParameterResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test2 {
@@ -129,18 +219,19 @@
         GETHyperParameterResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test3 {
@@ -165,18 +256,19 @@
         GETCheckpointResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test4 {
@@ -214,18 +306,19 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test5 {
@@ -263,12 +356,12 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         [expectation fulfill];
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        
         XCTAssertNil(error);
         XCTAssertNotNil(updatedBundleURL);
         XCTAssertTrue(updated);
@@ -280,6 +373,7 @@
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test6 {
@@ -304,18 +398,19 @@
         GETHyperParameterResponse2
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test7 {
@@ -350,18 +445,19 @@
         GETCheckpointResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test8 {
@@ -409,18 +505,19 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(updatedBundleURL);
         XCTAssertFalse(updated);
-        [expectation fulfill];
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 - (void)test9 {
@@ -468,12 +565,12 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
         [expectation fulfill];
-        XCTAssert(session.responses.count == 0); // queue exhausted
+        
         XCTAssertNil(error);
         XCTAssertNotNil(updatedBundleURL);
         XCTAssertTrue(updated);
@@ -485,6 +582,7 @@
     }];
     
     [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0); // queue exhausted
 }
 
 @end

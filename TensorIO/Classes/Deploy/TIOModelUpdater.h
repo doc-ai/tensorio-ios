@@ -23,7 +23,7 @@
 
 #import "TIOModelBundleValidator.h"
 
-@class TIOModelRepository;
+@class TIOModelRepositoryClient;
 @class TIOModelBundle;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -46,19 +46,31 @@ NS_ASSUME_NONNULL_BEGIN
  * by `bundle`.
  */
 
-@property (readonly) TIOModelRepository *repository;
+@property (readonly) TIOModelRepositoryClient *repository;
 
 /**
  * Initializes an update with a bundle and repository.
  */
 
-- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepository*)repository NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepositoryClient*)repository NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer
  */
 
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ * Checks to see if an update is available for a model. A model has an update
+ * if a new model with a newer checkpoint is available or there is one with a
+ * new set of hyperparameters.
+ *
+ * @param callback The callbak handler. The callback is called with
+ *  updateAvalable = `YES` and error = `nil` if an update is available. If
+ *  there was an error, updateAvalable will be set to `NO`.
+ */
+
+- (void)checkForUpdate:(void(^)(BOOL updateAvailable, NSError * _Nullable error))callback;
 
 /**
  * Updates a model with the identifying (model, hyperparameter, checkpoint) triple,
@@ -68,8 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param customValidator A custom validation block to perform on the model, may be `nil`
  * @param callback The callback handler. The callback is called with updated = `YES`
- * and error = `nil` if the model was successfully updated. When no update is
- * available, updated = `NO` and error = `nil`. Otherwise, error will be set to some value.
+ *  and error = `nil` if the model was successfully updated. When no update is
+ *  available, updated = `NO` and error = `nil`. Otherwise, error will be set to some value.
  */
 
 - (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error))callback;

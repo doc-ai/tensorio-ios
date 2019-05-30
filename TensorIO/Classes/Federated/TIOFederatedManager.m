@@ -409,7 +409,7 @@ NSString * TIOFrameworkVersion() {
     
     NSDictionary *JSON = @{
         @"taskId": taskId,
-        @"clientId": @"",
+        @"clientId": self.client.clientId,
         @"numSamples": @(dataSource.numberOfItems),
         @"output": results,
         @"taskParameters": @{
@@ -441,6 +441,8 @@ NSString * TIOFrameworkVersion() {
     NSURL *checkpointsDir = [resultsDir URLByAppendingPathComponent:@"checkpoints"];
     NSURL *resultsJSONFile = [resultsDir URLByAppendingPathComponent:@"result.json"];
     NSURL *zipFile = [resultsDir URLByAppendingPathExtension:@"zip"];
+    
+    [fm removeItemAtURL:resultsDir error:nil];
     
     [fm createDirectoryAtURL:resultsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
     

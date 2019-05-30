@@ -129,6 +129,10 @@
     
     [self waitForExpectations:@[expectation] timeout:10.0];
     
+    // Ensure session queue is empty
+    
+    XCTAssert(session.responses.count == 0);
+    
     // Ensure expected mock data source provider methods are called
     
     XCTAssert([dataSourceProvider dataSourceForTaskWithIdCountForTaskId:@"tio:///tasks/1"] == 1);

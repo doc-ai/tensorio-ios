@@ -1,8 +1,8 @@
 //
-//  TIOFleaStatus.m
+//  TIOMRStatus.m
 //  TensorIO
 //
-//  Created by Phil Dow on 5/23/19.
+//  Created by Phil Dow on 5/2/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,19 +18,21 @@
 //  limitations under the License.
 //
 
-#import "TIOFleaStatus.h"
+#import "TIOMRStatus.h"
+#import "TIOMRErrors.h"
 
-@implementation TIOFleaStatus
+@implementation TIOMRStatus
 
-- (instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"status"] == nil || ![JSON[@"status"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"status", JSON);
             return nil;
         }
         if ( [JSON[@"status"] isEqualToString:@"SERVING"] ) {
-            _status = TIOFleaStatusValueServing;
+            _status = TIOMRStatusValueServing;
         } else {
-            _status = TIOFleaStatusValueUnknown;
+            _status = TIOMRStatusValueUnknown;
         }
     }
     return self;
@@ -38,10 +40,10 @@
 
 - (NSString*)description {
     switch (self.status) {
-    case TIOFleaStatusValueUnknown:
-         return @"TIOFleaStatusValueUnknown";
-    case TIOFleaStatusValueServing:
-        return @"TIOFleaStatusValueServing";
+    case TIOMRStatusValueUnknown:
+         return @"TIOMRStatusValueUnknown";
+    case TIOMRStatusValueServing:
+        return @"TIOMRStatusValueServing";
     default:
         return @"Uknown status";
     }

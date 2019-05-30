@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  * including a link to the `TIOModel` bundle trained with these properties.
  *
  * You should not need to instantiate instances of this class yourself. They
- * are retured by requests to a `TIOModelRepository`.
+ * are retured by requests to a `TIOModelRepositoryClient`.
  */
 
 @interface TIOMRCheckpoint : NSObject
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
  * this class yourself.
  */
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.

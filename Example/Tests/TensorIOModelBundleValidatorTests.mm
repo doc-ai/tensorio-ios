@@ -23,52 +23,21 @@
 
 @interface TensorIOModelBundleValidatorTests : XCTestCase
 
-@property NSString *modelsPath;
-@property TIOModelBundleValidator *modelValidator;
-@property NSDictionary *basicJSON;
-
 @end
 
 @implementation TensorIOModelBundleValidatorTests
 
-- (void)setUp {
-    self.modelValidator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:@""];
-    self.modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
-    self.basicJSON = @{
-        @"name": @"",
-        @"details": @"",
-        @"id": @"",
-        @"version": @"",
-        @"author": @"",
-        @"license": @"",
-        @"model": @{ },
-        @"inputs": @[
-            @{
-                @"name": @"",
-                @"type": @"",
-                @"shape": @[@(1)]
-            }
-        ],
-        @"outputs": @[
-            @{
-                @"name": @"",
-                @"type": @"",
-                @"shape": @[@(1)]
-            }
-        ]
-    };
-}
+- (void)setUp { }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-}
+- (void)tearDown { }
 
 /**
  * Creates a validator from a model bundle at filename
  */
 
 - (TIOModelBundleValidator*)validatorForFilename:(NSString*)filename {
-    NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
+    NSString *modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
+    NSString *path = [modelsPath stringByAppendingPathComponent:filename];
     TIOModelBundleValidator *validator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:path];
     return validator;
 }
@@ -162,12 +131,12 @@
     // it should not validate
     
     NSError *error;
-    NSDictionary *JSON = self.basicJSON;
     BOOL (^block)(NSString *path, NSDictionary *JSON, NSError **error) = ^BOOL(NSString *path, NSDictionary *JSON, NSError **error) {
         return NO;
     };
     
-    BOOL valid = [self.modelValidator validateCustomValidator:JSON validator:block error:&error];
+    TIOModelBundleValidator *modelValidator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:@""];
+    BOOL valid = [modelValidator validateCustomValidator:@{} validator:block error:&error];
     
     XCTAssertFalse(valid);
     XCTAssertNil(error);
@@ -178,13 +147,13 @@
     
     NSError *error;
     NSError *blockError = [NSError errorWithDomain:@"" code:0 userInfo:nil];
-    NSDictionary *JSON = self.basicJSON;
     BOOL (^block)(NSString *path, NSDictionary *JSON, NSError **error) = ^BOOL(NSString *path, NSDictionary *JSON, NSError **error) {
         *error = blockError;
         return NO;
     };
     
-    BOOL valid = [self.modelValidator validateCustomValidator:JSON validator:block error:&error];
+    TIOModelBundleValidator *modelValidator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:@""];
+    BOOL valid = [modelValidator validateCustomValidator:@{} validator:block error:&error];
     
     XCTAssertFalse(valid);
     XCTAssertEqualObjects(error, blockError);
@@ -194,12 +163,12 @@
     // it should validate
     
     NSError *error;
-    NSDictionary *JSON = self.basicJSON;
     BOOL (^block)(NSString *path, NSDictionary *JSON, NSError **error) = ^BOOL(NSString *path, NSDictionary *JSON, NSError **error) {
         return YES;
     };
     
-    BOOL valid = [self.modelValidator validateCustomValidator:JSON validator:block error:&error];
+    TIOModelBundleValidator *modelValidator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:@""];
+    BOOL valid = [modelValidator validateCustomValidator:@{} validator:block error:&error];
     
     XCTAssertTrue(valid);
     XCTAssertNil(error);

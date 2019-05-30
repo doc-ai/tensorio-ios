@@ -14,6 +14,7 @@
 		E33CC3BF229DAA89007F4A7B /* TIOMockModelBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E33CC3BE229DAA89007F4A7B /* TIOMockModelBundle.mm */; };
 		E33CC3C1229DAF8C007F4A7B /* test.tiobundle in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3C0229DAF8C007F4A7B /* test.tiobundle */; };
 		E33CC3C3229DC35A007F4A7B /* mock-training-export in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3C2229DC35A007F4A7B /* mock-training-export */; };
+		E37FDAA6229F838F00F87241 /* TIOFleaClientTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E37FDAA5229F838F00F87241 /* TIOFleaClientTests.mm */; };
 		E3CC3452229874440017462D /* TIOFleaJobUploadTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */; };
 		E3CC34542298787A0017462D /* test-job-results.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3CC3453229878790017462D /* test-job-results.zip */; };
 		E3D16AFB2295CDF300BA4346 /* TIOFederatedManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */; };
@@ -68,6 +69,7 @@
 		E33CC3BE229DAA89007F4A7B /* TIOMockModelBundle.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOMockModelBundle.mm; sourceTree = "<group>"; };
 		E33CC3C0229DAF8C007F4A7B /* test.tiobundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test.tiobundle; sourceTree = "<group>"; };
 		E33CC3C2229DC35A007F4A7B /* mock-training-export */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "mock-training-export"; sourceTree = "<group>"; };
+		E37FDAA5229F838F00F87241 /* TIOFleaClientTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFleaClientTests.mm; sourceTree = "<group>"; };
 		E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFleaJobUploadTests.mm; sourceTree = "<group>"; };
 		E3CC3453229878790017462D /* test-job-results.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "test-job-results.zip"; sourceTree = "<group>"; };
 		E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOFederatedManagerTests.mm; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				E3D16B2222985E7C00BA4346 /* TIOFleaJobTests.mm */,
 				E3D16B1A2298561100BA4346 /* TIOFleaTaskDownloadTests.mm */,
 				E3CC3451229874440017462D /* TIOFleaJobUploadTests.mm */,
+				E37FDAA5229F838F00F87241 /* TIOFleaClientTests.mm */,
 				E3D16AFA2295CDF300BA4346 /* TIOFederatedManagerTests.mm */,
 			);
 			path = Tests;
@@ -472,6 +475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3D16B1B2298561100BA4346 /* TIOFleaTaskDownloadTests.mm in Sources */,
+				E37FDAA6229F838F00F87241 /* TIOFleaClientTests.mm in Sources */,
 				E3CC3452229874440017462D /* TIOFleaJobUploadTests.mm in Sources */,
 				E3E16DDD229476190087197A /* TIOFederatedTaskBundleTests.mm in Sources */,
 				E33CC3A72299BB70007F4A7B /* DockerTests.mm in Sources */,

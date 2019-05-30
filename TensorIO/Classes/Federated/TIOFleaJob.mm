@@ -19,12 +19,14 @@
 //
 
 #import "TIOFleaJob.h"
+#import "TIOFleaErrors.h"
 
 @implementation TIOFleaJob
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"status"] == nil || ![JSON[@"status"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"status", JSON);
             return nil;
         } else if ( [JSON[@"status"] isEqualToString:@"APPROVED"] ) {
             _status = TIOFleaJobStatusApproved;
@@ -33,16 +35,19 @@
         }
         
         if ( JSON[@"jobId"] == nil || ![JSON[@"jobId"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"jobId", JSON);
             return nil;
         } else {
             _jobId = JSON[@"jobId"];
         }
         
         if ( JSON[@"uploadTo"] == nil || ![JSON[@"uploadTo"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"uploadTo", JSON);
             return nil;
         } else {
             _uploadTo = [NSURL URLWithString:JSON[@"uploadTo"]];
             if ( _uploadTo == nil ) {
+                *error = TIOFleaJSONParsingError(self.class, @"uploadTo", JSON);
                 return nil;
             }
         }

@@ -31,8 +31,15 @@
 @implementation DockerTests
 
 - (void)setUp {
+    NSURLSessionConfiguration *configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
+    configuration.HTTPAdditionalHeaders = @{
+        @"Authorization": @"Bearer ClientToken"
+    };
+
+    NSURLSession *URLSession = [NSURLSession sessionWithConfiguration:configuration];
     NSURL *URL = [NSURL URLWithString:@"http://localhost:8083/v1/flea"];
-    self.client = [[TIOFleaClient alloc] initWithBaseURL:URL session:nil];
+    
+    self.client = [[TIOFleaClient alloc] initWithBaseURL:URL session:URLSession];
 }
 
 - (void)tearDown { }

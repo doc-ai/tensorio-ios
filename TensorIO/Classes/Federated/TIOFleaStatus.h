@@ -47,7 +47,7 @@ typedef enum : NSUInteger {
  * this class yourself.
  */
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
