@@ -56,9 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Initializes a model repository with a base URL
  *
- * You may inject your own URL Session into the model respository object for
- * custom request handling and downloads, but this behavior exists in order to
- * test the object and passing `nil` is sufficient.
+ * You may inject your own URL Session into the flea client object for
+ * custom request handling, downloads, and uploads, and to set up authentication
+ * headers, but this behavior exists in order to test the object, and passing
+ * `nil` may be sufficient.
  */
 
 - (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession NS_DESIGNATED_INITIALIZER;

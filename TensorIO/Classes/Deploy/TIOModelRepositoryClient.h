@@ -33,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Encapsulates requests to a TensorIO model repository, allowing users to
- * manage deployment of TensorIO models.
+ * manage deployment of TensorIO models. You should not need to call client
+ * methods yourself but can instead use the `TIOModelUpdater` class.
  *
  * All repository HTTP requests are run on a background thread and
  * execute their callbacks on a background thread.
@@ -56,9 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Initializes a model repository with a base URL
  *
- * You may inject your own URL Session into the model respository object for
- * custom request handling and downloads, but this behavior exists in order to
- * test the object and passing `nil` is sufficient.
+ * You may inject your own URL Session with a custom session configuration into
+ * the model respository object for custom request handling and downloads, but
+ * this behavior exists in order to test the object and passing `nil` is
+ * sufficient.
  */
 
 - (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession NS_DESIGNATED_INITIALIZER;
