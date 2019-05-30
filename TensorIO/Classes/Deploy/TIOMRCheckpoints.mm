@@ -19,22 +19,28 @@
 //
 
 #import "TIOMRCheckpoints.h"
+#import "TIOMRErrors.h"
 
 @implementation TIOMRCheckpoints
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"checkpointIds"] == nil || ![JSON[@"checkpointIds"] isKindOfClass:NSArray.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"checkpointIds", JSON);
             return nil;
         } else {
             _checkpointIds = JSON[@"checkpointIds"];
         }
+        
         if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"hyperparametersId", JSON);
             return nil;
         } else {
             _hyperparametersId = JSON[@"hyperparametersId"];
         }
+        
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"modelId", JSON);
             return nil;
         } else {
             _modelId = JSON[@"modelId"];

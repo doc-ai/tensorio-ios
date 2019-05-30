@@ -1,5 +1,5 @@
 //
-//  TIOMRHyperparameters.m
+//  TIOMRModels.m
 //  TensorIO
 //
 //  Created by Phil Dow on 5/3/19.
@@ -18,32 +18,25 @@
 //  limitations under the License.
 //
 
-#import "TIOMRHyperparameters.h"
+#import "TIOMRModels.h"
+#import "TIOMRErrors.h"
 
-@implementation TIOMRHyperparameters
+@implementation TIOMRModels
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
-        if ( JSON[@"hyperparametersIds"] == nil || ![JSON[@"hyperparametersIds"] isKindOfClass:NSArray.class] ) {
+        if ( JSON[@"modelIds"] == nil || ![JSON[@"modelIds"] isKindOfClass:NSArray.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"modelIds", JSON);
             return nil;
         } else {
-            _hyperparametersIds = JSON[@"hyperparametersIds"];
+            _modelIds = JSON[@"modelIds"];
         }
-        
-        if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
-            return nil;
-        } else {
-            _modelId = JSON[@"modelId"];
-        }
-        
     }
     return self;
 }
 
 - (NSString*)description {
-    NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
-    NSString *hs = [NSString stringWithFormat:@"Hyperparameters IDs: %@", self.hyperparametersIds];
-    return [NSString stringWithFormat:@"%@\n%@", ms, hs];
+    return [NSString stringWithFormat:@"Model Ids: %@", self.modelIds.description];
 }
 
 @end

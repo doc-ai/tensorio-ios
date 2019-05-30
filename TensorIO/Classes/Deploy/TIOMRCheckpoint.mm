@@ -19,6 +19,7 @@
 //
 
 #import "TIOMRCheckpoint.h"
+#import "TIOMRErrors.h"
 
 @implementation TIOMRCheckpoint
 
@@ -35,41 +36,54 @@
     return RFC3339DateFormatter;
 }
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"checkpointId"] == nil || ![JSON[@"checkpointId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"checkpointId", JSON);
             return nil;
         } else {
             _checkpointId = JSON[@"checkpointId"];
         }
+        
         if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"hyperparametersId", JSON);
             return nil;
         } else {
             _hyperparametersId = JSON[@"hyperparametersId"];
         }
+        
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"modelId", JSON);
             return nil;
         } else {
             _modelId = JSON[@"modelId"];
         }
+        
         if ( JSON[@"createdAt"] == nil || ![JSON[@"createdAt"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"createdAt", JSON);
             return nil;
         } else {
             _createdAt = [TIOMRCheckpoint.JSONDateFormatter dateFromString:JSON[@"createdAt"]];
             if ( _createdAt == nil ) { // bad dates
+                *error = TIOMRJSONParsingError(self.class, @"createdAt", JSON);
                 return nil;
             }
         }
+        
         if ( JSON[@"info"] == nil || ![JSON[@"info"] isKindOfClass:NSDictionary.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"info", JSON);
             return nil;
         } else {
             _info = JSON[@"info"];
         }
+        
         if ( JSON[@"link"] == nil || ![JSON[@"link"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"link", JSON);
             return nil;
         } else {
             _link = [NSURL URLWithString:JSON[@"link"]];
             if ( _link == nil ) {
+                *error = TIOMRJSONParsingError(self.class, @"link", JSON);
                 return nil;
             }
         }

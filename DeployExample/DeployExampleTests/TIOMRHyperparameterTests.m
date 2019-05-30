@@ -327,7 +327,7 @@
         @"canonicalCheckpoint": @"model.ckpt-321312"
     };
     
-    TIOMRHyperparameter *hyperparameter = [[TIOMRHyperparameter alloc] initWithJSON:JSON];
+    TIOMRHyperparameter *hyperparameter = [[TIOMRHyperparameter alloc] initWithJSON:JSON error:nil];
     XCTAssertNil(hyperparameter.upgradeTo);
 }
 

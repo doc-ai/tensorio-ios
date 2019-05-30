@@ -27,19 +27,9 @@
 #import "TIOMRCheckpoints.h"
 #import "TIOMRCheckpoint.h"
 #import "TIOMRDownload.h"
+#import "TIOMRErrors.h"
 
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
-static NSString * const TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
-
-static NSInteger TIOMRURLRequestErrorCode = 0;
-static NSInteger TIOMRURLResponseErrorCode = 0;
-
-static NSInteger TIOMRNoDataErrorCode = 11;
-static NSInteger TIOMRJSONError = 12;
-static NSInteger TIOMRDeserializationError = 13;
-
-static NSInteger TIOMRHealthStatusNotServingError = 100;
-static NSInteger TIOMRDownloadError = 200;
 
 /**
  * Parses a JSON response from a tensorio models repository
@@ -95,11 +85,16 @@ static NSInteger TIOMRDownloadError = 200;
         return nil;
     }
     
-    id object = [[_klass alloc] initWithJSON:JSON];
+    NSError *parseError;
+    id object = [[_klass alloc] initWithJSON:JSON error:&parseError];
     
     if ( object == nil ) {
         NSLog(@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDeserializationError userInfo:nil];
+        if ( parseError != nil ) {
+            *error = parseError;
+        } else {
+            *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDeserializationError userInfo:nil];
+        }
         return nil;
     }
     

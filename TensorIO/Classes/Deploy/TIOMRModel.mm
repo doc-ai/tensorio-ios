@@ -19,12 +19,14 @@
 //
 
 #import "TIOMRModel.h"
+#import "TIOMRErrors.h"
 
 @implementation TIOMRModel
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"modelId", JSON);
             return nil;
         }
         else {
@@ -32,6 +34,7 @@
         }
         
         if ( JSON[@"details"] == nil || ![JSON[@"details"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"details", JSON);
             return nil;
         }
         else {
@@ -41,6 +44,7 @@
         if ( JSON[@"canonicalHyperparameters"] == nil || [JSON[@"canonicalHyperparameters"] isKindOfClass:NSNull.class] ) {
             _canonicalHyperparameters = nil;
         } else if ( ![JSON[@"canonicalHyperparameters"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"canonicalHyperparameters", JSON);
             return nil;
         } else {
             _canonicalHyperparameters = JSON[@"canonicalHyperparameters"];

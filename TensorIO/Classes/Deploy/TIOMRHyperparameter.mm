@@ -18,21 +18,22 @@
 //  limitations under the License.
 //
 
-//  TODO: Test nil upgradeTo
-
 #import "TIOMRHyperparameter.h"
+#import "TIOMRErrors.h"
 
 @implementation TIOMRHyperparameter
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"modelId", JSON);
             return nil;
         } else {
             _modelId = JSON[@"modelId"];
         }
         
         if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"hyperparametersId", JSON);
             return nil;
         } else {
             _hyperparametersId = JSON[@"hyperparametersId"];
@@ -41,12 +42,14 @@
         if ( JSON[@"upgradeTo"] == nil || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class] ) {
             _upgradeTo = nil;
         } else if ( ![JSON[@"upgradeTo"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"_upgradeTo", JSON);
             return nil;
         } else {
             _upgradeTo = JSON[@"upgradeTo"];
         }
         
         if ( JSON[@"hyperparameters"] == nil || ![JSON[@"hyperparameters"] isKindOfClass:NSDictionary.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"hyperparameters", JSON);
             return nil;
         } else {
             _hyperparameters = JSON[@"hyperparameters"];
@@ -55,6 +58,7 @@
         if ( JSON[@"canonicalCheckpoint"] == nil || [JSON[@"canonicalCheckpoint"] isKindOfClass:NSNull.class] ) {
             _canonicalCheckpoint = nil;
         } else if ( ![JSON[@"canonicalCheckpoint"] isKindOfClass:NSString.class] ) {
+            *error = TIOMRJSONParsingError(self.class, @"canonicalCheckpoint", JSON);
             return nil;
         } else {
             _canonicalCheckpoint = JSON[@"canonicalCheckpoint"];
