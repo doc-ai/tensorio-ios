@@ -48,16 +48,28 @@
 //    NSString *checkpoint1 = @"checkpoint-1";
 //    NSString *checkpoint2 = @"checkpoint-2";
     
-//    NSURL *URL = [NSURL URLWithString:@"https://tio-models-test.dev.docai.beer/rest/v1/repository"];
-//    self.repository = [[TIOModelRepository alloc] initWithBaseURL:URL session:nil];
-//
+    // Configure Client
+    
+    NSURL *URL = [NSURL URLWithString:@"https://tio-models-test.dev.docai.beer/rest/v1/repository"];
+    
+    NSURLSessionConfiguration *configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
+    configuration.HTTPAdditionalHeaders = @{
+        @"Authorization": @"Bearer ReaderToken"
+    };
+    
+    NSURLSession *URLSession = [NSURLSession sessionWithConfiguration:configuration];
+    
+    self.repository = [[TIOModelRepository alloc] initWithBaseURL:URL session:URLSession];
+    
+    // Begin Tests
+    
 //    [self.repository GETHealthStatus:^(TIOMRStatus * _Nullable response, NSError * _Nonnull error) {
 //        if (error) {
 //            NSLog(@"There was an error");
 //            return;
 //        }
 //
-//        NSLog(@"HEALTH STATUS: %lu", (unsigned long)response.status);
+//        NSLog(@"HEALTH STATUS: %@", response);
 //    }];
     
 //    [self.repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nullable error) {
