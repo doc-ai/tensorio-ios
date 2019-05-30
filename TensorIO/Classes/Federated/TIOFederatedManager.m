@@ -442,6 +442,8 @@ NSString * TIOFrameworkVersion() {
     NSURL *resultsJSONFile = [resultsDir URLByAppendingPathComponent:@"result.json"];
     NSURL *zipFile = [resultsDir URLByAppendingPathExtension:@"zip"];
     
+    [fm removeItemAtURL:resultsDir error:nil];
+    
     [fm createDirectoryAtURL:resultsDir withIntermediateDirectories:NO attributes:nil error:&fmError];
     
     if ( fmError != nil ) {
