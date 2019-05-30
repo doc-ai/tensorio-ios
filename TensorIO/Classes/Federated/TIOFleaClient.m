@@ -25,22 +25,9 @@
 #import "TIOFleaJob.h"
 #import "TIOFleaTaskDownload.h"
 #import "TIOFleaJobUpload.h"
+#import "TIOFleaErrors.h"
 
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
-static NSString * const TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
-
-static NSInteger TIOFleaURLRequestErrorCode = 0;
-static NSInteger TIOFleaURLResponseErrorCode = 1;
-
-static NSInteger TIOFleaNoDataErrorCode = 11;
-static NSInteger TIOFleaJSONError = 12;
-static NSInteger TIOFleaDeserializationError = 13;
-
-static NSInteger TIOFleaHealthStatusNotServingError = 100;
-static NSInteger TIOFleaJobStatusNotApprovedError = 200;
-static NSInteger TIOFleaDownloadError = 300;
-static NSInteger TIOFleaUploadError = 400;
-static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
 
 /**
  * Parses a JSON response from a tensorio flea repository
@@ -96,11 +83,16 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
         return nil;
     }
     
-    id object = [[_klass alloc] initWithJSON:JSON];
+    NSError *parseError;
+    id object = [[_klass alloc] initWithJSON:JSON error:&parseError];
     
     if ( object == nil ) {
         NSLog(@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDeserializationError userInfo:nil];
+        if ( parseError != nil ) {
+            *error = parseError;
+        } else {
+            *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDeserializationError userInfo:nil];
+        }
         return nil;
     }
     

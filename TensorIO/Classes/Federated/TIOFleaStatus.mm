@@ -19,12 +19,14 @@
 //
 
 #import "TIOFleaStatus.h"
+#import "TIOFleaErrors.h"
 
 @implementation TIOFleaStatus
 
-- (instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"status"] == nil || ![JSON[@"status"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"status", JSON);
             return nil;
         }
         if ( [JSON[@"status"] isEqualToString:@"SERVING"] ) {

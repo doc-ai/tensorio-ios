@@ -19,6 +19,7 @@
 //
 
 #import "TIOFleaTask.h"
+#import "TIOFleaErrors.h"
 
 @implementation TIOFleaTask
 
@@ -35,61 +36,72 @@
     return RFC3339DateFormatter;
 }
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON {
+- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"modelId", JSON);
             return nil;
         } else {
             _modelId = JSON[@"modelId"];
         }
         
         if ( JSON[@"hyperparametersId"] == nil || ![JSON[@"hyperparametersId"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"hyperparametersId", JSON);
             return nil;
         } else {
             _hyperparametersId = JSON[@"hyperparametersId"];
         }
         
         if ( JSON[@"checkpointId"] == nil || ![JSON[@"checkpointId"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"checkpointId", JSON);
             return nil;
         } else {
             _checkpointId = JSON[@"checkpointId"];
         }
         
         if ( JSON[@"taskId"] == nil || ![JSON[@"taskId"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"taskId", JSON);
             return nil;
         } else {
             _taskId = JSON[@"taskId"];
         }
         
         if ( JSON[@"active"] == nil || ![JSON[@"active"] isKindOfClass:NSNumber.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"active", JSON);
             return nil;
         } else {
             _active = ((NSNumber*)JSON[@"active"]).boolValue;
         }
         
         if ( JSON[@"deadline"] == nil || ![JSON[@"deadline"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"deadline", JSON);
             return nil;
         } else {
             _deadline = [[TIOFleaTask JSONDateFormatter] dateFromString:JSON[@"deadline"]];
             if ( _deadline == nil ) { // bad dates
+                *error = TIOFleaJSONParsingError(self.class, @"deadline", JSON);
                 return nil;
             }
         }
         
         if ( JSON[@"link"] == nil || ![JSON[@"link"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"link", JSON);
             return nil;
         } else {
             _link = [NSURL URLWithString:JSON[@"link"]];
             if ( _link == nil ) {
+                *error = TIOFleaJSONParsingError(self.class, @"link", JSON);
                 return nil;
             }
         }
         
         if ( JSON[@"checkpointLink"] == nil || ![JSON[@"checkpointLink"] isKindOfClass:NSString.class] ) {
+            *error = TIOFleaJSONParsingError(self.class, @"checkpointLink", JSON);
             return nil;
         } else {
             _checkpointLink = [NSURL URLWithString:JSON[@"checkpointLink"]];
             if ( _checkpointLink == nil ) {
+                *error = TIOFleaJSONParsingError(self.class, @"checkpointLink", JSON);
                 return nil;
             }
         }
