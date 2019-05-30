@@ -48,6 +48,47 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     return self;
 }
 
+// MARK: -
+
+- (void)checkForUpdate:(void(^)(BOOL updateAvailable, NSError * _Nullable error))callback {
+    TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
+    
+    if ( identifier == nil ) {
+        NSLog(@"Unable to initialize model identifier from bundle id %@", self.bundle.identifier);
+        NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRInvalidBundleId userInfo:nil];
+        callback(NO, error);
+        return;
+    }
+    
+    NSURLSessionTask *task = [self.repository GETHyperparameterForModelWithId:identifier.modelId hyperparametersId:identifier.hyperparametersId callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        if ( error != nil ) {
+            callback(NO, error);
+            return;
+        }
+        
+        if ( hyperparameter.upgradeTo == nil && [hyperparameter.canonicalCheckpoint isEqualToString:identifier.checkpointId] ) {
+            // No upgrade to a new set of hyperparameters and we are already using the canonical checkpoint
+            callback(NO, nil);
+        }
+        else if ( hyperparameter.upgradeTo == nil && ![hyperparameter.canonicalCheckpoint isEqualToString:identifier.checkpointId] ) {
+            // No upgrade to a new set of hyperparameters but a new checkpoint is available
+            callback(YES, nil);
+        }
+        else if ( hyperparameter.upgradeTo != nil) {
+            // An upgrade to a new set of hyperparameters is available
+            callback(YES, nil);
+        }
+        else {
+            // An inconsistent response
+            NSLog(@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", identifier.modelId, identifier.hyperparametersId, identifier.checkpointId);
+            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelInternalInconsistentyError userInfo:nil];
+            callback(NO, error);
+        }
+    }];
+    
+    [task resume];
+}
+
 - (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error))callback {
     
     // Parse the id
@@ -213,6 +254,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
             [task2 resume];
             
         } else {
+            // An inconsistent response
             NSLog(@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", modelId, hyperparametersId, checkpointId);
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelInternalInconsistentyError userInfo:nil];
             responseBlock(NO, nil, error);

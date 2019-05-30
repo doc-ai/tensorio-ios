@@ -85,6 +85,98 @@
 
 // MARK: -
 
+- (void)testCheckForUpdateIsFalseWhenUpgradeToIsNilAndCheckpointIsLatest {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update"];
+    
+    NSDictionary *GETHyperParameterResponse = @{
+        @"modelId": self.modelId,
+        @"hyperparametersId": self.hyperparametersId,
+        @"upgradeTo": NSNull.null,
+        @"hyperparameters": @{},
+        @"canonicalCheckpoint": self.checkpointId
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETHyperParameterResponse
+    ]];
+    
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
+    
+    [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssert(session.responses.count == 0); // queue exhausted
+        XCTAssertNil(error);
+        
+        XCTAssertFalse(updateAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testCheckForUpdateIsTrueWhenUpgradeToIsNilButCheckpointIsNotLatest {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update"];
+    
+    NSDictionary *GETHyperParameterResponse = @{
+        @"modelId": self.modelId,
+        @"hyperparametersId": self.hyperparametersId,
+        @"upgradeTo": NSNull.null,
+        @"hyperparameters": @{},
+        @"canonicalCheckpoint": self.canonicalCheckpoint
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETHyperParameterResponse
+    ]];
+    
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
+    
+    [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssert(session.responses.count == 0); // queue exhausted
+        XCTAssertNil(error);
+        
+        XCTAssertTrue(updateAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+- (void)testCheckForUpdateIsTrueWhenUpgradeToIsNotNil {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Update"];
+    
+    NSDictionary *GETHyperParameterResponse = @{
+        @"modelId": self.modelId,
+        @"hyperparametersId": self.hyperparametersId,
+        @"upgradeTo": self.upgradeTo,
+        @"hyperparameters": @{},
+        @"canonicalCheckpoint": self.canonicalCheckpoint
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETHyperParameterResponse
+    ]];
+    
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
+    
+    [updater checkForUpdate:^(BOOL updateAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssert(session.responses.count == 0); // queue exhausted
+        XCTAssertNil(error);
+        
+        XCTAssertTrue(updateAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:1.0];
+}
+
+// MARK: -
+
 - (void)test1 {
     // GET Hyperparameter -> Error
     // Error, No Update
