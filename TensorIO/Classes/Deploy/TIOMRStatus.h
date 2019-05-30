@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Encpasulates information about the health check status of a model repository.
  *
  * You should not need to instantiate instances of this class yourself. They
- * are retured by requests to a `TIOModelRepository`.
+ * are retured by requests to a `TIOModelRepositoryClient`.
  */
 
 @interface TIOMRStatus : NSObject

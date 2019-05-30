@@ -1,5 +1,5 @@
 //
-//  TIOModelRepository.m
+//  TIOModelRepositoryClient.m
 //  TensorIO
 //
 //  Created by Philip Dow on 7/6/18.
@@ -18,7 +18,7 @@
 //  limitations under the License.
 //
 
-#import "TIOModelRepository.h"
+#import "TIOModelRepositoryClient.h"
 #import "TIOMRStatus.h"
 #import "TIOMRModels.h"
 #import "TIOMRModel.h"
@@ -42,7 +42,7 @@ static NSInteger TIOMRDownloadError = 200;
  * Parses a JSON response from a tensorio models repository
  */
 
-@interface TIOModelRepositoryJSONResponseParser <ParsedType> : NSObject
+@interface TIOModelRepositoryClientJSONResponseParser <ParsedType> : NSObject
 
 - (instancetype)initWithClass:(Class)klass NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
@@ -53,7 +53,7 @@ static NSInteger TIOMRDownloadError = 200;
 
 @end
 
-@implementation TIOModelRepositoryJSONResponseParser
+@implementation TIOModelRepositoryClientJSONResponseParser
 
 - (instancetype)initWithClass:(Class)klass {
     if ((self=[super init])) {
@@ -100,11 +100,11 @@ static NSInteger TIOMRDownloadError = 200;
 
 // MARK: -
 
-@interface TIOModelRepository ()
+@interface TIOModelRepositoryClient ()
 
 @end
 
-@implementation TIOModelRepository
+@implementation TIOModelRepositoryClient
 
 - (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
     if ((self=[super init])) {
@@ -122,7 +122,7 @@ static NSInteger TIOMRDownloadError = 200;
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSError *parseError;
-        TIOModelRepositoryJSONResponseParser<TIOMRStatus*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRStatus.class];
+        TIOModelRepositoryClientJSONResponseParser<TIOMRStatus*> *parser = [[TIOModelRepositoryClientJSONResponseParser alloc] initWithClass:TIOMRStatus.class];
         TIOMRStatus *status = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( status == nil ) {
@@ -150,7 +150,7 @@ static NSInteger TIOMRDownloadError = 200;
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSError *parseError;
-        TIOModelRepositoryJSONResponseParser<TIOMRModels*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRModels.class];
+        TIOModelRepositoryClientJSONResponseParser<TIOMRModels*> *parser = [[TIOModelRepositoryClientJSONResponseParser alloc] initWithClass:TIOMRModels.class];
         TIOMRModels *models = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( models == nil ) {
@@ -173,7 +173,7 @@ static NSInteger TIOMRDownloadError = 200;
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSError *parseError;
-        TIOModelRepositoryJSONResponseParser<TIOMRModel*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRModel.class];
+        TIOModelRepositoryClientJSONResponseParser<TIOMRModel*> *parser = [[TIOModelRepositoryClientJSONResponseParser alloc] initWithClass:TIOMRModel.class];
         TIOMRModel *model = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( model == nil ) {
@@ -197,7 +197,7 @@ static NSInteger TIOMRDownloadError = 200;
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSError *parseError;
-        TIOModelRepositoryJSONResponseParser<TIOMRHyperparameters*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRHyperparameters.class];
+        TIOModelRepositoryClientJSONResponseParser<TIOMRHyperparameters*> *parser = [[TIOModelRepositoryClientJSONResponseParser alloc] initWithClass:TIOMRHyperparameters.class];
         TIOMRHyperparameters *hyperparameters = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( hyperparameters == nil ) {
@@ -222,7 +222,7 @@ static NSInteger TIOMRDownloadError = 200;
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSError *parseError;
-        TIOModelRepositoryJSONResponseParser<TIOMRHyperparameter*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRHyperparameter.class];
+        TIOModelRepositoryClientJSONResponseParser<TIOMRHyperparameter*> *parser = [[TIOModelRepositoryClientJSONResponseParser alloc] initWithClass:TIOMRHyperparameter.class];
         TIOMRHyperparameter *hyperparameter = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( hyperparameter == nil ) {
@@ -249,7 +249,7 @@ static NSInteger TIOMRDownloadError = 200;
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSError *parseError;
-        TIOModelRepositoryJSONResponseParser<TIOMRCheckpoints*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRCheckpoints.class];
+        TIOModelRepositoryClientJSONResponseParser<TIOMRCheckpoints*> *parser = [[TIOModelRepositoryClientJSONResponseParser alloc] initWithClass:TIOMRCheckpoints.class];
         TIOMRCheckpoints *checkpoints = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( checkpoints == nil ) {
@@ -277,7 +277,7 @@ static NSInteger TIOMRDownloadError = 200;
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSError *parseError;
-        TIOModelRepositoryJSONResponseParser<TIOMRCheckpoint*> *parser = [[TIOModelRepositoryJSONResponseParser alloc] initWithClass:TIOMRCheckpoint.class];
+        TIOModelRepositoryClientJSONResponseParser<TIOMRCheckpoint*> *parser = [[TIOModelRepositoryClientJSONResponseParser alloc] initWithClass:TIOMRCheckpoint.class];
         TIOMRCheckpoint *checkpoint = [parser parseData:data response:response requestError:error error:&parseError];
         
         if ( checkpoint == nil ) {

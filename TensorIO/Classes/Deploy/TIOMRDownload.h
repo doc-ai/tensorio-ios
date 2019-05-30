@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Encpasulates information about a download from a model respository.
  *
  * You should not need to instantiate instances of this class yourself. They
- * are retured by requests to a `TIOModelRepository`.
+ * are retured by requests to a `TIOModelRepositoryClient`.
  */
 
 - (instancetype)initWithURL:(NSURL*)URL modelId:(NSString*)modelId hyperparametereId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId NS_DESIGNATED_INITIALIZER;

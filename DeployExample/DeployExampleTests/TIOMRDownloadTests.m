@@ -44,7 +44,7 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithDownload:testURL];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -69,7 +69,7 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
         XCTAssertNotNil(error);
@@ -87,7 +87,7 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] init];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
         XCTAssertNotNil(error);

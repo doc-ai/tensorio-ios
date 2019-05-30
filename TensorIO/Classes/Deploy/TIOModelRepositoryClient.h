@@ -1,5 +1,5 @@
 //
-//  TIOModelRepository.h
+//  TIOModelRepositoryClient.h
 //  TensorIO
 //
 //  Created by Philip Dow on 7/6/18.
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  * execute their callbacks on a background thread.
  */
 
-@interface TIOModelRepository : NSObject
+@interface TIOModelRepositoryClient : NSObject
 
 /**
  * The base URL of the model repository

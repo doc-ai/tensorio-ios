@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Encpasulates information about a (model, hyperparemeter) tuple.
  *
  * You should not need to instantiate instances of this class yourself. They
- * are retured by requests to a `TIOModelRepository`.
+ * are retured by requests to a `TIOModelRepositoryClient`.
  */
  
 @interface TIOMRHyperparameter : NSObject

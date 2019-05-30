@@ -23,7 +23,7 @@
 
 #import "TIOModelBundleValidator.h"
 
-@class TIOModelRepository;
+@class TIOModelRepositoryClient;
 @class TIOModelBundle;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -46,13 +46,13 @@ NS_ASSUME_NONNULL_BEGIN
  * by `bundle`.
  */
 
-@property (readonly) TIOModelRepository *repository;
+@property (readonly) TIOModelRepositoryClient *repository;
 
 /**
  * Initializes an update with a bundle and repository.
  */
 
-- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepository*)repository NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepositoryClient*)repository NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer

@@ -19,7 +19,7 @@
 //
 
 #import "TIOModelUpdater.h"
-#import "TIOModelRepository.h"
+#import "TIOModelRepositoryClient.h"
 #import "TIOModelBundle.h"
 #import "TIOModelBundleValidator.h"
 #import "TIOMRModelIdentifier.h"
@@ -40,7 +40,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
 
 @implementation TIOModelUpdater
 
-- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepository*)repository {
+- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepositoryClient*)repository {
     if ((self=[super init])) {
         _bundle = bundle;
         _repository = repository;

@@ -97,7 +97,7 @@
         GETHyperParameterResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -129,7 +129,7 @@
         GETHyperParameterResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -165,7 +165,7 @@
         GETCheckpointResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -214,7 +214,7 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -263,7 +263,7 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -304,7 +304,7 @@
         GETHyperParameterResponse2
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -350,7 +350,7 @@
         GETCheckpointResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -409,7 +409,7 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {
@@ -468,7 +468,7 @@
         DownloadResponse
     ]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     TIOModelUpdater *updater = [[TIOModelUpdater alloc] initWithModelBundle:self.upgradableBundle repository:repository];
     
     [updater updateWithValidator:nil callback:^(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error) {

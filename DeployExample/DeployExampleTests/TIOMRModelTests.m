@@ -47,7 +47,7 @@
         @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNil(error);
@@ -70,7 +70,7 @@
         @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
@@ -90,7 +90,7 @@
         @"canonicalHyperparameters": @"batch-8-et-v2-140-224-ing-rate-1e-5"
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
@@ -110,7 +110,7 @@
         @"details": @"Accepts images of an individual's face and infers their emotion from it."
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNil(error);
@@ -127,7 +127,7 @@
 
 - (void)testGETModelURL {
     MockURLSession *session = [[MockURLSession alloc] init];
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {}];
     
     NSURL *expectedURL = [[[NSURL
@@ -145,7 +145,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{ }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
@@ -164,7 +164,7 @@
        @"foo": @{ }
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
@@ -183,7 +183,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
@@ -200,7 +200,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONData:[NSData data]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
