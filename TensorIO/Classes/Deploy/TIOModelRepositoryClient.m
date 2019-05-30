@@ -31,10 +31,12 @@
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 static NSString * const TIOMRErrorDomain = @"ai.doc.tensorio.model-repo";
 
-static NSInteger TIOMRURLSessionErrorCode = 0;
-static NSInteger TIOMRNoDataErrorCode = 1;
-static NSInteger TIOMRJSONError = 2;
-static NSInteger TIOMRDeserializationError = 3;
+static NSInteger TIOMRURLRequestErrorCode = 0;
+static NSInteger TIOMRURLResponseErrorCode = 0;
+
+static NSInteger TIOMRNoDataErrorCode = 11;
+static NSInteger TIOMRJSONError = 12;
+static NSInteger TIOMRDeserializationError = 13;
 
 static NSInteger TIOMRHealthStatusNotServingError = 100;
 static NSInteger TIOMRDownloadError = 200;
@@ -67,7 +69,14 @@ static NSInteger TIOMRDownloadError = 200;
     
     if ( requestError != nil ) {
         NSLog(@"Request error for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLSessionErrorCode userInfo:nil];
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLRequestErrorCode userInfo:nil];
+        return nil;
+    }
+    
+    if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+        NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
+        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLResponseErrorCode userInfo:nil];
         return nil;
     }
     

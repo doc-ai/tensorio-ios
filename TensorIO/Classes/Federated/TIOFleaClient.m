@@ -29,10 +29,12 @@
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 static NSString * const TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
 
-static NSInteger TIOFleaURLSessionErrorCode = 0;
-static NSInteger TIOFleaNoDataErrorCode = 1;
-static NSInteger TIOFleaJSONError = 2;
-static NSInteger TIOFleaDeserializationError = 3;
+static NSInteger TIOFleaURLRequestErrorCode = 0;
+static NSInteger TIOFleaURLResponseErrorCode = 1;
+
+static NSInteger TIOFleaNoDataErrorCode = 11;
+static NSInteger TIOFleaJSONError = 12;
+static NSInteger TIOFleaDeserializationError = 13;
 
 static NSInteger TIOFleaHealthStatusNotServingError = 100;
 static NSInteger TIOFleaJobStatusNotApprovedError = 200;
@@ -68,7 +70,14 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
     
     if ( requestError != nil ) {
         NSLog(@"Request error for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLSessionErrorCode userInfo:nil];
+        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLRequestErrorCode userInfo:nil];
+        return nil;
+    }
+    
+    if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+        NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
+        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
         return nil;
     }
     

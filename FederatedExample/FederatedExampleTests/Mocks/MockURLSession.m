@@ -149,6 +149,8 @@
     return self;
 }
 
+// MARK: -
+
 - (void)prepareNextResponse {
     if ( _responseQueue.count == 0 ) {
         return;
@@ -179,16 +181,17 @@
 
 - (NSURLSessionDataTask*)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSURLRequest *URLRequest = [NSURLRequest requestWithURL:url];
+    NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:url];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.error) {
-            completionHandler(nil, nil, self.error);
+            completionHandler(nil, URLResponse, self.error);
         }
         else if (self.JSONData) {
-            completionHandler(self.JSONData, nil, nil);
+            completionHandler(self.JSONData, URLResponse, nil);
         }
         else {
-            completionHandler(nil, nil, nil);
+            completionHandler(nil, URLResponse, nil);
         }
         
         [self prepareNextResponse]; // works because of dispatch_after
@@ -199,17 +202,18 @@
 
 - (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSURLRequest *URLRequest = [NSURLRequest requestWithURL:url];
+    NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:url];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.error) {
-            completionHandler(nil, nil, self.error);
+            completionHandler(nil, URLResponse, self.error);
         }
         else if (self.download) {
             NSURL *copiedURL = [self copyToTemporaryDirectory:self.download];
-            completionHandler(copiedURL, nil, nil);
+            completionHandler(copiedURL, URLResponse, nil);
         }
         else {
-            completionHandler(nil, nil, nil);
+            completionHandler(nil, URLResponse, nil);
         }
         
         [self prepareNextResponse]; // works because of dispatch_after
@@ -220,12 +224,14 @@
 
  - (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     
+    NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:request.URL];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (self.error) {
-            completionHandler(nil, nil, self.error);
+            completionHandler(nil, URLResponse, self.error);
         }
         else {
-            completionHandler(nil, nil, nil);
+            completionHandler(nil, URLResponse, nil);
         }
         
         [self prepareNextResponse]; // works because of dispatch_after
@@ -250,6 +256,10 @@
     }
     
     return destURL;
+}
+
++ (NSHTTPURLResponse*)URLResponse200OK:(NSURL*)URL {
+    return [[NSHTTPURLResponse alloc] initWithURL:URL statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:nil];
 }
 
 @end
