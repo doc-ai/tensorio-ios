@@ -40,6 +40,7 @@
 #import "NSArray+TIOExtensions.h"
 #import "NSDictionary+TIOExtensions.h"
 #import "TIOCVPixelBufferHelpers.h"
+#import "TIOMeasurable.h"
 #import "TIOObjcDefer.h"
 #import "UIImage+TIOCVPixelBufferExtensions.h"
 #import "NSArray+TIOTFLiteData.h"
