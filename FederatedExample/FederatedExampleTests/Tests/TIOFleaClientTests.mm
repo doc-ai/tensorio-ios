@@ -20,6 +20,7 @@
 
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
+#import "MockURLSession.h"
 
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
@@ -44,6 +45,30 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     [NSUserDefaults.standardUserDefaults setObject:@"FOO" forKey:TIOUserDefaultsClientIdKey];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil];
     XCTAssertEqualObjects(client.clientId, @"FOO");
+}
+
+// MARK: -
+
+- (void)testReportErrorWithMessageSucceeds {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for upload response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"message": @"Thank you for the error report."
+    }];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client POSTErrorMessage:@"message" taskId:@"taskid" jobId:@"jobid" callback:^(BOOL success, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertTrue(success);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 @end

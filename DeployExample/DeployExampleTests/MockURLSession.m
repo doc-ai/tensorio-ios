@@ -69,6 +69,31 @@
 
 @end
 
+@implementation MockSessionUploadTask {
+    NSURLRequest *_mockRequest;
+}
+
+- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest {
+    if ((self=[super init])) {
+        _mockRequest = mockRequest;
+    }
+    return self;
+}
+
+- (void)resume {
+    _calledResume = YES;
+}
+
+- (NSURLRequest*)originalRequest {
+    return _mockRequest;
+}
+
+- (NSURLRequest*)currentRequest {
+    return _mockRequest;
+}
+
+@end
+
 // MARK: -
 
 @implementation MockURLSession {
@@ -187,6 +212,42 @@
     });
     
     return [[MockSessionDownloadTask alloc] initWithMockURLRequest:URLRequest];
+}
+
+- (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+    
+    NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:request.URL];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.error) {
+            completionHandler(nil, URLResponse, self.error);
+        }
+        else {
+            completionHandler(nil, URLResponse, nil);
+        }
+        
+        [self prepareNextResponse]; // works because of dispatch_after
+    });
+    
+    return [[MockSessionUploadTask alloc] initWithMockURLRequest:request];
+}
+
+- (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromData:(NSData *)bodyData completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+    
+    NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:request.URL];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.error) {
+            completionHandler(nil, URLResponse, self.error);
+        }
+        else {
+            completionHandler(nil, URLResponse, nil);
+        }
+        
+        [self prepareNextResponse]; // works because of dispatch_after
+    });
+    
+    return [[MockSessionUploadTask alloc] initWithMockURLRequest:request];
 }
 
 // MARK: -
