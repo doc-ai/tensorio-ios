@@ -242,6 +242,56 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     return task;
 }
 
+- (nullable NSURLSessionTask*)POSTErrorMessage:(NSString*)errorMessage taskId:(NSString*)taskId jobId:(NSString*)jobId callback:(void(^)(BOOL success, NSError * _Nullable error))responseBlock {
+    NSURL *endpoint = [[[self.baseURL
+        URLByAppendingPathComponent:@"job_error"]
+        URLByAppendingPathComponent:taskId]
+        URLByAppendingPathComponent:jobId];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:endpoint];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-type"];
+    request.HTTPMethod = @"POST";
+    
+    NSDictionary *JSON = @{
+        @"errorMessage": errorMessage,
+        @"clientId": self.clientId
+    };
+   
+    NSError *JSONError;
+    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&JSONError];
+    
+    if ( JSONError != nil ) {
+        NSLog(@"Error encoding JSON to send to job error endpoing");
+        responseBlock(NO, JSONError);
+        return nil;
+    }
+    
+    NSURLSessionUploadTask *task = [self.URLSession uploadTaskWithRequest:request fromData:JSONData completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+        
+        if ( requestError != nil ) {
+            NSLog(@"Request error for request with URL: %@", response.URL);
+            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaUploadError userInfo:nil];
+            responseBlock(NO, error);
+            return;
+        }
+        
+        if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
+            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
+            responseBlock(NO, error);
+            return;
+        }
+        
+        responseBlock(YES, nil);
+    }];
+    
+    [task resume];
+    return task;
+}
+
+// MARK: -
+
 - (NSURLSessionDownloadTask*)downloadTaskBundleAtURL:(NSURL*)URL withTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
     NSURLSessionDownloadTask *task = [self.URLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
@@ -249,6 +299,14 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
         if ( requestError != nil ) {
             NSLog(@"Request error for request with URL: %@", response.URL);
             NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDownloadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
+        if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
+            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
             responseBlock(nil, 0, error);
             return;
         }
@@ -286,6 +344,14 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
         if ( requestError != nil ) {
             NSLog(@"Request error for request with URL: %@", response.URL);
             NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaUploadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
+        if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
+            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
             responseBlock(nil, 0, error);
             return;
         }

@@ -106,6 +106,13 @@ NS_ASSUME_NONNULL_BEGIN
  - (NSURLSessionTask*)GETStartTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaJob * _Nullable job, NSError * _Nullable error))responseBlock;
 
 /**
+ * Informs the server of an error while processing a job for a task.
+ * A temporary API.
+ */
+
+- (nullable NSURLSessionTask*)POSTErrorMessage:(NSString*)errorMessage taskId:(NSString*)taskId jobId:(NSString*)jobId callback:(void(^)(BOOL success, NSError * _Nullable error))responseBlock;
+
+/**
  * Downloads a zipped task bundle.
  *
  * The progress parameter is currently ignored and the download reports 0 or 1
