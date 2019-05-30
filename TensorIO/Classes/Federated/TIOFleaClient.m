@@ -26,7 +26,8 @@
 #import "TIOFleaTaskDownload.h"
 #import "TIOFleaJobUpload.h"
 
-static NSString *TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
+static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
+static NSString * const TIOFleaErrorDomain = @"ai.doc.tensorio.flea";
 
 static NSInteger TIOFleaURLSessionErrorCode = 0;
 static NSInteger TIOFleaNoDataErrorCode = 1;
@@ -105,10 +106,20 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
 
 - (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
     if ((self=[super init])) {
+        [self acquireClientId];
          _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
         _baseURL = URL;
     }
     return self;
+}
+
+- (void)acquireClientId {
+    _clientId = [NSUserDefaults.standardUserDefaults stringForKey:TIOUserDefaultsClientIdKey];
+    
+    if ( _clientId == nil ) {
+        _clientId = NSUUID.UUID.UUIDString;
+        [NSUserDefaults.standardUserDefaults setObject:_clientId forKey:TIOUserDefaultsClientIdKey];
+    }
 }
 
 // MARK: -

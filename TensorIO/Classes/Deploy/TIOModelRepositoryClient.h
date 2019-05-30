@@ -55,6 +55,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSURLSession *URLSession;
 
 /**
+ * A unique ID associated with the client. Will be regenerated any time it is
+ * not available, for example, if the client application is re-installed. The
+ * unique ID is shared with the `TIOFleaClient` in the Federated module.
+ */
+
+ @property (readonly) NSString *clientId;
+
+/**
  * Initializes a model repository with a base URL
  *
  * You may inject your own URL Session with a custom session configuration into

@@ -409,7 +409,7 @@ NSString * TIOFrameworkVersion() {
     
     NSDictionary *JSON = @{
         @"taskId": taskId,
-        @"clientId": @"",
+        @"clientId": self.client.clientId,
         @"numSamples": @(dataSource.numberOfItems),
         @"output": results,
         @"taskParameters": @{
