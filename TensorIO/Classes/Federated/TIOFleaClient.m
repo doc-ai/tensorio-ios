@@ -267,6 +267,7 @@ static NSInteger TIOFleaUploadSourceDoesNotExistsError = 401;
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:destinationURL];
     [request addValue:@"application/zip" forHTTPHeaderField:@"Content-type"];
+    request.HTTPMethod = @"PUT";
     
     NSURLSessionUploadTask *task = [self.URLSession uploadTaskWithRequest:request fromFile:sourceURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         

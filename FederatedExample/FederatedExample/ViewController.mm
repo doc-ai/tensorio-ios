@@ -81,6 +81,27 @@
 //
 //        NSLog(@"Job is: %@", job);
 //    }];
+
+    [client GETStartTaskWithTaskId:taskId callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"There was an error, %@", error);
+            return;
+        }
+
+        NSLog(@"Job is: %@", job);
+        
+        NSURL *testJobResultsFileURL = [NSBundle.mainBundle URLForResource:@"test-job-results" withExtension:@"zip"];
+
+        [client uploadJobResultsAtURL:testJobResultsFileURL toURL:job.uploadTo withJobId:job.jobId callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"There was an error, %@", error);
+                return;
+            }
+            
+            NSLog(@"Upload is: %@", upload);
+        }];
+    }];
+
 }
 
 @end
