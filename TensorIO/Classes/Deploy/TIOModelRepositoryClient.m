@@ -320,6 +320,14 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
             return;
         }
         
+        if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
+            NSError *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDownloadError userInfo:nil];
+            responseBlock(nil, 0, error);
+            return;
+        }
+        
         if ( location == nil ) {
             NSLog(@"File error for request with URL: %@", response.URL);
             NSError *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDownloadError userInfo:nil];
