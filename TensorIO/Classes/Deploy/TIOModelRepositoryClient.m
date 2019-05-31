@@ -111,10 +111,11 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 @implementation TIOModelRepositoryClient
 
-- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
+- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
     if ((self=[super init])) {
         [self acquireClientId];
         _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
+        _downloadURLSession = downloadURLSession ? downloadURLSession : NSURLSession.sharedSession;
         _baseURL = URL;
     }
     return self;
@@ -311,7 +312,7 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 - (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
-    NSURLSessionDownloadTask *task = [self.URLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+    NSURLSessionDownloadTask *task = [self.downloadURLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {
             NSLog(@"Request error for request with URL: %@", response.URL);
