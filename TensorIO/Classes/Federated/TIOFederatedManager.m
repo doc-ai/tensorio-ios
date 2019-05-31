@@ -22,7 +22,7 @@
 //  independent of one instead of serially executed from a massive method.
 //  communicate job triggers via notifications (would be nice to just see when
 //  the db is updated directly but same effect). start all job queues when
-//  checkForTasks is called. no effect on empty queue, so activities must
+//  beginProcessing is called. no effect on empty queue, so activities must
 //  make sure to clear jobs from the queue when completed. Mappings that are
 //  passed across methods, e.g. taskId=>jobId, taskId=>taskBundleURL should be
 //  stored and read as needed
@@ -153,7 +153,7 @@ NSString * TIOFrameworkVersion() {
     }
 }
 
-- (void)checkForTasks {
+- (void)beginProcessing {
     assert(self.dataSourceProvider != nil);
     
     // Assuming 1) The model has already been downloaded

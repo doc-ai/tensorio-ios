@@ -93,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Informs the manager to check for tasks for a model with a given id whenever
- * `checkForTasks:` is called. You must call that method in addition to registering
+ * `beginProcessing` is called. You must call that method in addition to registering
  * specific models.
  */
 
@@ -123,7 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
  * manager will inform the delegate of status updates.
  */
 
-- (void)checkForTasks;
+- (void)beginProcessing;
 
 @end
 

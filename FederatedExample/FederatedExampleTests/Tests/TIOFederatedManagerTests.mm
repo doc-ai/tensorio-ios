@@ -123,7 +123,7 @@
     TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client dataSourceProvider:dataSourceProvider delegate:delegate];
     
     [manager registerForTasksForModelWithId:@"tio:///models/1/hyperparameters/1/checkpoint/1"];
-    [manager checkForTasks];
+    [manager beginProcessing];
     
     // Wait for the federated activity to complete
     
