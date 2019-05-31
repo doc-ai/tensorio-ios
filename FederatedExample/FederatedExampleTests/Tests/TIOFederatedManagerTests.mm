@@ -164,4 +164,90 @@
     XCTAssert([delegate didFailWithErrorCountForAction:TIOFederatedManagerUploadTaskResults] == 0);
 }
 
+// MARK: - Tasks Available
+
+- (void)testTasksAvailableIsTrue {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for all responses"];
+    
+    NSDictionary *GETTasksResponse = @{
+        @"startTaskId": @"tio:///tasks/1",
+        @"maxItems": @(1),
+        @"taskIds": @[
+            @"tio:///tasks/1"
+        ]
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETTasksResponse
+    ]];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session];
+    
+    TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client];
+    
+    [manager registerForTasksForModelWithId:@"tio:///models/1/hyperparameters/1/checkpoint/1"];
+    
+    [manager checkIfTasksAvailable:^(BOOL tasksAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertTrue(tasksAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0);
+}
+
+- (void)testTasksAvailableIsFalse {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for all responses"];
+    
+    NSDictionary *GETTasksResponse = @{
+        @"startTaskId": @"tio:///tasks/1",
+        @"maxItems": @(0),
+        @"taskIds": @[]
+    };
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithResponses:@[
+        GETTasksResponse
+    ]];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session];
+    
+    TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client];
+    
+    [manager registerForTasksForModelWithId:@"tio:///models/1/hyperparameters/1/checkpoint/1"];
+    
+    [manager checkIfTasksAvailable:^(BOOL tasksAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertFalse(tasksAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0);
+}
+
+- (void)testTasksAvailableError {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for all responses"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
+    
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session];
+    
+    TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client];
+    
+    [manager registerForTasksForModelWithId:@"tio:///models/1/hyperparameters/1/checkpoint/1"];
+    
+    [manager checkIfTasksAvailable:^(BOOL tasksAvailable, NSError * _Nullable error) {
+        [expectation fulfill];
+        
+        XCTAssertNotNil(error);
+        XCTAssertFalse(tasksAvailable);
+    }];
+    
+    [self waitForExpectations:@[expectation] timeout:10.0];
+    XCTAssert(session.responses.count == 0);
+}
+
 @end

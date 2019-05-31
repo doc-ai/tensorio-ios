@@ -106,10 +106,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unregisterForTasksForModelWithId:(NSString*)modelId;
 
 /**
+ * Checks if there are any tasks available for any of the models registered with
+ * the manager.
+ */
+
+- (void)checkIfTasksAvailable:(void(^)(BOOL tasksAvailable, NSError * _Nullable error))responseBlock;
+
+/**
  * Begins the process of requesting tasks for the registered models from a
- * TensorIO-Flea server. This will set of a chain of network calls on a background
- * threat that may include API requests, downloading model updates and task
+ * TensorIO-Flea server.
+ *
+ * This will set off a chain of network calls on a background
+ * thread that may include API requests, downloading model updates and task
  * bundles, and finally sending the results of a task back to the Flea server.
+ * Data will be provided to the manager via the data source provider and the
+ * manager will inform the delegate of status updates.
  */
 
 - (void)checkForTasks;

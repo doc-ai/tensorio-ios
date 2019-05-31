@@ -65,6 +65,8 @@ static NSInteger TIOFederatedManagerModelBundleError = 204;
 static NSInteger TIOFederatedManagerDataSourceProviderError = 205;
 static NSInteger TIOFederatedManagerZipError = 207;
 
+static NSInteger TIOFederatedManagerAvailableTasksError = 300;
+
 NSString * TIOOSVersionString() {
     NSOperatingSystemVersion osVersion = NSProcessInfo.processInfo.operatingSystemVersion;
     return [NSString stringWithFormat:@"%ld.%ld.%ld", osVersion.majorVersion, osVersion.minorVersion, osVersion.patchVersion];
@@ -111,6 +113,43 @@ NSString * TIOFrameworkVersion() {
     [[self mutableSetValueForKey:@"registeredModelIds"] removeObject:modelId];
 }
 
+// MARK: -
+
+- (void)checkIfTasksAvailable:(void(^)(BOOL tasksAvailable, NSError * _Nullable error))responseBlock {
+    NSUInteger modelCount = self.registeredModelIds.count;
+    __block NSUInteger checkedCount = 0;
+    __block BOOL tasksAvailable = NO;
+    __block BOOL breakLoop = NO;
+    __block NSError *error = nil;
+    
+    if ( modelCount == 0 ) {
+        responseBlock(NO, nil);
+        return;
+    }
+    
+    for ( NSString *modelId in self.registeredModelIds ) {
+        if ( breakLoop ) {
+            break;
+        }
+        
+        [self tasksForModelId:modelId callback:^(TIOFleaTasks * _Nullable tasks) {
+            checkedCount++;
+            
+            if (tasks == nil) {
+                error = [NSError errorWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerAvailableTasksError userInfo:nil];
+                tasksAvailable = NO;
+                breakLoop = YES;
+            } else if ( tasks.taskIds.count > 0 ) {
+                tasksAvailable = YES;
+            }
+            
+            if ( checkedCount == modelCount ) {
+                responseBlock(tasksAvailable, error);
+            }
+        }];
+    }
+}
+
 - (void)checkForTasks {
     assert(self.dataSourceProvider != nil);
     
@@ -131,6 +170,8 @@ NSString * TIOFrameworkVersion() {
         }];
     }
 }
+
+// MARK: -
 
 - (void)processTask:(NSString*)taskId forModel:(NSString*)modelId {
     [self informDelegateTaskWillBeginProcessing:taskId];
