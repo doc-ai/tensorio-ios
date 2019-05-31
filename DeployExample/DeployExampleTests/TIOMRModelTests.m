@@ -139,6 +139,34 @@
     XCTAssert(task.calledResume);
 }
 
+- (void)testGETModelWithEmptyCanonicalHyperparametersStringSucceeds {
+    XCTestExpectation *expectation = [[XCTestExpectation alloc] initWithDescription:@"Wait for model response"];
+    
+    MockURLSession *session = [[MockURLSession alloc] initWithJSONResponse:@{
+        @"modelId": @"happy-face",
+        @"details": @"Accepts images of an individual's face and infers their emotion from it.",
+        @"canonicalHyperparameters": @""
+    }];
+    
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    
+    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
+        XCTAssertNil(error);
+        XCTAssertNotNil(model);
+        
+        XCTAssertEqualObjects(model.modelId, @"happy-face");
+        XCTAssertEqualObjects(model.details, @"Accepts images of an individual's face and infers their emotion from it.");
+        XCTAssertNil(model.canonicalHyperparameters);
+    }];
+    
+    XCTAssert(task.calledResume);
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
+}
+
 - (void)testGETModelURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
