@@ -579,7 +579,9 @@ NSString * TIOFrameworkVersion() {
         return;
     }
     
-    [self.delegate federatedManager:self didCompleteTaskWithId:taskId];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate federatedManager:self didCompleteTaskWithId:taskId];
+    });
 }
 
 - (void)informDelegateTaskWillBeginProcessing:(NSString*)taskId {
@@ -590,7 +592,9 @@ NSString * TIOFrameworkVersion() {
         return;
     }
     
-    [self.delegate federatedManager:self willBeginProcessingTaskWithId:taskId];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate federatedManager:self willBeginProcessingTaskWithId:taskId];
+    });
 }
 
 - (void)informDelegateActionHasBegun:(TIOFederatedManagerAction)action {
@@ -601,7 +605,9 @@ NSString * TIOFrameworkVersion() {
         return;
     }
     
-    [self.delegate federatedManager:self didBeginAction:action];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate federatedManager:self didBeginAction:action];
+    });
 }
 
 - (void)informDelegateOfError:(NSError*)error forAction:(TIOFederatedManagerAction)action {
@@ -612,7 +618,9 @@ NSString * TIOFrameworkVersion() {
         return;
     }
     
-    [self.delegate federatedManager:self didFailWithError:error forAction:action];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate federatedManager:self didFailWithError:error forAction:action];
+    });
 }
 
 @end
