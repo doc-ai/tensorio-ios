@@ -48,19 +48,23 @@
         ]
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(models);
+        
         XCTAssert(models.modelIds.count == 2);
         XCTAssertEqualObjects(models.modelIds[0], @"happy-face");
         XCTAssertEqualObjects(models.modelIds[1], @"phenomenal-face");
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETModelsWithEmptyModelsSucceeds {
@@ -70,22 +74,26 @@
         @"modelIds": @[]
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(models);
+        
         XCTAssert(models.modelIds.count == 0);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETModelsURL {
     MockURLSession *session = [[MockURLSession alloc] init];
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {}];
     
     NSURL *expectedURL = [[NSURL
@@ -104,16 +112,19 @@
         @"foo": @[]
     }];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(models);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 // MARK: -
@@ -123,16 +134,19 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(models);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testGETHealthStatusWithoutDataFails {
@@ -140,16 +154,19 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONData:[NSData data]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(models);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 @end

@@ -11,7 +11,9 @@
 #endif
 
 #import "TIOBatch.h"
+#import "TIOBatchDataSource.h"
 #import "TIOData.h"
+#import "TIOInMemoryBatchDataSource.h"
 #import "TIOPixelBuffer.h"
 #import "TIOVector.h"
 #import "TIODataTypes.h"
@@ -28,6 +30,7 @@
 #import "TIOModelJSONParsing.h"
 #import "TIOModelModes.h"
 #import "TIOModelOptions.h"
+#import "TIOModelTrainer.h"
 #import "TIOPixelNormalization.h"
 #import "TIOPlaceholderModel.h"
 #import "TIOQuantization.h"
@@ -37,6 +40,7 @@
 #import "NSArray+TIOExtensions.h"
 #import "NSDictionary+TIOExtensions.h"
 #import "TIOCVPixelBufferHelpers.h"
+#import "TIOMeasurable.h"
 #import "TIOObjcDefer.h"
 #import "UIImage+TIOCVPixelBufferExtensions.h"
 #import "NSArray+TIOTFLiteData.h"

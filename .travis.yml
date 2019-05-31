@@ -17,12 +17,14 @@ before_install:
 - pod install --project-directory=TensorFlowExample
 - pod install --project-directory=SwiftExample
 - pod install --project-directory=DeployExample
+- pod install --project-directory=FederatedExample
 
 script:
 - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/TensorIO.xcworkspace -scheme TensorIO-Example -sdk iphonesimulator12.1 -arch x86_64 ONLY_ACTIVE_ARCH=NO | xcpretty
 - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace TensorFlowExample/TensorFlowExample.xcworkspace -scheme TensorFlowExample -sdk iphonesimulator12.1 -arch x86_64 ONLY_ACTIVE_ARCH=NO | xcpretty
 - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace SwiftExample/SwiftExample.xcworkspace -scheme SwiftExample -sdk iphonesimulator12.1 -arch x86_64 ONLY_ACTIVE_ARCH=NO | xcpretty
 - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace DeployExample/DeployExample.xcworkspace -scheme DeployExample -sdk iphonesimulator12.1 -arch x86_64 ONLY_ACTIVE_ARCH=NO | xcpretty
+- set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace FederatedExample/FederatedExample.xcworkspace -scheme FederatedExample -sdk iphonesimulator12.1 -arch x86_64 ONLY_ACTIVE_ARCH=NO | xcpretty
 - pod lib lint --skip-import-validation --allow-warnings
 
 before_deploy:

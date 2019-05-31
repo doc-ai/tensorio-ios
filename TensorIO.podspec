@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.8.1'
-  s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow.'
+  s.version          = '0.9.0'
+  s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for Federated Learning.'
   s.description      = 'Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
   s.license          = { :type => 'Apache 2', :file => 'LICENSE' }
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     ss.source_files = 'TensorIO/Classes/Core/**/*'
     ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_CORE=1'
+      'GCC_PREPROCESSOR_DEFINITIONS' => "TIO_CORE=1 TIO_VERSION=#{s.version}"
     }
   end
   
@@ -84,6 +84,21 @@ Pod::Spec.new do |s|
     ss.source_files = 'TensorIO/Classes/Deploy/**/*'
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_DEPLOY=1'
+    }
+  end
+
+  # The federated subspec contains federated learning classes and flea client side code
+
+  s.subspec 'Federated' do |ss|
+    ss.dependency 'TensorIO/Core'
+    ss.dependency 'SSZipArchive'
+
+    ss.source_files = 'TensorIO/Classes/Federated/**/*'
+    ss.resource_bundles = { 
+      'Federated' => 'TensorIO/Assets/Federated/**/*' 
+    }
+    ss.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_FEDERATED=1'
     }
   end
 

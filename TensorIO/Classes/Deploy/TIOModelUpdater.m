@@ -19,7 +19,7 @@
 //
 
 #import "TIOModelUpdater.h"
-#import "TIOModelRepository.h"
+#import "TIOModelRepositoryClient.h"
 #import "TIOModelBundle.h"
 #import "TIOModelBundleValidator.h"
 #import "TIOMRModelIdentifier.h"
@@ -40,12 +40,51 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
 
 @implementation TIOModelUpdater
 
-- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepository*)repository {
+- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepositoryClient*)repository {
     if ((self=[super init])) {
         _bundle = bundle;
         _repository = repository;
     }
     return self;
+}
+
+// MARK: -
+
+- (void)checkForUpdate:(void(^)(BOOL updateAvailable, NSError * _Nullable error))callback {
+    TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
+    
+    if ( identifier == nil ) {
+        NSLog(@"Unable to initialize model identifier from bundle id %@", self.bundle.identifier);
+        NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRInvalidBundleId userInfo:nil];
+        callback(NO, error);
+        return;
+    }
+    
+    [self.repository GETHyperparameterForModelWithId:identifier.modelId hyperparametersId:identifier.hyperparametersId callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+        if ( error != nil ) {
+            callback(NO, error);
+            return;
+        }
+        
+        if ( hyperparameter.upgradeTo == nil && [hyperparameter.canonicalCheckpoint isEqualToString:identifier.checkpointId] ) {
+            // No upgrade to a new set of hyperparameters and we are already using the canonical checkpoint
+            callback(NO, nil);
+        }
+        else if ( hyperparameter.upgradeTo == nil && ![hyperparameter.canonicalCheckpoint isEqualToString:identifier.checkpointId] ) {
+            // No upgrade to a new set of hyperparameters but a new checkpoint is available
+            callback(YES, nil);
+        }
+        else if ( hyperparameter.upgradeTo != nil) {
+            // An upgrade to a new set of hyperparameters is available
+            callback(YES, nil);
+        }
+        else {
+            // An inconsistent response
+            NSLog(@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", identifier.modelId, identifier.hyperparametersId, identifier.checkpointId);
+            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelInternalInconsistentyError userInfo:nil];
+            callback(NO, error);
+        }
+    }];
 }
 
 - (void)updateWithValidator:(_Nullable TIOModelBundleValidationBlock)customValidator callback:(void(^)(BOOL updated, NSURL * _Nullable updatedBundleURL, NSError * _Nullable error))callback {
@@ -146,7 +185,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
 
 - (void)updateModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(BOOL updated, NSURL * _Nullable downloadURL, NSError * _Nullable error))responseBlock {
     
-    NSURLSessionTask *task1 = [self.repository GETHyperparameterForModelWithId:modelId hyperparametersId:hyperparametersId callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+    [self.repository GETHyperparameterForModelWithId:modelId hyperparametersId:hyperparametersId callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
         if ( error != nil ) {
             responseBlock(NO, nil, error);
             return;
@@ -160,66 +199,60 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
             // No upgrade to a new set of hyperparameters but a new checkpoint is available
             
             // Request the new canonical checkpoint
-            NSURLSessionTask *task2 = [self.repository GETCheckpointForModelWithId:modelId hyperparametersId:hyperparametersId checkpointId:hyperparameter.canonicalCheckpoint callback:^(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error) {
+            [self.repository GETCheckpointForModelWithId:modelId hyperparametersId:hyperparametersId checkpointId:hyperparameter.canonicalCheckpoint callback:^(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error) {
                 if ( error != nil ) {
                     responseBlock(NO, nil, error);
                     return;
                 }
                 
                 // From the canonical checkpoint download the model link
-                NSURLSessionTask *task3 = [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+                [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
                     if ( error != nil ) {
                         responseBlock(NO, nil, error);
                     } else {
                         responseBlock(YES, download.URL, nil);
                     }
                 }];
-                [task3 resume];
                 
             }];
-            [task2 resume];
             
         } else if ( hyperparameter.upgradeTo != nil) {
             // An upgrade to a new set of hyperparameters is available
             
             // Request the new set of hyperparameters
-            NSURLSessionTask *task2 = [self.repository GETHyperparameterForModelWithId:modelId hyperparametersId:hyperparameter.upgradeTo callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
+            [self.repository GETHyperparameterForModelWithId:modelId hyperparametersId:hyperparameter.upgradeTo callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
                 if ( error != nil ) {
                     responseBlock(NO, nil, error);
                     return;
                 }
                 
                 // From the hyperparameters request the canonical checkpoint
-                NSURLSessionTask *task3 = [self.repository GETCheckpointForModelWithId:hyperparameter.modelId hyperparametersId:hyperparameter.hyperparametersId checkpointId:hyperparameter.canonicalCheckpoint callback:^(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error) {
+                [self.repository GETCheckpointForModelWithId:hyperparameter.modelId hyperparametersId:hyperparameter.hyperparametersId checkpointId:hyperparameter.canonicalCheckpoint callback:^(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error) {
                     if ( error != nil ) {
                         responseBlock(NO, nil, error);
                         return;
                     }
                     
                     // From the canonical checkpoint download the model link
-                    NSURLSessionTask *task4 = [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+                    [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
                         if ( error != nil ) {
                             responseBlock(NO, nil, error);
                         } else {
                             responseBlock(YES, download.URL, nil);
                         }
                     }];
-                    [task4 resume];
                     
                 }];
-                [task3 resume];
                 
             }];
-            [task2 resume];
             
         } else {
+            // An inconsistent response
             NSLog(@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", modelId, hyperparametersId, checkpointId);
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelInternalInconsistentyError userInfo:nil];
             responseBlock(NO, nil, error);
         }
-        
     }];
-    [task1 resume];
 }
 
 /**
@@ -254,14 +287,14 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         NSArray *contents = [fm contentsOfDirectoryAtPath:destinationURL.path error:&fmError];
         
         if ( contents == nil || fmError ) {
-            NSLog(@"Zipped model bundle at :%@ contains no contents at: %@", sourceURL, destinationURL);
+            NSLog(@"Zipped model bundle at: %@ contains no contents at: %@", sourceURL, destinationURL);
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
             callback(nil, error);
             return;
         }
         
         if ( contents.count != 1 ) {
-            NSLog(@"Zipped model bundle at :%@ contains incorrect contents at: %@, contents: %@", sourceURL, destinationURL, contents);
+            NSLog(@"Zipped model bundle at: %@ contains incorrect contents at: %@, contents: %@", sourceURL, destinationURL, contents);
             NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
             callback(nil, error);
             return;

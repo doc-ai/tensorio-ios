@@ -44,21 +44,25 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithDownload:testURL];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNil(error);
         XCTAssertNotNil(download);
+        
         XCTAssert(progress == 1);
         XCTAssertEqualObjects(download.modelId, @"happy-face");
         XCTAssertEqualObjects(download.hyperparametersId, @"batch-9-2-0-1-5");
         XCTAssertEqualObjects(download.checkpointId, @"model.ckpt-321312");
         XCTAssert([NSFileManager.defaultManager fileExistsAtPath:download.URL.path]);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:10.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 // MARK: -
@@ -69,16 +73,19 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(download);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 - (void)testDownloadZippedModelBundleWithoutLocationFails {
@@ -87,16 +94,19 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] init];
     
-    TIOModelRepository *repository = [[TIOModelRepository alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+        [expectation fulfill];
+        
         XCTAssertNotNil(error);
         XCTAssertNil(download);
-        [expectation fulfill];
     }];
     
-    XCTAssert(task.calledResume);
     [self waitForExpectations:@[expectation] timeout:1.0];
+    
+    XCTAssert(session.responses.count == 0); // queue exhausted
+    XCTAssert(task.calledResume);
 }
 
 @end

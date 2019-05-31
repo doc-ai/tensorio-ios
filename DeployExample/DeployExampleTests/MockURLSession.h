@@ -53,6 +53,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface MockSessionUploadTask: NSURLSessionUploadTask
+
+- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest;
+@property (readonly) BOOL calledResume;
+
+@end
+
 // MARK: - Mock Session
 
 @interface MockURLSession: NSURLSession
