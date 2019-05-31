@@ -39,7 +39,7 @@
             _hyperparametersId = JSON[@"hyperparametersId"];
         }
         
-        if ( JSON[@"upgradeTo"] == nil || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class] ) {
+        if ( JSON[@"upgradeTo"] == nil || [JSON[@"upgradeTo"] isKindOfClass:NSNull.class] || [JSON[@"upgradeTo"] isEqual:@""] ) {
             _upgradeTo = nil;
         } else if ( ![JSON[@"upgradeTo"] isKindOfClass:NSString.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"_upgradeTo", JSON);
@@ -55,7 +55,7 @@
             _hyperparameters = JSON[@"hyperparameters"];
         }
         
-        if ( JSON[@"canonicalCheckpoint"] == nil || [JSON[@"canonicalCheckpoint"] isKindOfClass:NSNull.class] ) {
+        if ( JSON[@"canonicalCheckpoint"] == nil || [JSON[@"canonicalCheckpoint"] isKindOfClass:NSNull.class] || [JSON[@"canonicalCheckpoint"] isEqual:@""] ) {
             _canonicalCheckpoint = nil;
         } else if ( ![JSON[@"canonicalCheckpoint"] isKindOfClass:NSString.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"canonicalCheckpoint", JSON);
