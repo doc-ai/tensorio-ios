@@ -105,10 +105,11 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 @implementation TIOFleaClient
 
-- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
+- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
     if ((self=[super init])) {
         [self acquireClientId];
          _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
+         _downloadURLSession = downloadURLSession ? downloadURLSession : NSURLSession.sharedSession;
         _baseURL = URL;
     }
     return self;

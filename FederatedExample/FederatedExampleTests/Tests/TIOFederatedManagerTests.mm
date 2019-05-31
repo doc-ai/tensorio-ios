@@ -43,7 +43,7 @@
 
 - (void)testRegisterAndUnregisterModelIds {
     MockURLSession *session = [[MockURLSession alloc] init];
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client];
     
@@ -114,7 +114,7 @@
         UploadJobResultsURL
     ]];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session downloadSession:session];
     
     // Create manager with mocked data source and delegate
     // Register tasks for a model
@@ -181,7 +181,7 @@
         GETTasksResponse
     ]];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session downloadSession:session];
     
     TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client];
     
@@ -211,7 +211,7 @@
         GETTasksResponse
     ]];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session downloadSession:session];
     
     TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client];
     
@@ -233,7 +233,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://localhost/v1/flea"] session:session downloadSession:session];
     
     TIOFederatedManager *manager = [[TIOFederatedManager alloc] initWithClient:client];
     

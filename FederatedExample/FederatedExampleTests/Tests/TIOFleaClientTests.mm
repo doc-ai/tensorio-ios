@@ -37,13 +37,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 - (void)tearDown { }
 
 - (void)testClientGeneratedClientIdIfUnavailable {
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil downloadSession:nil];
     XCTAssertNotNil(client.clientId);
 }
 
 - (void)testClientUsesClientIdIfAvailable {
     [NSUserDefaults.standardUserDefaults setObject:@"FOO" forKey:TIOUserDefaultsClientIdKey];
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil downloadSession:nil];
     XCTAssertEqualObjects(client.clientId, @"FOO");
 }
 
@@ -56,7 +56,7 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
         @"message": @"Thank you for the error report."
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client POSTErrorMessage:@"message" taskId:@"taskid" jobId:@"jobid" callback:^(BOOL success, NSError * _Nullable error) {
         [expectation fulfill];

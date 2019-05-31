@@ -40,7 +40,7 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"test.tiotask" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithDownload:testURL];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
@@ -67,7 +67,7 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
@@ -88,7 +88,7 @@
     NSURL *testURL = [NSBundle.mainBundle URLForResource:@"upgradable-checkpoint.tiobundle" withExtension:@"zip"];
     MockURLSession *session = [[MockURLSession alloc] init];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
