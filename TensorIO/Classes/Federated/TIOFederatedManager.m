@@ -136,7 +136,10 @@ NSString * TIOFrameworkVersion() {
             checkedCount++;
             
             if (tasks == nil) {
-                error = [NSError errorWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerAvailableTasksError userInfo:nil];
+                NSLog(@"An error occurred while checking for available tasks for model with id: %@", modelId);
+                error = [NSError errorWithDomain:TIOFederatedManagerErrorDomain code:TIOFederatedManagerAvailableTasksError userInfo:@{
+                    NSLocalizedDescriptionKey: [NSString stringWithFormat:@"An error occurred while checking for available tasks for model with id: %@", modelId]
+                }];
                 tasksAvailable = NO;
                 breakLoop = YES;
             } else if ( tasks.taskIds.count > 0 ) {
