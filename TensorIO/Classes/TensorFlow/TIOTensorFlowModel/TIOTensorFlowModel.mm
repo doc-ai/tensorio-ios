@@ -330,6 +330,10 @@ typedef std::vector<std::string> TensorNames;
  */
 
 - (void)unload {
+    if ( !_loaded ) {
+        return;
+    }
+    
     TF_CHECK_OK(_saved_model_bundle.session.get()->Close());
     _loaded = NO;
 }

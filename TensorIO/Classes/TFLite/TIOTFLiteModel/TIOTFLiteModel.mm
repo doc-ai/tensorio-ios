@@ -295,6 +295,10 @@ static NSString * const kTensorTypeImage = @"image";
  */
 
 - (void)unload {
+    if ( !_loaded ) {
+        return;
+    }
+    
     interpreter.reset();
     model.reset();
    
