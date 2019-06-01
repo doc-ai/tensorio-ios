@@ -559,7 +559,7 @@ NSString * TIOFrameworkVersion() {
         return;
     }
     
-    BOOL didZip = [SSZipArchive createZipFileAtPath:zipFile.path withContentsOfDirectory:resultsDir.path];
+    BOOL didZip = [SSZipArchive createZipFileAtPath:zipFile.path withContentsOfDirectory:resultsDir.path keepParentDirectory:YES];
     
     if ( !didZip ) {
         NSLog(@"During save job, failed to zip contents of directory: %@, to zip file: %@", resultsDir, zipFile);
