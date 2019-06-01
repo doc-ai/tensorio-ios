@@ -295,7 +295,7 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 - (NSURLSessionDownloadTask*)downloadTaskBundleAtURL:(NSURL*)URL withTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
-    NSURLSessionDownloadTask *task = [self.URLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+    NSURLSessionDownloadTask *task = [self.downloadURLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {
             NSLog(@"Request error for request with URL: %@", response.URL);
@@ -340,7 +340,7 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     [request addValue:@"application/zip" forHTTPHeaderField:@"Content-type"];
     request.HTTPMethod = @"PUT";
     
-    NSURLSessionUploadTask *task = [self.URLSession uploadTaskWithRequest:request fromFile:sourceURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+    NSURLSessionUploadTask *task = [self.downloadURLSession uploadTaskWithRequest:request fromFile:sourceURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {
             NSLog(@"Request error for request with URL: %@", response.URL);
