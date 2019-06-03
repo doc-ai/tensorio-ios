@@ -23,10 +23,10 @@
 #import "TIOModelBundle.h"
 #import "TIOModelBundleValidator.h"
 #import "TIOMRModelIdentifier.h"
-
 #import "TIOMRHyperparameter.h"
 #import "TIOMRCheckpoint.h"
 #import "TIOMRDownload.h"
+#import "TIOErrorHandling.h"
 
 static NSString *TIOModelUpdaterErrorDomain = @"ai.doc.tensorio.model-updater";
 
@@ -54,8 +54,12 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
     
     if ( identifier == nil ) {
-        NSLog(@"Unable to initialize model identifier from bundle id %@", self.bundle.identifier);
-        NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRInvalidBundleId userInfo:nil];
+        NSError *error;
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Unable to initialize model identifier from bundle id %@", self.bundle.identifier]),
+            TIOModelUpdaterErrorDomain,
+            TIOMRInvalidBundleId,
+            error);
         callback(NO, error);
         return;
     }
@@ -80,8 +84,12 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         }
         else {
             // An inconsistent response
-            NSLog(@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", identifier.modelId, identifier.hyperparametersId, identifier.checkpointId);
-            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelInternalInconsistentyError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", identifier.modelId, identifier.hyperparametersId, identifier.checkpointId]),
+                TIOModelUpdaterErrorDomain,
+                TIOMRUpdateModelInternalInconsistentyError,
+                error);
             callback(NO, error);
         }
     }];
@@ -94,8 +102,12 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
     
     if ( identifier == nil ) {
-        NSLog(@"Unable to initialize model identifier from bundle id %@", self.bundle.identifier);
-        NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRInvalidBundleId userInfo:nil];
+        NSError *error;
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Unable to initialize model identifier from bundle id %@", self.bundle.identifier]),
+            TIOModelUpdaterErrorDomain,
+            TIOMRInvalidBundleId,
+            error);
         callback(NO, nil, error);
         return;
     }
@@ -122,7 +134,12 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         NSURL *temporaryDirectory = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:NSUUID.UUID.UUIDString];
         
         if ( ![fm createDirectoryAtURL:temporaryDirectory withIntermediateDirectories:NO attributes:nil error:&fmError] ) {
-            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileSystemError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"File error creating temporary directory: %@", fmError]),
+                TIOModelUpdaterErrorDomain,
+                TIOMRUpdateFileSystemError,
+                error);
             callback(NO, nil, error);
             return;
         }
@@ -140,7 +157,12 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
             TIOModelBundleValidator *validator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:downloadedBundleURL.path];
         
             if ( ![validator validate:customValidator error:&validationError] ) {
-                NSLog(@"Custom validator failed: %@ with bundle at path: %@", error, downloadedBundleURL);
+                NSError *error;
+                TIO_LOGSET_ERROR(
+                    ([NSString stringWithFormat:@"Model updator custom validator failed: %@ with bundle at path: %@", validationError, downloadedBundleURL]),
+                    validationError.domain,
+                    validationError.code,
+                    error);
                 callback(NO, nil, validationError);
                 return;
             }
@@ -151,13 +173,23 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
             NSError *fmError;
             
             if ( ![fm removeItemAtPath:self.bundle.path error:&fmError] ) {
-                NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileDeletionError userInfo:nil];
+                NSError *error;
+                TIO_LOGSET_ERROR(
+                    ([NSString stringWithFormat:@"Model updator unable to remove existing model from path %@, error: %@", self.bundle.path, fmError]),
+                    TIOModelUpdaterErrorDomain,
+                    TIOMRUpdateFileDeletionError,
+                    error);
                 callback(NO, nil, error);
                 return;
             }
             
             if ( ![fm copyItemAtURL:downloadedBundleURL toURL:newBundleURL error:&fmError] ) {
-                NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateFileCopyError userInfo:nil];
+                NSError *error;
+                TIO_LOGSET_ERROR(
+                    ([NSString stringWithFormat:@"Model updator unable to copy downloaded bundle at %@ to %@, error: %@", downloadedBundleURL, newBundleURL, fmError]),
+                    TIOModelUpdaterErrorDomain,
+                    TIOMRUpdateFileCopyError,
+                    error);
                 callback(NO, nil, error);
                 return;
             }
@@ -248,8 +280,12 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
             
         } else {
             // An inconsistent response
-            NSLog(@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", modelId, hyperparametersId, checkpointId);
-            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelInternalInconsistentyError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Inconsistent request results attempting to update model with ids (%@, %@, %@)", modelId, hyperparametersId, checkpointId]),
+                TIOModelUpdaterErrorDomain,
+                TIOMRUpdateModelInternalInconsistentyError,
+                error);
             responseBlock(NO, nil, error);
         }
     }];
@@ -268,16 +304,22 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         // Report unzip errors
         
         if ( error ) {
-            NSLog(@"Error unzipping model bundle: %@, to: %@ error: %@", sourceURL, destinationURL, error);
-            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelUnzipError userInfo:nil];
-            callback(nil, error);
+            NSError *localError;
+            TIO_LOGSET_ERROR(([NSString stringWithFormat:@"Error unzipping model bundle: %@, to: %@ error: %@", sourceURL, destinationURL, error]),
+                TIOModelUpdaterErrorDomain,
+                TIOMRUpdateModelUnzipError,
+                localError);
+            callback(nil, localError);
             return;
         }
         
         if ( ![fm fileExistsAtPath:destinationURL.path] ) {
-            NSLog(@"Error unzipping model bundle: %@, to: %@ error: %@", sourceURL, destinationURL, error);
-            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelUnzipError userInfo:nil];
-            callback(nil, error);
+            NSError *localError;
+            TIO_LOGSET_ERROR(([NSString stringWithFormat:@"Error unzipping model bundle: %@, to: %@ error: %@", sourceURL, destinationURL, localError]),
+                TIOModelUpdaterErrorDomain,
+                TIOMRUpdateModelUnzipError,
+                localError);
+            callback(nil, localError);
             return;
         }
         
@@ -287,16 +329,23 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
         NSArray *contents = [fm contentsOfDirectoryAtPath:destinationURL.path error:&fmError];
         
         if ( contents == nil || fmError ) {
-            NSLog(@"Zipped model bundle at: %@ contains no contents at: %@", sourceURL, destinationURL);
-            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
-            callback(nil, error);
+            NSError *localError;
+            TIO_LOGSET_ERROR(([NSString stringWithFormat:@"Zipped model bundle at: %@ contains no contents at: %@", sourceURL, destinationURL]),
+                TIOModelUpdaterErrorDomain,
+                TIOMRUpdateModelContentsError,
+                localError);
+            callback(nil, localError);
             return;
         }
         
         if ( contents.count != 1 ) {
-            NSLog(@"Zipped model bundle at: %@ contains incorrect contents at: %@, contents: %@", sourceURL, destinationURL, contents);
-            NSError *error = [[NSError alloc] initWithDomain:TIOModelUpdaterErrorDomain code:TIOMRUpdateModelContentsError userInfo:nil];
-            callback(nil, error);
+            NSError *localError;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Zipped model bundle at: %@ contains incorrect contents at: %@, contents: %@", sourceURL, destinationURL, contents]),
+                TIOModelUpdaterErrorDomain,
+                TIOMRUpdateModelContentsError,
+                localError);
+            callback(nil, localError);
             return;
         }
         

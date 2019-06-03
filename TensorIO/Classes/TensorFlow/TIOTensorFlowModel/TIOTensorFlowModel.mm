@@ -366,15 +366,14 @@ typedef std::vector<std::string> TensorNames;
 
 // MARK: - Perform Inference
 
-/**
- * Prepares the model's input tensors and performs inference, returning the results.
- *
- * @param input Any class conforming to `TIOData` whose bytes will be copied to the input tensors
- * @return TIOData The results of performing inference
- */
-
 - (id<TIOData>)runOn:(id<TIOData>)input {
-    [self load:nil];
+    NSError *loadError;
+    [self load:&loadError];
+    
+    if (loadError != nil) {
+        NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
+        return @{};
+    }
     
     const NamedTensors inputs = [self _prepareInput:input];
     const Tensors outputs = [self _runInference:inputs];
@@ -564,7 +563,13 @@ typedef std::vector<std::string> TensorNames;
 @implementation TIOTensorFlowModel (TIOTrainableModel)
 
 - (id<TIOData>)train:(TIOBatch*)batch {
-    [self load:nil];
+    NSError *loadError;
+    [self load:&loadError];
+    
+    if (loadError != nil) {
+        NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
+        return @{};
+    }
     
     const NamedTensors inputs = [self _prepareTrainingInput:batch];
     const Tensors outputs = [self _runTraining:inputs];

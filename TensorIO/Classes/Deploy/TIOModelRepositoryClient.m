@@ -28,6 +28,7 @@
 #import "TIOMRCheckpoint.h"
 #import "TIOMRDownload.h"
 #import "TIOMRErrors.h"
+#import "TIOErrorHandling.h"
 
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
@@ -58,21 +59,30 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 - (nullable id)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error {
     
     if ( requestError != nil ) {
-        NSLog(@"Request error for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLRequestErrorCode userInfo:nil];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Request error for request with URL: %@", response.URL]),
+            TIOMRErrorDomain,
+            TIOMRURLRequestErrorCode,
+            *error);
         return nil;
     }
     
     if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-        NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
-        NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRURLResponseErrorCode userInfo:nil];
+        NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+            TIOMRErrorDomain,
+            TIOMRURLResponseErrorCode,
+            *error);
         return nil;
     }
     
     if ( data == nil ) {
-        NSLog(@"No data for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRNoDataErrorCode userInfo:nil];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"No data for request with URL: %@", response.URL]),
+            TIOMRErrorDomain,
+            TIOMRNoDataErrorCode,
+            *error);
         return nil;
     }
     
@@ -80,8 +90,11 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
 
     if ( JSONError != nil ) {
-        NSLog(@"Unable to parse JSON for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRJSONError userInfo:nil];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Unable to parse JSON for request with URL: %@, error: %@", response.URL, JSONError]),
+            TIOMRErrorDomain,
+            TIOMRJSONError,
+            *error);
         return nil;
     }
     
@@ -89,11 +102,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     id object = [[_klass alloc] initWithJSON:JSON error:&parseError];
     
     if ( object == nil ) {
-        NSLog(@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass);
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass]),
+            TIOMRErrorDomain,
+            TIOMRDeserializationError,
+            *error);
         if ( parseError != nil ) {
             *error = parseError;
-        } else {
-            *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDeserializationError userInfo:nil];
         }
         return nil;
     }
@@ -147,8 +162,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
         }
         
         if ( status.status != TIOMRStatusValueServing ) {
-            NSLog(@"Health returned value other than serving");
-            responseBlock(status, [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRHealthStatusNotServingError userInfo:nil]);
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Health returned value other than serving: %@", status]),
+                TIOMRErrorDomain,
+                TIOMRHealthStatusNotServingError,
+                error);
+            responseBlock(status, error);
             return;
         }
         
@@ -315,23 +335,35 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     NSURLSessionDownloadTask *task = [self.downloadURLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {
-            NSLog(@"Request error for request with URL: %@", response.URL);
-            NSError *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDownloadError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Request error for request with URL: %@", response.URL]),
+                TIOMRErrorDomain,
+                TIOMRDownloadError,
+                error);
             responseBlock(nil, 0, error);
             return;
         }
         
         if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
-            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
-            NSError *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDownloadError userInfo:nil];
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                TIOMRErrorDomain,
+                TIOMRDownloadError,
+                error);
             responseBlock(nil, 0, error);
             return;
         }
         
         if ( location == nil ) {
-            NSLog(@"File error for request with URL: %@", response.URL);
-            NSError *error = [[NSError alloc] initWithDomain:TIOMRErrorDomain code:TIOMRDownloadError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"File error for request with URL: %@", response.URL]),
+                TIOMRErrorDomain,
+                TIOMRDownloadError,
+                error);
             responseBlock(nil, 0, error);
             return;
         }

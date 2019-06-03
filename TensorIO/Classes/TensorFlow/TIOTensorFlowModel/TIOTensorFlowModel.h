@@ -70,12 +70,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unload;
 
 /**
- * Performs inference on the provided input and returns the results. The primary interface to a
- * conforming class.
+ * Performs inference on the provided input and returns the results. The primary
+ * interface to a conforming class.
  *
- * @param input Any class conforming to `TIOData` that you want to run inference on
+ * @param input Any class conforming to `TIOData` that you want to run
+ *  inference on
  *
- * @return TIOData The results of performing inference
+ * @return TIOData The results of performing inference, or an empty dictionary
+ *  if the model has not been loaded yet and a load error occurs.
  */
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
@@ -98,6 +100,9 @@ NS_ASSUME_NONNULL_BEGIN
  * A complete round of training will involve iterating over all the available
  * batches for a certain number of epochs. It is the responsibility of other
  * objects to execute those loops and prepare batches for calls to this method.
+ *
+ * This method will return an empty dictionary if the model has not been loaded
+ * yet and a load error occurs.
  */
 
 - (id<TIOData>)train:(TIOBatch*)batch;
