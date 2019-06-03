@@ -48,7 +48,7 @@ typedef enum : NSUInteger {
 
 /**
  * Informs the delegate that it has begun some action. This method is optional.
- * This method may be called on a separate thread.
+ * This method will be called on the main thread.
  */
 
 // TODO: Make sure the taskId is passed to the delegate as well, if available
@@ -56,21 +56,22 @@ typedef enum : NSUInteger {
 - (void)federatedManager:(TIOFederatedManager*)manager didBeginAction:(TIOFederatedManagerAction)action;
 
 /**
- * Informs the delegate that the manager will begin processing a task.
+ * Informs the delegate that the manager will begin processing a task. This
+ * method is optional. This method will be called on the main thread.
  */
 
 - (void)federatedManager:(TIOFederatedManager*)manager willBeginProcessingTaskWithId:(NSString*)taskId;
 
 /**
  * Informs the delegate that the manager has successfully finished processing
- * a task.
+ * a task. This method is optional. This method will be called on the main thread.
  */
 
 - (void)federatedManager:(TIOFederatedManager *)manager didCompleteTaskWithId:(NSString*)taskId;
 
 /**
  * Informs the delegate that some error occurred. This method is optional.
- * This method may be called on a separate thread.
+ * This method will be called on the main thread
  */
 
 // TODO: Make sure the taskId is passed to the delegate as well, if available

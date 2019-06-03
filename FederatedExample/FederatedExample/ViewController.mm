@@ -42,7 +42,7 @@
 
     NSURLSession *URLSession = [NSURLSession sessionWithConfiguration:configuration];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:URL session:URLSession];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:URL session:URLSession downloadSession:nil];
 
     // Begin Tests
 

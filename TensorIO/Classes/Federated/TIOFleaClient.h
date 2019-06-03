@@ -54,6 +54,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSURLSession *URLSession;
 
 /**
+ * The download URL session used for model downloads, which may require different
+ * headers or other session configuration.
+ */
+
+@property (readonly) NSURLSession *downloadURLSession;
+
+/**
  * A unique ID associated with the client. Will be regenerated any time it is
  * not available, for example, if the client application is re-installed. The
  * unique ID is shared with the `TIOFleaModelRepositoryClient` in the Deploy module.
@@ -70,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  * `nil` may be sufficient.
  */
 
-- (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer

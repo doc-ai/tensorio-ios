@@ -39,7 +39,7 @@
     NSURL *destinationURL = [NSURL URLWithString:@"http://foo.com/upload.zip"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithUpload:sourceURL];
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
         [expectation fulfill];
@@ -64,7 +64,7 @@
     NSURL *destinationURL = [NSURL URLWithString:@"http://foo.com/upload.zip"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
         [expectation fulfill];
@@ -86,7 +86,7 @@
     NSURL *destinationURL = [NSURL URLWithString:@"http://foo.com/upload.zip"];
     
     MockURLSession *session = [[MockURLSession alloc] initWithUpload:sourceURL];
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
         [expectation fulfill];

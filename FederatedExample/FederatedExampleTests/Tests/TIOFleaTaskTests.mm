@@ -65,7 +65,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -91,7 +91,7 @@
 
 - (void)testGETTaskURL {
     MockURLSession *session = [[MockURLSession alloc] init];
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://foo.com"] session:session downloadSession:session];
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) { }];
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://foo.com/tasks/task-id"];
@@ -113,7 +113,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -141,7 +141,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -169,7 +169,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -197,7 +197,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -225,7 +225,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -253,7 +253,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -281,7 +281,7 @@
         @"checkpointLink": @"http://tensoriorepor/models/id/hyperparameters/id/checkpoint/id"
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -309,7 +309,7 @@
         @"link": @"http://goo.gl/Tx3.zip",
     }];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];
@@ -331,7 +331,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session];
+    TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[client GETTaskWithTaskId:@"task-id" callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
         [expectation fulfill];

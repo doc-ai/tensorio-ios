@@ -295,6 +295,10 @@ static NSString * const kTensorTypeImage = @"image";
  */
 
 - (void)unload {
+    if ( !_loaded ) {
+        return;
+    }
+    
     interpreter.reset();
     model.reset();
    
@@ -337,16 +341,14 @@ static NSString * const kTensorTypeImage = @"image";
 
 // MARK: - Perform Inference
 
-/**
- * Prepares the model's input tensors and performs inference, returning the results.
- *
- * @param input Any class conforming to `TIOData` whose bytes will be copied to the input tensors
- *
- * @return TIOData The results of performing inference
- */
-
 - (id<TIOData>)runOn:(id<TIOData>)input {
-    [self load:nil];
+    NSError *loadError;
+    [self load:&loadError];
+    
+    if (loadError != nil) {
+        NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
+        return @{};
+    }
     
     [self _prepareInput:input];
     [self _runInference];

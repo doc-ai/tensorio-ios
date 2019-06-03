@@ -36,13 +36,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 - (void)tearDown { }
 
 - (void)testClientGeneratedClientIdIfUnavailable {
-    TIOModelRepositoryClient *client = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil];
+    TIOModelRepositoryClient *client = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil downloadSession:nil];
     XCTAssertNotNil(client.clientId);
 }
 
 - (void)testClientUsesClientIdIfAvailable {
     [NSUserDefaults.standardUserDefaults setObject:@"FOO" forKey:TIOUserDefaultsClientIdKey];
-    TIOModelRepositoryClient *client = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil];
+    TIOModelRepositoryClient *client = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:nil downloadSession:nil];
     XCTAssertEqualObjects(client.clientId, @"FOO");
 }
 

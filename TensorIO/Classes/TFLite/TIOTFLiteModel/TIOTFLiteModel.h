@@ -65,6 +65,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)load:(NSError**)error;
 - (void)unload;
 
+/**
+ * Performs inference on the provided input and returns the results. The primary
+ * interface to a conforming class.
+ *
+ * @param input Any class conforming to `TIOData` that you want to run
+ *  inference on
+ *
+ * @return TIOData The results of performing inference, or an empty dictionary
+ *  if the model has not been loaded yet and a load error occurs.
+ */
+
 - (id<TIOData>)runOn:(id<TIOData>)input;
 
 - (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;

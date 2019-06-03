@@ -41,7 +41,7 @@
             _details = JSON[@"details"];
         }
         
-        if ( JSON[@"canonicalHyperparameters"] == nil || [JSON[@"canonicalHyperparameters"] isKindOfClass:NSNull.class] ) {
+        if ( JSON[@"canonicalHyperparameters"] == nil || [JSON[@"canonicalHyperparameters"] isKindOfClass:NSNull.class] || [JSON[@"canonicalHyperparameters"] isEqual:@""]  ) {
             _canonicalHyperparameters = nil;
         } else if ( ![JSON[@"canonicalHyperparameters"] isKindOfClass:NSString.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"canonicalHyperparameters", JSON);

@@ -48,7 +48,7 @@
         ]
     }];
     
-    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         [expectation fulfill];
@@ -74,7 +74,7 @@
         @"modelIds": @[]
     }];
     
-    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         [expectation fulfill];
@@ -93,7 +93,7 @@
 
 - (void)testGETModelsURL {
     MockURLSession *session = [[MockURLSession alloc] init];
-    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {}];
     
     NSURL *expectedURL = [[NSURL
@@ -112,7 +112,7 @@
         @"foo": @[]
     }];
     
-    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         [expectation fulfill];
@@ -134,7 +134,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     
-    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         [expectation fulfill];
@@ -154,7 +154,7 @@
     
     MockURLSession *session = [[MockURLSession alloc] initWithJSONData:[NSData data]];
     
-    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session];
+    TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
     MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModels:^(TIOMRModels * _Nullable models, NSError * _Nonnull error) {
         [expectation fulfill];

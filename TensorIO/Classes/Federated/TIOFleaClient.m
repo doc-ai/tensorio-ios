@@ -26,6 +26,7 @@
 #import "TIOFleaTaskDownload.h"
 #import "TIOFleaJobUpload.h"
 #import "TIOFleaErrors.h"
+#import "TIOErrorHandling.h"
 
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
@@ -56,21 +57,30 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 - (nullable id)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error {
     
     if ( requestError != nil ) {
-        NSLog(@"Request error for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLRequestErrorCode userInfo:nil];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Request error for request with URL: %@", response.URL]),
+            TIOFleaErrorDomain,
+            TIOFleaURLRequestErrorCode,
+            *error);
         return nil;
     }
     
     if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-        NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
-        NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
+        NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+            TIOFleaErrorDomain,
+            TIOFleaURLResponseErrorCode,
+            *error);
         return nil;
     }
     
     if ( data == nil ) {
-        NSLog(@"No data for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaNoDataErrorCode userInfo:nil];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"No data for request with URL: %@", response.URL]),
+            TIOFleaErrorDomain,
+            TIOFleaNoDataErrorCode,
+            *error);
         return nil;
     }
     
@@ -78,8 +88,11 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
 
     if ( JSONError != nil ) {
-        NSLog(@"Unable to parse JSON for request with URL: %@", response.URL);
-        *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaJSONError userInfo:nil];
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Unable to parse JSON for request with URL: %@, error: %@", response.URL, JSONError]),
+            TIOFleaErrorDomain,
+            TIOFleaJSONError,
+            *error);
         return nil;
     }
     
@@ -87,11 +100,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     id object = [[_klass alloc] initWithJSON:JSON error:&parseError];
     
     if ( object == nil ) {
-        NSLog(@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass);
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Unable to deserialize JSON for request with URL: %@, class %@", response.URL, _klass]),
+            TIOFleaErrorDomain,
+            TIOFleaDeserializationError,
+            *error);
         if ( parseError != nil ) {
             *error = parseError;
-        } else {
-            *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDeserializationError userInfo:nil];
         }
         return nil;
     }
@@ -105,10 +120,11 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 @implementation TIOFleaClient
 
-- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession {
+- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
     if ((self=[super init])) {
         [self acquireClientId];
          _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
+         _downloadURLSession = downloadURLSession ? downloadURLSession : NSURLSession.sharedSession;
         _baseURL = URL;
     }
     return self;
@@ -140,8 +156,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
         }
         
         if ( status.status != TIOFleaStatusValueServing ) {
-            NSLog(@"Health returned value other than serving");
-            responseBlock(status, [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaHealthStatusNotServingError userInfo:nil]);
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Health returned value other than serving: %@", status]),
+                TIOFleaErrorDomain,
+                TIOFleaHealthStatusNotServingError,
+                error);
+            responseBlock(status, error);
             return;
         }
         
@@ -230,8 +251,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
         }
         
         if ( job.status != TIOFleaJobStatusApproved ) {
-            NSLog(@"Start task returned value other than approved");
-            responseBlock(job, [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaJobStatusNotApprovedError userInfo:nil]);
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Start task returned value other than approved: %@", job]),
+                TIOFleaErrorDomain,
+                TIOFleaJobStatusNotApprovedError,
+                error);
+            responseBlock(job, error);
             return;
         }
         
@@ -261,7 +287,7 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSON options:NSJSONWritingPrettyPrinted error:&JSONError];
     
     if ( JSONError != nil ) {
-        NSLog(@"Error encoding JSON to send to job error endpoing");
+        NSLog(@"Error encoding JSON to send to job error endpoint");
         responseBlock(NO, JSONError);
         return nil;
     }
@@ -269,16 +295,24 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     NSURLSessionUploadTask *task = [self.URLSession uploadTaskWithRequest:request fromData:JSONData completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {
-            NSLog(@"Request error for request with URL: %@", response.URL);
-            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaUploadError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Request error for request with URL: %@", response.URL]),
+                TIOFleaErrorDomain,
+                TIOFleaUploadError,
+                error);
             responseBlock(NO, error);
             return;
         }
         
         if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
-            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
-            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                TIOFleaErrorDomain,
+                TIOFleaURLResponseErrorCode,
+                error);
             responseBlock(NO, error);
             return;
         }
@@ -294,26 +328,38 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 - (NSURLSessionDownloadTask*)downloadTaskBundleAtURL:(NSURL*)URL withTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
-    NSURLSessionDownloadTask *task = [self.URLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+    NSURLSessionDownloadTask *task = [self.downloadURLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {
-            NSLog(@"Request error for request with URL: %@", response.URL);
-            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDownloadError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Request error for request with URL: %@", response.URL]),
+                TIOFleaErrorDomain,
+                TIOFleaDownloadError,
+                error);
             responseBlock(nil, 0, error);
             return;
         }
         
         if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
-            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
-            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                TIOFleaErrorDomain,
+                TIOFleaURLResponseErrorCode,
+                error);
             responseBlock(nil, 0, error);
             return;
         }
         
         if ( location == nil ) {
-            NSLog(@"File error for request with URL: %@", response.URL);
-            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaDownloadError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"File error for request with URL: %@", response.URL]),
+                TIOFleaErrorDomain,
+                TIOFleaDownloadError,
+                error);
             responseBlock(nil, 0, error);
             return;
         }
@@ -329,8 +375,12 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 - (nullable NSURLSessionUploadTask*)uploadJobResultsAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL withJobId:(NSString*)jobId callback:(void(^)(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error))responseBlock {
     
     if ( ![NSFileManager.defaultManager fileExistsAtPath:sourceURL.path] ) {
-        NSLog(@"No file at source URL: %@", sourceURL);
-        NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaUploadSourceDoesNotExistsError userInfo:nil];
+        NSError *error;
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"No file at source URL: %@", sourceURL]),
+            TIOFleaErrorDomain,
+            TIOFleaUploadSourceDoesNotExistsError,
+            error);
         responseBlock(nil, 0, error);
         return nil;
     }
@@ -339,19 +389,27 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     [request addValue:@"application/zip" forHTTPHeaderField:@"Content-type"];
     request.HTTPMethod = @"PUT";
     
-    NSURLSessionUploadTask *task = [self.URLSession uploadTaskWithRequest:request fromFile:sourceURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+    NSURLSessionUploadTask *task = [self.downloadURLSession uploadTaskWithRequest:request fromFile:sourceURL completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
         
         if ( requestError != nil ) {
-            NSLog(@"Request error for request with URL: %@", response.URL);
-            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaUploadError userInfo:nil];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Request error for request with URL: %@", response.URL]),
+                TIOFleaErrorDomain,
+                TIOFleaUploadError,
+                error);
             responseBlock(nil, 0, error);
             return;
         }
         
         if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-            NSString *description = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
-            NSLog(@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, description);
-            NSError *error = [[NSError alloc] initWithDomain:TIOFleaErrorDomain code:TIOFleaURLResponseErrorCode userInfo:nil];
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+            NSError *error;
+            TIO_LOGSET_ERROR(
+                ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                TIOFleaErrorDomain,
+                TIOFleaURLResponseErrorCode,
+                error);
             responseBlock(nil, 0, error);
             return;
         }
