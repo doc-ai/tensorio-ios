@@ -80,7 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  if the model has not been loaded yet and a load error occurs.
  */
 
-- (id<TIOData>)runOn:(id<TIOData>)input;
+- (id<TIOData>)runOn:(id<TIOData>)input __attribute__((deprecated));
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error;
 
 - (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
 - (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name;
@@ -105,7 +106,8 @@ NS_ASSUME_NONNULL_BEGIN
  * yet and a load error occurs.
  */
 
-- (id<TIOData>)train:(TIOBatch*)batch;
+- (id<TIOData>)train:(TIOBatch*)batch __attribute__((deprecated));
+- (id<TIOData>)train:(TIOBatch*)batch error:(NSError**)error;
 
 /**
  * Exports the results of training to the specified directory. The directory

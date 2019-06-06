@@ -342,11 +342,18 @@ static NSString * const kTensorTypeImage = @"image";
 // MARK: - Perform Inference
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
+    return [self runOn:input error:nil];
+}
+
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error {
     NSError *loadError;
     [self load:&loadError];
     
     if (loadError != nil) {
         NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
+        if (*error) {
+            *error = loadError;
+        }
         return @{};
     }
     

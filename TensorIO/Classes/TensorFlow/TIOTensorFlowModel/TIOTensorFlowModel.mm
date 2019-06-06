@@ -367,11 +367,18 @@ typedef std::vector<std::string> TensorNames;
 // MARK: - Perform Inference
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
+    return [self runOn:input error:nil];
+}
+
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error {
     NSError *loadError;
     [self load:&loadError];
     
     if (loadError != nil) {
         NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
+        if (error) {
+            *error = loadError;
+        }
         return @{};
     }
     
@@ -563,11 +570,18 @@ typedef std::vector<std::string> TensorNames;
 @implementation TIOTensorFlowModel (TIOTrainableModel)
 
 - (id<TIOData>)train:(TIOBatch*)batch {
+    return [self train:batch error:nil];
+}
+
+- (id<TIOData>)train:(TIOBatch*)batch error:(NSError**)error {
     NSError *loadError;
     [self load:&loadError];
     
     if (loadError != nil) {
         NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
+        if (*error) {
+            *error = loadError;
+        }
         return @{};
     }
     

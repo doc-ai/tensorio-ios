@@ -230,7 +230,9 @@ NS_ASSUME_NONNULL_BEGIN
  * @return TIOData The results of performing inference
  */
 
-- (id<TIOData>)runOn:(id<TIOData>)input;
+- (id<TIOData>)runOn:(id<TIOData>)input __attribute__((deprecated));
+
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error;
 
 // MARK: - Input/Output Layers
 
