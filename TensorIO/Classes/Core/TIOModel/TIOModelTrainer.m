@@ -42,8 +42,10 @@
     
     for ( NSUInteger epoch = 0; epoch < self.epochs; epoch++ ) {
         for ( NSUInteger batchIndex = 0; batchIndex < batchCount; batchIndex++ ) {
-            TIOBatch *batch = [self _batchAtIndex:batchIndex];
-            results = [self.model train:batch];
+            @autoreleasepool {
+                TIOBatch *batch = [self _batchAtIndex:batchIndex];
+                results = [self.model train:batch];
+            }
         }
     }
     
