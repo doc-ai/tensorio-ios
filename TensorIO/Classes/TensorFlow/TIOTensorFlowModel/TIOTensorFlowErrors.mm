@@ -37,5 +37,13 @@ NSError * const TIOTensorFlowModelLoadSavedModelError = [NSError errorWithDomain
 }];
 
 NSError * const TIOTensorFlowModelExportError = [NSError errorWithDomain:@"ai.doc.tensorio" code:105 userInfo:@{
-    NSLocalizedDescriptionKey: @"Unable to export the modelx"
+    NSLocalizedDescriptionKey: @"Unable to export the model"
+}];
+
+NSError * const TIOTensorFlowModelSessionInferenceError = [NSError errorWithDomain:@"ai.doc.tensorio" code:106 userInfo:@{
+    NSLocalizedDescriptionKey: @"TensorFlow inference sesion run error"
+}];
+
+NSError * const TIOTensorFlowModelSessionTrainError = [NSError errorWithDomain:@"ai.doc.tensorio" code:107 userInfo:@{
+    NSLocalizedDescriptionKey: @"TensorFlow train sesion run error"
 }];

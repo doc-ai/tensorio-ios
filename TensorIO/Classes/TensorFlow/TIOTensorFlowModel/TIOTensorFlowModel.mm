@@ -372,6 +372,8 @@ typedef std::vector<std::string> TensorNames;
 
 - (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error {
     NSError *loadError;
+    NSError *inferenceError;
+    
     [self load:&loadError];
     
     if (loadError != nil) {
@@ -383,7 +385,16 @@ typedef std::vector<std::string> TensorNames;
     }
     
     const NamedTensors inputs = [self _prepareInput:input];
-    const Tensors outputs = [self _runInference:inputs];
+    
+    const Tensors outputs = [self _runInference:inputs error:&inferenceError];
+    if (inferenceError != nil ) {
+        NSLog(@"There was a problem running inference, error: %@", inferenceError);
+        if (error) {
+            *error = inferenceError;
+        }
+        return @{};
+    }
+    
     const id<TIOData> results = [self _captureOutput:outputs];
     
     return results;
@@ -492,7 +503,7 @@ typedef std::vector<std::string> TensorNames;
  * @return Tensors The output tensors that are a result of running inference
  */
 
-- (Tensors)_runInference:(NamedTensors)inputs {
+- (Tensors)_runInference:(NamedTensors)inputs error:(NSError**)error {
     TensorNames output_names;
     Tensors outputs;
     
@@ -501,7 +512,17 @@ typedef std::vector<std::string> TensorNames;
     }
     
     tensorflow::Session *session = _saved_model_bundle.session.get();
-    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs));
+    tensorflow::Status status;
+    
+    status = session->Run(inputs, output_names, {}, &outputs);
+    
+    if ( status != tensorflow::Status::OK() ) {
+        NSLog(@"Run error on session->Run with the inputs and output_names: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
+        if (error) {
+            *error = TIOTensorFlowModelSessionInferenceError;
+        }
+        return outputs;
+    }
     
     return outputs;
 }
@@ -575,6 +596,8 @@ typedef std::vector<std::string> TensorNames;
 
 - (id<TIOData>)train:(TIOBatch*)batch error:(NSError**)error {
     NSError *loadError;
+    NSError *trainError;
+    
     [self load:&loadError];
     
     if (loadError != nil) {
@@ -586,9 +609,17 @@ typedef std::vector<std::string> TensorNames;
     }
     
     const NamedTensors inputs = [self _prepareTrainingInput:batch];
-    const Tensors outputs = [self _runTraining:inputs];
-    const id<TIOData> results = [self _captureTrainingOutput:outputs];
+    const Tensors outputs = [self _runTraining:inputs error:&trainError];
     
+    if (trainError != nil) {
+        NSLog(@"There was a problem training the model from train:, error: %@", trainError);
+        if (*error) {
+            *error = trainError;
+        }
+        return @{};
+    }
+    
+    const id<TIOData> results = [self _captureTrainingOutput:outputs];
     return results;
 }
 
@@ -655,7 +686,7 @@ typedef std::vector<std::string> TensorNames;
  * @return Tensors The output tensors that are a result of running training
  */
 
-- (Tensors)_runTraining:(NamedTensors)inputs {
+- (Tensors)_runTraining:(NamedTensors)inputs error:(NSError**)error {
     TensorNames training_names;
     TensorNames output_names;
     Tensors outputs;
@@ -672,9 +703,32 @@ typedef std::vector<std::string> TensorNames;
          training_names.push_back(op.UTF8String);
     }
     
+    // Run training
+    
     tensorflow::Session *session = _saved_model_bundle.session.get();
-    TF_CHECK_OK(session->Run(inputs, {}, training_names, nullptr)); // Train
-    TF_CHECK_OK(session->Run(inputs, output_names, {}, &outputs)); // Get outputs (loss)
+    tensorflow::Status status;
+    
+    status = session->Run(inputs, {}, training_names, nullptr);
+    
+    if ( status != tensorflow::Status::OK() ) {
+        NSLog(@"Train rror on session->Run with the inputs and training_names: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
+        if (error) {
+            *error = TIOTensorFlowModelSessionTrainError;
+        }
+        return outputs;
+    }
+    
+    // Get loss
+    
+    status = session->Run(inputs, output_names, {}, &outputs);
+    
+    if ( status != tensorflow::Status::OK() ) {
+        NSLog(@"Train error on session->Run with the inputs and output_na,mes: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
+        if (error) {
+            *error = TIOTensorFlowModelSessionTrainError;
+        }
+        return outputs;
+    }
     
     // Train and get loss at the same time : results in a slightly different output
     // TF_CHECK_OK(session->Run(inputs, output_names, training_names, &outputs));
