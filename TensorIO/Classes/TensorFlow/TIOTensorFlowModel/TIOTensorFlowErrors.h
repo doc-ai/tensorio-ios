@@ -55,4 +55,16 @@ extern NSError * const TIOTensorFlowModelLoadSavedModelError;
 
 extern NSError * const TIOTensorFlowModelExportError;
 
+/**
+ * Occurs when an inference session->run error occurs.
+ */
+
+extern NSError * const TIOTensorFlowModelSessionInferenceError;
+
+/**
+ * Occurs when an training session->run error occurs.
+ */
+ 
+extern NSError * const TIOTensorFlowModelSessionTrainError;
+
 NS_ASSUME_NONNULL_END
