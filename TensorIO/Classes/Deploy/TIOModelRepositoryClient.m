@@ -461,7 +461,6 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     
     if ( [task isKindOfClass:NSURLSessionDownloadTask.class] ) {
         [self _URLSession:session downloadTask:(NSURLSessionDownloadTask *)task didCompleteWithError:error];
-        NSLog(@"download task");
         return;
     }
     

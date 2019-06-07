@@ -522,7 +522,6 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
         // If completed, clean callback
         
         if ( progress >= 1 ) {
-            NSLog(@"**** RELEASING CALLBACK ****");
             self.uploadTaskCallbacks[destinationURL] = nil;
         }
     };
@@ -562,13 +561,11 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     
     if ( [task isKindOfClass:NSURLSessionDownloadTask.class] ) {
         [self _URLSession:session downloadTask:(NSURLSessionDownloadTask *)task didCompleteWithError:error];
-        NSLog(@"download task");
         return;
     }
     
     if ( [task isKindOfClass:NSURLSessionUploadTask.class] ) {
         [self _URLSession:session uploadTask:(NSURLSessionUploadTask *)task didCompleteWithError:error];
-        NSLog(@"upload task");
         return;
     }
     
