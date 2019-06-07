@@ -624,6 +624,12 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     }
     
     float progress = (float)totalBytesSent/(float)totalBytesExpectedToSend;
+    
+    if ( progress >= 1 ) {
+        // Let the error or success handlers handle completion
+        return;
+    }
+    
     callback(progress, task.response, nil);
 }
 
@@ -655,6 +661,12 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     }
     
     float progress = (float)totalBytesWritten/(float)totalBytesExpectedToWrite;
+    
+    if ( progress >= 1 ) {
+        // Let the error or success handlers handle completion
+        return;
+    }
+    
     callback(nil, progress, downloadTask.response, nil);
 }
 
