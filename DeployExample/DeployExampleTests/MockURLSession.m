@@ -272,4 +272,10 @@
     return [[NSHTTPURLResponse alloc] initWithURL:URL statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:nil];
 }
 
+// MARK: -
+
+- (nullable id)delegate {
+    return nil;
+}
+
 @end

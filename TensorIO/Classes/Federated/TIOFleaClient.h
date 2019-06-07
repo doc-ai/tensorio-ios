@@ -38,8 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
  * All HTTP requests are run on a background thread and execute their callbacks
  * on a background thread.
  *
- * To use a client with a session delegate, which supports the use of fully
- * background request (requests that execute when the app is in the background
+ * To use a client with a session delegate, which supports the use of full
+ * background requests (requests that execute when the app is in the background
  * or a suspended state) as well as progress updates on the upload and download
  * methods, inject a background session configuration, client session delegate,
  * and download session into this client as follows:
@@ -65,8 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Uploads and downloads will now continue even if the user backgrounds the
  * application. Because you should be using the `TIOFederatedManager` instead of
  * this client directly, to receive upload and download progress reports,
- * implement the federatedManager:didProgress:forAction delegate method.
- * `
+ * implement the `federatedManager:didProgress:forAction` delegate method.
  */
 
 @interface TIOFleaClient : NSObject

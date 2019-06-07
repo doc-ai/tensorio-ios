@@ -23,6 +23,7 @@
 
 #import "TIOModelBundleValidator.h"
 
+@protocol TIOModelUpdaterDelegate;
 @class TIOModelRepositoryClient;
 @class TIOModelBundle;
 
@@ -47,6 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) TIOModelRepositoryClient *repository;
+
+/**
+ * The delegate will be notified of federated task events as they occur.
+ */
+
+@property (weak, nullable, readwrite) id<TIOModelUpdaterDelegate> delegate;
 
 /**
  * Initializes an update with a bundle and repository.

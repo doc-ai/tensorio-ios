@@ -545,7 +545,6 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
 // MARK: - NSURLSessionDelegate
 
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session {
-    // We're pretty deep in here, really get it from the app?
     dispatch_async(dispatch_get_main_queue(), ^{
         TIOFleaClientBackgroundCompletionHandler handler = TIOFleaClientBackgroundSessionHandler.sharedInstance.handler;
         if ( handler == nil ) {
