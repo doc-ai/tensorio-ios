@@ -131,6 +131,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
+/**
+ * Mock delegate is always nil
+ */
+
+- (nullable id)delegate;
+
 @end
 
 NS_ASSUME_NONNULL_END

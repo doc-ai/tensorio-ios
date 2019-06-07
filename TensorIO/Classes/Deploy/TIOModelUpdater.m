@@ -27,6 +27,7 @@
 #import "TIOMRCheckpoint.h"
 #import "TIOMRDownload.h"
 #import "TIOErrorHandling.h"
+#import "TIOModelUpdaterDelegate.h"
 
 static NSString *TIOModelUpdaterErrorDomain = @"ai.doc.tensorio.model-updater";
 
@@ -125,7 +126,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
             callback(updated, nil, error);
             return;
         }
-        
+    
         // Unzip the bundle
         
         NSFileManager *fm = NSFileManager.defaultManager;
@@ -239,11 +240,23 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
                 
                 // From the canonical checkpoint download the model link
                 [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+                    // TODO: refactor duplicated implementation
                     if ( error != nil ) {
                         responseBlock(NO, nil, error);
-                    } else {
-                        responseBlock(YES, download.URL, nil);
+                        return;
                     }
+                    
+                    // Callback may be executed multiple times as progress increases
+        
+                    [self informDelegateOfProgress:progress];
+                    
+                    // But download will only be set once the task is completed
+                    
+                    if ( !download ) {
+                        return;
+                    }
+                    
+                    responseBlock(YES, download.URL, nil);
                 }];
                 
             }];
@@ -267,11 +280,23 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
                     
                     // From the canonical checkpoint download the model link
                     [self.repository downloadModelBundleAtURL:checkpoint.link withModelId:checkpoint.modelId hyperparametersId:checkpoint.hyperparametersId checkpointId:checkpoint.checkpointId callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+                        // TODO: refactor duplicated implementation
                         if ( error != nil ) {
                             responseBlock(NO, nil, error);
-                        } else {
-                            responseBlock(YES, download.URL, nil);
+                            return;
                         }
+                        
+                        // Callback may be executed multiple times as progress increases
+            
+                        [self informDelegateOfProgress:progress];
+                        
+                        // But download will only be set once the task is completed
+                        
+                        if ( !download ) {
+                            return;
+                        }
+                        
+                        responseBlock(YES, download.URL, nil);
                     }];
                     
                 }];
@@ -356,6 +381,21 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     }];
     
     return YES;
+}
+
+// MARK: - Delegate Interactions
+
+- (void)informDelegateOfProgress:(float)progress {
+    if ( !self.delegate ) {
+        return;
+    }
+    if ( ![self.delegate respondsToSelector:@selector(modelUpdater:didProgress:)]) {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate modelUpdater:self didProgress:progress];
+    });
 }
 
 @end

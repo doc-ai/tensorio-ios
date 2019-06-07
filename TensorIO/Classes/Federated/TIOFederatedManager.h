@@ -40,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
  * a task. You may return the data source provider itself if it also knows how
  * to vend data, but it is then that classes responsibility to only vend the
  * correct data for a specific task.
+ *
+ * See additional instructions for `TIOFleaClient` to support background
+ * sessions and progress updates.
  */
 
 @interface TIOFederatedManager : NSObject

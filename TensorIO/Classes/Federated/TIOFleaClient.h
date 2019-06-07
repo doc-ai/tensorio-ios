@@ -37,6 +37,35 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * All HTTP requests are run on a background thread and execute their callbacks
  * on a background thread.
+ *
+ * To use a client with a session delegate, which supports the use of full
+ * background requests (requests that execute when the app is in the background
+ * or a suspended state) as well as progress updates on the upload and download
+ * methods, inject a background session configuration, client session delegate,
+ * and download session into this client as follows:
+ *
+ * @code
+ * NSURLSessionConfiguration *backgroundConfiguration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:TIOFleaClient.backgroundSessionIdentifier];
+ * TIOFleaClientSessionDelegate *delegate = [[TIOFleaClientSessionDelegate alloc] init];
+ * NSURLSession *downloadSession = [NSURLSession sessionWithConfiguration:backgroundConfiguration delegate:delegate delegateQueue:nil];
+ * @endcode
+ *
+ * Then, in your Application Delegate, implement the `handleEventsForBackgroundURLSession:`
+ * delegate method and make the completionHandler available to the shared
+ * `TIOFleaClientBackgroundSessionHandler` as follows:
+ *
+ * @code
+ * - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(nonnull NSString *)identifier completionHandler:(nonnull void (^)(void))completionHandler {
+ *   if ([identifier isEqualToString:TIOFleaClient.backgroundSessionIdentifier]) {
+ *       TIOFleaClientBackgroundSessionHandler.sharedInstance.handler = completionHandler;
+ *   }
+ * }
+ * @endcode
+ *
+ * Uploads and downloads will now continue even if the user backgrounds the
+ * application. Because you should be using the `TIOFederatedManager` instead of
+ * this client directly, to receive upload and download progress reports,
+ * implement the `federatedManager:didProgress:forAction` delegate method.
  */
 
 @interface TIOFleaClient : NSObject
@@ -84,6 +113,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (instancetype)init NS_UNAVAILABLE;
+
+/**
+ * A background session identifier to be used with background session configuration
+ */
+
++ (NSString*)backgroundSessionIdentifier;
 
 // MARK: - Primitive Repository Methods
 

@@ -78,6 +78,18 @@ typedef enum : NSUInteger {
 
 - (void)federatedManager:(TIOFederatedManager*)manager didFailWithError:(NSError*)error forAction:(TIOFederatedManagerAction)action;
 
+/**
+ * Informs the delegate that some amount of progress has been made for an action
+ * specifically for `TIOFederatedManagerDownloadTaskBundle` and `TIOFederatedManagerUploadTaskResults`.
+ *
+ * Progress will be a value between 0 and 1. This method will only be called
+ * to indicate progress when you use a `TIOFleaClientSessionDelegate` with the
+ * `TIOFleaClient` that is injected into a federated manager. Refer to additional
+ * instructions for `TIOFleaClient`.
+ */
+
+- (void)federatedManager:(TIOFederatedManager*)manager didProgress:(float)progress forAction:(TIOFederatedManagerAction)action;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -29,8 +29,15 @@
 #import "TIOMRDownload.h"
 #import "TIOMRErrors.h"
 #import "TIOErrorHandling.h"
+#import "TIOMRClientSessionDelegate.h"
+#import "TIOMRClientBackgroundSessionHandler.h"
 
 static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
+
+typedef void (^TIOMRClientDownloadTaskCallbackBlock)
+(NSURL * _Nullable location, double progress, NSURLResponse * _Nullable response, NSError * _Nullable error);
+
+// MARK: -
 
 /**
  * Parses a JSON response from a tensorio models repository
@@ -120,11 +127,18 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
 
 // MARK: -
 
-@interface TIOModelRepositoryClient ()
+@interface TIOModelRepositoryClient () <NSURLSessionDelegate,NSURLSessionTaskDelegate,NSURLSessionDownloadDelegate>
+
+@property (readonly) TIOMRClientSessionDelegate *downloadSessionDelegate;
+@property (readonly) NSMutableDictionary<NSURL*, TIOMRClientDownloadTaskCallbackBlock> *downloadTaskCallbacks;
 
 @end
 
 @implementation TIOModelRepositoryClient
+
++ (NSString*)backgroundSessionIdentifier {
+    return @"TIO_MR_CLIENT";
+}
 
 - (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
     if ((self=[super init])) {
@@ -132,6 +146,12 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
         _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
         _downloadURLSession = downloadURLSession ? downloadURLSession : NSURLSession.sharedSession;
         _baseURL = URL;
+        
+        if ( [_downloadURLSession.delegate isKindOfClass:TIOMRClientSessionDelegate.class] ) {
+            _downloadTaskCallbacks = NSMutableDictionary.dictionary;
+            _downloadSessionDelegate = (TIOMRClientSessionDelegate *)downloadURLSession.delegate;
+            _downloadSessionDelegate.client = self;
+        }
     }
     return self;
 }
@@ -145,7 +165,11 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     }
 }
 
-// MARK: -
+- (BOOL)usesDownloadDelegate {
+    return self.downloadSessionDelegate != nil;
+}
+
+// MARK: - Base API
 
 - (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable status, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"healthz"];
@@ -328,16 +352,29 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
     return task;
 }
 
-// MARK: -
+// MARK: - Downloads
 
 - (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
-    NSURLSessionDownloadTask *task = [self.downloadURLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+    // SUCCESS
+    // URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:
+    // URLSession:downloadTask:didFinishDownloadingToURL:
+    // URLSession:task:didCompleteWithError:
+    
+    // ERROR
+    // URLSession:task:didCompleteWithError:
+    
+    NSURLSessionDownloadTask *task;
+    
+    TIOMRClientDownloadTaskCallbackBlock callback =
+    ^(NSURL * _Nullable location, double progress, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        if ( requestError != nil ) {
+        // Handle request or response error
+        
+        if ( error != nil ) {
             NSError *error;
             TIO_LOGSET_ERROR(
-                ([NSString stringWithFormat:@"Request error for request with URL: %@", response.URL]),
+                ([NSString stringWithFormat:@"Error for request with URL: %@", response.URL]),
                 TIOMRErrorDomain,
                 TIOMRDownloadError,
                 error);
@@ -345,11 +382,13 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
             return;
         }
         
-        if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
+        // Handle bad HTTP response
+        
+        if ( response && (((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299) ) {
             NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
             NSError *error;
             TIO_LOGSET_ERROR(
-                ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                ([NSString stringWithFormat:@"HTTP Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
                 TIOMRErrorDomain,
                 TIOMRDownloadError,
                 error);
@@ -357,7 +396,9 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
             return;
         }
         
-        if ( location == nil ) {
+        // Handle error when task completes but there is no location
+        
+        if ( progress >= 1 && location == nil ) {
             NSError *error;
             TIO_LOGSET_ERROR(
                 ([NSString stringWithFormat:@"File error for request with URL: %@", response.URL]),
@@ -368,12 +409,125 @@ static NSString * const TIOUserDefaultsClientIdKey = @"TIOClientId";
             return;
         }
         
-        TIOMRDownload *download = [[TIOMRDownload alloc] initWithURL:location modelId:modelId hyperparametereId:hyperparametersId checkpointId:checkpointId];
-        responseBlock(download, 1, nil);
-    }];
+        // No errors, download is in progress; progress >= 1 and location will be set if completed
+        
+        if ( location != nil ) {
+            TIOMRDownload *download = [[TIOMRDownload alloc] initWithURL:location modelId:modelId hyperparametereId:hyperparametersId checkpointId:checkpointId];
+            responseBlock(download, 1, nil);
+        } else {
+            responseBlock(nil, progress, nil);
+        }
+        
+        // If completed, clean callback
+        
+        if (progress >= 1) {
+            self.downloadTaskCallbacks[URL] = nil;
+        }
+        
+    };
+    
+    // Handle both delegated and undelegated download sessions
+    
+    if (self.usesDownloadDelegate) {
+        task = [self.downloadURLSession downloadTaskWithURL:URL];
+        self.downloadTaskCallbacks[URL] = callback;
+    } else {
+        task = [self.downloadURLSession downloadTaskWithURL:URL completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable requestError) {
+            callback(location, 1, response, requestError);
+        }];
+    }
     
     [task resume];
     return task;
+}
+
+// MARK: - NSURLSessionDelegate
+
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        TIOMRClientBackgroundCompletionHandler handler = TIOMRClientBackgroundSessionHandler.sharedInstance.handler;
+        if ( handler == nil ) {
+            return;
+        }
+        handler();
+        TIOMRClientBackgroundSessionHandler.sharedInstance.handler = nil;
+    });
+}
+
+// MARK: - NSURLSessionTaskDelegate
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    // Is always called download and upload delegate callbacks are handled differently
+    
+    if ( [task isKindOfClass:NSURLSessionDownloadTask.class] ) {
+        [self _URLSession:session downloadTask:(NSURLSessionDownloadTask *)task didCompleteWithError:error];
+        return;
+    }
+    
+    NSLog(@"Unknown task, always handle");
+    
+    TIOMRClientDownloadTaskCallbackBlock downloadCallback = self.downloadTaskCallbacks[task.originalRequest.URL];
+    if (downloadCallback) {
+        downloadCallback(nil, 0, task.response, error);
+    }
+}
+
+- (void)_URLSession:(NSURLSession *)session downloadTask:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    // Is always called, only respond to errors, let success methods handle successes
+    
+    if (!error) {
+        return;
+    }
+    
+    TIOMRClientDownloadTaskCallbackBlock callback = self.downloadTaskCallbacks[task.originalRequest.URL];
+    
+    if (!callback) {
+        return;
+    }
+    
+    callback(nil, 0, task.response, error);
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
+    // UPLOAD PROGRESS is called
+    ;
+}
+
+// MARK: - NSURLSessionDownloadDelegate
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
+    // Is called on success
+    
+    TIOMRClientDownloadTaskCallbackBlock callback = self.downloadTaskCallbacks[downloadTask.originalRequest.URL];
+    
+    if (!callback) {
+        return;
+    }
+    
+    callback(location, 1, downloadTask.response, nil);
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
+    ;
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
+    // DOWNLOAD PROGRESS Is Called
+    
+    TIOMRClientDownloadTaskCallbackBlock callback = self.downloadTaskCallbacks[downloadTask.originalRequest.URL];
+    
+    if (!callback) {
+        return;
+    }
+    
+    float progress = (float)totalBytesWritten/(float)totalBytesExpectedToWrite;
+    
+    if ( progress >= 1 ) {
+        // Let the error or success handlers handle completion
+        return;
+    }
+    
+    callback(nil, progress, downloadTask.response, nil);
 }
 
 @end

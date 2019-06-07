@@ -116,6 +116,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
+/**
+ * Mock delegate is always nil
+ */
+
+- (nullable id)delegate;
+
 @end
 
 NS_ASSUME_NONNULL_END
