@@ -269,6 +269,18 @@ NSString * TIOFrameworkVersion() {
             return;
         }
         
+        // Callback may be executed multiple times as progress increases
+        
+        [self informDelegateOfProgress:progress forAction:TIOFederatedManagerDownloadTaskBundle];
+        
+        // But download will only be set once the task is completed
+        
+        if (!download) {
+            return;
+        }
+        
+        // Download complete, unzip and validate
+        
         [self unzipAndValidateTaskBundleAtURL:download.URL callback:^(NSURL * _Nullable bundleURL) {
             if ( bundleURL == nil ) {
                 callback(nil, nil);
@@ -632,7 +644,15 @@ NSString * TIOFrameworkVersion() {
             return;
         }
         
-        callback(YES);
+        // Callback may be executed multiple times as progress increases
+        
+        [self informDelegateOfProgress:progress forAction:TIOFederatedManagerUploadTaskResults];
+        
+        // But upload will only be set once the task is completed
+        
+        if (upload) {
+            callback(YES);
+        }
     }];
 }
 
@@ -713,6 +733,19 @@ NSString * TIOFrameworkVersion() {
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.delegate federatedManager:self didFailWithError:error forAction:action];
+    });
+}
+
+- (void)informDelegateOfProgress:(float)progress forAction:(TIOFederatedManagerAction)action {
+    if ( !self.delegate ) {
+        return;
+    }
+    if ( ![self.delegate respondsToSelector:@selector(federatedManager:didProgress:forAction:)]) {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate federatedManager:self didProgress:progress forAction:action];
     });
 }
 
