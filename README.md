@@ -5,9 +5,11 @@
 [![License](https://img.shields.io/cocoapods/l/TensorIO.svg?style=flat)](https://cocoapods.org/pods/TensorIO)
 [![Platform](https://img.shields.io/cocoapods/p/TensorIO.svg?style=flat)](https://cocoapods.org/pods/TensorIO)
 
-Tensor/IO is an Objective-C wrapper for an underlying machine learning library and currently supports TensorFlow and TensorFlow Lite. It abstracts the work of copying bytes into and out of tensors and allows you to interract with native types instead, such as numbers, arrays, dictionaries, and pixel buffers.
+## Introduction
 
-This implementation is part of the [Tensor/IO project](https://doc-ai.github.io/tensorio/) with support for machine learning on iOS, Android, and React Native.
+Tensor/IO iOS is an Objective-C wrapper for machine learning with support for TensorFlow and TensorFlow Lite. It abstracts the work of copying bytes into and out of tensors and allows you to interract with native types instead, such as numbers, arrays, dictionaries, and pixel buffers. Tensor/IO iOS support packaging and deployment, inference, training, and federated learning. This implementation is part of the [Tensor/IO project](https://doc-ai.github.io/tensorio/) with support for machine learning on iOS, Android, and React Native.
+
+## Example
 
 With Tensor/IO you can perform inference in just a few lines of code:
 
@@ -91,7 +93,7 @@ The built-in class for working with TensorFlow Lite (TF Lite) models, `TIOTFLite
 Although Tensor/IO supports both full TensorFlow and TF Lite models, this README will refer to TFLite throughout. Except for small differences in support of data types (`uint8_t`, `float32_t`, etc), the interface is the same.
 
 <a name="example"></a>
-## Example
+## Example Project
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first. 
 
