@@ -105,6 +105,16 @@
     
     XCTAssert(vectorResults.count == 1);
     XCTAssert([vectorResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Via a dictionary
+    
+    {
+    NSDictionary *input = @{@"input": @(2)};
+    NSDictionary *output = (NSDictionary*)[model runOn:input];
+    
+    XCTAssert(output.count == 1);
+    XCTAssert([output[@"output"] isEqualToNumber:@(25)]);
+    }
 }
 
 // MARK: - Vector, Matrix, Tensor Tests
@@ -181,6 +191,20 @@
     XCTAssert(byteResults.count == 2);
     XCTAssert([byteResults[@"output1"] isEqualToNumber:@(240)]);
     XCTAssert([byteResults[@"output2"] isEqualToNumber:@(64)]);
+    
+    // Via a dictionary
+    
+    {
+    NSDictionary *input = @{
+        @"input1": @[@1,  @2,  @3,  @4],
+        @"input2": @[@10, @20, @30, @40]
+    };
+    NSDictionary *output = (NSDictionary*)[model runOn:input];
+    
+    XCTAssert(output.count == 2);
+    XCTAssert([output[@"output1"] isEqualToNumber:@(240)]);
+    XCTAssert([output[@"output2"] isEqualToNumber:@(64)]);
+    }
 }
 
 - (void)test2x2MatricesModel {

@@ -418,13 +418,11 @@ static NSString * const kTensorTypeImage = @"image";
         // and prepare the indexed tensors with the values
     
         NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
-        assert(dictionaryData.count == _namedInputInterfaces.count);
+        NSAssert([[NSSet setWithArray:dictionaryData.allKeys] isEqualToSet:[NSSet setWithArray:_namedInputInterfaces.allKeys]],
+            @"Batch keys do not match input layer names");
     
         for ( NSString *name in dictionaryData ) {
-            assert([_namedInputInterfaces.allKeys containsObject:name]);
-            
-            // TODO: WOW, this should be _namedInputToIndex (will fix and test this pr)
-            int index = _namedOutputToIndex[name].intValue;
+            int index = _namedInputToIndex[name].intValue;
             void *tensor = [self inputTensorAtIndex:index];
             TIOLayerInterface *interface = _namedInputInterfaces[name];
             id<TIOData> input = dictionaryData[name];
