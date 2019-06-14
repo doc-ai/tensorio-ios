@@ -42,6 +42,8 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+// MARK: -
+
 - (TIOModelBundle*)bundleWithName:(NSString*)filename {
     NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
     return [[TIOModelBundle alloc] initWithPath:path];

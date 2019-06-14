@@ -374,6 +374,8 @@ typedef std::vector<std::string> TensorNames;
     NSError *loadError;
     NSError *inferenceError;
     
+    // Load Model
+    
     [self load:&loadError];
     
     if (loadError != nil) {
@@ -384,7 +386,11 @@ typedef std::vector<std::string> TensorNames;
         return @{};
     }
     
+    // Prepare Inputs
+    
     const NamedTensors inputs = [self _prepareInput:input];
+    
+    // Run Model
     
     const Tensors outputs = [self _runInference:inputs error:&inferenceError];
     if (inferenceError != nil ) {
@@ -395,15 +401,107 @@ typedef std::vector<std::string> TensorNames;
         return @{};
     }
     
-    const id<TIOData> results = [self _captureOutput:outputs];
+    // Return Outputs
     
+    const id<TIOData> results = [self _captureOutput:outputs];
     return results;
 }
 
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
-    assert(NO);
+    // TODO: refactor run:error: and train:error: preparation. methods are identical (#157)
     
-    // TODO: bypass _prepareInput: and go straight to _prepareInput:interface:
+    NSAssert([[NSSet setWithArray:batch.keys] isEqualToSet:[NSSet setWithArray:_namedInputInterfaces.allKeys]], @"Batch keys do not match input layer names");
+    
+    NSError *loadError;
+    NSError *inferenceError;
+    
+    // Load Model
+    
+    [self load:&loadError];
+    
+    if (loadError != nil) {
+        NSLog(@"There was a problem loading the model from run:error:, error: %@", loadError);
+        if (*error) {
+            *error = loadError;
+        }
+        return @{};
+    }
+    
+    // Pepare Inputs
+    
+    const NamedTensors inputs = [self _prepareBatchInput:batch];
+    
+    // Run Model
+    
+    const Tensors outputs = [self _runInference:inputs error:&inferenceError];
+    if (inferenceError != nil ) {
+        NSLog(@"There was a problem running inference, error: %@", inferenceError);
+        if (error) {
+            *error = inferenceError;
+        }
+        return @{};
+    }
+    
+    // Return Output
+    
+    const id<TIOData> results = [self _captureOutput:outputs];
+    return results;
+}
+
+/**
+ * Iterates through the contents of batch, matching them to the model's inference
+ * input layers, and prepares tensors with them.
+ *
+ * @param batch A batch of training data
+ * @return NamedTensors Tensors ready to be passing to an inference session
+ */
+
+- (NamedTensors)_prepareBatchInput:(TIOBatch*)batch  {
+    NamedTensors inputs;
+    
+    for ( NSString *key in batch.keys ) {
+        TIOLayerInterface *interface = _namedInputInterfaces[key];
+        NamedTensor input = [self _prepareBatchInput:batch interface:interface];
+        inputs.push_back(input);
+    }
+    
+    return inputs;
+}
+
+/**
+ * Prepares a tensor from an inference input
+ *
+ * @param batch The data whose bytes will be copied to the tensor
+ * @param interface A description of the data which the tensor expects
+ */
+
+- (NamedTensor)_prepareBatchInput:(TIOBatch*)batch interface:(TIOLayerInterface*)interface {
+    __block NamedTensor named_tensor;
+    
+    NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
+    
+    [interface matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
+        
+        assert( [column[0] isKindOfClass:TIOPixelBuffer.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:pixelBufferDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+        
+    } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+        
+        assert( [column[0] isKindOfClass:NSArray.class]
+            ||  [column[0] isKindOfClass:NSData.class]
+            ||  [column[0] isKindOfClass:NSNumber.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:vectorDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+    }];
+    
+    return named_tensor;
 }
 
 /**
