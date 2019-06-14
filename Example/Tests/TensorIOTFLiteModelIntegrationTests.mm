@@ -651,4 +651,115 @@
     XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
 }
 
+// MARK: - Run Batch Tests
+
+- (void)testBatched1In1OutNumberModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Run the model on a number
+    
+    {
+    TIOBatchItem *item = @{@"input": @(2)};
+    TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
+    
+    NSError *error;
+    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output.count == 1);
+    XCTAssert([output[@"output"] isEqualToNumber:@(25)]);
+    }
+    
+    // Run the model on bytes
+    
+    {
+    float_t bytes[1] = {2};
+    NSData *data = [NSData dataWithBytes:bytes length:sizeof(float_t)*1];
+    
+    TIOBatchItem *item = @{@"input": data};
+    TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
+    
+    NSError *error;
+    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output.count == 1);
+    XCTAssert([output[@"output"] isEqualToNumber:@(25)]);
+    }
+    
+    // Run the model on a vector
+    
+    {
+    TIOBatchItem *item = @{@"input": @[@(2)]};
+    TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
+    
+    NSError *error;
+    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    
+    XCTAssert(output.count == 1);
+    XCTAssert([output[@"output"] isEqualToNumber:@(25)]);
+    }
+}
+
+- (void)testBatched2x2VectorsModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_vectors_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 2);
+    XCTAssert(model.outputs.count == 2);
+    
+    // Run model on number
+    
+    {
+    TIOBatchItem *item = @{
+        @"input1": @[@1,  @2,  @3,  @4],
+        @"input2": @[@10, @20, @30, @40]
+    };
+    TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
+    
+    NSError *error;
+    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output.count == 2);
+    XCTAssert([output[@"output1"] isEqualToNumber:@(240)]);
+    XCTAssert([output[@"output2"] isEqualToNumber:@(64)]);
+    }
+    
+    // With bytes
+    
+    {
+    float_t byteInputs1[4] = {1,2,3,4};
+    float_t byteInputs2[4] = {10,20,30,40};
+    
+    TIOBatchItem *item = @{
+        @"input1": [NSData dataWithBytes:byteInputs1 length:4*sizeof(float_t)],
+        @"input2": [NSData dataWithBytes:byteInputs2 length:4*sizeof(float_t)]
+    };
+    TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
+    
+    NSError *error;
+    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output.count == 2);
+    XCTAssert([output[@"output1"] isEqualToNumber:@(240)]);
+    XCTAssert([output[@"output2"] isEqualToNumber:@(64)]);
+    }
+}
+
 @end

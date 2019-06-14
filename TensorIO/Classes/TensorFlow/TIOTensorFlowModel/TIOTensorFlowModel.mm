@@ -400,6 +400,12 @@ typedef std::vector<std::string> TensorNames;
     return results;
 }
 
+- (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
+    assert(NO);
+    
+    // TODO: bypass _prepareInput: and go straight to _prepareInput:interface:
+}
+
 /**
  * Iterates through the provided `TIOData` inputs, matching them to the model's input layers, and
  * prepares tensors with them.

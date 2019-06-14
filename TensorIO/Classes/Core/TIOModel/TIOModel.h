@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class TIOLayerInterface;
 @class TIOModelOptions;
 @class TIOModelModes;
+@class TIOBatch;
 
 /**
  * An Obj-C wrapper around lower level, usually C++ model implementations. This is the primary
@@ -233,6 +234,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<TIOData>)runOn:(id<TIOData>)input __attribute__((deprecated));
 
 - (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error;
+
+- (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
 // MARK: - Input/Output Layers
 
