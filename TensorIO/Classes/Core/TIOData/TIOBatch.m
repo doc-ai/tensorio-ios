@@ -91,4 +91,12 @@
     return _items[key].copy;
 }
 
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return [self itemAtIndex:idx];
+}
+
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx {
+    NSAssert(NO, @"Writing to an indexed subscript is not supported. Use addItem: to add an item to a batch");
+}
+
 @end

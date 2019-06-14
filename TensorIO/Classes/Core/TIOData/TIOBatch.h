@@ -90,6 +90,18 @@ typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
 
 - (NSArray<id<TIOData>>*)valuesForKey:(NSString*)key;
 
+/**
+ * Readonly only support for indexed subscripting.
+ */
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
+/**
+ * Writing to an indexed subscript will raise an exception.
+ */
+
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+
 @end
 
 NS_ASSUME_NONNULL_END
