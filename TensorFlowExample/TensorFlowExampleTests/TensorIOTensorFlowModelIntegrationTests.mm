@@ -705,4 +705,78 @@
     }
 }
 
+// TODO: support batched inference
+
+- (void)testBatched1In1OutNumberModelMultipleItems {
+    return;
+
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.inputs.count == 1);
+    XCTAssert(model.outputs.count == 1);
+    
+    // Run the model on a number
+    
+    {
+    TIOBatchItem *item1 = @{@"input": @(2)};
+    TIOBatchItem *item2 = @{@"input": @(4)};
+    TIOBatch *batch = [[TIOBatch alloc] initWithItems:@[item1,item2]];
+    
+    NSError *error;
+    NSArray<NSDictionary *> *output = (NSArray *)[model run:batch error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output.count == 2);
+    XCTAssert(output[0].count == 1);
+    XCTAssert(output[1].count == 1);
+    XCTAssert([output[0][@"output"] isEqualToNumber:@(25)]);
+    XCTAssert([output[1][@"output"] isEqualToNumber:@(25)]);
+    }
+    
+    // Run the model on bytes
+    
+    {
+    float_t bytes1[1] = {2};
+    float_t bytes2[1] = {4};
+    NSData *data1 = [NSData dataWithBytes:bytes1 length:sizeof(float_t)*1];
+    NSData *data2 = [NSData dataWithBytes:bytes2 length:sizeof(float_t)*1];
+    
+    TIOBatchItem *item1 = @{@"input": data1};
+    TIOBatchItem *item2 = @{@"input": data2};
+    TIOBatch *batch = [[TIOBatch alloc] initWithItems:@[item1,item2]];
+    
+    NSError *error;
+    NSArray<NSDictionary *> *output = (NSArray *)[model run:batch error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output[0].count == 1);
+    XCTAssert(output[1].count == 1);
+    XCTAssert([output[0][@"output"] isEqualToNumber:@(25)]);
+    XCTAssert([output[1][@"output"] isEqualToNumber:@(25)]);
+    }
+    
+    // Run the model on a vector
+    
+    {
+    TIOBatchItem *item1 = @{@"input": @[@(2)]};
+    TIOBatchItem *item2 = @{@"input": @[@(4)]};
+    TIOBatch *batch = [[TIOBatch alloc] initWithItems:@[item1,item2]];
+    
+    NSError *error;
+    NSArray<NSDictionary *> *output = (NSArray *)[model run:batch error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output[0].count == 1);
+    XCTAssert(output[1].count == 1);
+    XCTAssert([output[0][@"output"] isEqualToNumber:@(25)]);
+    XCTAssert([output[1][@"output"] isEqualToNumber:@(25)]);
+    }
+}
+
 @end

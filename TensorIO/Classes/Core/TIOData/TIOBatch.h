@@ -47,6 +47,13 @@ typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
 - (instancetype)initWithKeys:(NSArray<NSString*>*)keys NS_DESIGNATED_INITIALIZER;
 
 /**
+ * Initialies a `TIOBatch` with an array of batch items. Item keys must be
+ * identical and must correspond to the inputs expected by the model.
+ */
+
+- (instancetype)initWithItems:(NSArray<TIOBatchItem *> *)items;
+
+/**
  * Initializes a `TIOBatch` with a single item, deriving the keys from it. Keys
  * must correspond to the inputs expected by the model.
  */

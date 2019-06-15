@@ -54,6 +54,19 @@
     return self;
 }
 
+- (instancetype)initWithItems:(NSArray<TIOBatchItem *> *)items {
+#if DEBUG
+    assert(items.count > 0);
+#endif
+
+    if ((self=[self initWithKeys:items[0].allKeys])) {
+        for (TIOBatchItem *item in items) {
+            [self addItem:item];
+        }
+    }
+    return self;
+}
+
 - (instancetype)initWithItem:(TIOBatchItem *)item {
     if ((self=[self initWithKeys:item.allKeys])) {
         [self addItem:item];
