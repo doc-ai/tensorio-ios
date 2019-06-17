@@ -411,6 +411,7 @@ typedef std::vector<std::string> TensorNames;
     // TODO: refactor run:error: and train:error: preparation. methods are identical (#157)
     
     NSAssert([[NSSet setWithArray:batch.keys] isEqualToSet:[NSSet setWithArray:_namedInputInterfaces.allKeys]], @"Batch keys do not match input layer names");
+    NSAssert(batch.count == 1, @"Run batch size must currently be 1 for TensorFlow models");
     
     NSError *loadError;
     NSError *inferenceError;
