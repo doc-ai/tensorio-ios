@@ -38,3 +38,6 @@ Pods/
 
 # Jazzy
 docs
+
+# VS Code
+.vscode
