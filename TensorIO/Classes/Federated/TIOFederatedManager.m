@@ -98,6 +98,7 @@ NSString * TIOFrameworkVersion() {
 
 - (instancetype)initWithClient:(TIOFleaClient*)client dataSourceProvider:(id<TIOFederatedManagerDataSourceProvider>)dataSourceProvider delegate:(nullable id<TIOFederatedManagerDelegate>)delegate {
     if ((self=[self initWithClient:client])) {
+        _registeredModelIds = NSMutableSet.set;
         _dataSourceProvider = dataSourceProvider;
         _delegate = delegate;
     }
