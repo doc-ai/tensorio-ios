@@ -44,6 +44,7 @@
 #import "TIOPixelBuffer+TIOTFLiteData.h"
 #import "NSArray+TIOExtensions.h"
 #import "TIOModelJSONParsing.h"
+#import "TIOBatch.h"
 
 static NSString * const kTensorTypeVector = @"array";
 static NSString * const kTensorTypeImage = @"image";
@@ -363,6 +364,42 @@ static NSString * const kTensorTypeImage = @"image";
     return [self _captureOutput];
 }
 
+- (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
+    NSAssert([[NSSet setWithArray:batch.keys] isEqualToSet:[NSSet setWithArray:_namedInputInterfaces.allKeys]], @"Batch keys do not match input layer names");
+    NSAssert(batch.count == 1, @"Batch size must be 1 for TensorFlow Lite models");
+    
+    // Load
+    
+    NSError *loadError;
+    [self load:&loadError];
+    
+    if (loadError != nil) {
+        NSLog(@"There was a problem loading the model from run:error:, error: %@", loadError);
+        if (*error) {
+            *error = loadError;
+        }
+        return @{};
+    }
+    
+    // Prepare Inputs
+    
+    TIOBatchItem *item = batch[0];
+    
+    for ( NSString *name in item ) {
+        int index = _namedInputToIndex[name].intValue;
+        void *tensor = [self inputTensorAtIndex:index];
+        TIOLayerInterface *interface = _namedInputInterfaces[name];
+        id<TIOData> input = item[name];
+    
+        [self _prepareInput:input tensor:tensor interface:interface];
+    }
+    
+    // Run Inference and Return Output
+    
+    [self _runInference];
+    return [self _captureOutput];
+}
+
 /**
  * Iterates through the provided `TIOData` inputs, matching them to the model's input layers, and
  * copies their bytes to those input layers.
@@ -381,12 +418,11 @@ static NSString * const kTensorTypeImage = @"image";
         // and prepare the indexed tensors with the values
     
         NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
-        assert(dictionaryData.count == _namedInputInterfaces.count);
+        NSAssert([[NSSet setWithArray:dictionaryData.allKeys] isEqualToSet:[NSSet setWithArray:_namedInputInterfaces.allKeys]],
+            @"Batch keys do not match input layer names");
     
         for ( NSString *name in dictionaryData ) {
-            assert([_namedInputInterfaces.allKeys containsObject:name]);
-            
-            int index = _namedOutputToIndex[name].intValue;
+            int index = _namedInputToIndex[name].intValue;
             void *tensor = [self inputTensorAtIndex:index];
             TIOLayerInterface *interface = _namedInputInterfaces[name];
             id<TIOData> input = dictionaryData[name];

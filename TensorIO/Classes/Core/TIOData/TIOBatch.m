@@ -54,6 +54,19 @@
     return self;
 }
 
+- (instancetype)initWithItems:(NSArray<TIOBatchItem *> *)items {
+#if DEBUG
+    assert(items.count > 0);
+#endif
+
+    if ((self=[self initWithKeys:items[0].allKeys])) {
+        for (TIOBatchItem *item in items) {
+            [self addItem:item];
+        }
+    }
+    return self;
+}
+
 - (instancetype)initWithItem:(TIOBatchItem *)item {
     if ((self=[self initWithKeys:item.allKeys])) {
         [self addItem:item];
@@ -89,6 +102,14 @@
 
 - (NSArray<id<TIOData>>*)valuesForKey:(NSString*)key {
     return _items[key].copy;
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return [self itemAtIndex:idx];
+}
+
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx {
+    NSAssert(NO, @"Writing to an indexed subscript is not supported. Use addItem: to add an item to a batch");
 }
 
 @end

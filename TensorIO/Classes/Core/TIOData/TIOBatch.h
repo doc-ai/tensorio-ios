@@ -47,6 +47,13 @@ typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
 - (instancetype)initWithKeys:(NSArray<NSString*>*)keys NS_DESIGNATED_INITIALIZER;
 
 /**
+ * Initialies a `TIOBatch` with an array of batch items. Item keys must be
+ * identical and must correspond to the inputs expected by the model.
+ */
+
+- (instancetype)initWithItems:(NSArray<TIOBatchItem *> *)items;
+
+/**
  * Initializes a `TIOBatch` with a single item, deriving the keys from it. Keys
  * must correspond to the inputs expected by the model.
  */
@@ -89,6 +96,18 @@ typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
  */
 
 - (NSArray<id<TIOData>>*)valuesForKey:(NSString*)key;
+
+/**
+ * Readonly only support for indexed subscripting.
+ */
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
+/**
+ * Writing to an indexed subscript will raise an exception.
+ */
+
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
 
 @end
 

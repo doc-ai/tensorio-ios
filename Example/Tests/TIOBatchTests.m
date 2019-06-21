@@ -35,6 +35,8 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+// MARK: -
+
 - (void)testBatch {
     TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"label"]];
     
@@ -100,6 +102,41 @@
         @"image": @[@4,@5,@6],
         @"label": @[@1]
     }];
+    
+    XCTAssert(batch.count == 2);
+    
+    XCTAssertEqualObjects([batch itemAtIndex:0], (@{
+        @"image": @[@1,@2,@3],
+        @"label": @[@0]
+    }));
+    
+    XCTAssertEqualObjects([batch itemAtIndex:1], (@{
+        @"image": @[@4,@5,@6],
+        @"label": @[@1]
+    }));
+    
+    XCTAssertEqualObjects([batch valuesForKey:@"image"], (@[
+        @[@1,@2,@3],
+        @[@4,@5,@6]
+    ]));
+    
+    XCTAssertEqualObjects([batch valuesForKey:@"label"], (@[
+        @[@0],
+        @[@1]
+    ]));
+}
+
+- (void)testBatchWithMultipleItems {
+    TIOBatchItem *item1 = @{
+        @"image": @[@1,@2,@3],
+        @"label": @[@0]
+    };
+    TIOBatchItem *item2 = @{
+        @"image": @[@4,@5,@6],
+        @"label": @[@1]
+    };
+    
+    TIOBatch *batch = [[TIOBatch alloc] initWithItems:@[item1,item2]];
     
     XCTAssert(batch.count == 2);
     

@@ -82,6 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TIOData>)runOn:(id<TIOData>)input __attribute__((deprecated));
 - (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error;
+- (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
 - (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
 - (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name;
