@@ -44,7 +44,7 @@ static NSError * const kTIOParserInvalidDequantizerError = [NSError errorWithDom
 
 // MARK: -
 
-TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictionary *dict, BOOL isInput, BOOL quantized, TIOModelBundle *bundle) {
+TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, BOOL isInput, BOOL quantized, TIOModelBundle *bundle) {
     NSArray<NSNumber*> *shape = dict[@"shape"];
     BOOL batched = shape[0].integerValue == -1;
     
@@ -114,7 +114,7 @@ TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOVectorDescription(NSDictiona
     return interface;
 }
 
-TIOLayerInterface * _Nullable TIOTFLiteModelParseTIOPixelBufferDescription(NSDictionary *dict, BOOL isInput, BOOL quantized) {
+TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionary *dict, BOOL isInput, BOOL quantized) {
     NSArray<NSNumber*> *shape = dict[@"shape"];
     BOOL batched = shape[0].integerValue == -1;
     

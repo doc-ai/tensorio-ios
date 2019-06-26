@@ -187,9 +187,9 @@ NSString * const TIOModelAssetsDirectory = @"assets";
         TIOLayerInterface *interface;
         
         if ( [type isEqualToString:kTensorTypeVector] ) {
-            interface = TIOTFLiteModelParseTIOVectorDescription(input, isInput, isQuantized, self);
+            interface = TIOModelParseTIOVectorDescription(input, isInput, isQuantized, self);
         } else if ( [type isEqualToString:kTensorTypeImage] ) {
-            interface = TIOTFLiteModelParseTIOPixelBufferDescription(input, isInput, isQuantized);
+            interface = TIOModelParseTIOPixelBufferDescription(input, isInput, isQuantized);
         }
         
         if ( interface == nil ) {
