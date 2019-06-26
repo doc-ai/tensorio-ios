@@ -65,9 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *backend;
 @property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
-
-@property (readonly) NSArray<TIOLayerInterface*> *inputs;
-@property (readonly) NSArray<TIOLayerInterface*> *outputs;
+@property (readonly) TIOModelIO *io;
 
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle NS_DESIGNATED_INITIALIZER;
 
@@ -78,11 +76,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
 
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name;
+@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
+@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
 
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name;
+- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name __attribute__((deprecated));
+
+- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name __attribute__((deprecated));
 
 // MARK: - TIOTrainableModel
 

@@ -30,22 +30,7 @@
 #import "TIOModelJSONParsing.h"
 #import "TIOModelIO.h"
 
-static NSString * const kTensorTypeVector = @"array";
-static NSString * const kTensorTypeImage = @"image";
-
-@implementation TIOPlaceholderModel {
-    // Index to Interface Description
-    NSArray<TIOLayerInterface*> *_indexedInputInterfaces;
-    NSArray<TIOLayerInterface*> *_indexedOutputInterfaces;
-    
-    // Name to Interface Description
-    NSDictionary<NSString*,TIOLayerInterface*> *_namedInputInterfaces;
-    NSDictionary<NSString*,TIOLayerInterface*> *_namedOutputInterfaces;
-    
-    // Name to Index
-    NSDictionary<NSString*,NSNumber*> *_namedInputToIndex;
-    NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
-}
+@implementation TIOPlaceholderModel
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
     return [[[TIOModelBundle alloc] initWithPath:path] newModel];

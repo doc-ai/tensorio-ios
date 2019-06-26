@@ -25,6 +25,7 @@
 #import "TIOPlaceholderModel.h"
 #import "TIOModelBackend.h"
 #import "TIOModelModes.h"
+#import "TIOModel.h"
 
 NSString * const TIOTFModelBundleExtension = @"tfbundle";
 NSString * const TIOModelBundleExtension = @"tiobundle";
