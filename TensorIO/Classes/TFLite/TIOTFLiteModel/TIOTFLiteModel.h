@@ -25,6 +25,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TIOModelIO;
+
 /**
  * An Objective-C wrapper around TensorFlow lite models that provides a unified interface to the
  * input and output layers of the underlying model.
@@ -52,9 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *backend;
 @property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
-
-@property (readonly) NSArray<TIOLayerInterface*> *inputs;
-@property (readonly) NSArray<TIOLayerInterface*> *outputs;
+@property (readonly) TIOModelIO *io;
 
 // Model Protocol Methods
 
@@ -81,11 +81,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name;
+// TODO: Where are these used? Can we deprecate them? By the data collection UI?
+// Use `io` instead
 
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name;
+@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
+@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
+
+- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name __attribute__((deprecated));
+
+- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name __attribute__((deprecated));
 
 @end
 
