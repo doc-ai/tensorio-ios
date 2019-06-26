@@ -84,9 +84,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
 
-@property (readonly) NSArray<TIOLayerInterface*> *inputs;
-@property (readonly) NSArray<TIOLayerInterface*> *outputs;
-
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -95,16 +92,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unload;
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError * _Nullable *)error;
+- (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name;
+@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
+@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
 
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name;
+- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name __attribute__((deprecated));
+
+- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name __attribute__((deprecated));
 
 // MARK: - TIOTrainableModel
 
-- (id<TIOData>)train:(TIOBatch*)batch;
+- (id<TIOData>)train:(TIOBatch *)batch;
+- (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
 - (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error;
 

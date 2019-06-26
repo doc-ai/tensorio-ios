@@ -57,8 +57,16 @@
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
     _runCount++;
-    
-    // Dummy value
+    return @{};
+}
+
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError * _Nullable *)error {
+    _runCount++;
+    return @{};
+}
+
+- (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
+    _runCount++;
     return @{};
 }
 
@@ -81,10 +89,14 @@
 
 - (id<TIOData>)train:(TIOBatch*)batch {
     _trainCount++;
-    
-    // Dummy value
     return @{};
 }
+
+- (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error {
+    _trainCount++;
+    return @{};
+}
+
 
 - (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error {
     _trainCount++;
