@@ -52,8 +52,7 @@
     // This returns a dictionary whose entries corresponding to the names of the model outputs in the model.json file
     // This is a classification model, so take the top 5 probabilities whose values are over 0.1
     
-    NSError *error;
-    NSDictionary *classification = [((NSDictionary*)[model runOn:buffer error:&error])[@"classification"] topN:5 threshold:0.1];
+    NSDictionary *classification = [((NSDictionary*)[model runOn:buffer error:nil])[@"classification"] topN:5 threshold:0.1];
     
     // Show the results
     

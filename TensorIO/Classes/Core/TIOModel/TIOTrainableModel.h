@@ -38,9 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
  * objects to execute those loops and prepare batches for calls to this method.
  */
 
-- (id<TIOData>)train:(TIOBatch*)batch __attribute__((deprecated));
-
-- (id<TIOData>)train:(TIOBatch*)batch error:(NSError**)error;
+- (id<TIOData>)train:(TIOBatch *)batch __attribute__((deprecated));
+- (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
 /**
  * Exports the results of training to the specified directory. The directory

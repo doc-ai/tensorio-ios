@@ -191,7 +191,7 @@
     return [self runOn:input error:nil];
 }
 
-- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error {
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError * _Nullable *)error {
     NSError *loadError;
     [self load:&loadError];
     

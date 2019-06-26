@@ -44,7 +44,9 @@
         for ( NSUInteger batchIndex = 0; batchIndex < batchCount; batchIndex++ ) {
             @autoreleasepool {
                 TIOBatch *batch = [self _batchAtIndex:batchIndex];
-                results = [self.model train:batch];
+                NSError *error;
+                
+                results = [self.model train:batch error:&error];
             }
         }
     }
