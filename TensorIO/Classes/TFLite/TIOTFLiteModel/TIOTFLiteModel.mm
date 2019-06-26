@@ -43,7 +43,6 @@
 #import "NSDictionary+TIOTFLiteData.h"
 #import "TIOPixelBuffer+TIOTFLiteData.h"
 #import "NSArray+TIOExtensions.h"
-#import "TIOModelJSONParsing.h"
 #import "TIOBatch.h"
 #import "TIOModelIO.h"
 
@@ -77,70 +76,10 @@
         _type = bundle.type;
         _backend = bundle.backend;
         _modes = bundle.modes;
-        
-        // Input and output parsing
-        
-        NSArray<TIOLayerInterface*> *inputInterfaces = [self _parseIO:bundle.info[@"inputs"] isInput:YES];
-        
-        if ( !inputInterfaces ) {
-            NSLog(@"Unable to parse input field in model.json");
-            return nil;
-        }
-        
-        NSArray<TIOLayerInterface*> *outputInterfaces = [self _parseIO:bundle.info[@"outputs"] isInput:NO];
-        
-        if ( !outputInterfaces ) {
-            NSLog(@"Unable to parse output field in model.json");
-            return nil;
-        }
-        
-        _io = [[TIOModelIO alloc] initWithInputInterfaces:inputInterfaces ouputInterfaces:outputInterfaces];
+        _io = bundle.io;
     }
     
     return self;
-}
-
-// MARK: - JSON Parsing
-// TODO: Move JSON Parsing to an external function or to the model bundle class
-
-/**
- * Enumerates through the JSON description of a model's inputs or outputs and
- * constructs a `TIOLayerInterface` for each one.
- *
- * @param io An array of dictionaries describing the model's input or output layers
- * @param isInput A boolean value indicating if the io descriptions or for the input or output
- * @return NSArray An array of `TIOLayerInterface` matching the descriptions, or `nil` if parsing failed
- */
-
-- (nullable NSArray<TIOLayerInterface*> *)_parseIO:(NSArray<NSDictionary<NSString*,id>*>*)io isInput:(BOOL)isInput {
-    
-    static NSString * const kTensorTypeVector = @"array";
-    static NSString * const kTensorTypeImage = @"image";
-    
-    NSMutableArray<TIOLayerInterface*> *interfaces = NSMutableArray.array;
-    BOOL isQuantized = self.quantized;
-    
-    __block BOOL error = NO;
-    [io enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull input, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *type = input[@"type"];
-        TIOLayerInterface *interface;
-        
-        if ( [type isEqualToString:kTensorTypeVector] ) {
-            interface = TIOTFLiteModelParseTIOVectorDescription(input, isInput, isQuantized, self->_bundle);
-        } else if ( [type isEqualToString:kTensorTypeImage] ) {
-            interface = TIOTFLiteModelParseTIOPixelBufferDescription(input, isInput, isQuantized);
-        }
-        
-        if ( interface == nil ) {
-            error = YES;
-            *stop = YES;
-            return;
-        }
-        
-        [interfaces addObject:interface];
-    }];
-    
-    return error ? nil : interfaces.copy;
 }
 
 // MARK: - Model Memory Management
@@ -408,7 +347,7 @@
  * Captures outputs from the model.
  *
  * @return TIOData A class that is appropriate to the model output. Currently all outputs are
- * wrapped in an instance of `NSDictionary` whose keys are taken from the json description of the
+ * wrapped in an instance of `NSDictionary` whose keys are taken from the JSON description of the
  * model outputs.
  */
 
