@@ -80,8 +80,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Run the model on a number
     
@@ -130,8 +130,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Expected output
     
@@ -164,8 +164,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 2);
-    XCTAssert(model.outputs.count == 2);
+    XCTAssert(model.io.inputs.count == 2);
+    XCTAssert(model.io.outputs.count == 2);
     
     // Run model on number
     
@@ -218,8 +218,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 2);
-    XCTAssert(model.outputs.count == 2);
+    XCTAssert(model.io.inputs.count == 2);
+    XCTAssert(model.io.outputs.count == 2);
     
     // Expected outputs
     
@@ -293,8 +293,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Expected outputs
     
@@ -342,8 +342,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Create ARGB bytes
     
@@ -429,8 +429,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Create ARGB bytes
     
@@ -520,8 +520,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Prepare image input
     
@@ -562,8 +562,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Prepare image input
     
@@ -607,8 +607,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Prepare image input
     
@@ -665,8 +665,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Run the model on a number
     
@@ -688,8 +688,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 1);
-    XCTAssert(model.outputs.count == 1);
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
     
     // Run the model on a number
     
@@ -745,8 +745,8 @@
     
     // Ensure inputs and outputs return correct count
     
-    XCTAssert(model.inputs.count == 2);
-    XCTAssert(model.outputs.count == 2);
+    XCTAssert(model.io.inputs.count == 2);
+    XCTAssert(model.io.outputs.count == 2);
     
     // Run model on number
     

@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TIOModelOptions;
 @class TIOModelModes;
+@class TIOModelIO;
 @protocol TIOModel;
 
 /**
@@ -157,6 +158,20 @@ extern NSString * const TIOModelAssetsDirectory;
  */
 
 @property (readonly) TIOModelOptions *options;
+
+/**
+ * Contains the descriptions of the model's inputs and outputs accessible by
+ * numeric index or by name:
+ *
+ * @code
+ * io.inputs[0]
+ * io.inputs[@"image"]
+ * io.outputs[0]
+ * io.outputs[@"label"]
+ * @endcode
+ */
+
+@property (readonly) TIOModelIO *io;
 
 /**
  * The file path to the actual underlying model contained in this bundle.

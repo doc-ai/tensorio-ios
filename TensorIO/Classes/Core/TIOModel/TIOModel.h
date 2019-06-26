@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class TIOModelOptions;
 @class TIOModelModes;
 @class TIOBatch;
+@class TIOModelIO;
 
 /**
  * An Obj-C wrapper around lower level, usually C++ model implementations. This is the primary
@@ -153,16 +154,32 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) BOOL loaded;
 
 /**
- * Returns descriptions of the model's inputs indexed to the order they appear in model.json.
+ * Contains the descriptions of the model's inputs and outputs accessible by
+ * numeric index or by name:
+ *
+ * @code
+ * io.inputs[0]
+ * io.inputs[@"image"]
+ * io.outputs[0]
+ * io.outputs[@"label"]
+ * @endcode
  */
 
-@property (readonly) NSArray<TIOLayerInterface*> *inputs;
+@property (readonly) TIOModelIO *io;
+
+/**
+ * Returns descriptions of the model's inputs indexed to the order they appear in model.json.
+ * This attribute is deprecated. Use `io` instead.
+ */
+
+@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
 
 /**
  * Returns descriptions of the model's outputs indexed to the order they appear in model.json.
+ * This attribute is deprecated. Use `io` instead.
  */
 
-@property (readonly) NSArray<TIOLayerInterface*> *outputs;
+@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
 
  // MARK: - Initialization
 

@@ -26,6 +26,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TIOModelIO;
+
 /**
  * A placeholder model declares an interface but does not contain any underlying model
  * implementation. It is used to gather labeled data for a model that has not been trained
@@ -51,9 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *backend;
 @property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
-
-@property (readonly) NSArray<TIOLayerInterface*> *inputs;
-@property (readonly) NSArray<TIOLayerInterface*> *outputs;
+@property (readonly) TIOModelIO *io;
 
 // Model Protocol Methods
 
@@ -66,11 +66,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
 
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name;
+// TODO: Where are these used? Can we deprecate them? By the data collection UI?
+// Use `io` instead
 
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index;
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name;
+@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
+@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
+
+- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name __attribute__((deprecated));
+
+- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name __attribute__((deprecated));
 
 @end
 

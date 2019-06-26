@@ -46,15 +46,12 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOPixelBuffer.h"
-#import "TIOModelJSONParsing.h"
 #import "TIOTensorFlowData.h"
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
 #import "TIOTensorFlowErrors.h"
 #import "TIOModelModes.h"
-
-static NSString * const kTensorTypeVector = @"array";
-static NSString * const kTensorTypeImage = @"image";
+#import "TIOModelIO.h"
 
 typedef std::pair<std::string, tensorflow::Tensor> NamedTensor;
 typedef std::vector<NamedTensor> NamedTensors;
@@ -62,20 +59,7 @@ typedef std::vector<tensorflow::Tensor> Tensors;
 typedef std::vector<std::string> TensorNames;
 
 @implementation TIOTensorFlowModel {
-    @protected
     tensorflow::SavedModelBundle _saved_model_bundle;
-    
-    // Index to Interface Description
-    NSArray<TIOLayerInterface*> *_indexedInputInterfaces;
-    NSArray<TIOLayerInterface*> *_indexedOutputInterfaces;
-    
-    // Name to Interface Description
-    NSDictionary<NSString*,TIOLayerInterface*> *_namedInputInterfaces;
-    NSDictionary<NSString*,TIOLayerInterface*> *_namedOutputInterfaces;
-    
-    // Name to Index
-    NSDictionary<NSString*,NSNumber*> *_namedInputToIndex;
-    NSDictionary<NSString*,NSNumber*> *_namedOutputToIndex;
     
     // Training Support
     NSArray<NSString*> *_trainingOps;
@@ -106,34 +90,11 @@ typedef std::vector<std::string> TensorNames;
         _type = bundle.type;
         _backend = bundle.backend;
         _modes = bundle.modes;
+        _io = bundle.io;
         
-        // Input and output parsing
+        // Training parsing
         
-        NSArray<NSDictionary<NSString*,id>*> *inputs = bundle.info[@"inputs"];
-        NSArray<NSDictionary<NSString*,id>*> *outputs = bundle.info[@"outputs"];
-        NSDictionary<NSString*,id> *train = bundle.info[@"train"];
-        
-        if ( inputs == nil ) {
-            NSLog(@"Expected input array field in model.json, none found");
-            return nil;
-        }
-        
-        if ( outputs == nil ) {
-            NSLog(@"Expected output array field in model.json, none found");
-            return nil;
-        }
-        
-        if ( ![self _parseInputs:inputs] ) {
-            NSLog(@"Unable to parse input field in model.json");
-            return nil;
-        }
-        
-        if ( ![self _parseOutputs:outputs] ) {
-            NSLog(@"Unable to parse output field in model.json");
-            return nil;
-        }
-        
-        if ( ![self _parseTrainingDict:train] ) {
+        if ( ![self _parseTrainingDict:bundle.info[@"train"]] ) {
             NSLog(@"Unable to parse train field in model.json");
             return nil;
         }
@@ -142,119 +103,13 @@ typedef std::vector<std::string> TensorNames;
     return self;
 }
 
-- (instancetype)init {
-    self = [self initWithBundle:[[TIOModelBundle alloc] initWithPath:@""]];
-    NSAssert(NO, @"Use the designated initializer initWithBundle:");
-    return self;
-}
-
 // MARK: - JSON Parsing
-
-/**
- * Enumerates through the json described inputs and constructs a `TIOLayerInterface` for each one.
- *
- * @param inputs An array of dictionaries describing the model's input layers
- *
- * @return BOOL `YES` if the json descriptions were successfully parsed, `NO` otherwise
- */
-
-- (BOOL)_parseInputs:(NSArray<NSDictionary<NSString*,id>*>*)inputs {
-    
-    auto *indexedInputInterfaces = [NSMutableArray<TIOLayerInterface*> array];
-    auto *namedInputInterfaces = [NSMutableDictionary<NSString*,TIOLayerInterface*> dictionary];
-    auto *namedInputToIndex = [NSMutableDictionary<NSString*,NSNumber*> dictionary];
-    
-    auto isQuantized = self.quantized;
-    auto isInput = YES;
-    
-    __block BOOL error = NO;
-    
-    [inputs enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull input, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        NSString *type = input[@"type"];
-        NSString *name = input[@"name"];
-        
-        TIOLayerInterface *interface;
-        
-        if ( [type isEqualToString:kTensorTypeVector] ) {
-            interface = TIOTFLiteModelParseTIOVectorDescription(input, isInput, isQuantized, self->_bundle);
-        } else if ( [type isEqualToString:kTensorTypeImage] ) {
-            interface = TIOTFLiteModelParseTIOPixelBufferDescription(input, isInput, isQuantized);
-        }
-        
-        if ( interface == nil ) {
-            error = YES;
-            *stop = YES;
-            return;
-        }
-        
-        [indexedInputInterfaces addObject:interface];
-        namedInputInterfaces[name] = interface;
-        namedInputToIndex[name] = @(idx);
-    }];
-    
-    _indexedInputInterfaces = indexedInputInterfaces.copy;
-    _namedInputInterfaces = namedInputInterfaces.copy;
-    _namedInputToIndex = namedInputToIndex.copy;
-    
-    return !error;
-}
-
-/**
- * Enumerates through the json described outputs and constructs a `TIOLayerInterface` for each one.
- *
- * @param outputs An array of dictionaries describing the model's output layers
- *
- * @return BOOL `YES` if the json descriptions were successfully parsed, `NO` otherwise
- */
-
-- (BOOL)_parseOutputs:(NSArray<NSDictionary<NSString*,id>*>*)outputs {
-    
-    auto *indexedOutputInterfaces = [NSMutableArray<TIOLayerInterface*> array];
-    auto *namedOutputInterfaces = [NSMutableDictionary<NSString*,TIOLayerInterface*> dictionary];
-    auto *namedOutputToIndex = [NSMutableDictionary<NSString*,NSNumber*> dictionary];
-    
-    auto isQuantized = self.quantized;
-    auto isInput = NO;
-    
-    __block BOOL error = NO;
-    
-    [outputs enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull output, NSUInteger idx, BOOL * _Nonnull stop) {
-    
-        NSString *type = output[@"type"];
-        NSString *name = output[@"name"];
-        
-        TIOLayerInterface *interface;
-        
-        if ( [type isEqualToString:kTensorTypeVector] ) {
-            interface = TIOTFLiteModelParseTIOVectorDescription(output, isInput, isQuantized, self->_bundle);
-        } else if ( [type isEqualToString:kTensorTypeImage] ) {
-            interface = TIOTFLiteModelParseTIOPixelBufferDescription(output, isInput, isQuantized);
-        }
-        
-        if ( interface == nil ) {
-            error = YES;
-            *stop = YES;
-            return;
-        }
-        
-        [indexedOutputInterfaces addObject:interface];
-        namedOutputInterfaces[name] = interface;
-        namedOutputToIndex[name] = @(idx);
-    }];
-    
-    _indexedOutputInterfaces = indexedOutputInterfaces.copy;
-    _namedOutputInterfaces = namedOutputInterfaces.copy;
-    _namedOutputToIndex = namedOutputToIndex.copy;
-    
-    return !error;
-}
+// TODO: Move training and JSON parsing to shared location
 
 /**
  * Parses the train dict if this model includes "train" as one of its supported modes.
  *
  * @param train A JSON dictionary describing the model's training options.
- *
  * @return BOOL `YES` if the JSON dictionary was successfully parsed, `NO` otherwise.
  */
 
@@ -340,28 +195,28 @@ typedef std::vector<std::string> TensorNames;
 
 // MARK: - Input and Output Features
 
-- (NSArray<TIOLayerInterface*>*)inputs {
-    return _indexedInputInterfaces;
+- (NSArray<TIOLayerInterface*>*)inputs {;
+    return self.io.inputs.all;
 }
 
 - (NSArray<TIOLayerInterface*>*)outputs {
-    return _indexedOutputInterfaces;
+    return self.io.outputs.all;
 }
 
 - (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index {
-    return _indexedInputInterfaces[index].dataDescription;
+    return self.io.inputs[index].dataDescription;
 }
 
 - (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name {
-    return _namedInputInterfaces[name].dataDescription;
+    return self.io.inputs[name].dataDescription;
 }
 
 - (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index {
-    return _indexedOutputInterfaces[index].dataDescription;
+    return self.io.outputs[index].dataDescription;
 }
 
 - (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name {
-    return _namedOutputInterfaces[name].dataDescription;
+    return self.io.outputs[name].dataDescription;
 }
 
 // MARK: - Perform Inference
@@ -410,7 +265,7 @@ typedef std::vector<std::string> TensorNames;
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
     // TODO: refactor run:error: and train:error: preparation. methods are identical (#157)
     
-    NSAssert([[NSSet setWithArray:batch.keys] isEqualToSet:[NSSet setWithArray:_namedInputInterfaces.allKeys]], @"Batch keys do not match input layer names");
+    NSAssert([[NSSet setWithArray:batch.keys] isEqualToSet:[NSSet setWithArray:self.io.inputs.keys]], @"Batch keys do not match input layer names");
     NSAssert(batch.count == 1, @"Run batch size must currently be 1 for TensorFlow models");
     
     NSError *loadError;
@@ -461,7 +316,7 @@ typedef std::vector<std::string> TensorNames;
     NamedTensors inputs;
     
     for ( NSString *key in batch.keys ) {
-        TIOLayerInterface *interface = _namedInputInterfaces[key];
+        TIOLayerInterface *interface = self.io.inputs[key];
         NamedTensor input = [self _prepareBatchInput:batch interface:interface];
         inputs.push_back(input);
     }
@@ -527,19 +382,19 @@ typedef std::vector<std::string> TensorNames;
         NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
         
         for ( NSString *name in dictionaryData ) {
-            assert([_namedInputInterfaces.allKeys containsObject:name]);
+            assert([self.io.inputs.keys containsObject:name]);
         
-            TIOLayerInterface *interface = _namedInputInterfaces[name];
+            TIOLayerInterface *interface = self.io.inputs[name];
             id<TIOData> inputData = dictionaryData[name];
         
             NamedTensor input = [self _prepareInput:inputData interface:interface];
             inputs.push_back(input);
         }
-    } else if ( _indexedInputInterfaces.count == 1 ) {
+    } else if ( self.io.inputs.count == 1 ) {
     
         // If there is a single input available, simply take the input as it is
         
-        TIOLayerInterface *interface = _indexedInputInterfaces[0];
+        TIOLayerInterface *interface = self.io.inputs[0];
         id<TIOData> inputData = data;
         
         NamedTensor input = [self _prepareInput:inputData interface:interface];
@@ -553,10 +408,10 @@ typedef std::vector<std::string> TensorNames;
         // With an array input, iterate through its entries, preparing the indexed tensors with their values
         
         NSArray<id<TIOData>> *arrayData = (NSArray*)data;
-        assert(arrayData.count == _indexedInputInterfaces.count);
+        assert(arrayData.count == self.io.inputs.count);
         
         for ( NSUInteger index = 0; index < arrayData.count; index++ ) {
-            TIOLayerInterface *interface = _indexedInputInterfaces[index];
+            TIOLayerInterface *interface = self.io.inputs[index];
             id<TIOData> inputData = arrayData[index];
             NamedTensor input = [self _prepareInput:inputData interface:interface];
             inputs.push_back(input);
@@ -612,7 +467,7 @@ typedef std::vector<std::string> TensorNames;
     TensorNames output_names;
     Tensors outputs;
     
-    for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
+    for (TIOLayerInterface *interface in self.io.outputs.all) {
         output_names.push_back(interface.name.UTF8String);
     }
     
@@ -645,8 +500,8 @@ typedef std::vector<std::string> TensorNames;
    
     NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
 
-    for ( int index = 0; index < _indexedOutputInterfaces.count; index++ ) {
-        TIOLayerInterface *interface = _indexedOutputInterfaces[index];
+    for ( int index = 0; index < self.io.outputs.count; index++ ) {
+        TIOLayerInterface *interface = self.io.outputs[index];
         tensorflow::Tensor tensor = outputTensors[index];
         
         id<TIOData> data = [self _captureOutput:tensor interface:interface];
@@ -740,7 +595,7 @@ typedef std::vector<std::string> TensorNames;
     NamedTensors inputs;
     
     for ( NSString *key in batch.keys ) {
-        TIOLayerInterface *interface = _namedInputInterfaces[key];
+        TIOLayerInterface *interface = self.io.inputs[key];
         NamedTensor input = [self _prepareTrainingInput:batch interface:interface];
         inputs.push_back(input);
     }
@@ -798,7 +653,7 @@ typedef std::vector<std::string> TensorNames;
     
     // Output names
     
-    for (TIOLayerInterface *interface in _indexedOutputInterfaces) {
+    for (TIOLayerInterface *interface in self.io.outputs.all) {
         output_names.push_back(interface.name.UTF8String);
     }
     
@@ -855,8 +710,8 @@ typedef std::vector<std::string> TensorNames;
    
     NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
 
-    for ( int index = 0; index < _indexedOutputInterfaces.count; index++ ) {
-        TIOLayerInterface *interface = _indexedOutputInterfaces[index];
+    for ( int index = 0; index < self.io.outputs.count; index++ ) {
+        TIOLayerInterface *interface = self.io.outputs[index];
         tensorflow::Tensor tensor = outputTensors[index];
         
         id<TIOData> data = [self _captureTrainingOutput:tensor interface:interface];
