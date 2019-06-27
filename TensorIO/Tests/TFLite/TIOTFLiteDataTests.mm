@@ -1,5 +1,5 @@
 //
-//  TensorIODataTests.m
+//  TIOTFLiteDataTests.m
 //  TensorIO_Tests
 //
 //  Created by Philip Dow on 8/23/18.
@@ -19,14 +19,13 @@
 //
 
 #import <XCTest/XCTest.h>
-
 #import <TensorIO/TensorIO-umbrella.h>
 
-@interface TensorIODataTests : XCTestCase
+@interface TIOTFLiteDataTests : XCTestCase
 
 @end
 
-@implementation TensorIODataTests
+@implementation TIOTFLiteDataTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.

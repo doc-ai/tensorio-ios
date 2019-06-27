@@ -51,7 +51,7 @@ class SwiftExampleTests: XCTestCase {
             return
         }
         
-        let classification = model.run(on: buffer)
+        let classification = model.run(on: buffer, error: nil)
         XCTAssertNotNil(classification)
         
         let top5 = ((classification as! NSDictionary)["classification"] as! NSDictionary).topN(5, threshold: 0.1)

@@ -1,5 +1,5 @@
 //
-//  TensorIOJSONParsingTests.m
+//  TIOJSONParsingTests.m
 //  TensorIO_Tests
 //
 //  Created by Philip Dow on 8/22/18.
@@ -22,11 +22,11 @@
 
 #import <TensorIO/TensorIO-umbrella.h>
 
-@interface TensorIOJSONParsingTests : XCTestCase
+@interface TIOJSONParsingTests : XCTestCase
 
 @end
 
-@implementation TensorIOJSONParsingTests
+@implementation TIOJSONParsingTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.

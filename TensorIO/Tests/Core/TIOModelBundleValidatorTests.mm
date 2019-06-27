@@ -1,5 +1,5 @@
 //
-//  TensorIOModelBundleValidatorTests.m
+//  TIOModelBundleValidatorTests.m
 //  TensorIO_Tests
 //
 //  Created by Philip Dow on 8/7/18.
@@ -21,11 +21,11 @@
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
 
-@interface TensorIOModelBundleValidatorTests : XCTestCase
+@interface TIOModelBundleValidatorTests : XCTestCase
 
 @end
 
-@implementation TensorIOModelBundleValidatorTests
+@implementation TIOModelBundleValidatorTests
 
 - (void)setUp { }
 

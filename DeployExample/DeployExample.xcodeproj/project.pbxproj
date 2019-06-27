@@ -8,24 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		D1052016048404C4CB2E4984 /* Pods_DeployExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E35A6405A6023FE2A5EEFE /* Pods_DeployExample.framework */; };
+		E31FAD8522C54C030051BD3E /* MockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8422C54C030051BD3E /* MockURLSession.m */; };
+		E31FAD9222C54C170051BD3E /* TIOMRDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8722C54C170051BD3E /* TIOMRDownloadTests.m */; };
+		E31FAD9322C54C170051BD3E /* TIOMRHyperparametersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8822C54C170051BD3E /* TIOMRHyperparametersTests.m */; };
+		E31FAD9422C54C170051BD3E /* TIOMRCheckpointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8922C54C170051BD3E /* TIOMRCheckpointTests.m */; };
+		E31FAD9522C54C170051BD3E /* TIOMRHyperparameterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8A22C54C170051BD3E /* TIOMRHyperparameterTests.m */; };
+		E31FAD9622C54C170051BD3E /* TIOMRModelIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8B22C54C170051BD3E /* TIOMRModelIdentifierTests.m */; };
+		E31FAD9722C54C170051BD3E /* TIOModelUpdaterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8C22C54C170051BD3E /* TIOModelUpdaterTests.m */; };
+		E31FAD9822C54C170051BD3E /* TIOMRCheckpointsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8D22C54C170051BD3E /* TIOMRCheckpointsTests.m */; };
+		E31FAD9922C54C170051BD3E /* TIOMRModelsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8E22C54C170051BD3E /* TIOMRModelsTests.m */; };
+		E31FAD9A22C54C170051BD3E /* TIOMRModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8F22C54C170051BD3E /* TIOMRModelTests.m */; };
+		E31FAD9B22C54C170051BD3E /* TIOMRStatusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD9022C54C170051BD3E /* TIOMRStatusTests.m */; };
+		E31FAD9C22C54C170051BD3E /* TIOModelRepositoryClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD9122C54C170051BD3E /* TIOModelRepositoryClientTests.m */; };
 		E34F12E4227BB5F0000A0DD7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F12E3227BB5F0000A0DD7 /* AppDelegate.m */; };
 		E34F12E7227BB5F0000A0DD7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F12E6227BB5F0000A0DD7 /* ViewController.m */; };
 		E34F12EA227BB5F0000A0DD7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E34F12E8227BB5F0000A0DD7 /* Main.storyboard */; };
 		E34F12EC227BB5F2000A0DD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E34F12EB227BB5F2000A0DD7 /* Assets.xcassets */; };
 		E34F12EF227BB5F2000A0DD7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E34F12ED227BB5F2000A0DD7 /* LaunchScreen.storyboard */; };
 		E34F12F2227BB5F2000A0DD7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F12F1227BB5F2000A0DD7 /* main.m */; };
-		E34F130B227C9EEE000A0DD7 /* TIOMRStatusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F130A227C9EEE000A0DD7 /* TIOMRStatusTests.m */; };
-		E34F130E227CABAF000A0DD7 /* MockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F130D227CABAF000A0DD7 /* MockURLSession.m */; };
-		E34F1314227CB908000A0DD7 /* TIOMRModelsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F1313227CB908000A0DD7 /* TIOMRModelsTests.m */; };
-		E34F131A227CC5BB000A0DD7 /* TIOMRModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F1319227CC5BB000A0DD7 /* TIOMRModelTests.m */; };
-		E34F1320227CDB40000A0DD7 /* TIOMRHyperparametersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F131F227CDB40000A0DD7 /* TIOMRHyperparametersTests.m */; };
-		E34F1326227D0AB6000A0DD7 /* TIOMRHyperparameterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F1325227D0AB6000A0DD7 /* TIOMRHyperparameterTests.m */; };
-		E34F132C2280935C000A0DD7 /* TIOMRCheckpointsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F132B2280935C000A0DD7 /* TIOMRCheckpointsTests.m */; };
-		E34F133222809BEF000A0DD7 /* TIOMRCheckpointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F133122809BEF000A0DD7 /* TIOMRCheckpointTests.m */; };
-		E34F13382280B6B7000A0DD7 /* TIOMRDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E34F13372280B6B7000A0DD7 /* TIOMRDownloadTests.m */; };
-		E37FDAA4229F81A800F87241 /* TIOModelRepositoryClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E37FDAA3229F81A800F87241 /* TIOModelRepositoryClientTests.m */; };
-		E3E16D4E2285E9490087197A /* TIOModelUpdaterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D4D2285E9490087197A /* TIOModelUpdaterTests.m */; };
-		E3E16D64228C935A0087197A /* TIOMRModelIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3E16D63228C935A0087197A /* TIOMRModelIdentifierTests.m */; };
 		E3E16D66228CA1D40087197A /* upgradable.tiobundle in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D65228CA1D40087197A /* upgradable.tiobundle */; };
 		E3E16D69228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */; };
 		E3E16D6A228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip in Resources */ = {isa = PBXBuildFile; fileRef = E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */; };
@@ -49,6 +49,19 @@
 		22BDBB618548E6AC0E318982 /* Pods-DeployExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeployExample.debug.xcconfig"; path = "Target Support Files/Pods-DeployExample/Pods-DeployExample.debug.xcconfig"; sourceTree = "<group>"; };
 		D71F105BAB4E5C01D029E704 /* Pods-DeployExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeployExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-DeployExampleTests/Pods-DeployExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DCF548677C153A40E388AC40 /* Pods-DeployExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeployExampleTests.release.xcconfig"; path = "Target Support Files/Pods-DeployExampleTests/Pods-DeployExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		E31FAD8322C54C030051BD3E /* MockURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockURLSession.h; path = ../../TensorIO/Mocks/Shared/MockURLSession.h; sourceTree = "<group>"; };
+		E31FAD8422C54C030051BD3E /* MockURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockURLSession.m; path = ../../TensorIO/Mocks/Shared/MockURLSession.m; sourceTree = "<group>"; };
+		E31FAD8722C54C170051BD3E /* TIOMRDownloadTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRDownloadTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRDownloadTests.m; sourceTree = "<group>"; };
+		E31FAD8822C54C170051BD3E /* TIOMRHyperparametersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRHyperparametersTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRHyperparametersTests.m; sourceTree = "<group>"; };
+		E31FAD8922C54C170051BD3E /* TIOMRCheckpointTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRCheckpointTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRCheckpointTests.m; sourceTree = "<group>"; };
+		E31FAD8A22C54C170051BD3E /* TIOMRHyperparameterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRHyperparameterTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRHyperparameterTests.m; sourceTree = "<group>"; };
+		E31FAD8B22C54C170051BD3E /* TIOMRModelIdentifierTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRModelIdentifierTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRModelIdentifierTests.m; sourceTree = "<group>"; };
+		E31FAD8C22C54C170051BD3E /* TIOModelUpdaterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOModelUpdaterTests.m; path = ../../TensorIO/Tests/Deploy/TIOModelUpdaterTests.m; sourceTree = "<group>"; };
+		E31FAD8D22C54C170051BD3E /* TIOMRCheckpointsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRCheckpointsTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRCheckpointsTests.m; sourceTree = "<group>"; };
+		E31FAD8E22C54C170051BD3E /* TIOMRModelsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRModelsTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRModelsTests.m; sourceTree = "<group>"; };
+		E31FAD8F22C54C170051BD3E /* TIOMRModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRModelTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRModelTests.m; sourceTree = "<group>"; };
+		E31FAD9022C54C170051BD3E /* TIOMRStatusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRStatusTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRStatusTests.m; sourceTree = "<group>"; };
+		E31FAD9122C54C170051BD3E /* TIOModelRepositoryClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOModelRepositoryClientTests.m; path = ../../TensorIO/Tests/Deploy/TIOModelRepositoryClientTests.m; sourceTree = "<group>"; };
 		E34F12DF227BB5F0000A0DD7 /* DeployExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeployExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E34F12E2227BB5F0000A0DD7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E34F12E3227BB5F0000A0DD7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -61,19 +74,6 @@
 		E34F12F1227BB5F2000A0DD7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E34F12F7227BB5F2000A0DD7 /* DeployExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeployExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E34F12FD227BB5F2000A0DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E34F130A227C9EEE000A0DD7 /* TIOMRStatusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRStatusTests.m; sourceTree = "<group>"; };
-		E34F130C227CABAF000A0DD7 /* MockURLSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockURLSession.h; sourceTree = "<group>"; };
-		E34F130D227CABAF000A0DD7 /* MockURLSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockURLSession.m; sourceTree = "<group>"; };
-		E34F1313227CB908000A0DD7 /* TIOMRModelsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRModelsTests.m; sourceTree = "<group>"; };
-		E34F1319227CC5BB000A0DD7 /* TIOMRModelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRModelTests.m; sourceTree = "<group>"; };
-		E34F131F227CDB40000A0DD7 /* TIOMRHyperparametersTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRHyperparametersTests.m; sourceTree = "<group>"; };
-		E34F1325227D0AB6000A0DD7 /* TIOMRHyperparameterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRHyperparameterTests.m; sourceTree = "<group>"; };
-		E34F132B2280935C000A0DD7 /* TIOMRCheckpointsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRCheckpointsTests.m; sourceTree = "<group>"; };
-		E34F133122809BEF000A0DD7 /* TIOMRCheckpointTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRCheckpointTests.m; sourceTree = "<group>"; };
-		E34F13372280B6B7000A0DD7 /* TIOMRDownloadTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRDownloadTests.m; sourceTree = "<group>"; };
-		E37FDAA3229F81A800F87241 /* TIOModelRepositoryClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOModelRepositoryClientTests.m; sourceTree = "<group>"; };
-		E3E16D4D2285E9490087197A /* TIOModelUpdaterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOModelUpdaterTests.m; sourceTree = "<group>"; };
-		E3E16D63228C935A0087197A /* TIOMRModelIdentifierTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TIOMRModelIdentifierTests.m; sourceTree = "<group>"; };
 		E3E16D65228CA1D40087197A /* upgradable.tiobundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = upgradable.tiobundle; sourceTree = "<group>"; };
 		E3E16D67228CB16C0087197A /* upgradable-checkpoint.tiobundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "upgradable-checkpoint.tiobundle.zip"; sourceTree = "<group>"; };
 		E3E16D68228CB16C0087197A /* upgradable-hyperparameters.tiobundle.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "upgradable-hyperparameters.tiobundle.zip"; sourceTree = "<group>"; };
@@ -121,11 +121,46 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E31FAD8122C54BF20051BD3E /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E31FAD8222C54BF80051BD3E /* Shared */,
+			);
+			name = Mocks;
+			sourceTree = "<group>";
+		};
+		E31FAD8222C54BF80051BD3E /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E31FAD8322C54C030051BD3E /* MockURLSession.h */,
+				E31FAD8422C54C030051BD3E /* MockURLSession.m */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		E31FAD8622C54C0A0051BD3E /* Deploy */ = {
+			isa = PBXGroup;
+			children = (
+				E31FAD9122C54C170051BD3E /* TIOModelRepositoryClientTests.m */,
+				E31FAD8C22C54C170051BD3E /* TIOModelUpdaterTests.m */,
+				E31FAD8D22C54C170051BD3E /* TIOMRCheckpointsTests.m */,
+				E31FAD8922C54C170051BD3E /* TIOMRCheckpointTests.m */,
+				E31FAD8722C54C170051BD3E /* TIOMRDownloadTests.m */,
+				E31FAD8822C54C170051BD3E /* TIOMRHyperparametersTests.m */,
+				E31FAD8A22C54C170051BD3E /* TIOMRHyperparameterTests.m */,
+				E31FAD8B22C54C170051BD3E /* TIOMRModelIdentifierTests.m */,
+				E31FAD8E22C54C170051BD3E /* TIOMRModelsTests.m */,
+				E31FAD8F22C54C170051BD3E /* TIOMRModelTests.m */,
+				E31FAD9022C54C170051BD3E /* TIOMRStatusTests.m */,
+			);
+			name = Deploy;
+			sourceTree = "<group>";
+		};
 		E34F12D6227BB5F0000A0DD7 = {
 			isa = PBXGroup;
 			children = (
 				E34F12E1227BB5F0000A0DD7 /* DeployExample */,
-				E34F12FA227BB5F2000A0DD7 /* DeployExampleTests */,
+				E34F12FA227BB5F2000A0DD7 /* Tests */,
 				E34F12E0227BB5F0000A0DD7 /* Products */,
 				6FB257838C5167ABD5EDADE8 /* Pods */,
 				53246C25565233257668C485 /* Frameworks */,
@@ -161,25 +196,14 @@
 			path = DeployExample;
 			sourceTree = "<group>";
 		};
-		E34F12FA227BB5F2000A0DD7 /* DeployExampleTests */ = {
+		E34F12FA227BB5F2000A0DD7 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E34F130C227CABAF000A0DD7 /* MockURLSession.h */,
-				E34F130D227CABAF000A0DD7 /* MockURLSession.m */,
-				E34F130A227C9EEE000A0DD7 /* TIOMRStatusTests.m */,
-				E34F1313227CB908000A0DD7 /* TIOMRModelsTests.m */,
-				E34F1319227CC5BB000A0DD7 /* TIOMRModelTests.m */,
-				E34F131F227CDB40000A0DD7 /* TIOMRHyperparametersTests.m */,
-				E34F1325227D0AB6000A0DD7 /* TIOMRHyperparameterTests.m */,
-				E34F132B2280935C000A0DD7 /* TIOMRCheckpointsTests.m */,
-				E34F133122809BEF000A0DD7 /* TIOMRCheckpointTests.m */,
-				E34F13372280B6B7000A0DD7 /* TIOMRDownloadTests.m */,
-				E37FDAA3229F81A800F87241 /* TIOModelRepositoryClientTests.m */,
-				E3E16D4D2285E9490087197A /* TIOModelUpdaterTests.m */,
-				E3E16D63228C935A0087197A /* TIOMRModelIdentifierTests.m */,
+				E31FAD8122C54BF20051BD3E /* Mocks */,
+				E31FAD8622C54C0A0051BD3E /* Deploy */,
 				E34F12FD227BB5F2000A0DD7 /* Info.plist */,
 			);
-			path = DeployExampleTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -393,18 +417,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3E16D4E2285E9490087197A /* TIOModelUpdaterTests.m in Sources */,
-				E34F1326227D0AB6000A0DD7 /* TIOMRHyperparameterTests.m in Sources */,
-				E34F13382280B6B7000A0DD7 /* TIOMRDownloadTests.m in Sources */,
-				E34F1314227CB908000A0DD7 /* TIOMRModelsTests.m in Sources */,
-				E34F130E227CABAF000A0DD7 /* MockURLSession.m in Sources */,
-				E37FDAA4229F81A800F87241 /* TIOModelRepositoryClientTests.m in Sources */,
-				E3E16D64228C935A0087197A /* TIOMRModelIdentifierTests.m in Sources */,
-				E34F132C2280935C000A0DD7 /* TIOMRCheckpointsTests.m in Sources */,
-				E34F130B227C9EEE000A0DD7 /* TIOMRStatusTests.m in Sources */,
-				E34F1320227CDB40000A0DD7 /* TIOMRHyperparametersTests.m in Sources */,
-				E34F131A227CC5BB000A0DD7 /* TIOMRModelTests.m in Sources */,
-				E34F133222809BEF000A0DD7 /* TIOMRCheckpointTests.m in Sources */,
+				E31FAD9322C54C170051BD3E /* TIOMRHyperparametersTests.m in Sources */,
+				E31FAD8522C54C030051BD3E /* MockURLSession.m in Sources */,
+				E31FAD9522C54C170051BD3E /* TIOMRHyperparameterTests.m in Sources */,
+				E31FAD9822C54C170051BD3E /* TIOMRCheckpointsTests.m in Sources */,
+				E31FAD9B22C54C170051BD3E /* TIOMRStatusTests.m in Sources */,
+				E31FAD9C22C54C170051BD3E /* TIOModelRepositoryClientTests.m in Sources */,
+				E31FAD9222C54C170051BD3E /* TIOMRDownloadTests.m in Sources */,
+				E31FAD9622C54C170051BD3E /* TIOMRModelIdentifierTests.m in Sources */,
+				E31FAD9922C54C170051BD3E /* TIOMRModelsTests.m in Sources */,
+				E31FAD9722C54C170051BD3E /* TIOModelUpdaterTests.m in Sources */,
+				E31FAD9422C54C170051BD3E /* TIOMRCheckpointTests.m in Sources */,
+				E31FAD9A22C54C170051BD3E /* TIOMRModelTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,7 +617,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
-				INFOPLIST_FILE = DeployExampleTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -613,7 +637,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
-				INFOPLIST_FILE = DeployExampleTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

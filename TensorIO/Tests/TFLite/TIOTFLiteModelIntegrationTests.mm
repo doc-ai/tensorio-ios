@@ -1,5 +1,5 @@
 //
-//  TIOTFLiteModelTests.m
+//  TIOTFLiteModelIntegrationTests.m
 //  Net Runner ParserTests
 //
 //  Created by Philip Dow on 8/7/18.
@@ -22,13 +22,13 @@
 
 #import <TensorIO/TensorIO-umbrella.h>
 
-@interface TIOTFLiteModelTests : XCTestCase
+@interface TIOTFLiteModelIntegrationTests : XCTestCase
 
 @property NSString *modelsPath;
 
 @end
 
-@implementation TIOTFLiteModelTests
+@implementation TIOTFLiteModelIntegrationTests
 
 - (instancetype)init {
     return [super init];

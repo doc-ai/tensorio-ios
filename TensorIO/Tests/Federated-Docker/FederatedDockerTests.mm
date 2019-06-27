@@ -1,5 +1,5 @@
 //
-//  DockerTests.m
+//  FederatedDockerTests.m
 //  FederatedExampleTests
 //
 //  Created by Phil Dow on 5/25/19.
@@ -22,13 +22,13 @@
 #import <TensorIO/TensorIO-umbrella.h>
 #import "MockURLSession.h"
 
-@interface DockerTests : XCTestCase
+@interface FederatedDockerTests : XCTestCase
 
 @property TIOFleaClient *client;
 
 @end
 
-@implementation DockerTests
+@implementation FederatedDockerTests
 
 - (void)setUp {
     NSURLSessionConfiguration *configuration = NSURLSessionConfiguration.defaultSessionConfiguration;
