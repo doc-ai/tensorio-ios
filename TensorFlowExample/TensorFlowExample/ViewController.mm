@@ -50,7 +50,7 @@
         @"image": buffer
     };
     
-    NSDictionary *classification = (NSDictionary*)[model runOn:inputs];
+    NSDictionary *classification = (NSDictionary*)[model runOn:inputs error:nil];
     NSNumber *sigmoid = classification[@"sigmoid"];
     
     // Show the results

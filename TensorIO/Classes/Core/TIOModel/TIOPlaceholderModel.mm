@@ -115,4 +115,12 @@
     return @{};
 }
 
+- (id<TIOData>)runOn:(nonnull id<TIOData>)input error:(NSError * _Nullable *)error {
+    return @{};
+}
+
+- (id<TIOData>)run:(nonnull TIOBatch *)batch error:(NSError * _Nullable *)error {
+    return @{};
+}
+
 @end

@@ -27,6 +27,7 @@
 #import "TIOModelBundleJSONSchema.h"
 #import "TIOModelBundleManager.h"
 #import "TIOModelBundleValidator.h"
+#import "TIOModelIO.h"
 #import "TIOModelJSONParsing.h"
 #import "TIOModelModes.h"
 #import "TIOModelOptions.h"

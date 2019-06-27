@@ -74,6 +74,7 @@
 - (void)test1In1OutNumberModel {
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -86,8 +87,9 @@
     // Run the model on a number
     
     NSNumber *numericInput = @(2);
-    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput];
+    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(numericResults.count == 1);
     XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
     
@@ -95,16 +97,18 @@
     
     float_t bytes[1] = {2};
     NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(float_t)*1];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput];
+    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
     XCTAssert([byteResults[@"output"] isEqualToNumber:@(25)]);
     
     // Run the model on a vector
     
     TIOVector *vectorInput = @[@(2)];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
+    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
     XCTAssert([vectorResults[@"output"] isEqualToNumber:@(25)]);
     
@@ -112,8 +116,9 @@
     
     {
     NSDictionary *input = @{@"input": @(2)};
-    NSDictionary *output = (NSDictionary*)[model runOn:input];
+    NSDictionary *output = (NSDictionary*)[model runOn:input error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(output.count == 1);
     XCTAssert([output[@"output"] isEqualToNumber:@(25)]);
     }
@@ -124,6 +129,7 @@
 - (void)test1x1VectorsModel {
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_vectors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -140,8 +146,9 @@
     // Run the model on a vector
     
     TIOVector *vectorInput = @[@(1),@(2),@(3),@(4)];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
+    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
     XCTAssert([vectorResults[@"output"] isEqualToArray:expectedOutput]);
     
@@ -149,8 +156,9 @@
     
     float_t bytes[4] = {1,2,3,4};
     NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(float_t)*4];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput];
+    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
     XCTAssert([byteResults[@"output"] isEqualToArray:expectedOutput]);
 }
@@ -158,6 +166,7 @@
 - (void)test2x2VectorsModel {
     TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_vectors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -173,8 +182,9 @@
         @[@1,  @2,  @3,  @4],
         @[@10, @20, @30, @40]
     ];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInputs];
+    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInputs error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(vectorResults.count == 2);
     XCTAssert([vectorResults[@"output1"] isEqualToNumber:@(240)]);
     XCTAssert([vectorResults[@"output2"] isEqualToNumber:@(64)]);
@@ -188,8 +198,9 @@
         [NSData dataWithBytes:byteInputs1 length:4*sizeof(float_t)],
         [NSData dataWithBytes:byteInputs2 length:4*sizeof(float_t)],
     ];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs];
+    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(byteResults.count == 2);
     XCTAssert([byteResults[@"output1"] isEqualToNumber:@(240)]);
     XCTAssert([byteResults[@"output2"] isEqualToNumber:@(64)]);
@@ -201,8 +212,9 @@
         @"input1": @[@1,  @2,  @3,  @4],
         @"input2": @[@10, @20, @30, @40]
     };
-    NSDictionary *output = (NSDictionary*)[model runOn:input];
+    NSDictionary *output = (NSDictionary*)[model runOn:input error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(output.count == 2);
     XCTAssert([output[@"output1"] isEqualToNumber:@(240)]);
     XCTAssert([output[@"output2"] isEqualToNumber:@(64)]);
@@ -212,6 +224,7 @@
 - (void)test2x2MatricesModel {
     TIOModelBundle *bundle = [self bundleWithName:@"2_in_2_out_matrices_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -252,8 +265,9 @@
             @5000,@6000,@7000,@8000
         ]
     ];
-    NSDictionary *matrixResults = (NSDictionary*)[model runOn:matrixInput];
+    NSDictionary *matrixResults = (NSDictionary*)[model runOn:matrixInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(matrixResults.count == 2);
     XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedOutput1]);
     XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedOutput2]);
@@ -277,8 +291,9 @@
         [NSData dataWithBytes:matrixInput1 length:16*sizeof(float_t)],
         [NSData dataWithBytes:matrixInput2 length:16*sizeof(float_t)],
     ];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs];
+    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(byteResults.count == 2);
     XCTAssert([matrixResults[@"output1"] isEqualToArray:expectedOutput1]);
     XCTAssert([matrixResults[@"output2"] isEqualToArray:expectedOutput2]);
@@ -287,6 +302,7 @@
 - (void)test3x3MatricesModel {
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_tensors_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -312,8 +328,9 @@
         @(100),@(200),@(300),@(400),@(500),@(600),@(700),@(800),@(900)
     ];
     
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput];
+    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
     XCTAssert([vectorResults[@"output"] isEqualToArray:expectedOutput]);
     
@@ -326,8 +343,9 @@
     };
     NSData *byteData = [NSData dataWithBytes:byteInput length:sizeof(float_t)*27];
     
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteData];
+    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteData error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
     XCTAssert([byteResults[@"output"] isEqualToArray:expectedOutput]);
 }
@@ -339,6 +357,7 @@
     
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_identity_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     // Ensure inputs and outputs return correct count
     
@@ -391,7 +410,9 @@
     // Run model on pixel buffer
     
     TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
-    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper];
+    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper error:&error];
+    
+    XCTAssertNil(error);
     
     // Capture output
     
@@ -426,6 +447,7 @@
     
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_pixelbuffer_normalization_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     // Ensure inputs and outputs return correct count
     
@@ -479,7 +501,9 @@
     
     TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
-    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper];
+    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper error:&error];
+    
+    XCTAssertNil(error);
     
     // Capture output
     
@@ -514,6 +538,7 @@
 - (void)testMobileNetClassificationModel {
     TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -530,9 +555,10 @@
     
     // Run the model directly on the pixel buffer
     
-    NSDictionary *imageResults = (NSDictionary*)[model runOn:imageFeature];
+    NSDictionary *imageResults = (NSDictionary*)[model runOn:imageFeature error:&error];
     NSDictionary *top5 = [imageResults[@"classification"] topN:5 threshold:0.1];
     
+    XCTAssertNil(error);
     XCTAssert(top5.count == 1);
     XCTAssert([top5.allKeys containsObject:@"rocking chair"]);
     
@@ -542,9 +568,10 @@
     
     // Run the model on a named pixel buffer
     
-    imageResults = (NSDictionary*)[model runOn:@{ @"image": imageFeature }];
+    imageResults = (NSDictionary*)[model runOn:@{@"image": imageFeature} error:&error];
     top5 = [imageResults[@"classification"] topN:5 threshold:0.1];
     
+    XCTAssertNil(error);
     XCTAssert(top5.count == 1);
     XCTAssert([top5.allKeys containsObject:@"rocking chair"]);
     
@@ -556,6 +583,7 @@
 - (void)testMobileNetClassificationModelPreprocessing {
     TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v2_1.4_224.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -575,9 +603,10 @@
     
     // Run the model directly on the preprocessed pixel buffer
     
-    NSDictionary *imageResults = (NSDictionary*)[model runOn:imageFeature];
+    NSDictionary *imageResults = (NSDictionary*)[model runOn:imageFeature error:&error];
     NSDictionary *top5 = [imageResults[@"classification"] topN:5 threshold:0.1];
     
+    XCTAssertNil(error);
     XCTAssert(top5.count == 1);
     XCTAssert([top5.allKeys containsObject:@"rocking chair"]);
     
@@ -587,9 +616,10 @@
     
     // Run the model on a named pixel buffer
     
-    imageResults = (NSDictionary*)[model runOn:@{ @"image": imageFeature }];
+    imageResults = (NSDictionary*)[model runOn:@{@"image": imageFeature} error:&error];
     top5 = [imageResults[@"classification"] topN:5 threshold:0.1];
     
+    XCTAssertNil(error);
     XCTAssert(top5.count == 1);
     XCTAssert([top5.allKeys containsObject:@"rocking chair"]);
     
@@ -601,6 +631,7 @@
 - (void)testQuantizedMobileNetClassificationModel {
     TIOModelBundle *bundle = [self bundleWithName:@"mobilenet_v1_1.0_224_quant.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -617,9 +648,10 @@
     
     // Run the model directly on the pixel buffer
     
-    NSDictionary *imageResults = (NSDictionary*)[model runOn:imageFeature];
+    NSDictionary *imageResults = (NSDictionary*)[model runOn:imageFeature error:&error];
     NSDictionary *top5 = [imageResults[@"classification"] topN:5 threshold:0.1];
     
+    XCTAssertNil(error);
     XCTAssert(top5.count == 1);
     XCTAssert([top5.allKeys containsObject:@"rocking chair"]);
     
@@ -629,9 +661,10 @@
     
     // Run the model on a named pixel buffer
     
-    imageResults = (NSDictionary*)[model runOn:@{ @"image": imageFeature }];
+    imageResults = (NSDictionary*)[model runOn:@{@"image": imageFeature} error:&error];
     top5 = [imageResults[@"classification"] topN:5 threshold:0.1];
     
+    XCTAssertNil(error);
     XCTAssert(top5.count == 1);
     XCTAssert([top5.allKeys containsObject:@"rocking chair"]);
     
@@ -659,6 +692,7 @@
     
     TIOModelBundle *bundle = [self bundleWithName:@"no-backend.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
     
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
@@ -671,8 +705,9 @@
     // Run the model on a number
     
     NSNumber *numericInput = @(2);
-    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput];
+    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput error:&error];
     
+    XCTAssertNil(error);
     XCTAssert(numericResults.count == 1);
     XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
 }
