@@ -38,9 +38,9 @@
 		E31FACF922C53CF50051BD3E /* TIOModelBundleManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FACEF22C53CF50051BD3E /* TIOModelBundleManagerTests.mm */; };
 		E31FACFA22C53CF50051BD3E /* TIOModelTrainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FACF022C53CF50051BD3E /* TIOModelTrainerTests.m */; };
 		E31FACFB22C53CF50051BD3E /* TIOInMemoryBatchDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FACF122C53CF50051BD3E /* TIOInMemoryBatchDataSourceTests.m */; };
-		E31FACFC22C53CF50051BD3E /* TIODataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FACF222C53CF50051BD3E /* TIODataTests.mm */; };
 		E31FACFF22C53CFC0051BD3E /* TIOModelBackendTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FACFD22C53CFC0051BD3E /* TIOModelBackendTests.mm */; };
 		E31FAD0022C53CFC0051BD3E /* TIOTFLiteModelIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FACFE22C53CFC0051BD3E /* TIOTFLiteModelIntegrationTests.mm */; };
+		E31FAD0522C53ECA0051BD3E /* TIOTFLiteDataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD0422C53ECA0051BD3E /* TIOTFLiteDataTests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,9 +102,9 @@
 		E31FACEF22C53CF50051BD3E /* TIOModelBundleManagerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOModelBundleManagerTests.mm; path = ../../TensorIO/Tests/Core/TIOModelBundleManagerTests.mm; sourceTree = "<group>"; };
 		E31FACF022C53CF50051BD3E /* TIOModelTrainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOModelTrainerTests.m; path = ../../TensorIO/Tests/Core/TIOModelTrainerTests.m; sourceTree = "<group>"; };
 		E31FACF122C53CF50051BD3E /* TIOInMemoryBatchDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOInMemoryBatchDataSourceTests.m; path = ../../TensorIO/Tests/Core/TIOInMemoryBatchDataSourceTests.m; sourceTree = "<group>"; };
-		E31FACF222C53CF50051BD3E /* TIODataTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIODataTests.mm; path = ../../TensorIO/Tests/Core/TIODataTests.mm; sourceTree = "<group>"; };
 		E31FACFD22C53CFC0051BD3E /* TIOModelBackendTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOModelBackendTests.mm; path = ../../TensorIO/Tests/TFLite/TIOModelBackendTests.mm; sourceTree = "<group>"; };
 		E31FACFE22C53CFC0051BD3E /* TIOTFLiteModelIntegrationTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOTFLiteModelIntegrationTests.mm; path = ../../TensorIO/Tests/TFLite/TIOTFLiteModelIntegrationTests.mm; sourceTree = "<group>"; };
+		E31FAD0422C53ECA0051BD3E /* TIOTFLiteDataTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOTFLiteDataTests.mm; path = ../../TensorIO/Tests/TFLite/TIOTFLiteDataTests.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,7 +265,6 @@
 			isa = PBXGroup;
 			children = (
 				E31FACED22C53CF50051BD3E /* TIOBatchTests.m */,
-				E31FACF222C53CF50051BD3E /* TIODataTests.mm */,
 				E31FACF122C53CF50051BD3E /* TIOInMemoryBatchDataSourceTests.m */,
 				E31FACEB22C53CF50051BD3E /* TIOJSONParsingTests.mm */,
 				E31FACEA22C53CF50051BD3E /* TIOLayerInterfaceTests.mm */,
@@ -282,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				E31FACFD22C53CFC0051BD3E /* TIOModelBackendTests.mm */,
+				E31FAD0422C53ECA0051BD3E /* TIOTFLiteDataTests.mm */,
 				E31FACFE22C53CFC0051BD3E /* TIOTFLiteModelIntegrationTests.mm */,
 			);
 			name = TFLite;
@@ -491,7 +491,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E31FACFC22C53CF50051BD3E /* TIODataTests.mm in Sources */,
 				E31FACFB22C53CF50051BD3E /* TIOInMemoryBatchDataSourceTests.m in Sources */,
 				E31FACF722C53CF50051BD3E /* TIOBatchTests.m in Sources */,
 				E31FACF922C53CF50051BD3E /* TIOModelBundleManagerTests.mm in Sources */,
@@ -500,6 +499,7 @@
 				E31FACF422C53CF50051BD3E /* TIOLayerInterfaceTests.mm in Sources */,
 				E31FACF522C53CF50051BD3E /* TIOJSONParsingTests.mm in Sources */,
 				E31FACFF22C53CFC0051BD3E /* TIOModelBackendTests.mm in Sources */,
+				E31FAD0522C53ECA0051BD3E /* TIOTFLiteDataTests.mm in Sources */,
 				E31FAD0022C53CFC0051BD3E /* TIOTFLiteModelIntegrationTests.mm in Sources */,
 				E31FACE522C53CB50051BD3E /* TIOMockBatchDataSource.m in Sources */,
 				E31FACF622C53CF50051BD3E /* TIOModelBundleValidatorTests.mm in Sources */,
