@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		7D40D2E275669BA1692FF75F /* Pods_TensorFlowExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB2356484CED97CD15F97E3 /* Pods_TensorFlowExample.framework */; };
 		E31524D72264F8E5007F594D /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E31524D62264F8E5007F594D /* models-tests */; };
-		E31524D92264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31524D82264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm */; };
-		E346F33D225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E346F33C225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm */; };
+		E31524D92264F9D7007F594D /* TIOTensorFlowModelIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31524D82264F9D7007F594D /* TIOTensorFlowModelIntegrationTests.mm */; };
+		E346F33D225FF772002CE3B4 /* TIOTensorFlowDataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E346F33C225FF772002CE3B4 /* TIOTensorFlowDataTests.mm */; };
 		E34F12D5227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E34F12D4227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm */; };
 		E3B2A8F62270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3B2A8F52270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm */; };
 		E3C9DDAD225EA09700691A07 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAC225EA07B00691A07 /* cat.jpg */; };
@@ -46,8 +46,8 @@
 		93850338F3045F00D66AB394 /* Pods-TensorFlowExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TensorFlowExampleTests/Pods-TensorFlowExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B2CD577F2F15843D10516781 /* Pods_TensorFlowExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorFlowExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E31524D62264F8E5007F594D /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
-		E31524D82264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOTensorFlowModelIntegrationTests.mm; sourceTree = "<group>"; };
-		E346F33C225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TensorIOTensorFlowDataTests.mm; sourceTree = "<group>"; };
+		E31524D82264F9D7007F594D /* TIOTensorFlowModelIntegrationTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTensorFlowModelIntegrationTests.mm; sourceTree = "<group>"; };
+		E346F33C225FF772002CE3B4 /* TIOTensorFlowDataTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTensorFlowDataTests.mm; sourceTree = "<group>"; };
 		E34F12D4227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTensorFlowModelBundleValidatorTests.mm; sourceTree = "<group>"; };
 		E3B2A8F52270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TIOTensorFlowTrainingTests.mm; sourceTree = "<group>"; };
 		E3C9DDAC225EA07B00691A07 /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = "<group>"; };
@@ -159,8 +159,8 @@
 		E3CDE4D3225D3EC200C6A558 /* TensorFlowExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				E346F33C225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm */,
-				E31524D82264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm */,
+				E346F33C225FF772002CE3B4 /* TIOTensorFlowDataTests.mm */,
+				E31524D82264F9D7007F594D /* TIOTensorFlowModelIntegrationTests.mm */,
 				E34F12D4227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm */,
 				E3B2A8F52270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm */,
 				E3EBEA12226903950006138F /* TIOModelBackendTests.mm */,
@@ -381,9 +381,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3B2A8F62270DAF30080DFDD /* TIOTensorFlowTrainingTests.mm in Sources */,
-				E31524D92264F9D7007F594D /* TensorIOTensorFlowModelIntegrationTests.mm in Sources */,
+				E31524D92264F9D7007F594D /* TIOTensorFlowModelIntegrationTests.mm in Sources */,
 				E3EBEA14226907F90006138F /* TIOModelBackendTests.mm in Sources */,
-				E346F33D225FF772002CE3B4 /* TensorIOTensorFlowDataTests.mm in Sources */,
+				E346F33D225FF772002CE3B4 /* TIOTensorFlowDataTests.mm in Sources */,
 				E34F12D5227A5515000A0DD7 /* TIOTensorFlowModelBundleValidatorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
