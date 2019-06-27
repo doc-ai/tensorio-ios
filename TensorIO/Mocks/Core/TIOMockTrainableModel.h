@@ -44,6 +44,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) NSUInteger trainCount;
 
+/**
+ * Tracks the number of times the exportTo: method has been called.
+ */
+
+@property (readonly) NSUInteger exportCount;
+
+/**
+ * A file URL to a directory containing mock export data. If set, the contents
+ * of this directory will be written to the path passed to the exportTo:
+ * method.
+ */
+
+@property (nullable) NSURL *mockExportsURL;
+
+/**
+ * Mock initializer.
+ */
+
 - (instancetype)initMock;
 
 // MARK: - TIOModel
@@ -65,7 +83,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *backend;
 @property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
-@property (readonly) TIOModelIO *io;
 
 - (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle NS_DESIGNATED_INITIALIZER;
 

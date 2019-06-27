@@ -43,12 +43,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MockSessionDataTask: NSURLSessionDataTask
 
+- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest;
 @property (readonly) BOOL calledResume;
 
 @end
 
 @interface MockSessionDownloadTask: NSURLSessionDownloadTask
 
+- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest;
 @property (readonly) BOOL calledResume;
 
 @end
@@ -71,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSDictionary *JSONResponse;
 @property (readonly) NSData *JSONData;
 @property (readonly) NSURL *download;
+@property (readonly) NSURL *upload;
 @property (readonly) NSError *error;
 
 /**
@@ -92,8 +95,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDownload:(NSURL*)download;
 
 /**
- * Prepare for a `NSURLSessionDataTask` or `NSURLSessionDownloadTask` with an
- * error
+ * Prepare for a `NSURLSessionUploadTask` with a file URL
+ */
+
+- (instancetype)initWithUpload:(NSURL*)upload;
+
+/**
+ * Prepare for a `NSURLSessionDataTask`. `NSURLSessionDownloadTask` or
+ * `NSURLSessionUploadTask` with an error
  */
 
 - (instancetype)initWithError:(NSError*)error;
@@ -105,16 +114,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithResponses:(NSArray<id<MockSessionResponse>>*)responses;
 
 /**
- * Mocks a NSURLSessionDataTask with JSON, JSON data, or an error
+ * Mocks an NSURLSessionDataTask with JSON, JSON data, or an error
  */
 
 - (NSURLSessionDataTask*)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
 /**
- * Mocks a NSURLSessionDownloadTask with a file URL or an error
+ * Mocks an NSURLSessionDownloadTask with a file URL or an error
  */
 
 - (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
+
+/**
+ * Mocks an NSURLSessionUploadTask with data or an error
+ */
+
+- (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
 /**
  * Mock delegate is always nil
@@ -125,4 +140,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-

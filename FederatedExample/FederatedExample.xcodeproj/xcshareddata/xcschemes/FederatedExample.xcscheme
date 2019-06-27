@@ -41,6 +41,9 @@
                <Test
                   Identifier = "DockerTests">
                </Test>
+               <Test
+                  Identifier = "FederatedDockerTests">
+               </Test>
             </SkippedTests>
          </TestableReference>
       </Testables>

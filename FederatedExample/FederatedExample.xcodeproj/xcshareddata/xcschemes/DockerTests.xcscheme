@@ -76,6 +76,21 @@
                <Test
                   Identifier = "DockerTests/testPerformanceExample">
                </Test>
+               <Test
+                  Identifier = "FederatedDockerTests/testGETHealth">
+               </Test>
+               <Test
+                  Identifier = "FederatedDockerTests/testGETStartTask">
+               </Test>
+               <Test
+                  Identifier = "FederatedDockerTests/testGETTask">
+               </Test>
+               <Test
+                  Identifier = "FederatedDockerTests/testGetAllTasks">
+               </Test>
+               <Test
+                  Identifier = "FederatedDockerTests/testPOSTErrorMessage">
+               </Test>
             </SelectedTests>
          </TestableReference>
       </Testables>

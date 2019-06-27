@@ -126,6 +126,13 @@
     return self;
 }
 
+- (instancetype)initWithUpload:(NSURL*)upload {
+    if ((self=[super init])) {
+        _upload = upload;
+    }
+    return self;
+}
+
 - (instancetype)initWithError:(NSError*)error {
     if ((self=[super init])) {
         _error = error;
@@ -158,6 +165,7 @@
         _JSONData = (NSData*)next;
     } else if ( [next isKindOfClass:NSURL.class] ) {
         _download = (NSURL*)next;
+        _upload = (NSURL*)next;
     } else if ( [next isKindOfClass:NSError.class] ) {
         _error = (NSError*)next;
     }
