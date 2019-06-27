@@ -9,12 +9,6 @@
 /* Begin PBXBuildFile section */
 		2AC7945CDD8FF54C5EBD5A7D /* Pods_FederatedExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */; };
 		CFD8D77A36D8D7900730D734 /* Pods_FederatedExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */; };
-		E31FAD3622C5471E0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD3122C5471D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm */; };
-		E31FAD3722C5471E0051BD3E /* TIOMockFederatedManagerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD3222C5471D0051BD3E /* TIOMockFederatedManagerDelegate.mm */; };
-		E31FAD3822C5471E0051BD3E /* TIOMockModelBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD3422C5471D0051BD3E /* TIOMockModelBundle.mm */; };
-		E31FAD3D22C547240051BD3E /* TIOMockBatchDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD3A22C547240051BD3E /* TIOMockBatchDataSource.mm */; };
-		E31FAD3E22C547240051BD3E /* TIOMockTrainableModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD3C22C547240051BD3E /* TIOMockTrainableModel.mm */; };
-		E31FAD4222C5477A0051BD3E /* MockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD4122C5477A0051BD3E /* MockURLSession.m */; };
 		E31FAD5022C549FA0051BD3E /* TIOFleaStatusTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD4422C549F90051BD3E /* TIOFleaStatusTest.mm */; };
 		E31FAD5122C549FA0051BD3E /* TIOFleaJobTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD4522C549F90051BD3E /* TIOFleaJobTests.mm */; };
 		E31FAD5222C549FA0051BD3E /* TIOFleaTaskDownloadTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD4622C549F90051BD3E /* TIOFleaTaskDownloadTests.mm */; };
@@ -28,6 +22,12 @@
 		E31FAD5A22C549FA0051BD3E /* TIOFleaJobUploadTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD4E22C549FA0051BD3E /* TIOFleaJobUploadTests.mm */; };
 		E31FAD5B22C549FA0051BD3E /* TIOFederatedTaskBundleValidatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD4F22C549FA0051BD3E /* TIOFederatedTaskBundleValidatorTests.mm */; };
 		E31FAD5E22C54AAE0051BD3E /* FederatedDockerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD5D22C54AAE0051BD3E /* FederatedDockerTests.mm */; };
+		E31FAD6822C54B760051BD3E /* TIOMockTrainableModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD6422C54B750051BD3E /* TIOMockTrainableModel.mm */; };
+		E31FAD6922C54B760051BD3E /* TIOMockBatchDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD6622C54B750051BD3E /* TIOMockBatchDataSource.mm */; };
+		E31FAD7022C54B7D0051BD3E /* TIOMockFederatedManagerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD6B22C54B7D0051BD3E /* TIOMockFederatedManagerDelegate.mm */; };
+		E31FAD7122C54B7D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD6C22C54B7D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm */; };
+		E31FAD7222C54B7D0051BD3E /* TIOMockModelBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD6D22C54B7D0051BD3E /* TIOMockModelBundle.mm */; };
+		E31FAD7522C54B830051BD3E /* MockURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD7322C54B830051BD3E /* MockURLSession.m */; };
 		E33CC3AA2299CBD3007F4A7B /* build_scripts in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3A92299CBD2007F4A7B /* build_scripts */; };
 		E33CC3C1229DAF8C007F4A7B /* test.tiobundle in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3C0229DAF8C007F4A7B /* test.tiobundle */; };
 		E33CC3C3229DC35A007F4A7B /* mock-training-export in Resources */ = {isa = PBXBuildFile; fileRef = E33CC3C2229DC35A007F4A7B /* mock-training-export */; };
@@ -63,18 +63,6 @@
 		8AFCC30B6B82DA5976BC3C5F /* Pods_FederatedExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB4B6F0277C83C841E725D72 /* Pods-FederatedExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FederatedExample.debug.xcconfig"; path = "Target Support Files/Pods-FederatedExample/Pods-FederatedExample.debug.xcconfig"; sourceTree = "<group>"; };
 		E268EBEAAB7808A17C5DA2E9 /* Pods_FederatedExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FederatedExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E31FAD3022C5471D0051BD3E /* TIOMockFederatedManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockFederatedManagerDelegate.h; path = ../../../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDelegate.h; sourceTree = "<group>"; };
-		E31FAD3122C5471D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockFederatedManagerDataSourceProvider.mm; path = ../../../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDataSourceProvider.mm; sourceTree = "<group>"; };
-		E31FAD3222C5471D0051BD3E /* TIOMockFederatedManagerDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockFederatedManagerDelegate.mm; path = ../../../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDelegate.mm; sourceTree = "<group>"; };
-		E31FAD3322C5471D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockFederatedManagerDataSourceProvider.h; path = ../../../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDataSourceProvider.h; sourceTree = "<group>"; };
-		E31FAD3422C5471D0051BD3E /* TIOMockModelBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockModelBundle.mm; path = ../../../../TensorIO/Mocks/Federated/TIOMockModelBundle.mm; sourceTree = "<group>"; };
-		E31FAD3522C5471D0051BD3E /* TIOMockModelBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockModelBundle.h; path = ../../../../TensorIO/Mocks/Federated/TIOMockModelBundle.h; sourceTree = "<group>"; };
-		E31FAD3922C547240051BD3E /* TIOMockBatchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockBatchDataSource.h; path = ../../../../TensorIO/Mocks/Core/TIOMockBatchDataSource.h; sourceTree = "<group>"; };
-		E31FAD3A22C547240051BD3E /* TIOMockBatchDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockBatchDataSource.mm; path = ../../../../TensorIO/Mocks/Core/TIOMockBatchDataSource.mm; sourceTree = "<group>"; };
-		E31FAD3B22C547240051BD3E /* TIOMockTrainableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockTrainableModel.h; path = ../../../../TensorIO/Mocks/Core/TIOMockTrainableModel.h; sourceTree = "<group>"; };
-		E31FAD3C22C547240051BD3E /* TIOMockTrainableModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockTrainableModel.mm; path = ../../../../TensorIO/Mocks/Core/TIOMockTrainableModel.mm; sourceTree = "<group>"; };
-		E31FAD4022C5477A0051BD3E /* MockURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockURLSession.h; path = ../../../../TensorIO/Mocks/Shared/MockURLSession.h; sourceTree = "<group>"; };
-		E31FAD4122C5477A0051BD3E /* MockURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockURLSession.m; path = ../../../../TensorIO/Mocks/Shared/MockURLSession.m; sourceTree = "<group>"; };
 		E31FAD4422C549F90051BD3E /* TIOFleaStatusTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOFleaStatusTest.mm; path = ../../TensorIO/Tests/Federated/TIOFleaStatusTest.mm; sourceTree = "<group>"; };
 		E31FAD4522C549F90051BD3E /* TIOFleaJobTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOFleaJobTests.mm; path = ../../TensorIO/Tests/Federated/TIOFleaJobTests.mm; sourceTree = "<group>"; };
 		E31FAD4622C549F90051BD3E /* TIOFleaTaskDownloadTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOFleaTaskDownloadTests.mm; path = ../../TensorIO/Tests/Federated/TIOFleaTaskDownloadTests.mm; sourceTree = "<group>"; };
@@ -88,6 +76,18 @@
 		E31FAD4E22C549FA0051BD3E /* TIOFleaJobUploadTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOFleaJobUploadTests.mm; path = ../../TensorIO/Tests/Federated/TIOFleaJobUploadTests.mm; sourceTree = "<group>"; };
 		E31FAD4F22C549FA0051BD3E /* TIOFederatedTaskBundleValidatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOFederatedTaskBundleValidatorTests.mm; path = ../../TensorIO/Tests/Federated/TIOFederatedTaskBundleValidatorTests.mm; sourceTree = "<group>"; };
 		E31FAD5D22C54AAE0051BD3E /* FederatedDockerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FederatedDockerTests.mm; path = "../../TensorIO/Tests/Federated-Docker/FederatedDockerTests.mm"; sourceTree = "<group>"; };
+		E31FAD6422C54B750051BD3E /* TIOMockTrainableModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockTrainableModel.mm; path = ../../TensorIO/Mocks/Core/TIOMockTrainableModel.mm; sourceTree = "<group>"; };
+		E31FAD6522C54B750051BD3E /* TIOMockBatchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockBatchDataSource.h; path = ../../TensorIO/Mocks/Core/TIOMockBatchDataSource.h; sourceTree = "<group>"; };
+		E31FAD6622C54B750051BD3E /* TIOMockBatchDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockBatchDataSource.mm; path = ../../TensorIO/Mocks/Core/TIOMockBatchDataSource.mm; sourceTree = "<group>"; };
+		E31FAD6722C54B750051BD3E /* TIOMockTrainableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockTrainableModel.h; path = ../../TensorIO/Mocks/Core/TIOMockTrainableModel.h; sourceTree = "<group>"; };
+		E31FAD6A22C54B7D0051BD3E /* TIOMockFederatedManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockFederatedManagerDelegate.h; path = ../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDelegate.h; sourceTree = "<group>"; };
+		E31FAD6B22C54B7D0051BD3E /* TIOMockFederatedManagerDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockFederatedManagerDelegate.mm; path = ../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDelegate.mm; sourceTree = "<group>"; };
+		E31FAD6C22C54B7D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockFederatedManagerDataSourceProvider.mm; path = ../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDataSourceProvider.mm; sourceTree = "<group>"; };
+		E31FAD6D22C54B7D0051BD3E /* TIOMockModelBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockModelBundle.mm; path = ../../TensorIO/Mocks/Federated/TIOMockModelBundle.mm; sourceTree = "<group>"; };
+		E31FAD6E22C54B7D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockFederatedManagerDataSourceProvider.h; path = ../../TensorIO/Mocks/Federated/TIOMockFederatedManagerDataSourceProvider.h; sourceTree = "<group>"; };
+		E31FAD6F22C54B7D0051BD3E /* TIOMockModelBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockModelBundle.h; path = ../../TensorIO/Mocks/Federated/TIOMockModelBundle.h; sourceTree = "<group>"; };
+		E31FAD7322C54B830051BD3E /* MockURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockURLSession.m; path = ../../TensorIO/Mocks/Shared/MockURLSession.m; sourceTree = "<group>"; };
+		E31FAD7422C54B830051BD3E /* MockURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockURLSession.h; path = ../../TensorIO/Mocks/Shared/MockURLSession.h; sourceTree = "<group>"; };
 		E33CC3A92299CBD2007F4A7B /* build_scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build_scripts; sourceTree = SOURCE_ROOT; };
 		E33CC3C0229DAF8C007F4A7B /* test.tiobundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test.tiobundle; sourceTree = "<group>"; };
 		E33CC3C2229DC35A007F4A7B /* mock-training-export */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "mock-training-export"; sourceTree = "<group>"; };
@@ -152,49 +152,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		E31FAD2D22C5470B0051BD3E /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				E31FAD2E22C547100051BD3E /* Core */,
-				E31FAD2F22C547140051BD3E /* Federated */,
-				E31FAD3F22C5476D0051BD3E /* Shared */,
-			);
-			path = Mocks;
-			sourceTree = "<group>";
-		};
-		E31FAD2E22C547100051BD3E /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				E31FAD3922C547240051BD3E /* TIOMockBatchDataSource.h */,
-				E31FAD3A22C547240051BD3E /* TIOMockBatchDataSource.mm */,
-				E31FAD3B22C547240051BD3E /* TIOMockTrainableModel.h */,
-				E31FAD3C22C547240051BD3E /* TIOMockTrainableModel.mm */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		E31FAD2F22C547140051BD3E /* Federated */ = {
-			isa = PBXGroup;
-			children = (
-				E31FAD3322C5471D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.h */,
-				E31FAD3122C5471D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm */,
-				E31FAD3022C5471D0051BD3E /* TIOMockFederatedManagerDelegate.h */,
-				E31FAD3222C5471D0051BD3E /* TIOMockFederatedManagerDelegate.mm */,
-				E31FAD3522C5471D0051BD3E /* TIOMockModelBundle.h */,
-				E31FAD3422C5471D0051BD3E /* TIOMockModelBundle.mm */,
-			);
-			path = Federated;
-			sourceTree = "<group>";
-		};
-		E31FAD3F22C5476D0051BD3E /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				E31FAD4022C5477A0051BD3E /* MockURLSession.h */,
-				E31FAD4122C5477A0051BD3E /* MockURLSession.m */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		E31FAD4322C549E70051BD3E /* Federated */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +177,49 @@
 				E31FAD5D22C54AAE0051BD3E /* FederatedDockerTests.mm */,
 			);
 			name = Docker;
+			sourceTree = "<group>";
+		};
+		E31FAD6022C54B4F0051BD3E /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E31FAD6122C54B570051BD3E /* Core */,
+				E31FAD6222C54B5E0051BD3E /* Federated */,
+				E31FAD6322C54B650051BD3E /* Shared */,
+			);
+			name = Mocks;
+			sourceTree = "<group>";
+		};
+		E31FAD6122C54B570051BD3E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E31FAD6522C54B750051BD3E /* TIOMockBatchDataSource.h */,
+				E31FAD6622C54B750051BD3E /* TIOMockBatchDataSource.mm */,
+				E31FAD6722C54B750051BD3E /* TIOMockTrainableModel.h */,
+				E31FAD6422C54B750051BD3E /* TIOMockTrainableModel.mm */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		E31FAD6222C54B5E0051BD3E /* Federated */ = {
+			isa = PBXGroup;
+			children = (
+				E31FAD6E22C54B7D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.h */,
+				E31FAD6C22C54B7D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm */,
+				E31FAD6A22C54B7D0051BD3E /* TIOMockFederatedManagerDelegate.h */,
+				E31FAD6B22C54B7D0051BD3E /* TIOMockFederatedManagerDelegate.mm */,
+				E31FAD6F22C54B7D0051BD3E /* TIOMockModelBundle.h */,
+				E31FAD6D22C54B7D0051BD3E /* TIOMockModelBundle.mm */,
+			);
+			name = Federated;
+			sourceTree = "<group>";
+		};
+		E31FAD6322C54B650051BD3E /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E31FAD7422C54B830051BD3E /* MockURLSession.h */,
+				E31FAD7322C54B830051BD3E /* MockURLSession.m */,
+			);
+			name = Shared;
 			sourceTree = "<group>";
 		};
 		E3E16D6D22910BE60087197A = {
@@ -271,7 +271,7 @@
 		E3E16D9122910BE80087197A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E31FAD2D22C5470B0051BD3E /* Mocks */,
+				E31FAD6022C54B4F0051BD3E /* Mocks */,
 				E31FAD4322C549E70051BD3E /* Federated */,
 				E31FAD5C22C54AA50051BD3E /* Docker */,
 				E3E16D9422910BE80087197A /* Info.plist */,
@@ -498,25 +498,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E31FAD3722C5471E0051BD3E /* TIOMockFederatedManagerDelegate.mm in Sources */,
+				E31FAD7222C54B7D0051BD3E /* TIOMockModelBundle.mm in Sources */,
 				E31FAD5822C549FA0051BD3E /* TIOFederatedTaskTrainerIntegrationTests.mm in Sources */,
 				E31FAD5E22C54AAE0051BD3E /* FederatedDockerTests.mm in Sources */,
-				E31FAD3622C5471E0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */,
+				E31FAD7022C54B7D0051BD3E /* TIOMockFederatedManagerDelegate.mm in Sources */,
 				E31FAD5A22C549FA0051BD3E /* TIOFleaJobUploadTests.mm in Sources */,
-				E31FAD3D22C547240051BD3E /* TIOMockBatchDataSource.mm in Sources */,
 				E31FAD5722C549FA0051BD3E /* TIOFederatedTaskTests.mm in Sources */,
 				E31FAD5022C549FA0051BD3E /* TIOFleaStatusTest.mm in Sources */,
+				E31FAD6822C54B760051BD3E /* TIOMockTrainableModel.mm in Sources */,
 				E31FAD5122C549FA0051BD3E /* TIOFleaJobTests.mm in Sources */,
-				E31FAD3E22C547240051BD3E /* TIOMockTrainableModel.mm in Sources */,
 				E31FAD5322C549FA0051BD3E /* TIOFleaTaskTests.mm in Sources */,
 				E31FAD5922C549FA0051BD3E /* TIOFederatedTaskBundleTests.mm in Sources */,
 				E31FAD5B22C549FA0051BD3E /* TIOFederatedTaskBundleValidatorTests.mm in Sources */,
+				E31FAD7522C54B830051BD3E /* MockURLSession.m in Sources */,
+				E31FAD6922C54B760051BD3E /* TIOMockBatchDataSource.mm in Sources */,
 				E31FAD5222C549FA0051BD3E /* TIOFleaTaskDownloadTests.mm in Sources */,
 				E31FAD5422C549FA0051BD3E /* TIOFederatedManagerTests.mm in Sources */,
-				E31FAD4222C5477A0051BD3E /* MockURLSession.m in Sources */,
 				E31FAD5622C549FA0051BD3E /* TIOFleaClientTests.mm in Sources */,
 				E31FAD5522C549FA0051BD3E /* TIOFleaTasksTests.mm in Sources */,
-				E31FAD3822C5471E0051BD3E /* TIOMockModelBundle.mm in Sources */,
+				E31FAD7122C54B7D0051BD3E /* TIOMockFederatedManagerDataSourceProvider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

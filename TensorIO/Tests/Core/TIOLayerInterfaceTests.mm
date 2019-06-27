@@ -1,5 +1,5 @@
 //
-//  TensorIOLayerInterfaceTests.m
+//  TIOLayerInterfaceTests.m
 //  TensorIO_Tests
 //
 //  Created by Phil Dow on 4/17/19.
@@ -21,11 +21,11 @@
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
 
-@interface TensorIOLayerInterfaceTests : XCTestCase
+@interface TIOLayerInterfaceTests : XCTestCase
 
 @end
 
-@implementation TensorIOLayerInterfaceTests
+@implementation TIOLayerInterfaceTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		E30058CC221505C2002F41AE /* models in Resources */ = {isa = PBXBuildFile; fileRef = E30058CB221505C2002F41AE /* models */; };
 		E30058D022150B16002F41AE /* ResultInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E30058CE22150B16002F41AE /* ResultInfoView.m */; };
-		E31FAD0322C53DBE0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD0222C53DBE0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift */; };
+		E31FAD9F22C54C4C0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD9E22C54C4C0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift */; };
 		E34F12CD2277C565000A0DD7 /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E34F12CC2277C565000A0DD7 /* models-tests */; };
 		E35A64A92215010D0047D035 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A64A82215010D0047D035 /* AppDelegate.swift */; };
 		E35A64AB2215010D0047D035 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A64AA2215010D0047D035 /* ViewController.swift */; };
@@ -39,7 +39,7 @@
 		E30058CD22150B15002F41AE /* SwiftExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftExample-Bridging-Header.h"; sourceTree = "<group>"; };
 		E30058CE22150B16002F41AE /* ResultInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ResultInfoView.m; path = ../../Example/TensorIO/ResultInfoView.m; sourceTree = "<group>"; };
 		E30058CF22150B16002F41AE /* ResultInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResultInfoView.h; path = ../../Example/TensorIO/ResultInfoView.h; sourceTree = "<group>"; };
-		E31FAD0222C53DBE0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TIOSwiftTFLiteModelIntegrationTests.swift; path = ../../../TensorIO/Tests/Swift/TIOSwiftTFLiteModelIntegrationTests.swift; sourceTree = "<group>"; };
+		E31FAD9E22C54C4C0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TIOSwiftTFLiteModelIntegrationTests.swift; path = ../../TensorIO/Tests/Swift/TIOSwiftTFLiteModelIntegrationTests.swift; sourceTree = "<group>"; };
 		E34F12CC2277C565000A0DD7 /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
 		E35A64A52215010D0047D035 /* SwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E35A64A82215010D0047D035 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -94,12 +94,12 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		E31FAD0122C53DA90051BD3E /* Swift */ = {
+		E31FAD9D22C54C410051BD3E /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				E31FAD0222C53DBE0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift */,
+				E31FAD9E22C54C4C0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift */,
 			);
-			path = Swift;
+			name = Swift;
 			sourceTree = "<group>";
 		};
 		E35A649C2215010D0047D035 = {
@@ -143,7 +143,7 @@
 		E35A64BC2215010F0047D035 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E31FAD0122C53DA90051BD3E /* Swift */,
+				E31FAD9D22C54C410051BD3E /* Swift */,
 				E35A64BF2215010F0047D035 /* Info.plist */,
 			);
 			path = Tests;
@@ -359,7 +359,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E31FAD0322C53DBE0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift in Sources */,
+				E31FAD9F22C54C4C0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
