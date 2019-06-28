@@ -35,7 +35,7 @@
 #import "TIOFederatedManagerDataSourceProvider.h"
 #import "TIOFederatedManagerDelegate.h"
 #import "TIOFederatedTaskBundle.h"
-#import "TIOFleaModelIdentifier.h"
+#import "TIOModelIdentifier.h"
 #import "TIOFleaClient.h"
 #import "TIOFleaJob.h"
 #import "TIOFleaTasks.h"
@@ -231,7 +231,7 @@ NSString * TIOFrameworkVersion() {
 - (void)tasksForModelId:(NSString *)modelId callback:(void(^)(TIOFleaTasks * _Nullable tasks))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerGetTasks];
     
-    TIOFleaModelIdentifier *identifier = [[TIOFleaModelIdentifier alloc] initWithBundleId:modelId];
+    TIOModelIdentifier *identifier = [[TIOModelIdentifier alloc] initWithBundleId:modelId];
     
     [self.client GETTasksWithModelId:identifier.modelId hyperparametersId:identifier.hyperparametersId checkpointId:identifier.checkpointId callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
         if (error != nil) {

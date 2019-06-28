@@ -41,6 +41,7 @@
 		E31FAD0522C53ECA0051BD3E /* TIOTFLiteDataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD0422C53ECA0051BD3E /* TIOTFLiteDataTests.mm */; };
 		E3DF9AC122C54CE9001898E6 /* TIOMockBatchDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3DF9ABE22C54CE9001898E6 /* TIOMockBatchDataSource.mm */; };
 		E3DF9AC222C54CE9001898E6 /* TIOMockTrainableModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3DF9ABF22C54CE9001898E6 /* TIOMockTrainableModel.mm */; };
+		E3DF9AC822C6CA5D001898E6 /* TIOModelIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E3DF9AC722C6CA5D001898E6 /* TIOModelIdentifierTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		E3DF9ABE22C54CE9001898E6 /* TIOMockBatchDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockBatchDataSource.mm; path = ../../TensorIO/Mocks/Core/TIOMockBatchDataSource.mm; sourceTree = "<group>"; };
 		E3DF9ABF22C54CE9001898E6 /* TIOMockTrainableModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOMockTrainableModel.mm; path = ../../TensorIO/Mocks/Core/TIOMockTrainableModel.mm; sourceTree = "<group>"; };
 		E3DF9AC022C54CE9001898E6 /* TIOMockBatchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TIOMockBatchDataSource.h; path = ../../TensorIO/Mocks/Core/TIOMockBatchDataSource.h; sourceTree = "<group>"; };
+		E3DF9AC722C6CA5D001898E6 /* TIOModelIdentifierTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = TIOModelIdentifierTests.m; path = ../../TensorIO/Tests/Core/TIOModelIdentifierTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +275,7 @@
 				E31FACE922C53CF50051BD3E /* TIOModelIOTests.m */,
 				E31FACEE22C53CF50051BD3E /* TIOModelModesTests.m */,
 				E31FACF022C53CF50051BD3E /* TIOModelTrainerTests.m */,
+				E3DF9AC722C6CA5D001898E6 /* TIOModelIdentifierTests.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E31FACFB22C53CF50051BD3E /* TIOInMemoryBatchDataSourceTests.m in Sources */,
+				E3DF9AC822C6CA5D001898E6 /* TIOModelIdentifierTests.m in Sources */,
 				E31FACF722C53CF50051BD3E /* TIOBatchTests.m in Sources */,
 				E31FACF922C53CF50051BD3E /* TIOModelBundleManagerTests.mm in Sources */,
 				E31FACF322C53CF50051BD3E /* TIOModelIOTests.m in Sources */,

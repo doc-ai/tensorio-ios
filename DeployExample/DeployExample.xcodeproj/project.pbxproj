@@ -13,7 +13,6 @@
 		E31FAD9322C54C170051BD3E /* TIOMRHyperparametersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8822C54C170051BD3E /* TIOMRHyperparametersTests.m */; };
 		E31FAD9422C54C170051BD3E /* TIOMRCheckpointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8922C54C170051BD3E /* TIOMRCheckpointTests.m */; };
 		E31FAD9522C54C170051BD3E /* TIOMRHyperparameterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8A22C54C170051BD3E /* TIOMRHyperparameterTests.m */; };
-		E31FAD9622C54C170051BD3E /* TIOMRModelIdentifierTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8B22C54C170051BD3E /* TIOMRModelIdentifierTests.m */; };
 		E31FAD9722C54C170051BD3E /* TIOModelUpdaterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8C22C54C170051BD3E /* TIOModelUpdaterTests.m */; };
 		E31FAD9822C54C170051BD3E /* TIOMRCheckpointsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8D22C54C170051BD3E /* TIOMRCheckpointsTests.m */; };
 		E31FAD9922C54C170051BD3E /* TIOMRModelsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD8E22C54C170051BD3E /* TIOMRModelsTests.m */; };
@@ -55,7 +54,6 @@
 		E31FAD8822C54C170051BD3E /* TIOMRHyperparametersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRHyperparametersTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRHyperparametersTests.m; sourceTree = "<group>"; };
 		E31FAD8922C54C170051BD3E /* TIOMRCheckpointTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRCheckpointTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRCheckpointTests.m; sourceTree = "<group>"; };
 		E31FAD8A22C54C170051BD3E /* TIOMRHyperparameterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRHyperparameterTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRHyperparameterTests.m; sourceTree = "<group>"; };
-		E31FAD8B22C54C170051BD3E /* TIOMRModelIdentifierTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRModelIdentifierTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRModelIdentifierTests.m; sourceTree = "<group>"; };
 		E31FAD8C22C54C170051BD3E /* TIOModelUpdaterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOModelUpdaterTests.m; path = ../../TensorIO/Tests/Deploy/TIOModelUpdaterTests.m; sourceTree = "<group>"; };
 		E31FAD8D22C54C170051BD3E /* TIOMRCheckpointsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRCheckpointsTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRCheckpointsTests.m; sourceTree = "<group>"; };
 		E31FAD8E22C54C170051BD3E /* TIOMRModelsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TIOMRModelsTests.m; path = ../../TensorIO/Tests/Deploy/TIOMRModelsTests.m; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				E31FAD8722C54C170051BD3E /* TIOMRDownloadTests.m */,
 				E31FAD8822C54C170051BD3E /* TIOMRHyperparametersTests.m */,
 				E31FAD8A22C54C170051BD3E /* TIOMRHyperparameterTests.m */,
-				E31FAD8B22C54C170051BD3E /* TIOMRModelIdentifierTests.m */,
 				E31FAD8E22C54C170051BD3E /* TIOMRModelsTests.m */,
 				E31FAD8F22C54C170051BD3E /* TIOMRModelTests.m */,
 				E31FAD9022C54C170051BD3E /* TIOMRStatusTests.m */,
@@ -424,7 +421,6 @@
 				E31FAD9B22C54C170051BD3E /* TIOMRStatusTests.m in Sources */,
 				E31FAD9C22C54C170051BD3E /* TIOModelRepositoryClientTests.m in Sources */,
 				E31FAD9222C54C170051BD3E /* TIOMRDownloadTests.m in Sources */,
-				E31FAD9622C54C170051BD3E /* TIOMRModelIdentifierTests.m in Sources */,
 				E31FAD9922C54C170051BD3E /* TIOMRModelsTests.m in Sources */,
 				E31FAD9722C54C170051BD3E /* TIOModelUpdaterTests.m in Sources */,
 				E31FAD9422C54C170051BD3E /* TIOMRCheckpointTests.m in Sources */,
