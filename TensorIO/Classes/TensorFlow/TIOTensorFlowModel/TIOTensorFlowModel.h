@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (BOOL)load:(NSError**)error;
+- (BOOL)load:(NSError * _Nullable *)error;
 - (void)unload;
 
 /**
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (id<TIOData>)runOn:(id<TIOData>)input __attribute__((deprecated));
-- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error;
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError * _Nullable *)error;
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
 // TODO: Where are these used? Can we deprecate them? By the data collection UI?
@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (id<TIOData>)train:(TIOBatch *)batch __attribute__((deprecated));
-- (id<TIOData>)train:(TIOBatch *)batch error:(NSError**)error;
+- (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
 /**
  * Exports the results of training to the specified directory. The directory
@@ -132,7 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return `YES` if the export was successful,`NO` otherwise
  */
 
-- (BOOL)exportTo:(NSURL *)fileURL error:(NSError**)error;
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error;
 
 @end
 

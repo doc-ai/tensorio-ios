@@ -46,18 +46,20 @@ static NSError * TIOModelValidationError(void);
 
 // MARK: - Validation
 
-- (BOOL)validate:(NSError**)error {
+- (BOOL)validate:(NSError * _Nullable *)error {
     return [self validate:nil error:error];
 }
 
-- (BOOL)validate:(_Nullable TIOModelBundleValidationBlock)customValidator error:(NSError**)error {
+- (BOOL)validate:(_Nullable TIOModelBundleValidationBlock)customValidator error:(NSError * _Nullable *)error {
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDirectory;
     
     // Validate path
     
     if ( ![fm fileExistsAtPath:self.path isDirectory:&isDirectory] || !isDirectory ) {
-        *error = TIOInvalidFilepathError(self.path);
+        if (error) {
+            *error = TIOInvalidFilepathError(self.path);
+        }
         return NO;
     }
     
@@ -68,12 +70,16 @@ static NSError * TIOModelValidationError(void);
                 TIOTFModelBundleExtension,
                 TIOModelBundleExtension);
     } else if ( ![self.path.pathExtension isEqualToString:TIOModelBundleExtension] ) {
-        *error = TIOInvalidExtensionError(self.path);
+        if (error) {
+            *error = TIOInvalidExtensionError(self.path);
+        }
         return NO;
     }
     
     if ( ![fm fileExistsAtPath:[self JSONPath] isDirectory:&isDirectory] || isDirectory ) {
-        *error = TIONoModelJSONFileError();
+        if (error) {
+            *error = TIONoModelJSONFileError();
+        }
         return NO;
     }
     
@@ -82,7 +88,9 @@ static NSError * TIOModelValidationError(void);
     NSDictionary *JSON = [self loadJSON];
     
     if ( JSON == nil ) {
-        *error = TIOMalformedJSONError();
+        if (error) {
+            *error = TIOMalformedJSONError();
+        }
         return NO;
     }
     
@@ -106,7 +114,9 @@ static NSError * TIOModelValidationError(void);
     DSJSONSchema *schema = [self JSONSchemaForBackend:backend error:&schemaError];
     
     if (schemaError) {
-        *error = TIOModelSchemaError();
+        if (error) {
+            *error = TIOModelSchemaError();
+        }
         NSLog(@"There was a problem loading the model schema for backend %@, error: %@", backend, schemaError);
         return NO;
     }
@@ -115,7 +125,9 @@ static NSError * TIOModelValidationError(void);
     [schema validateObject:JSON withError:&validationError];
     
     if (validationError) {
-        *error = TIOModelValidationError();
+        if (error) {
+            *error = TIOModelValidationError();
+        }
         NSLog(@"The model.json file with backend %@ failed validation, error: %@", backend, validationError);
         return NO;
     }
@@ -135,7 +147,7 @@ static NSError * TIOModelValidationError(void);
     return YES;
 }
 
-- (BOOL)validateAssets:(NSDictionary *)JSON error:(NSError**)error {
+- (BOOL)validateAssets:(NSDictionary *)JSON error:(NSError * _Nullable *)error {
     NSFileManager *fm = NSFileManager.defaultManager;
     
     // validate model file, but only if this is not a placeholder model
@@ -146,7 +158,9 @@ static NSError * TIOModelValidationError(void);
         NSString *modelFilepath = [self.path stringByAppendingPathComponent:modelFilename];
         
         if ( ![fm fileExistsAtPath:modelFilepath] ) {
-            *error = TIOModelFileDoesNotExistsError(modelFilename);
+            if (error) {
+                *error = TIOModelFileDoesNotExistsError(modelFilename);
+            }
             return NO;
         }
         
@@ -163,7 +177,9 @@ static NSError * TIOModelValidationError(void);
         NSString *labelsFilepath = [[self.path stringByAppendingPathComponent:TIOModelAssetsDirectory] stringByAppendingPathComponent:labelsFilename];
         
         if ( ![fm fileExistsAtPath:labelsFilepath] ) {
-            *error = TIOLabelsFileDoesNotExistError(labelsFilename);
+            if (error) {
+                *error = TIOLabelsFileDoesNotExistError(labelsFilename);
+            }
             return NO;
         }
     }
@@ -171,13 +187,13 @@ static NSError * TIOModelValidationError(void);
     return YES;
 }
 
-- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error {
+- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError * _Nullable *)error {
     return customValidator(self.path, JSON, error);
 }
 
 // MARK: - Utilities
 
-- (DSJSONSchema *)JSONSchemaForBackend:(NSString *)backend error:(NSError**)error {
+- (DSJSONSchema *)JSONSchemaForBackend:(NSString *)backend error:(NSError * _Nullable *)error {
     NSBundle *bundle = [TIOModelBackend resourceBundleForBackend:backend];
     NSURL *schemaURL = [bundle URLForResource:@"model-schema" withExtension:@"json"];
     NSData *schemaData = [NSData dataWithContentsOfURL:schemaURL];

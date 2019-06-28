@@ -66,7 +66,7 @@
  * Loads a model into memory and sets `loaded` = `YES`. A placeholder model does nothing here.
  */
 
-- (BOOL)load:(NSError**)error {
+- (BOOL)load:(NSError * _Nullable *)error {
     _loaded = YES;
     return YES;
 }

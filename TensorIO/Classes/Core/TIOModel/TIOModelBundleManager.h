@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return BOOL `YES` if the bundles were successfully loaded, `NO` otherwise.
  */
 
-- (BOOL)loadModelBundlesAtPath:(NSString *)path error:(NSError**)error;
+- (BOOL)loadModelBundlesAtPath:(NSString *)path error:(NSError * _Nullable *)error;
 
 /**
  * Returns the models that match the provided ids.

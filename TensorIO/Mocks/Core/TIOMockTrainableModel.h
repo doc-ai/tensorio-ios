@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (BOOL)load:(NSError**)error;
+- (BOOL)load:(NSError * _Nullable *)error;
 - (void)unload;
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
@@ -109,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<TIOData>)train:(TIOBatch *)batch;
 - (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
-- (BOOL)exportTo:(NSURL *)fileURL error:(NSError**)error;
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error;
 
 @end
 

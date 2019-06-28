@@ -92,7 +92,7 @@
  * @return BOOL `YES` if the model is successfully loaded, `NO` otherwise.
  */
 
-- (BOOL)load:(NSError**)error {
+- (BOOL)load:(NSError * _Nullable *)error {
     if ( _loaded ) {
         return YES;
     }
@@ -105,7 +105,9 @@
     
     if (!model) {
         NSLog(@"Failed to mmap model at path %@", graphPath);
-        *error = kTIOTFLiteModelLoadModelError;
+        if (error) {
+            *error = kTIOTFLiteModelLoadModelError;
+        }
         return NO;
     }
 
@@ -127,17 +129,20 @@
    
     if (!interpreter) {
         NSLog(@"Failed to construct interpreter for model %@", self.identifier);
-        *error = kTIOTFLiteModelConstructInterpreterError;
+        if (error) {
+            *error = kTIOTFLiteModelConstructInterpreterError;
+        }
         return NO;
     }
     if (interpreter->AllocateTensors() != kTfLiteOk) {
         NSLog(@"Failed to allocate tensors for model %@", self.identifier);
-        *error = kTIOTFLiteModelAllocateTensorsError;
+        if (error) {
+            *error = kTIOTFLiteModelAllocateTensorsError;
+        }
         return NO;
     }
     
     _loaded = YES;
-    
     return YES;
 }
 

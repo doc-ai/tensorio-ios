@@ -47,7 +47,7 @@
     return self;
 }
 
-- (BOOL)load:(NSError**)error {
+- (BOOL)load:(NSError * _Nullable *)error {
     return YES;
 }
 
@@ -97,7 +97,7 @@
     return @{};
 }
 
-- (BOOL)exportTo:(NSURL *)fileURL error:(NSError**)error {
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error {
     _trainCount++;
     
     // Dummy export
@@ -108,7 +108,9 @@
         
         if ( fmError != nil ) {
             NSLog(@"Unable to acquire contents of mock exports url: %@, error: %@", self.mockExportsURL, fmError);
-            *error = fmError;
+            if (error) {
+                *error = fmError;
+            }
             return NO;
         }
         
@@ -118,7 +120,9 @@
             
             if ( fmError != nil ) {
                 NSLog(@"Unable to copy some mock content at url: %@, to url: %@, error: %@", sourceURL, destURL, fmError);
-                *error = fmError;
+                if (error) {
+                    *error = fmError;
+                }
                 return NO;
             }
         }

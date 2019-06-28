@@ -145,7 +145,7 @@ typedef std::vector<std::string> TensorNames;
  * @return BOOL `YES` if the model is successfully loaded, `NO` otherwise.
  */
 
-- (BOOL)load:(NSError**)error {
+- (BOOL)load:(NSError * _Nullable *)error {
     if ( _loaded ) {
         return YES;
     }
@@ -159,7 +159,9 @@ typedef std::vector<std::string> TensorNames;
         tags = {tensorflow::kSavedModelTagServe};
     } else {
         NSLog(@"No support model modes, i.e. predict, train, or eval");
-        *error = TIOTensorFlowModelModeError;
+        if (error) {
+            *error = TIOTensorFlowModelModeError;
+        }
         return NO;
     }
     
@@ -171,12 +173,13 @@ typedef std::vector<std::string> TensorNames;
     
     if ( status != tensorflow::Status::OK() ) {
         NSLog(@"Unable to load saved model, status: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
-        *error = TIOTensorFlowModelLoadSavedModelError;
+        if (error) {
+            *error = TIOTensorFlowModelLoadSavedModelError;
+        }
         return NO;
     }
     
     _loaded = YES;
-    
     return YES;
 }
 
@@ -225,7 +228,7 @@ typedef std::vector<std::string> TensorNames;
     return [self runOn:input error:nil];
 }
 
-- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError**)error {
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError * _Nullable *)error {
     NSError *loadError;
     NSError *inferenceError;
     
@@ -463,7 +466,7 @@ typedef std::vector<std::string> TensorNames;
  * @return Tensors The output tensors that are a result of running inference
  */
 
-- (Tensors)_runInference:(NamedTensors)inputs error:(NSError**)error {
+- (Tensors)_runInference:(NamedTensors)inputs error:(NSError * _Nullable *)error {
     TensorNames output_names;
     Tensors outputs;
     
@@ -554,7 +557,7 @@ typedef std::vector<std::string> TensorNames;
     return [self train:batch error:nil];
 }
 
-- (id<TIOData>)train:(TIOBatch *)batch error:(NSError**)error {
+- (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error {
     NSError *loadError;
     NSError *trainError;
     
@@ -562,7 +565,7 @@ typedef std::vector<std::string> TensorNames;
     
     if (loadError != nil) {
         NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
-        if (*error) {
+        if (error) {
             *error = loadError;
         }
         return @{};
@@ -573,7 +576,7 @@ typedef std::vector<std::string> TensorNames;
     
     if (trainError != nil) {
         NSLog(@"There was a problem training the model from train:, error: %@", trainError);
-        if (*error) {
+        if (error) {
             *error = trainError;
         }
         return @{};
@@ -646,7 +649,7 @@ typedef std::vector<std::string> TensorNames;
  * @return Tensors The output tensors that are a result of running training
  */
 
-- (Tensors)_runTraining:(NamedTensors)inputs error:(NSError**)error {
+- (Tensors)_runTraining:(NamedTensors)inputs error:(NSError * _Nullable *)error {
     TensorNames training_names;
     TensorNames output_names;
     Tensors outputs;
@@ -756,17 +759,21 @@ typedef std::vector<std::string> TensorNames;
     return data;
 }
 
-- (BOOL)exportTo:(NSURL *)fileURL error:(NSError**)error {
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error {
     NSFileManager *fm = NSFileManager.defaultManager;
     BOOL isDirectory;
     
     if ( !fileURL.isFileURL ) {
-        *error = TIOTensorFlowModelExportURLNotFilePath;
+        if (error) {
+            *error = TIOTensorFlowModelExportURLNotFilePath;
+        }
         return NO;
     }
     
     if ( ![fm fileExistsAtPath:fileURL.path isDirectory:&isDirectory] || !isDirectory ) {
-        *error = TIOTensorFlowModelExportURLDoesNotExist;
+        if (error) {
+            *error = TIOTensorFlowModelExportURLDoesNotExist;
+        }
         return NO;
     }
     
@@ -785,7 +792,9 @@ typedef std::vector<std::string> TensorNames;
     
     if ( status != tensorflow::Status::OK() ) {
         NSLog(@"Unable to export model, status: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
-        *error = TIOTensorFlowModelExportError;
+        if (error) {
+            *error = TIOTensorFlowModelExportError;
+        }
         return NO;
     }
     

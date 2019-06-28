@@ -50,7 +50,7 @@
     }];
 }
 
-- (BOOL)loadModelBundlesAtPath:(NSString *)path error:(NSError**)error {
+- (BOOL)loadModelBundlesAtPath:(NSString *)path error:(NSError * _Nullable *)error {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSArray<NSString*> *paths = [fileManager contentsOfDirectoryAtPath:path error:error];
@@ -81,7 +81,9 @@
     NSArray<TIOModelBundle*> *sortedBundles = [bundles sortedArrayUsingDescriptors:@[sortDescriptor]];
     
     if ( sortedBundles.count == 0 ) {
-        *error = [TIOModelBundleManager noValidModelBundlesError];
+        if (error) {
+            *error = [TIOModelBundleManager noValidModelBundlesError];
+        }
         return NO;
     }
     

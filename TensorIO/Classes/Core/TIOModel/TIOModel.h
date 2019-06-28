@@ -224,7 +224,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return BOOL `YES` if the model is successfully loaded, `NO` otherwise.
  */
 
-- (BOOL)load:(NSError**)error;
+- (BOOL)load:(NSError * _Nullable *)error;
 
 /**
  * Unloads a model from memory
