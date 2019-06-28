@@ -23,7 +23,7 @@
 
 @implementation TIOFleaTasks
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"startTaskId"] == nil || ![JSON[@"startTaskId"] isKindOfClass:NSString.class] ) {
             *error = TIOFleaJSONParsingError(self.class, @"startTaskId", JSON);
@@ -36,7 +36,7 @@
             *error = TIOFleaJSONParsingError(self.class, @"maxItems", JSON);
             return nil;
         } else {
-            _maxItems = ((NSNumber*)JSON[@"maxItems"]).unsignedIntegerValue;
+            _maxItems = ((NSNumber *)JSON[@"maxItems"]).unsignedIntegerValue;
         }
         
         if ( JSON[@"taskIds"] == nil || ![JSON[@"taskIds"] isKindOfClass:NSArray.class] ) {
@@ -49,7 +49,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ss = [NSString stringWithFormat:@"Start Task ID: %@", self.startTaskId];
     NSString *ms = [NSString stringWithFormat:@"Max Items: %lu", (unsigned long)self.maxItems];
     NSString *ts = [NSString stringWithFormat:@"Task IDs: %@", self.taskIds];

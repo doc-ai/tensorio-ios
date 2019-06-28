@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN;
  * additional instructions for `TIOModelRepositoryClient`.
  */
 
-- (void)modelUpdater:(TIOModelUpdater*)client didProgress:(float)progress;
+- (void)modelUpdater:(TIOModelUpdater *)client didProgress:(float)progress;
 
 @end
 

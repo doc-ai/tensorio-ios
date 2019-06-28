@@ -34,7 +34,7 @@ static NSError * TIOFTTaskValidationError(void);
 
 @implementation TIOFederatedTaskBundleValidator
 
-- (instancetype)initWithModelBundleAtPath:(NSString*)path {
+- (instancetype)initWithModelBundleAtPath:(NSString *)path {
     if ((self=[super init])) {
         _path = path;
     }
@@ -106,17 +106,17 @@ static NSError * TIOFTTaskValidationError(void);
     return YES;
 }
 
-- (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError**)error {
+- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError**)error {
     return customValidator(self.path, JSON, error);
 }
 
 // MARK: - Utilities
 
-- (NSString*)JSONPath {
+- (NSString *)JSONPath {
     return [self.path stringByAppendingPathComponent:TIOTaskInfoFile];
 }
 
-- (NSDictionary*)loadJSON {
+- (NSDictionary *)loadJSON {
     NSString *path = self.JSONPath;
     NSData *data = [NSData dataWithContentsOfFile:path];
     
@@ -131,7 +131,7 @@ static NSError * TIOFTTaskValidationError(void);
     return JSON;
 }
 
-- (DSJSONSchema*)JSONSchema:(NSError**)error {
+- (DSJSONSchema *)JSONSchema:(NSError**)error {
     NSBundle *frameworkBundle = [NSBundle bundleForClass:self.class];
     NSURL *resourceURL = [frameworkBundle.resourceURL URLByAppendingPathComponent:TIOFederatedAssetBundle];
     NSBundle *resourceBundle = [NSBundle bundleWithURL:resourceURL];

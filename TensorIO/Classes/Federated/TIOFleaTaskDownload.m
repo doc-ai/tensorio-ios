@@ -22,7 +22,7 @@
 
 @implementation TIOFleaTaskDownload
 
-- (instancetype)initWithURL:(NSURL*)URL taskId:(NSString*)taskId {
+- (instancetype)initWithURL:(NSURL *)URL taskId:(NSString *)taskId {
     if ((self=[super init])) {
         _taskId = taskId;
         _URL = URL;
@@ -30,7 +30,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ts = [NSString stringWithFormat:@"Task ID: %@", self.taskId];
     NSString *us = [NSString stringWithFormat:@"URL: %@", self.URL];
     return [NSString stringWithFormat:@"%@\n%@", ts, us];

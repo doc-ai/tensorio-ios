@@ -34,11 +34,11 @@
 
 #pragma GCC diagnostic pop
 
-+ (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
++ (nullable instancetype)modelWithBundleAtPath:(NSString *)path {
     return [[TIOMockTrainableModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
 
-- (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle {
+- (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle {
     if ((self=[super init])) {
         _runCount = 0;
         _trainCount = 0;
@@ -74,7 +74,7 @@
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name {
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
@@ -82,12 +82,12 @@
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name {
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
 
-- (id<TIOData>)train:(TIOBatch*)batch {
+- (id<TIOData>)train:(TIOBatch *)batch {
     _trainCount++;
     return @{};
 }
@@ -97,7 +97,7 @@
     return @{};
 }
 
-- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error {
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError**)error {
     _trainCount++;
     
     // Dummy export

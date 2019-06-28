@@ -23,7 +23,7 @@
 
 @implementation TIOMRModels
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"modelIds"] == nil || ![JSON[@"modelIds"] isKindOfClass:NSArray.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"modelIds", JSON);
@@ -35,7 +35,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     return [NSString stringWithFormat:@"Model Ids: %@", self.modelIds.description];
 }
 

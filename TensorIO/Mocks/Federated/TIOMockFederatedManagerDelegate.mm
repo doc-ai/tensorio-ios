@@ -27,7 +27,7 @@
     NSMutableDictionary<NSNumber*,NSNumber*> *_didFailWithErrorCount;
 }
 
-- (instancetype)initWithExpectation:(XCTestExpectation*)expectation {
+- (instancetype)initWithExpectation:(XCTestExpectation *)expectation {
     if ((self=[super init])) {
         _willBeginProcessingTaskWithIdCount = NSMutableDictionary.dictionary;
         _didCompleteTaskWithIdCount = NSMutableDictionary.dictionary;
@@ -40,7 +40,7 @@
 
 // MARK: - Mock Count Tracking
 
-- (NSUInteger)willBeginProcessingTaskWithIdCountForTaskId:(NSString*)taskId {
+- (NSUInteger)willBeginProcessingTaskWithIdCountForTaskId:(NSString *)taskId {
     if ( _willBeginProcessingTaskWithIdCount[taskId] == nil ) {
         return 0;
     }
@@ -48,7 +48,7 @@
     return _willBeginProcessingTaskWithIdCount[taskId].unsignedIntegerValue;
 }
 
-- (NSUInteger)didCompleteTaskWithIdCountForTaskId:(NSString*)taskId {
+- (NSUInteger)didCompleteTaskWithIdCountForTaskId:(NSString *)taskId {
     if ( _didCompleteTaskWithIdCount[taskId] == nil ) {
         return 0;
     }
@@ -75,7 +75,7 @@
 
 // MARK: - Delegate Methods
 
-- (void)federatedManager:(TIOFederatedManager*)manager willBeginProcessingTaskWithId:(NSString*)taskId {
+- (void)federatedManager:(TIOFederatedManager *)manager willBeginProcessingTaskWithId:(NSString *)taskId {
     if ( _willBeginProcessingTaskWithIdCount[taskId] == nil ) {
         _willBeginProcessingTaskWithIdCount[taskId] = @(0);
     }
@@ -83,7 +83,7 @@
     _willBeginProcessingTaskWithIdCount[taskId] = @(_willBeginProcessingTaskWithIdCount[taskId].unsignedIntegerValue+1);
 }
 
-- (void)federatedManager:(TIOFederatedManager *)manager didCompleteTaskWithId:(NSString*)taskId {
+- (void)federatedManager:(TIOFederatedManager *)manager didCompleteTaskWithId:(NSString *)taskId {
     [self.expectation fulfill];
     
     if ( _didCompleteTaskWithIdCount[taskId] == nil ) {
@@ -93,7 +93,7 @@
     _didCompleteTaskWithIdCount[taskId] = @(_didCompleteTaskWithIdCount[taskId].unsignedIntegerValue+1);
 }
 
-- (void)federatedManager:(TIOFederatedManager*)manager didBeginAction:(TIOFederatedManagerAction)action {
+- (void)federatedManager:(TIOFederatedManager *)manager didBeginAction:(TIOFederatedManagerAction)action {
     if ( _didBeginActionCount[@(action)] == nil ) {
         _didBeginActionCount[@(action)] = @(0);
     }
@@ -101,7 +101,7 @@
     _didBeginActionCount[@(action)] = @(_didBeginActionCount[@(action)].unsignedIntegerValue+1);
 }
 
-- (void)federatedManager:(TIOFederatedManager*)manager didFailWithError:(NSError*)error forAction:(TIOFederatedManagerAction)action {
+- (void)federatedManager:(TIOFederatedManager *)manager didFailWithError:(NSError *)error forAction:(TIOFederatedManagerAction)action {
     [self.expectation fulfill];
     
     if ( _didFailWithErrorCount[@(action)] == nil ) {

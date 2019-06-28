@@ -26,7 +26,7 @@ NSString * const TIOTaskInfoFile = @"task.json";
 
 @implementation TIOFederatedTaskBundle
 
-- (nullable instancetype)initWithPath:(NSString*)path {
+- (nullable instancetype)initWithPath:(NSString *)path {
     if ((self=[super init])) {
         
         NSFileManager *fm = NSFileManager.defaultManager;

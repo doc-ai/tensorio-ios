@@ -37,7 +37,7 @@ static NSError * TIOModelValidationError(void);
 
 @implementation TIOModelBundleValidator
 
-- (instancetype)initWithModelBundleAtPath:(NSString*)path {
+- (instancetype)initWithModelBundleAtPath:(NSString *)path {
     if (self = [super init]) {
         _path = path;
     }
@@ -135,7 +135,7 @@ static NSError * TIOModelValidationError(void);
     return YES;
 }
 
-- (BOOL)validateAssets:(NSDictionary*)JSON error:(NSError**)error {
+- (BOOL)validateAssets:(NSDictionary *)JSON error:(NSError**)error {
     NSFileManager *fm = NSFileManager.defaultManager;
     
     // validate model file, but only if this is not a placeholder model
@@ -171,13 +171,13 @@ static NSError * TIOModelValidationError(void);
     return YES;
 }
 
-- (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error {
+- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error {
     return customValidator(self.path, JSON, error);
 }
 
 // MARK: - Utilities
 
-- (DSJSONSchema*)JSONSchemaForBackend:(NSString*)backend error:(NSError**)error {
+- (DSJSONSchema *)JSONSchemaForBackend:(NSString *)backend error:(NSError**)error {
     NSBundle *bundle = [TIOModelBackend resourceBundleForBackend:backend];
     NSURL *schemaURL = [bundle URLForResource:@"model-schema" withExtension:@"json"];
     NSData *schemaData = [NSData dataWithContentsOfURL:schemaURL];
@@ -191,11 +191,11 @@ static NSError * TIOModelValidationError(void);
         error:error];
 }
 
-- (NSString*)JSONPath {
+- (NSString *)JSONPath {
     return [self.path stringByAppendingPathComponent:TIOModelInfoFile];
 }
 
-- (NSDictionary*)loadJSON {
+- (NSDictionary *)loadJSON {
     NSString *path = [self JSONPath];
     NSData *data = [NSData dataWithContentsOfFile:path];
     

@@ -56,7 +56,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return instancetype A validator instance.
  */
 
-- (instancetype)initWithModelBundleAtPath:(NSString*)path NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelBundleAtPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
@@ -108,7 +108,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
 
-- (BOOL)validateAssets:(NSDictionary*)JSON error:(NSError**)error;
+- (BOOL)validateAssets:(NSDictionary *)JSON error:(NSError**)error;
 
 /**
  * Executes a custom validator. Called by `validate:error:`
@@ -122,7 +122,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
 
-- (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error;
+- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error;
 
 @end
 

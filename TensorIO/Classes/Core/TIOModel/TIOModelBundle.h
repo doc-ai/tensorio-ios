@@ -190,7 +190,7 @@ extern NSString * const TIOModelAssetsDirectory;
  * @return An instance of a `TIOModelBundle` or `nil` if no bundle could be loaded at that path.
  */
 
-- (nullable instancetype)initWithPath:(NSString*)path NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
@@ -213,7 +213,7 @@ extern NSString * const TIOModelAssetsDirectory;
  * @return NSString The full path to the file
  */
 
-- (NSString*)pathToAsset:(NSString*)filename;
+- (NSString *)pathToAsset:(NSString *)filename;
 
 @end
 

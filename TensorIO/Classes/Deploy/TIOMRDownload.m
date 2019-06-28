@@ -22,7 +22,7 @@
 
 @implementation TIOMRDownload
 
-- (instancetype)initWithURL:(NSURL*)URL modelId:(NSString*)modelId hyperparametereId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId {
+- (instancetype)initWithURL:(NSURL *)URL modelId:(NSString *)modelId hyperparametereId:(NSString *)hyperparametersId checkpointId:(NSString *)checkpointId {
     if ((self=[super init])) {
         _modelId = modelId;
         _hyperparametersId = hyperparametersId;
@@ -32,7 +32,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
     NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
     NSString *cs = [NSString stringWithFormat:@"Checkpoint ID: %@", self.checkpointId];

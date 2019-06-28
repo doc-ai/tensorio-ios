@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSArray<NSString*> *keys;
 
 - (NSUInteger)numberOfItems;
-- (TIOBatchItem*)itemAtIndex:(NSUInteger)index;
+- (TIOBatchItem *)itemAtIndex:(NSUInteger)index;
 
 @end
 

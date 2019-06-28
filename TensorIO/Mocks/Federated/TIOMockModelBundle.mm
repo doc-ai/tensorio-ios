@@ -24,7 +24,7 @@
     id<TIOModel> _mockedModel;
 }
 
-- (instancetype)initWithMockedModel:(id<TIOModel>)model path:(NSString*)path {
+- (instancetype)initWithMockedModel:(id<TIOModel>)model path:(NSString *)path {
     if ((self=[self initWithPath:path])) {
         _mockedModel = model;
     }

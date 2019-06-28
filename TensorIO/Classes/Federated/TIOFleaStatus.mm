@@ -23,7 +23,7 @@
 
 @implementation TIOFleaStatus
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"status"] == nil || ![JSON[@"status"] isKindOfClass:NSString.class] ) {
             *error = TIOFleaJSONParsingError(self.class, @"status", JSON);
@@ -38,7 +38,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     switch (self.status) {
     case TIOFleaStatusValueUnknown:
          return @"TIOFleaStatusValueUnknown";

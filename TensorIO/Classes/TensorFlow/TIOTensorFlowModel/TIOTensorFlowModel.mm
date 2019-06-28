@@ -65,7 +65,7 @@ typedef std::vector<std::string> TensorNames;
     NSArray<NSString*> *_trainingOps;
 }
 
-+ (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
++ (nullable instancetype)modelWithBundleAtPath:(NSString *)path {
     return [[TIOTensorFlowModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
 
@@ -75,7 +75,7 @@ typedef std::vector<std::string> TensorNames;
     #endif
 }
 
-- (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle {
+- (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle {
     if (self = [super init]) {
         _bundle = bundle;
         
@@ -207,7 +207,7 @@ typedef std::vector<std::string> TensorNames;
     return self.io.inputs[index].dataDescription;
 }
 
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name {
     return self.io.inputs[name].dataDescription;
 }
 
@@ -215,7 +215,7 @@ typedef std::vector<std::string> TensorNames;
     return self.io.outputs[index].dataDescription;
 }
 
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name {
     return self.io.outputs[name].dataDescription;
 }
 
@@ -312,7 +312,7 @@ typedef std::vector<std::string> TensorNames;
  * @return NamedTensors Tensors ready to be passing to an inference session
  */
 
-- (NamedTensors)_prepareBatchInput:(TIOBatch*)batch  {
+- (NamedTensors)_prepareBatchInput:(TIOBatch *)batch  {
     NamedTensors inputs;
     
     for ( NSString *key in batch.keys ) {
@@ -331,7 +331,7 @@ typedef std::vector<std::string> TensorNames;
  * @param interface A description of the data which the tensor expects
  */
 
-- (NamedTensor)_prepareBatchInput:(TIOBatch*)batch interface:(TIOLayerInterface*)interface {
+- (NamedTensor)_prepareBatchInput:(TIOBatch *)batch interface:(TIOLayerInterface *)interface {
     __block NamedTensor named_tensor;
     
     NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
@@ -379,7 +379,7 @@ typedef std::vector<std::string> TensorNames;
         // With a dictionary input, regardless the count, iterate through the keys and values, mapping them to indices,
         // and prepare the indexed tensors with the values
     
-        NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
+        NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary *)data;
         
         for ( NSString *name in dictionaryData ) {
             assert([self.io.inputs.keys containsObject:name]);
@@ -407,7 +407,7 @@ typedef std::vector<std::string> TensorNames;
         
         // With an array input, iterate through its entries, preparing the indexed tensors with their values
         
-        NSArray<id<TIOData>> *arrayData = (NSArray*)data;
+        NSArray<id<TIOData>> *arrayData = (NSArray *)data;
         assert(arrayData.count == self.io.inputs.count);
         
         for ( NSUInteger index = 0; index < arrayData.count; index++ ) {
@@ -428,7 +428,7 @@ typedef std::vector<std::string> TensorNames;
  * @param interface A description of the data which the tensor expects
  */
 
-- (NamedTensor)_prepareInput:(id<TIOData>)input interface:(TIOLayerInterface*)interface {
+- (NamedTensor)_prepareInput:(id<TIOData>)input interface:(TIOLayerInterface *)interface {
     __block NamedTensor named_tensor;
     
     [interface
@@ -518,7 +518,7 @@ typedef std::vector<std::string> TensorNames;
  * @param interface A description of the data which this tensor contains
  */
 
-- (id<TIOData>)_captureOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface*)interface {
+- (id<TIOData>)_captureOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface *)interface {
     __block id<TIOData> data;
     
     [interface
@@ -550,11 +550,11 @@ typedef std::vector<std::string> TensorNames;
 
 @implementation TIOTensorFlowModel (TIOTrainableModel)
 
-- (id<TIOData>)train:(TIOBatch*)batch {
+- (id<TIOData>)train:(TIOBatch *)batch {
     return [self train:batch error:nil];
 }
 
-- (id<TIOData>)train:(TIOBatch*)batch error:(NSError**)error {
+- (id<TIOData>)train:(TIOBatch *)batch error:(NSError**)error {
     NSError *loadError;
     NSError *trainError;
     
@@ -591,7 +591,7 @@ typedef std::vector<std::string> TensorNames;
  * @return NamedTensors Tensors ready to be passing to a training session
  */
 
-- (NamedTensors)_prepareTrainingInput:(TIOBatch*)batch  {
+- (NamedTensors)_prepareTrainingInput:(TIOBatch *)batch  {
     NamedTensors inputs;
     
     for ( NSString *key in batch.keys ) {
@@ -610,7 +610,7 @@ typedef std::vector<std::string> TensorNames;
  * @param interface A description of the data which the tensor expects
  */
 
-- (NamedTensor)_prepareTrainingInput:(TIOBatch*)batch interface:(TIOLayerInterface*)interface {
+- (NamedTensor)_prepareTrainingInput:(TIOBatch *)batch interface:(TIOLayerInterface *)interface {
     __block NamedTensor named_tensor;
     
     NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
@@ -728,7 +728,7 @@ typedef std::vector<std::string> TensorNames;
  * @param interface A description of the data which this tensor contains
  */
 
-- (id<TIOData>)_captureTrainingOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface*)interface {
+- (id<TIOData>)_captureTrainingOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface *)interface {
     // Note that this implementation is currently identical to _captureOutput:interface
     
     __block id<TIOData> data;
@@ -756,7 +756,7 @@ typedef std::vector<std::string> TensorNames;
     return data;
 }
 
-- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error {
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError**)error {
     NSFileManager *fm = NSFileManager.defaultManager;
     BOOL isDirectory;
     

@@ -39,12 +39,12 @@
 
 // MARK: -
 
-- (TIOModelBundle*)modelBundleWithName:(NSString*)filename {
+- (TIOModelBundle *)modelBundleWithName:(NSString *)filename {
     NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
     return [[TIOModelBundle alloc] initWithPath:path];
 }
 
-- (id<TIOModel>)loadModelFromBundle:(nonnull TIOModelBundle*)bundle {
+- (id<TIOModel>)loadModelFromBundle:(nonnull TIOModelBundle *)bundle {
     
     id<TIOModel> model = (id<TIOModel>)[bundle newModel];
     NSError *modelError;
@@ -64,7 +64,7 @@
     return model;
 }
 
-- (TIOFederatedTaskBundle*)taskBundleWithName:(NSString*)filename {
+- (TIOFederatedTaskBundle *)taskBundleWithName:(NSString *)filename {
     NSString *path = [self.tasksPath stringByAppendingPathComponent:filename];
     TIOFederatedTaskBundle *bundle = [[TIOFederatedTaskBundle alloc] initWithPath:path];
     return bundle;
@@ -129,7 +129,7 @@
     
     TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithBatch:batch];
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
-    NSDictionary *results = (NSDictionary*)[trainer train];
+    NSDictionary *results = (NSDictionary *)[trainer train];
     
     XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
     XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);

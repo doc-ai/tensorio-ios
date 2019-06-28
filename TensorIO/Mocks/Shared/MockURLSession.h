@@ -43,21 +43,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MockSessionDataTask: NSURLSessionDataTask
 
-- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest;
+- (instancetype)initWithMockURLRequest:(NSURLRequest *)mockRequest;
 @property (readonly) BOOL calledResume;
 
 @end
 
 @interface MockSessionDownloadTask: NSURLSessionDownloadTask
 
-- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest;
+- (instancetype)initWithMockURLRequest:(NSURLRequest *)mockRequest;
 @property (readonly) BOOL calledResume;
 
 @end
 
 @interface MockSessionUploadTask: NSURLSessionUploadTask
 
-- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest;
+- (instancetype)initWithMockURLRequest:(NSURLRequest *)mockRequest;
 @property (readonly) BOOL calledResume;
 
 @end
@@ -80,32 +80,32 @@ NS_ASSUME_NONNULL_BEGIN
  * Prepare for a `NSURLSessionDataTask` with JSON
  */
 
-- (instancetype)initWithJSONResponse:(NSDictionary*)JSON;
+- (instancetype)initWithJSONResponse:(NSDictionary *)JSON;
 
 /**
  * Prepare for a `NSURLSessionDataTask` with JSON data
  */
 
-- (instancetype)initWithJSONData:(NSData*)JSONData;
+- (instancetype)initWithJSONData:(NSData *)JSONData;
 
 /**
  * Prepare for a `NSURLSessionDownloadTask` with a file URL
  */
 
-- (instancetype)initWithDownload:(NSURL*)download;
+- (instancetype)initWithDownload:(NSURL *)download;
 
 /**
  * Prepare for a `NSURLSessionUploadTask` with a file URL
  */
 
-- (instancetype)initWithUpload:(NSURL*)upload;
+- (instancetype)initWithUpload:(NSURL *)upload;
 
 /**
  * Prepare for a `NSURLSessionDataTask`. `NSURLSessionDownloadTask` or
  * `NSURLSessionUploadTask` with an error
  */
 
-- (instancetype)initWithError:(NSError*)error;
+- (instancetype)initWithError:(NSError *)error;
 
 /**
  * Prepares a session with mulitple response for multiple expected tasks
@@ -117,19 +117,19 @@ NS_ASSUME_NONNULL_BEGIN
  * Mocks an NSURLSessionDataTask with JSON, JSON data, or an error
  */
 
-- (NSURLSessionDataTask*)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
+- (NSURLSessionDataTask *)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
 /**
  * Mocks an NSURLSessionDownloadTask with a file URL or an error
  */
 
-- (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
+- (NSURLSessionDownloadTask *)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
 /**
  * Mocks an NSURLSessionUploadTask with data or an error
  */
 
-- (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
+- (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler;
 
 /**
  * Mock delegate is always nil

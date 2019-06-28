@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  * of the backend here if that preprocessor definition is defined.
  */
 
-+ (nullable NSString*)availableBackend;
++ (nullable NSString *)availableBackend;
 
 /**
  * Returns the default model class name used with a backend
@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
  * returns the correct class name in TIOModelBackendsTests.
  */
 
-+ (nullable NSString*)classNameForBackend:(NSString*)backend;
++ (nullable NSString *)classNameForBackend:(NSString *)backend;
 
 /**
  * Returns the resource bundle for a backend.
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
  * the model's JSON schema.
  */
 
-+ (nullable NSBundle*)resourceBundleForBackend:(NSString*)backend;
++ (nullable NSBundle *)resourceBundleForBackend:(NSString *)backend;
 
 @end
 

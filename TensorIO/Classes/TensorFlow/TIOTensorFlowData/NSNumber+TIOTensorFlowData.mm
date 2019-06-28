@@ -36,8 +36,8 @@
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
-    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
-    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
+    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
+    TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
     
     if ( description.isQuantized && dequantizer != nil ) {
         auto flat_tensor = tensor.flat<uint8_t>();
@@ -76,9 +76,9 @@
 + (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
-    TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
-    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
-    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+    TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
+    NSUInteger length = ((TIOVectorLayerDescription *)description).length;
     int32_t batch_size = (int32_t)column.count;
     
     // Establish shape
@@ -105,7 +105,7 @@
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
-            buffer[offset] = quantizer(((NSNumber*)obj).floatValue);
+            buffer[offset] = quantizer(((NSNumber *)obj).floatValue);
         }];
         
         return tensor;
@@ -116,7 +116,7 @@
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
-            buffer[offset] = ((NSNumber*)obj).unsignedCharValue;
+            buffer[offset] = ((NSNumber *)obj).unsignedCharValue;
         }];
         
         return tensor;
@@ -127,7 +127,7 @@
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
-            buffer[offset] = (int32_t)((NSNumber*)obj).longValue;
+            buffer[offset] = (int32_t)((NSNumber *)obj).longValue;
         }];
         
         return tensor;
@@ -138,7 +138,7 @@
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
-            buffer[offset] = (int64_t)((NSNumber*)obj).longLongValue;
+            buffer[offset] = (int64_t)((NSNumber *)obj).longLongValue;
         }];
         
         return tensor;
@@ -149,7 +149,7 @@
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
-            buffer[offset] = ((NSNumber*)obj).floatValue;
+            buffer[offset] = ((NSNumber *)obj).floatValue;
         }];
         
         return tensor;

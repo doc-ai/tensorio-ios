@@ -23,7 +23,7 @@
 
 @implementation TIOFleaTask
 
-+ (NSDateFormatter*)JSONDateFormatter {
++ (NSDateFormatter *)JSONDateFormatter {
     static NSDateFormatter *RFC3339DateFormatter;
     
     if ( RFC3339DateFormatter == nil ) {
@@ -36,7 +36,7 @@
     return RFC3339DateFormatter;
 }
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"modelId"] == nil || ![JSON[@"modelId"] isKindOfClass:NSString.class] ) {
             *error = TIOFleaJSONParsingError(self.class, @"modelId", JSON);
@@ -70,7 +70,7 @@
             *error = TIOFleaJSONParsingError(self.class, @"active", JSON);
             return nil;
         } else {
-            _active = ((NSNumber*)JSON[@"active"]).boolValue;
+            _active = ((NSNumber *)JSON[@"active"]).boolValue;
         }
         
         if ( JSON[@"deadline"] == nil || ![JSON[@"deadline"] isKindOfClass:NSString.class] ) {
@@ -109,7 +109,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
     NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
     NSString *cs = [NSString stringWithFormat:@"Checkpoint IDs: %@", self.checkpointId];

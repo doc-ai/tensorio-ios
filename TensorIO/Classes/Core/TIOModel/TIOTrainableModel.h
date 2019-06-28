@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return `YES` if the export was successful,`NO` otherwise
  */
 
-- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error;
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError**)error;
 
 @end
 

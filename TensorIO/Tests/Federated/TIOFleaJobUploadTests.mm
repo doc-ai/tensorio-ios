@@ -41,7 +41,7 @@
     MockURLSession *session = [[MockURLSession alloc] initWithUpload:sourceURL];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
         [expectation fulfill];
     
         XCTAssertNil(error);
@@ -66,7 +66,7 @@
     MockURLSession *session = [[MockURLSession alloc] initWithError:[[NSError alloc] init]];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -88,7 +88,7 @@
     MockURLSession *session = [[MockURLSession alloc] initWithUpload:sourceURL];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:@"job-id" callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
         [expectation fulfill];
     
         XCTAssertNotNil(error);

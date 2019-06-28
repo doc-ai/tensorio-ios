@@ -52,14 +52,14 @@ NS_ASSUME_NONNULL_BEGIN
  * registering for or checking for tasks with manager.
  */
 
-- (instancetype)initWithClient:(TIOFleaClient*)client NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithClient:(TIOFleaClient *)client NS_DESIGNATED_INITIALIZER;
 
 /**
  * A convenience initializer for instantiating a federated manager with a data
  * source provider and delegate as well as the required client.
  */
 
-- (instancetype)initWithClient:(TIOFleaClient*)client dataSourceProvider:(id<TIOFederatedManagerDataSourceProvider>)dataSourceProvider delegate:(nullable id<TIOFederatedManagerDelegate>)delegate;
+- (instancetype)initWithClient:(TIOFleaClient *)client dataSourceProvider:(id<TIOFederatedManagerDataSourceProvider>)dataSourceProvider delegate:(nullable id<TIOFederatedManagerDelegate>)delegate;
 
 /**
  * Use the designated initializer or one of the convenience initializers.
@@ -100,13 +100,13 @@ NS_ASSUME_NONNULL_BEGIN
  * specific models.
  */
 
-- (void)registerForTasksForModelWithId:(NSString*)modelId;
+- (void)registerForTasksForModelWithId:(NSString *)modelId;
 
 /**
  * Unregisters a model id with the manager.
  */
 
-- (void)unregisterForTasksForModelWithId:(NSString*)modelId;
+- (void)unregisterForTasksForModelWithId:(NSString *)modelId;
 
 /**
  * Checks if there are any tasks available for any of the models registered with

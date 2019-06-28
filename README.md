@@ -19,7 +19,7 @@ TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixel
 
 TIOTFLiteModel *model = [TIOTFLiteModel modelWithBundleAtPath:path];
 
-NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
+NSDictionary *inference = (NSDictionary *)[model runOn:buffer];
 NSDictionary *classification = [inference[@"classification"] topN:5 threshold:0.1];
 ```
 
@@ -192,7 +192,7 @@ With Tensor/IO you construct an `NSArray` of numeric values for these features, 
 ```objc
 TIOTFLiteModel *model = ...
 NSArray *input = @[ @(1890), @(3), @(2), @(1.6) ];
-NSDictionary *output = (NSDictionary*)[model runOn:input];
+NSDictionary *output = (NSDictionary *)[model runOn:input];
 NSNumber *price = output[@"price"];
 ```
 
@@ -610,7 +610,7 @@ For example, a self-driving car model might classify three kinds of things in an
 After performing inference the underlying TensorFlow model will produce an output with three values corresponding to the softmax probability that this item appears in the image. Tensor/IO extracts those bytes and packs them into an `NSArray` of `NSNumber`:
 
 ```objc
-NSDictionary *inference = (NSDictionary*)[model runOn:input];
+NSDictionary *inference = (NSDictionary *)[model runOn:input];
 NSArray<NSNumber*> *classifications = inference[@"classification-output"];
 
 // classifications[0] == 0.25
@@ -644,7 +644,7 @@ motorcycle
 The underlying tensorflow model still produces an output with three values corresponding to the softmax probability that this item appears in the image. Tensor/IO, however, now maps labels to those probabilities and returns a dictionary of those mappings:
 
 ```objc
-NSDictionary *inference = (NSDictionary*)[model runOn:input];
+NSDictionary *inference = (NSDictionary *)[model runOn:input];
 NSDictionary<NSString*, NSNumber*> *classifications = inference[@"classification-output"];
 
 // classifications[@"pedestrian"] == 0.25
@@ -676,7 +676,7 @@ Consider a model with two output layers. The first layer outputs a vector of fou
 After performing inference, access the first layer as an array of numbers and the second layer as a single number:
 
 ```objc
-NSDictionary *inference = (NSDictionary*)[model runOn:input];
+NSDictionary *inference = (NSDictionary *)[model runOn:input];
 NSArray<NSNumber*> *vectorOutput = inference[@"vector-output"];
 NSNumber *scalarOutput = inference[@"scalar-output"];
 ```
@@ -772,7 +772,7 @@ NSDictionary *features = @{
   @"bar-features": barFeatures
 };
 
-NSDictionary *inference = (NSDictionary*)[model runOn:features];
+NSDictionary *inference = (NSDictionary *)[model runOn:features];
 
 NSArray *bazOutputs = inference[@"baz-outputs"]; // length 3
 NSArray *quxOutputs = inference[@"qux-outputs"]; // length 6
@@ -929,7 +929,7 @@ NSDictionary *features = @{
   @"vector-input": vectorInput
 };
 
-NSDictionary *inference = (NSDictionary*)[model runOn:features];
+NSDictionary *inference = (NSDictionary *)[model runOn:features];
 
 NSArray *vectorOutput = inference[@"vector-output"];
 
@@ -1097,7 +1097,7 @@ NSDictionary *features = @{
   @"bar-features": barFeatures
 };
 
-NSDictionary *inference = (NSDictionary*)[model runOn:features];
+NSDictionary *inference = (NSDictionary *)[model runOn:features];
 
 NSArray *bazOutputs = inference[@"baz-outputs"]; // length 3 in range [0,1]
 NSArray *quxOutputs = inference[@"qux-outputs"]; // length 6 in range [-1,1]
@@ -1123,7 +1123,7 @@ NSDictionary *features = @{
   @"quantized-input": quantizedInput
 };
 
-NSDictionary *inference = (NSDictionary*)[model runOn:features];
+NSDictionary *inference = (NSDictionary *)[model runOn:features];
 
 NSArray *quantizedOutput = inference[@"quantized-output"]; // in range [0,255]
 NSArray *dequantizedOutput = [quantizedOutput map:^NSNumber * _Nonnull(NSNumber *  _Nonnull obj) {
@@ -1163,7 +1163,7 @@ UIImage *image = [UIImage imageNamed:@"example-image"];
 CVPixelBufferRef pixelBuffer = image.pixelBuffer;
 TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
 
-NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
+NSDictionary *inference = (NSDictionary *)[model runOn:buffer];
 ```
 
 <a name="pixel-buffer"></a>
@@ -1352,7 +1352,7 @@ And we can use this model as follows:
 UIImage *image = [UIImage imageNamed:@"example-image"];
 TIOPixelBuffer *buffer = [[TIOPixelBuffer alloc] initWithPixelBuffer:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
 
-NSDictionary *inference = (NSDictionary*)[model runOn:buffer];
+NSDictionary *inference = (NSDictionary *)[model runOn:buffer];
 NSDictionary<NSString*,NSNumber*> *classification = inference[@"classification"];
 
 ```
@@ -1414,7 +1414,7 @@ TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
 You can then call train on the model with this batch to execute a single round of training, equivalent to one epoch with a single batch:
 
 ```objc
-NSDictionary *results = (NSDictionary*)[model train:batch];
+NSDictionary *results = (NSDictionary *)[model train:batch];
 ```
 
 As with inference, the results dictionary will contain the output of training, typically the loss function you'd like to measure.
@@ -1491,7 +1491,7 @@ TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
 }];
 
 for (NSUInteger epoch = 0; epoch < 100; epoch++) {
-	NSDictionary *results = (NSDictionary*)[model train:batch];
+	NSDictionary *results = (NSDictionary *)[model train:batch];
 	NSLog(@"%@", results[@"sigmoid_cross_entropy_loss/value"]);
 }
 ```

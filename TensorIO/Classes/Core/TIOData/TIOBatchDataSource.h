@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
  * randomize item order (shuffle).
  */
 
-- (TIOBatchItem*)itemAtIndex:(NSUInteger)index;
+- (TIOBatchItem *)itemAtIndex:(NSUInteger)index;
 
 @end
 

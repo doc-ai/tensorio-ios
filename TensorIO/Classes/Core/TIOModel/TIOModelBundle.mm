@@ -43,7 +43,7 @@ NSString * const TIOModelAssetsDirectory = @"assets";
 
 @implementation TIOModelBundle
 
-- (nullable instancetype)initWithPath:(NSString*)path {
+- (nullable instancetype)initWithPath:(NSString *)path {
     if (self = [super init]) {
         
         // Read json file
@@ -101,7 +101,7 @@ NSString * const TIOModelAssetsDirectory = @"assets";
     return self;
 }
 
-- (NSString*)modelClassName {
+- (NSString *)modelClassName {
     NSString *classname = _info[@"model"][@"class"];
     
     // If the model is a placeholder, use the placeholder class
@@ -150,7 +150,7 @@ NSString * const TIOModelAssetsDirectory = @"assets";
     return model;
 }
 
-- (NSString*)modelFilepath {
+- (NSString *)modelFilepath {
     if (self.isPlaceholder) {
         return nil;
     } else {
@@ -158,7 +158,7 @@ NSString * const TIOModelAssetsDirectory = @"assets";
     }
 }
 
-- (NSString*)pathToAsset:(NSString*)filename {
+- (NSString *)pathToAsset:(NSString *)filename {
     return [[_path stringByAppendingPathComponent:TIOModelAssetsDirectory] stringByAppendingPathComponent:filename];
 }
 

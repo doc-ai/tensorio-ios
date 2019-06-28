@@ -33,21 +33,21 @@ NS_ASSUME_NONNULL_BEGIN
  * task has completed processing or errored out.
  */
 
-- (instancetype)initWithExpectation:(XCTestExpectation*)expectation;
+- (instancetype)initWithExpectation:(XCTestExpectation *)expectation;
 
 /**
  * Number of times federatedManager:willBeginProcessingTaskWithId: is called
  * for some taskId.
  */
 
-- (NSUInteger)willBeginProcessingTaskWithIdCountForTaskId:(NSString*)taskId;
+- (NSUInteger)willBeginProcessingTaskWithIdCountForTaskId:(NSString *)taskId;
 
 /**
  * Number of times federatedManager:didCompleteTaskWithId: is called for some
  * taskId.
  */
 
-- (NSUInteger)didCompleteTaskWithIdCountForTaskId:(NSString*)taskId;
+- (NSUInteger)didCompleteTaskWithIdCountForTaskId:(NSString *)taskId;
 
 /**
  * Number of times federatedManager:didBeginAction: is called for some action.

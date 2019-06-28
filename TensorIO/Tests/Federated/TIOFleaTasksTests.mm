@@ -48,7 +48,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNil(error);
@@ -72,7 +72,7 @@
 - (void)testGETTasksURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/tasks"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
@@ -81,7 +81,7 @@
 - (void)testGETTasksURLWithModelId {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:@"model-foo" hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:@"model-foo" hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/tasks?modelId=model-foo"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
@@ -90,7 +90,7 @@
 - (void)testGETTasksURLWithHyperparametersId {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:@"hyperparameters-foo" checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:@"hyperparameters-foo" checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/tasks?hyperparametersId=hyperparameters-foo"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
@@ -99,7 +99,7 @@
 - (void)testGETTasksURLWithCheckpointId {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:@"checkpoint-foo" callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:@"checkpoint-foo" callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/tasks?checkpointId=checkpoint-foo"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
@@ -108,7 +108,7 @@
 - (void)testGETTasksURLWithAllIds {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:@"model-foo" hyperparametersId:@"hyperparameters-foo" checkpointId:@"checkpoint-foo" callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:@"model-foo" hyperparametersId:@"hyperparameters-foo" checkpointId:@"checkpoint-foo" callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) { }];
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models/tasks?modelId=model-foo&hyperparametersId=hyperparameters-foo&checkpointId=checkpoint-foo"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
@@ -129,7 +129,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -155,7 +155,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -178,7 +178,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -200,7 +200,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETTasksWithModelId:nil hyperparametersId:nil checkpointId:nil callback:^(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);

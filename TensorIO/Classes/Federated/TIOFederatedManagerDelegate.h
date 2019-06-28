@@ -53,21 +53,21 @@ typedef enum : NSUInteger {
 
 // TODO: Make sure the taskId is passed to the delegate as well, if available
 
-- (void)federatedManager:(TIOFederatedManager*)manager didBeginAction:(TIOFederatedManagerAction)action;
+- (void)federatedManager:(TIOFederatedManager *)manager didBeginAction:(TIOFederatedManagerAction)action;
 
 /**
  * Informs the delegate that the manager will begin processing a task. This
  * method is optional. This method will be called on the main thread.
  */
 
-- (void)federatedManager:(TIOFederatedManager*)manager willBeginProcessingTaskWithId:(NSString*)taskId;
+- (void)federatedManager:(TIOFederatedManager *)manager willBeginProcessingTaskWithId:(NSString *)taskId;
 
 /**
  * Informs the delegate that the manager has successfully finished processing
  * a task. This method is optional. This method will be called on the main thread.
  */
 
-- (void)federatedManager:(TIOFederatedManager *)manager didCompleteTaskWithId:(NSString*)taskId;
+- (void)federatedManager:(TIOFederatedManager *)manager didCompleteTaskWithId:(NSString *)taskId;
 
 /**
  * Informs the delegate that some error occurred. This method is optional.
@@ -76,7 +76,7 @@ typedef enum : NSUInteger {
 
 // TODO: Make sure the taskId is passed to the delegate as well, if available
 
-- (void)federatedManager:(TIOFederatedManager*)manager didFailWithError:(NSError*)error forAction:(TIOFederatedManagerAction)action;
+- (void)federatedManager:(TIOFederatedManager *)manager didFailWithError:(NSError *)error forAction:(TIOFederatedManagerAction)action;
 
 /**
  * Informs the delegate that some amount of progress has been made for an action
@@ -88,7 +88,7 @@ typedef enum : NSUInteger {
  * instructions for `TIOFleaClient`.
  */
 
-- (void)federatedManager:(TIOFederatedManager*)manager didProgress:(float)progress forAction:(TIOFederatedManagerAction)action;
+- (void)federatedManager:(TIOFederatedManager *)manager didProgress:(float)progress forAction:(TIOFederatedManagerAction)action;
 
 @end
 

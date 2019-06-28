@@ -49,7 +49,7 @@ static NSString * const TIONoBackendAvailableReason =
 // Available Backend
 // Add your backend preprocessor definition and name to this method
 
-+ (nullable NSString*)availableBackend {
++ (nullable NSString *)availableBackend {
     #ifdef TIO_TFLITE
         return TIOBackendTFLite;
     #elif TIO_TENSORFLOW
@@ -66,7 +66,7 @@ static NSString * const TIONoBackendAvailableReason =
 // Class Name for Backend
 // Add your backend name and class name to this dictionary
 
-+ (nullable NSString*)classNameForBackend:(NSString*)backend {
++ (nullable NSString *)classNameForBackend:(NSString *)backend {
     static NSDictionary<NSString*,NSString*> *classnames = nil;
     static dispatch_once_t onceToken;
     
@@ -80,7 +80,7 @@ static NSString * const TIONoBackendAvailableReason =
     return classnames[backend.lowercaseString];
 }
 
-+ (nullable NSBundle*)resourceBundleForBackend:(NSString*)backend {
++ (nullable NSBundle *)resourceBundleForBackend:(NSString *)backend {
     static NSDictionary<NSString*,NSString*> *bundles = nil;
     static dispatch_once_t onceToken;
     

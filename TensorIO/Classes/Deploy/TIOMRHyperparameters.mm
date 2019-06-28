@@ -23,7 +23,7 @@
 
 @implementation TIOMRHyperparameters
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"hyperparametersIds"] == nil || ![JSON[@"hyperparametersIds"] isKindOfClass:NSArray.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"hyperparametersIds", JSON);
@@ -43,7 +43,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
     NSString *hs = [NSString stringWithFormat:@"Hyperparameters IDs: %@", self.hyperparametersIds];
     return [NSString stringWithFormat:@"%@\n%@", ms, hs];

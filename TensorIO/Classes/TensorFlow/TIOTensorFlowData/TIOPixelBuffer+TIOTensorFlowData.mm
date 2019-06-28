@@ -70,7 +70,7 @@ void TIOCopyCVPixelBufferToTensorFlowTensor(CVPixelBufferRef pixelBuffer, tensor
     assert(image_height == shape.height);
     assert(image_channels >= shape.channels);
     
-    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixelBuffer);
+    uint8_t* in = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
     T* out = tensor.flat<T>().data() + offset;
     
     if ( normalizer == nil ) {
@@ -164,7 +164,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         : 3;
     
     T* in_addr = tensor.flat<T>().data();
-    uint8_t* out_addr = (uint8_t*)CVPixelBufferGetBaseAddress(outputBuffer);
+    uint8_t* out_addr = (uint8_t *)CVPixelBufferGetBaseAddress(outputBuffer);
     
     if ( denormalizer == nil ) {
         for (int y = 0; y < image_height; y++) {
@@ -211,7 +211,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     
-    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
+    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result;
     
@@ -252,7 +252,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     
     int32_t batch_size = (int32_t)column.count;
     
-    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
+    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     
     // Tensor shape
     
@@ -282,8 +282,8 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
            
-            CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer*)obj).pixelBuffer;
-            CGImagePropertyOrientation orientation = ((TIOPixelBuffer*)obj).orientation;
+            CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer *)obj).pixelBuffer;
+            CGImagePropertyOrientation orientation = ((TIOPixelBuffer *)obj).orientation;
             
             CVPixelBufferRef transformedPixelBuffer;
             
@@ -304,7 +304,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             }
             
             CVPixelBufferRetain(transformedPixelBuffer);
-            ((TIOPixelBuffer*)obj).transformedPixelBuffer = transformedPixelBuffer;
+            ((TIOPixelBuffer *)obj).transformedPixelBuffer = transformedPixelBuffer;
             
             TIOCopyCVPixelBufferToTensorFlowTensor<uint8_t>(
                 transformedPixelBuffer,
@@ -321,8 +321,8 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
             
-            CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer*)obj).pixelBuffer;
-            CGImagePropertyOrientation orientation = ((TIOPixelBuffer*)obj).orientation;
+            CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer *)obj).pixelBuffer;
+            CGImagePropertyOrientation orientation = ((TIOPixelBuffer *)obj).orientation;
             
             CVPixelBufferRef transformedPixelBuffer;
             
@@ -343,7 +343,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
             }
             
             CVPixelBufferRetain(transformedPixelBuffer);
-            ((TIOPixelBuffer*)obj).transformedPixelBuffer = transformedPixelBuffer;
+            ((TIOPixelBuffer *)obj).transformedPixelBuffer = transformedPixelBuffer;
             
             TIOCopyCVPixelBufferToTensorFlowTensor<float_t>(
                 transformedPixelBuffer,

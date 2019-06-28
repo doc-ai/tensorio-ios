@@ -36,14 +36,14 @@ NS_ASSUME_NONNULL_BEGIN
  * called on a thread other than the main thread.
  */
 
-- (id<TIOBatchDataSource>)federatedManager:(TIOFederatedManager*)manager dataSourceForTaskWithId:(NSString*)taskIdentifier;
+- (id<TIOBatchDataSource>)federatedManager:(TIOFederatedManager *)manager dataSourceForTaskWithId:(NSString *)taskIdentifier;
 
 /**
  * Returns the model bundle for a model id. This method may be called on a thread
  * other than the main thread.
  */
 
-- (nullable TIOModelBundle*)federatedManager:(TIOFederatedManager*)manager modelBundleForModelWithId:(NSString*)modelIdentifier;
+- (nullable TIOModelBundle *)federatedManager:(TIOFederatedManager *)manager modelBundleForModelWithId:(NSString *)modelIdentifier;
 
 @end
 

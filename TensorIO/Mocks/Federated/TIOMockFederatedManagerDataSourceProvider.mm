@@ -45,53 +45,53 @@
 
 // MARK: - Data Sources
 
-- (void)setDataSource:(TIOMockBatchDataSource*)dataSource forTaskId:(NSString*)taskIdentifier {
-    ((NSMutableDictionary*)_dataSources)[taskIdentifier] = dataSource;
-    ((NSMutableDictionary*)_dataSourceForTaskWithIdCount)[taskIdentifier] = @(0);
+- (void)setDataSource:(TIOMockBatchDataSource *)dataSource forTaskId:(NSString *)taskIdentifier {
+    ((NSMutableDictionary *)_dataSources)[taskIdentifier] = dataSource;
+    ((NSMutableDictionary *)_dataSourceForTaskWithIdCount)[taskIdentifier] = @(0);
 }
 
-- (void)removeDataSourceForTaskId:(NSString*)taskIdentifier {
-    [(NSMutableDictionary*)_dataSources removeObjectForKey:taskIdentifier];
-    [(NSMutableDictionary*)_dataSourceForTaskWithIdCount removeObjectForKey:taskIdentifier];
+- (void)removeDataSourceForTaskId:(NSString *)taskIdentifier {
+    [(NSMutableDictionary *)_dataSources removeObjectForKey:taskIdentifier];
+    [(NSMutableDictionary *)_dataSourceForTaskWithIdCount removeObjectForKey:taskIdentifier];
 }
 
-- (NSUInteger)dataSourceForTaskWithIdCountForTaskId:(NSString*)taskIdentifier {
+- (NSUInteger)dataSourceForTaskWithIdCountForTaskId:(NSString *)taskIdentifier {
     return _dataSourceForTaskWithIdCount[taskIdentifier].unsignedIntegerValue;
 }
 
 // MARK: - Model Bundles
 
-- (void)setModelBundle:(TIOMockModelBundle*)modelBundel forModelId:(NSString*)modelIdentifier {
-    ((NSMutableDictionary*)_modelBundles)[modelIdentifier] = modelBundel;
-    ((NSMutableDictionary*)_modelBundleForModelWithIdCount)[modelIdentifier] = @(0);
+- (void)setModelBundle:(TIOMockModelBundle *)modelBundel forModelId:(NSString *)modelIdentifier {
+    ((NSMutableDictionary *)_modelBundles)[modelIdentifier] = modelBundel;
+    ((NSMutableDictionary *)_modelBundleForModelWithIdCount)[modelIdentifier] = @(0);
 }
 
-- (void)removeModelBundleForModelId:(NSString*)modelIdentifier {
-    [(NSMutableDictionary*)_modelBundles removeObjectForKey:modelIdentifier];
-    [(NSMutableDictionary*)_modelBundleForModelWithIdCount removeObjectForKey:modelIdentifier];
+- (void)removeModelBundleForModelId:(NSString *)modelIdentifier {
+    [(NSMutableDictionary *)_modelBundles removeObjectForKey:modelIdentifier];
+    [(NSMutableDictionary *)_modelBundleForModelWithIdCount removeObjectForKey:modelIdentifier];
 }
 
-- (NSUInteger)modelBundleForModelWithIdCountForModelId:(NSString*)modelIdentifier {
+- (NSUInteger)modelBundleForModelWithIdCountForModelId:(NSString *)modelIdentifier {
     return _modelBundleForModelWithIdCount[modelIdentifier].unsignedIntegerValue;
 }
 
 // MARK: -
 
-- (id<TIOBatchDataSource>)federatedManager:(TIOFederatedManager*)manager dataSourceForTaskWithId:(NSString*)taskIdentifier {
+- (id<TIOBatchDataSource>)federatedManager:(TIOFederatedManager *)manager dataSourceForTaskWithId:(NSString *)taskIdentifier {
     if ( _dataSourceForTaskWithIdCount[taskIdentifier] == nil ) {
         return nil;
     }
     
-    ((NSMutableDictionary*)_dataSourceForTaskWithIdCount)[taskIdentifier] = @(_dataSourceForTaskWithIdCount[taskIdentifier].unsignedIntegerValue+1);
+    ((NSMutableDictionary *)_dataSourceForTaskWithIdCount)[taskIdentifier] = @(_dataSourceForTaskWithIdCount[taskIdentifier].unsignedIntegerValue+1);
     return self.dataSources[taskIdentifier];
 }
 
-- (nullable TIOModelBundle*)federatedManager:(TIOFederatedManager*)manager modelBundleForModelWithId:(NSString*)modelIdentifier {
+- (nullable TIOModelBundle *)federatedManager:(TIOFederatedManager *)manager modelBundleForModelWithId:(NSString *)modelIdentifier {
     if ( _modelBundleForModelWithIdCount[modelIdentifier] == nil ) {
         return nil;
     }
     
-    ((NSMutableDictionary*)_modelBundleForModelWithIdCount)[modelIdentifier] = @(_modelBundleForModelWithIdCount[modelIdentifier].unsignedIntegerValue+1);
+    ((NSMutableDictionary *)_modelBundleForModelWithIdCount)[modelIdentifier] = @(_modelBundleForModelWithIdCount[modelIdentifier].unsignedIntegerValue+1);
     return self.modelBundles[modelIdentifier];
 }
 

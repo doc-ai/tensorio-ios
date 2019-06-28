@@ -47,7 +47,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
         XCTAssertNil(error);
         XCTAssertNotNil(status);
         XCTAssert(status.status == TIOFleaStatusValueServing);
@@ -63,7 +63,7 @@
 - (void)testGETHealthStatusURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {}];
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {}];
     
     NSURL *expectedURL = [[NSURL
         URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
@@ -83,7 +83,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
         XCTAssert(status.status == TIOFleaStatusValueUnknown);
         [expectation fulfill];
@@ -104,7 +104,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
         XCTAssertNil(status);
         [expectation fulfill];
@@ -125,7 +125,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
         XCTAssertNil(status);
         [expectation fulfill];
@@ -144,7 +144,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETHealthStatus:^(TIOFleaStatus * _Nullable status, NSError * _Nonnull error) {
         XCTAssertNotNil(error);
         XCTAssertNil(status);
         [expectation fulfill];

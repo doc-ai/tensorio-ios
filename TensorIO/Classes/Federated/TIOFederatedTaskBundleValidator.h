@@ -50,7 +50,7 @@ typedef BOOL (^TIOFederatedTaskBundleValidationBlock)(NSString *path, NSDictiona
  * @return instancetype A validator instance.
  */
 
-- (instancetype)initWithModelBundleAtPath:(NSString*)path NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelBundleAtPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
@@ -113,7 +113,7 @@ typedef BOOL (^TIOFederatedTaskBundleValidationBlock)(NSString *path, NSDictiona
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
 
-- (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError**)error;
+- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError**)error;
 
 @end
 

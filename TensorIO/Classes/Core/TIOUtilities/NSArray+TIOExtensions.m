@@ -79,22 +79,22 @@
         integerValue];
 }
 
-- (NSArray*)excludingBatch {
+- (NSArray *)excludingBatch {
     if ( self.count == 0 ) {
         return self;
     }
     
-    if ( ((NSNumber*)self.firstObject).integerValue == -1 ) {
+    if ( ((NSNumber *)self.firstObject).integerValue == -1 ) {
         return self.excludingFirst;
     }
-    if ( ((NSNumber*)self.lastObject).integerValue == -1 ) {
+    if ( ((NSNumber *)self.lastObject).integerValue == -1 ) {
         return self.excludingLast;
     }
     
     return self;
 }
 
-- (NSArray*)excludingFirst {
+- (NSArray *)excludingFirst {
     if ( self.count == 0 ) {
         return self;
     }
@@ -102,7 +102,7 @@
     return [self subarrayWithRange:NSMakeRange(1, self.count-1)];
 }
 
-- (NSArray*)excludingLast {
+- (NSArray *)excludingLast {
     if ( self.count == 0 ) {
         return self;
     }
@@ -116,7 +116,7 @@
 
 @implementation NSArray (DictionaryUtilities)
 
-- (NSDictionary *)groupBy:(NSString*)key {
+- (NSDictionary *)groupBy:(NSString *)key {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     
     for (id obj in self) {

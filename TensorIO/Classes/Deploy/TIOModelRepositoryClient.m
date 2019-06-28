@@ -50,7 +50,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
 
 @property Class klass;
 
-- (nullable ParsedType)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error;
+- (nullable ParsedType)parseData:(nullable NSData *)data response:(nullable NSURLResponse *)response requestError:(NSError *)requestError error:(NSError**)error;
 
 @end
 
@@ -63,7 +63,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     return self;
 }
 
-- (nullable id)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error {
+- (nullable id)parseData:(nullable NSData *)data response:(nullable NSURLResponse *)response requestError:(NSError *)requestError error:(NSError**)error {
     
     if ( requestError != nil ) {
         TIO_LOGSET_ERROR(
@@ -74,10 +74,10 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
         return nil;
     }
     
-    if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-        NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+    if ( ((NSHTTPURLResponse *)response).statusCode < 200 || ((NSHTTPURLResponse *)response).statusCode > 299 ) {
+        NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse *)response).statusCode];
         TIO_LOGSET_ERROR(
-            ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+            ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse *)response).statusCode, responseDescription]),
             TIOMRErrorDomain,
             TIOMRURLResponseErrorCode,
             *error);
@@ -136,11 +136,11 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
 
 @implementation TIOModelRepositoryClient
 
-+ (NSString*)backgroundSessionIdentifier {
++ (NSString *)backgroundSessionIdentifier {
     return @"TIO_MR_CLIENT";
 }
 
-- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
+- (instancetype)initWithBaseURL:(NSURL *)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
     if ((self=[super init])) {
         [self acquireClientId];
         _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
@@ -171,7 +171,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
 
 // MARK: - Base API
 
-- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable status, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETHealthStatus:(void(^)(TIOMRStatus * _Nullable status, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"healthz"];
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -203,7 +203,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETModels:(void(^)(TIOMRModels * _Nullable models, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETModels:(void(^)(TIOMRModels * _Nullable models, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL
         URLByAppendingPathComponent:@"models"];
     
@@ -225,7 +225,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETModelWithId:(NSString*)modelId callback:(void(^)(TIOMRModel * _Nullable model, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETModelWithId:(NSString *)modelId callback:(void(^)(TIOMRModel * _Nullable model, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [[self.baseURL
         URLByAppendingPathComponent:@"models"]
         URLByAppendingPathComponent:modelId];
@@ -248,7 +248,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETHyperparametersForModelWithId:(NSString*)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETHyperparametersForModelWithId:(NSString *)modelId callback:(void(^)(TIOMRHyperparameters * _Nullable hyperparameters, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [[[self.baseURL
         URLByAppendingPathComponent:@"models"]
         URLByAppendingPathComponent:modelId]
@@ -272,7 +272,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     return task;
 }
 
- - (NSURLSessionTask*)GETHyperparameterForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error))responseBlock {
+ - (NSURLSessionTask *)GETHyperparameterForModelWithId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId callback:(void(^)(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error))responseBlock {
      NSURL *endpoint = [[[[self.baseURL
         URLByAppendingPathComponent:@"models"]
         URLByAppendingPathComponent:modelId]
@@ -297,7 +297,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETCheckpointsForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId callback:(void(^)(TIOMRCheckpoints * _Nullable checkpoints, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETCheckpointsForModelWithId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId callback:(void(^)(TIOMRCheckpoints * _Nullable checkpoints, NSError * _Nullable error))responseBlock {
   
     NSURL *endpoint = [[[[[self.baseURL
         URLByAppendingPathComponent:@"models"]
@@ -324,7 +324,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETCheckpointForModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETCheckpointForModelWithId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId checkpointId:(NSString *)checkpointId callback:(void(^)(TIOMRCheckpoint * _Nullable checkpoint, NSError * _Nullable error))responseBlock {
     
     NSURL *endpoint = [[[[[[self.baseURL
         URLByAppendingPathComponent:@"models"]
@@ -354,7 +354,7 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
 
 // MARK: - Downloads
 
-- (NSURLSessionDownloadTask*)downloadModelBundleAtURL:(NSURL*)URL withModelId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
+- (NSURLSessionDownloadTask *)downloadModelBundleAtURL:(NSURL *)URL withModelId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId checkpointId:(NSString *)checkpointId callback:(void(^)(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
     // SUCCESS
     // URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:
@@ -384,11 +384,11 @@ typedef void (^TIOMRClientDownloadTaskCallbackBlock)
         
         // Handle bad HTTP response
         
-        if ( response && (((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299) ) {
-            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        if ( response && (((NSHTTPURLResponse *)response).statusCode < 200 || ((NSHTTPURLResponse *)response).statusCode > 299) ) {
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse *)response).statusCode];
             NSError *error;
             TIO_LOGSET_ERROR(
-                ([NSString stringWithFormat:@"HTTP Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                ([NSString stringWithFormat:@"HTTP Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse *)response).statusCode, responseDescription]),
                 TIOMRErrorDomain,
                 TIOMRDownloadError,
                 error);

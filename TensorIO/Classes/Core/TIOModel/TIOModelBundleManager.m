@@ -43,14 +43,14 @@
     return sharedInstance;
 }
 
-+ (NSError*)noValidModelBundlesError {
++ (NSError *)noValidModelBundlesError {
     return [NSError errorWithDomain:@"doc.ai.netrunner" code:201 userInfo:@{
         NSLocalizedDescriptionKey: @"No valid model bundles found at path",
         NSLocalizedRecoverySuggestionErrorKey: @"Ensure this path exists and that it contains one or more correctly formated .tiobundle folders"
     }];
 }
 
-- (BOOL)loadModelBundlesAtPath:(NSString*)path error:(NSError**)error {
+- (BOOL)loadModelBundlesAtPath:(NSString *)path error:(NSError**)error {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSArray<NSString*> *paths = [fileManager contentsOfDirectoryAtPath:path error:error];
@@ -60,17 +60,17 @@
     }
     
     NSArray<NSString*> *tfBundleNames = [paths filter:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return [[(NSString*)obj pathExtension] isEqualToString:TIOTFModelBundleExtension]; // Deprecated
+        return [[(NSString *)obj pathExtension] isEqualToString:TIOTFModelBundleExtension]; // Deprecated
     }];
     
     NSArray<NSString*> *tioBundleNames = [paths filter:^BOOL(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return [[(NSString*)obj pathExtension] isEqualToString:TIOModelBundleExtension];
+        return [[(NSString *)obj pathExtension] isEqualToString:TIOModelBundleExtension];
     }];
     
     NSArray<NSString*> *bundleNames = [tfBundleNames arrayByAddingObjectsFromArray:tioBundleNames];
     
     NSArray<NSString*> *bundlePaths = [bundleNames map:^id _Nonnull(id _Nonnull obj) {
-        return [path stringByAppendingPathComponent:(NSString*)obj];
+        return [path stringByAppendingPathComponent:(NSString *)obj];
     }];
     
     NSArray<id<TIOModel>> *bundles = [bundlePaths map:^id _Nonnull(id  _Nonnull obj) {
@@ -90,7 +90,7 @@
     return YES;
 }
 
-- (nullable TIOModelBundle*)bundleWithId:(NSString*)modelId {
+- (nullable TIOModelBundle *)bundleWithId:(NSString *)modelId {
     NSArray *matching = [self.modelBundles filter:^BOOL(TIOModelBundle * _Nonnull bundle, NSUInteger idx, BOOL * _Nonnull stop) {
         return [bundle.identifier isEqualToString:modelId];
     }];

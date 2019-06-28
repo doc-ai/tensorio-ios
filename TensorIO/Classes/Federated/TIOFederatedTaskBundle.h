@@ -68,7 +68,7 @@ extern NSString * const TIOTaskInfoFile;
  * @return An instance of a `TIOFederatedTaskBundle` or `nil` if no bundle could be loaded at that path.
  */
 
-- (nullable instancetype)initWithPath:(NSString*)path NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.

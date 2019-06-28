@@ -72,7 +72,7 @@ void TIOCopyCVPixelBufferToTensor(CVPixelBufferRef pixelBuffer, T* _Nonnull tens
         ? 1
         : 0;
     
-    uint8_t* in = (uint8_t*)CVPixelBufferGetBaseAddress(pixelBuffer);
+    uint8_t* in = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
     T* out = tensor;
     
     if ( normalizer == nil ) {
@@ -169,7 +169,7 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
         : 3;
     
     T* in_addr = tensor;
-    uint8_t* out_addr = (uint8_t*)CVPixelBufferGetBaseAddress(outputBuffer);
+    uint8_t* out_addr = (uint8_t *)CVPixelBufferGetBaseAddress(outputBuffer);
     
     if ( denormalizer == nil ) {
         for (int y = 0; y < image_height; y++) {
@@ -219,14 +219,14 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
 
 - (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
     
-    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
+    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result;
     
     if ( description.isQuantized ) {
         result = TIOCreateCVPixelBufferFromTensor<uint8_t>(
             &pixelBuffer,
-            (uint8_t*)bytes,
+            (uint8_t *)bytes,
             pixelBufferDescription.imageVolume,
             pixelBufferDescription.pixelFormat,
             pixelBufferDescription.denormalizer
@@ -234,7 +234,7 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     } else {
         result = TIOCreateCVPixelBufferFromTensor<float_t>(
             &pixelBuffer,
-            (float_t*)bytes,
+            (float_t *)bytes,
             pixelBufferDescription.imageVolume,
             pixelBufferDescription.pixelFormat,
             pixelBufferDescription.denormalizer
@@ -252,7 +252,7 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
 - (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     
-    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription*)description;
+    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     
     // If the pixel buffer is already the right size, format, and orientation simpy copy it to the tensor.
     // Otherwise, run it through the vision pipeline

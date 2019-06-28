@@ -39,7 +39,7 @@
  * Creates a validator from a task bundle at filename
  */
 
-- (TIOFederatedTaskBundleValidator*)validatorForFilename:(NSString*)filename {
+- (TIOFederatedTaskBundleValidator *)validatorForFilename:(NSString *)filename {
     NSString *path = [self.tasksPath stringByAppendingPathComponent:filename];
     TIOFederatedTaskBundleValidator *validator = [[TIOFederatedTaskBundleValidator alloc] initWithModelBundleAtPath:path];
     return validator;

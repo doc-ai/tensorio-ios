@@ -23,7 +23,7 @@
 
 @implementation TIOMRStatus
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"status"] == nil || ![JSON[@"status"] isKindOfClass:NSString.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"status", JSON);
@@ -38,7 +38,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     switch (self.status) {
     case TIOMRStatusValueUnknown:
          return @"TIOMRStatusValueUnknown";
