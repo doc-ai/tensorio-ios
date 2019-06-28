@@ -1,8 +1,8 @@
 //
-//  TIOMRIdentifierTests.m
-//  DeployExampleTests
+//  TIOModelIdentifierTests.m
+//  TensorIO_Tests
 //
-//  Created by Phil Dow on 5/15/19.
+//  Created by Phil Dow on 6/28/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,11 +21,11 @@
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
 
-@interface TIOMRIdentifierTests : XCTestCase
+@interface TIOModelIdentifierTests : XCTestCase
 
 @end
 
-@implementation TIOMRIdentifierTests
+@implementation TIOModelIdentifierTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -36,7 +36,7 @@
 }
 
 - (void)testModelIdentifierInitializerSetsProperties {
-    TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithModelId:@"model-id" hyperparametersId:@"hyp-id" checkpointsId:@"ch-id"];
+    TIOModelIdentifier *identifier = [[TIOModelIdentifier alloc] initWithModelId:@"model-id" hyperparametersId:@"hyp-id" checkpointsId:@"ch-id"];
     
     XCTAssertEqualObjects(identifier.modelId, @"model-id");
     XCTAssertEqualObjects(identifier.hyperparametersId, @"hyp-id");
@@ -45,7 +45,7 @@
 
 - (void)testModelIdentifierInitializesWithCorrectlyFormattedBundleId {
     NSString *bundleId = @"tio:///models/model-id/hyperparameters/hyp-id/checkpoints/ch-id";
-    TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:bundleId];
+    TIOModelIdentifier *identifier = [[TIOModelIdentifier alloc] initWithBundleId:bundleId];
     
     XCTAssertNotNil(identifier);
     XCTAssertEqualObjects(identifier.modelId, @"model-id");
@@ -55,11 +55,11 @@
 
 - (void)testModelIdentifierDoesNotInitializeWithIncorrectlyFormattedBundleId {
     NSString *bundleId = @"tio:///models/model-id/";
-    TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:bundleId];
+    TIOModelIdentifier *identifier = [[TIOModelIdentifier alloc] initWithBundleId:bundleId];
     XCTAssertNil(identifier);
     
     NSString *bundleId2 = @"mobilenet-v2";
-    TIOMRModelIdentifier *identifier2 = [[TIOMRModelIdentifier alloc] initWithBundleId:bundleId2];
+    TIOModelIdentifier *identifier2 = [[TIOModelIdentifier alloc] initWithBundleId:bundleId2];
     XCTAssertNil(identifier2);
 }
 

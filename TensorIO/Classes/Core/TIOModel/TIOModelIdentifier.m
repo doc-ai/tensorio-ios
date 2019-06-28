@@ -1,8 +1,8 @@
 //
-//  TIOMRModelIdentifier.m
+//  TIOModelIdentifier.m
 //  TensorIO
 //
-//  Created by Phil Dow on 5/15/19.
+//  Created by Phil Dow on 6/28/19.
 //  Copyright © 2019 doc.ai (http://doc.ai)
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-#import "TIOFleaModelIdentifier.h"
 
-@implementation TIOFleaModelIdentifier
 
-- (instancetype)initWithModelId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId checkpointsId:(NSString *)checkpointId {
+#import "TIOModelIdentifier.h"
+
+@implementation TIOModelIdentifier
+
+- (instancetype)initWithModelId:(NSString *)modelId hyperparametersId:(nullable NSString *)hyperparametersId checkpointsId:(nullable NSString *)checkpointId {
     if ((self=[super init])) {
         _modelId = modelId;
         _hyperparametersId = hyperparametersId;

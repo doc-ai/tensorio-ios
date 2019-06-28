@@ -83,6 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString *backend;
 @property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
+@property (readonly) TIOModelIO *io;
 
 - (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle NS_DESIGNATED_INITIALIZER;
 

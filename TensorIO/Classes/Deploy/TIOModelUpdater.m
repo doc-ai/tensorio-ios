@@ -22,7 +22,7 @@
 #import "TIOModelRepositoryClient.h"
 #import "TIOModelBundle.h"
 #import "TIOModelBundleValidator.h"
-#import "TIOMRModelIdentifier.h"
+#import "TIOModelIdentifier.h"
 #import "TIOMRHyperparameter.h"
 #import "TIOMRCheckpoint.h"
 #import "TIOMRDownload.h"
@@ -52,7 +52,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
 // MARK: -
 
 - (void)checkForUpdate:(void(^)(BOOL updateAvailable, NSError * _Nullable error))callback {
-    TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
+    TIOModelIdentifier *identifier = [[TIOModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
     
     if ( identifier == nil ) {
         NSError *error;
@@ -100,7 +100,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
     
     // Parse the id
     
-    TIOMRModelIdentifier *identifier = [[TIOMRModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
+    TIOModelIdentifier *identifier = [[TIOModelIdentifier alloc] initWithBundleId:self.bundle.identifier];
     
     if ( identifier == nil ) {
         NSError *error;
