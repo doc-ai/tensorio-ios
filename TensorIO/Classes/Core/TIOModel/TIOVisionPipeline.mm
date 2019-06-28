@@ -27,7 +27,7 @@
 
 @implementation TIOVisionPipeline
 
-- (instancetype)initWithTIOPixelBufferDescription:(TIOPixelBufferLayerDescription*)pixelBufferDescription {
+- (instancetype)initWithTIOPixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription {
     if (self = [super init]) {
         _pixelBufferDescription = pixelBufferDescription;
     }

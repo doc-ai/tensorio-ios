@@ -78,7 +78,7 @@
     return _items[_keys[0]].count;
 }
 
-- (void)addItem:(TIOBatchItem*)item {
+- (void)addItem:(TIOBatchItem *)item {
 #if DEBUG
     assert([[NSSet setWithArray:item.allKeys] isEqualToSet:[NSSet setWithArray:_keys]]);
 #endif
@@ -88,7 +88,7 @@
     }
 }
 
-- (TIOBatchItem*)itemAtIndex:(NSUInteger)index {
+- (TIOBatchItem *)itemAtIndex:(NSUInteger)index {
     assert(index < self.count);
     
     NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
@@ -97,10 +97,10 @@
         item[key] = _items[key][index];
     }
     
-    return (TIOBatchItem*)item.copy;
+    return (TIOBatchItem *)item.copy;
 }
 
-- (NSArray<id<TIOData>>*)valuesForKey:(NSString*)key {
+- (NSArray<id<TIOData>>*)valuesForKey:(NSString *)key {
     return _items[key].copy;
 }
 

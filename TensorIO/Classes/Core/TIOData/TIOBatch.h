@@ -58,7 +58,7 @@ typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
  * must correspond to the inputs expected by the model.
  */
 
-- (instancetype)initWithItem:(TIOBatchItem*)item;
+- (instancetype)initWithItem:(TIOBatchItem *)item;
 
 /**
  * Use the designated initializer.
@@ -83,19 +83,19 @@ typedef NSDictionary<NSString*,id<TIOData>> TIOBatchItem;
  * batch was initialized with.
  */
 
-- (void)addItem:(TIOBatchItem*)item;
+- (void)addItem:(TIOBatchItem *)item;
 
 /**
  * Returns the item at index (the row).
  */
 
-- (TIOBatchItem*)itemAtIndex:(NSUInteger)index;
+- (TIOBatchItem *)itemAtIndex:(NSUInteger)index;
 
 /**
  * Returns the values for key (the column).
  */
 
-- (NSArray<id<TIOData>>*)valuesForKey:(NSString*)key;
+- (NSArray<id<TIOData>>*)valuesForKey:(NSString *)key;
 
 /**
  * Readonly only support for indexed subscripting.

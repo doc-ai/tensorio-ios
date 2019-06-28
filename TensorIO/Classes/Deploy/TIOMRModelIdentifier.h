@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Creates an instance with the canonical identifiers of a unique model.
  */
 
-- (instancetype)initWithModelId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointsId:(NSString*)checkpointId NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId checkpointsId:(NSString *)checkpointId NS_DESIGNATED_INITIALIZER;
 
 /**
  * Creates an instance from the id stored in a model bundle. Model bundle ids
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Returns `nil` if the bundle id does not match this format.
  */
 
-- (nullable instancetype)initWithBundleId:(NSString*)bundleId;
+- (nullable instancetype)initWithBundleId:(NSString *)bundleId;
 
 /**
  * Use the designated initializer or one of the convenience initializers.

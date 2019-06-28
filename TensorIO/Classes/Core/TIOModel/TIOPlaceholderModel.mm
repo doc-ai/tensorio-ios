@@ -31,7 +31,7 @@
 
 @implementation TIOPlaceholderModel
 
-+ (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
++ (nullable instancetype)modelWithBundleAtPath:(NSString *)path {
     return [[[TIOModelBundle alloc] initWithPath:path] newModel];
 }
 
@@ -41,7 +41,7 @@
     #endif
 }
 
-- (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle {
+- (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle {
     if (self = [super init]) {
         _bundle = bundle;
         _options = bundle.options;
@@ -66,7 +66,7 @@
  * Loads a model into memory and sets `loaded` = `YES`. A placeholder model does nothing here.
  */
 
-- (BOOL)load:(NSError**)error {
+- (BOOL)load:(NSError * _Nullable *)error {
     _loaded = YES;
     return YES;
 }
@@ -93,7 +93,7 @@
     return self.io.inputs[index].dataDescription;
 }
 
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name {
     return self.io.inputs[name].dataDescription;
 }
 
@@ -101,7 +101,7 @@
     return self.io.outputs[index].dataDescription;
 }
 
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name {
     return self.io.outputs[name].dataDescription;
 }
 

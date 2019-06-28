@@ -51,7 +51,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
 
 @property Class klass;
 
-- (nullable ParsedType)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error;
+- (nullable ParsedType)parseData:(nullable NSData *)data response:(nullable NSURLResponse *)response requestError:(NSError *)requestError error:(NSError**)error;
 
 @end
 
@@ -64,7 +64,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     return self;
 }
 
-- (nullable id)parseData:(nullable NSData*)data response:(nullable NSURLResponse*)response requestError:(NSError*)requestError error:(NSError**)error {
+- (nullable id)parseData:(nullable NSData *)data response:(nullable NSURLResponse *)response requestError:(NSError *)requestError error:(NSError**)error {
     
     if ( requestError != nil ) {
         TIO_LOGSET_ERROR(
@@ -75,10 +75,10 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
         return nil;
     }
     
-    if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-        NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+    if ( ((NSHTTPURLResponse *)response).statusCode < 200 || ((NSHTTPURLResponse *)response).statusCode > 299 ) {
+        NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse *)response).statusCode];
         TIO_LOGSET_ERROR(
-            ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+            ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse *)response).statusCode, responseDescription]),
             TIOFleaErrorDomain,
             TIOFleaURLResponseErrorCode,
             *error);
@@ -138,11 +138,11 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
 
 @implementation TIOFleaClient
 
-+ (NSString*)backgroundSessionIdentifier {
++ (NSString *)backgroundSessionIdentifier {
     return @"TIO_FLEA_CLIENT";
 }
 
-- (instancetype)initWithBaseURL:(NSURL*)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
+- (instancetype)initWithBaseURL:(NSURL *)URL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession {
     if ((self=[super init])) {
         [self acquireClientId];
          _URLSession = URLSession ? URLSession : NSURLSession.sharedSession;
@@ -174,7 +174,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
 
 // MARK: - API Requests
 
-- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOFleaStatus * _Nullable status, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETHealthStatus:(void(^)(TIOFleaStatus * _Nullable status, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"healthz"];
     
     NSURLSessionDataTask *task = [self.URLSession dataTaskWithURL:endpoint completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -206,7 +206,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETTasksWithModelId:(nullable NSString*)modelId hyperparametersId:(nullable NSString*)hyperparametersId checkpointId:(nullable NSString*)checkpointId callback:(void(^)(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETTasksWithModelId:(nullable NSString *)modelId hyperparametersId:(nullable NSString *)hyperparametersId checkpointId:(nullable NSString *)checkpointId callback:(void(^)(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [self.baseURL URLByAppendingPathComponent:@"tasks"];
     
     NSURLComponents *components = [[NSURLComponents alloc] initWithURL:endpoint resolvingAgainstBaseURL:NO];
@@ -244,7 +244,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTask * _Nullable task, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETTaskWithTaskId:(NSString *)taskId callback:(void(^)(TIOFleaTask * _Nullable task, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [[self.baseURL
         URLByAppendingPathComponent:@"tasks"]
         URLByAppendingPathComponent:taskId];
@@ -267,7 +267,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     return task;
 }
 
-- (NSURLSessionTask*)GETStartTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaJob * _Nullable job, NSError * _Nullable error))responseBlock {
+- (NSURLSessionTask *)GETStartTaskWithTaskId:(NSString *)taskId callback:(void(^)(TIOFleaJob * _Nullable job, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [[self.baseURL
         URLByAppendingPathComponent:@"start_task"]
         URLByAppendingPathComponent:taskId];
@@ -301,7 +301,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     return task;
 }
 
-- (nullable NSURLSessionTask*)POSTErrorMessage:(NSString*)errorMessage taskId:(NSString*)taskId jobId:(NSString*)jobId callback:(void(^)(BOOL success, NSError * _Nullable error))responseBlock {
+- (nullable NSURLSessionTask *)POSTErrorMessage:(NSString *)errorMessage taskId:(NSString *)taskId jobId:(NSString *)jobId callback:(void(^)(BOOL success, NSError * _Nullable error))responseBlock {
     NSURL *endpoint = [[[self.baseURL
         URLByAppendingPathComponent:@"job_error"]
         URLByAppendingPathComponent:taskId]
@@ -338,11 +338,11 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
             return;
         }
         
-        if ( ((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299 ) {
-            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        if ( ((NSHTTPURLResponse *)response).statusCode < 200 || ((NSHTTPURLResponse *)response).statusCode > 299 ) {
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse *)response).statusCode];
             NSError *error;
             TIO_LOGSET_ERROR(
-                ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                ([NSString stringWithFormat:@"Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse *)response).statusCode, responseDescription]),
                 TIOFleaErrorDomain,
                 TIOFleaURLResponseErrorCode,
                 error);
@@ -359,7 +359,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
 
 // MARK: - Download and Upload
 
-- (NSURLSessionDownloadTask*)downloadTaskBundleAtURL:(NSURL*)URL withTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
+- (NSURLSessionDownloadTask *)downloadTaskBundleAtURL:(NSURL *)URL withTaskId:(NSString *)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock {
     
     // SUCCESS
     // URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:
@@ -390,11 +390,11 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
         
         // Handle bad HTTP response
         
-        if ( response && (((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299) ) {
-            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        if ( response && (((NSHTTPURLResponse *)response).statusCode < 200 || ((NSHTTPURLResponse *)response).statusCode > 299) ) {
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse *)response).statusCode];
             NSError *error;
             TIO_LOGSET_ERROR(
-                ([NSString stringWithFormat:@"HTTP Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                ([NSString stringWithFormat:@"HTTP Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse *)response).statusCode, responseDescription]),
                 TIOFleaErrorDomain,
                 TIOFleaURLResponseErrorCode,
                 error);
@@ -448,7 +448,7 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
     return task;
 }
 
-- (nullable NSURLSessionUploadTask*)uploadJobResultsAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL withJobId:(NSString*)jobId callback:(void(^)(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error))responseBlock {
+- (nullable NSURLSessionUploadTask *)uploadJobResultsAtURL:(NSURL *)sourceURL toURL:(NSURL *)destinationURL withJobId:(NSString *)jobId callback:(void(^)(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error))responseBlock {
     
     // SUCCESS
     // URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:
@@ -497,11 +497,11 @@ typedef void (^TIOFleaClientUploadTaskCallbackBlock)
         
         // Handle bad HTTP response
         
-        if ( response && (((NSHTTPURLResponse*)response).statusCode < 200 || ((NSHTTPURLResponse*)response).statusCode > 299) ) {
-            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse*)response).statusCode];
+        if ( response && (((NSHTTPURLResponse *)response).statusCode < 200 || ((NSHTTPURLResponse *)response).statusCode > 299) ) {
+            NSString *responseDescription = [NSHTTPURLResponse localizedStringForStatusCode:((NSHTTPURLResponse *)response).statusCode];
             NSError *error;
             TIO_LOGSET_ERROR(
-                ([NSString stringWithFormat:@"HTTP Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse*)response).statusCode, responseDescription]),
+                ([NSString stringWithFormat:@"HTTP Response error, status code not 200 OK: %ld, %@", ((NSHTTPURLResponse *)response).statusCode, responseDescription]),
                 TIOFleaErrorDomain,
                 TIOFleaURLResponseErrorCode,
                 error);

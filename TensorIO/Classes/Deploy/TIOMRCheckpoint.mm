@@ -23,7 +23,7 @@
 
 @implementation TIOMRCheckpoint
 
-+ (NSDateFormatter*)JSONDateFormatter {
++ (NSDateFormatter *)JSONDateFormatter {
     static NSDateFormatter *RFC3339DateFormatter;
     
     if ( RFC3339DateFormatter == nil ) {
@@ -36,7 +36,7 @@
     return RFC3339DateFormatter;
 }
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"checkpointId"] == nil || ![JSON[@"checkpointId"] isKindOfClass:NSString.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"checkpointId", JSON);
@@ -91,7 +91,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
     NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
     NSString *cs = [NSString stringWithFormat:@"Checkpoint IDs: %@", self.checkpointId];

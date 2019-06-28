@@ -23,7 +23,7 @@
 
 @implementation TIOFleaJob
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"status"] == nil || ![JSON[@"status"] isKindOfClass:NSString.class] ) {
             *error = TIOFleaJSONParsingError(self.class, @"status", JSON);
@@ -55,7 +55,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *js = [NSString stringWithFormat:@"Job ID: %@", self.jobId];
     NSString *ss = [NSString stringWithFormat:@"Status: %@", self.status==TIOFleaJobStatusApproved?@"APPROVED":@"UNKNOWN"];
     NSString *us = [NSString stringWithFormat:@"Upload To: %@", self.uploadTo];

@@ -30,7 +30,7 @@
         _itemCount = count;
         
         for (NSUInteger i = 0; i < _itemCount; i++) {
-            ((NSMutableArray*)_itemAtIndexCount)[i] = @(0);
+            ((NSMutableArray *)_itemAtIndexCount)[i] = @(0);
         }
     }
     return self;
@@ -50,8 +50,8 @@
     return _itemCount;
 }
 
-- (TIOBatchItem*)itemAtIndex:(NSUInteger)index {
-    ((NSMutableArray*)_itemAtIndexCount)[index] = @(_itemAtIndexCount[index].unsignedIntegerValue+1);
+- (TIOBatchItem *)itemAtIndex:(NSUInteger)index {
+    ((NSMutableArray *)_itemAtIndexCount)[index] = @(_itemAtIndexCount[index].unsignedIntegerValue+1);
     
     return @{
         @"foo": @[@(1)]

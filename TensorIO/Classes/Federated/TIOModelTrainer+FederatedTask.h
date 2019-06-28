@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @warning task.placeholders is currently ignore.
  */
 
-- (instancetype)initWithModel:(id<TIOTrainableModel>)model task:(TIOFederatedTask*)task dataSource:(id<TIOBatchDataSource>)dataSource;
+- (instancetype)initWithModel:(id<TIOTrainableModel>)model task:(TIOFederatedTask *)task dataSource:(id<TIOBatchDataSource>)dataSource;
 
 @end
 

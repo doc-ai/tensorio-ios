@@ -174,7 +174,7 @@ NS_ASSUME_NONNULL_BEGIN
  * `labels` must not be `nil`.
  */
 
-- (NSDictionary<NSString*,NSNumber*>*)labeledValues:(TIOVector*)vector;
+- (NSDictionary<NSString*,NSNumber*>*)labeledValues:(TIOVector *)vector;
 
 
 @end

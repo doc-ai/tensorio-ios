@@ -47,13 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
  * Instantiates an in-memory data source from a batch.
  */
 
-- (instancetype)initWithBatch:(TIOBatch*)batch NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBatch:(TIOBatch *)batch NS_DESIGNATED_INITIALIZER;
 
 /**
  * A convenience initializer when you only have a single batch item.
  */
 
-- (instancetype)initWithItem:(TIOBatchItem*)item;
+- (instancetype)initWithItem:(TIOBatchItem *)item;
 
 /**
  * Use the designated initializer.
@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
  * randomize item order (shuffle).
  */
 
-- (TIOBatchItem*)itemAtIndex:(NSUInteger)index;
+- (TIOBatchItem *)itemAtIndex:(NSUInteger)index;
 
 @end
 

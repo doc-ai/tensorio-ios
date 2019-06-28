@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) NSDictionary<NSString*,NSNumber*> *dataSourceForTaskWithIdCount;
-- (NSUInteger)dataSourceForTaskWithIdCountForTaskId:(NSString*)taskIdentifier;
+- (NSUInteger)dataSourceForTaskWithIdCountForTaskId:(NSString *)taskIdentifier;
 
 /**
  * Tracks the number of times federatedManager:modelBundleForId: has been called
@@ -49,21 +49,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) NSDictionary<NSString*,NSNumber*> *modelBundleForModelWithIdCount;
-- (NSUInteger)modelBundleForModelWithIdCountForModelId:(NSString*)modelIdentifier;
+- (NSUInteger)modelBundleForModelWithIdCountForModelId:(NSString *)modelIdentifier;
 
 /**
  * Sets and remove data sources
  */
 
-- (void)setDataSource:(TIOMockBatchDataSource*)dataSource forTaskId:(NSString*)taskId;
-- (void)removeDataSourceForTaskId:(NSString*)taskId;
+- (void)setDataSource:(TIOMockBatchDataSource *)dataSource forTaskId:(NSString *)taskId;
+- (void)removeDataSourceForTaskId:(NSString *)taskId;
 
 /**
  * Sets and removes model bundles
  */
 
-- (void)setModelBundle:(TIOMockModelBundle*)modelBundel forModelId:(NSString*)modelId;
-- (void)removeModelBundleForModelId:(NSString*)modelId;
+- (void)setModelBundle:(TIOMockModelBundle *)modelBundel forModelId:(NSString *)modelId;
+- (void)removeModelBundleForModelId:(NSString *)modelId;
 
 @end
 

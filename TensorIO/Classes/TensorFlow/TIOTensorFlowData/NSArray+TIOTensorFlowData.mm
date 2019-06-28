@@ -36,9 +36,9 @@
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
-    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription*)description).dequantizer;
-    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
-    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
+    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
+    NSUInteger length = ((TIOVectorLayerDescription *)description).length;
+    TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
     NSMutableArray *array = NSMutableArray.array;
     
     if ( description.isQuantized && dequantizer != nil ) {
@@ -85,9 +85,9 @@
 + (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]);
     
-    TIODataQuantizer quantizer = ((TIOVectorLayerDescription*)description).quantizer;
-    TIODataType dtype = ((TIOVectorLayerDescription*)description).dtype;
-    NSUInteger length = ((TIOVectorLayerDescription*)description).length;
+    TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+    TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
+    NSUInteger length = ((TIOVectorLayerDescription *)description).length;
     int32_t batch_size = (int32_t)column.count;
     
     // Establish shape
@@ -113,10 +113,10 @@
         auto buffer = flat_tensor.data();
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSArray *arrobj = (NSArray*)obj;
+            NSArray *arrobj = (NSArray *)obj;
             size_t offset = idx * length;
             for ( NSInteger i = 0; i < arrobj.count; i++ ) {
-                ((uint8_t *)buffer)[offset+i] = quantizer(((NSNumber*)arrobj[i]).floatValue);
+                ((uint8_t *)buffer)[offset+i] = quantizer(((NSNumber *)arrobj[i]).floatValue);
             }
         }];
         
@@ -127,10 +127,10 @@
         auto buffer = flat_tensor.data();
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSArray *arrobj = (NSArray*)obj;
+            NSArray *arrobj = (NSArray *)obj;
             size_t offset = idx * length;
             for ( NSInteger i = 0; i < arrobj.count; i++ ) {
-                ((uint8_t *)buffer)[offset+i] = ((NSNumber*)arrobj[i]).unsignedCharValue;
+                ((uint8_t *)buffer)[offset+i] = ((NSNumber *)arrobj[i]).unsignedCharValue;
             }
         }];
         
@@ -141,10 +141,10 @@
         auto buffer = flat_tensor.data();
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSArray *arrobj = (NSArray*)obj;
+            NSArray *arrobj = (NSArray *)obj;
             size_t offset = idx * length;
             for ( NSInteger i = 0; i < arrobj.count; i++ ) {
-                ((int32_t *)buffer)[offset+i] = (int32_t)((NSNumber*)arrobj[i]).longValue;
+                ((int32_t *)buffer)[offset+i] = (int32_t)((NSNumber *)arrobj[i]).longValue;
             }
         }];
         
@@ -155,10 +155,10 @@
         auto buffer = flat_tensor.data();
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSArray *arrobj = (NSArray*)obj;
+            NSArray *arrobj = (NSArray *)obj;
             size_t offset = idx * length;
             for ( NSInteger i = 0; i < arrobj.count; i++ ) {
-                ((int64_t *)buffer)[offset+i] = (int64_t)((NSNumber*)arrobj[i]).longLongValue;
+                ((int64_t *)buffer)[offset+i] = (int64_t)((NSNumber *)arrobj[i]).longLongValue;
             }
         }];
         
@@ -169,10 +169,10 @@
         auto buffer = flat_tensor.data();
         
         [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSArray *arrobj = (NSArray*)obj;
+            NSArray *arrobj = (NSArray *)obj;
             size_t offset = idx * length;
             for ( NSInteger i = 0; i < arrobj.count; i++ ) {
-                ((float_t *)buffer)[offset+i] = ((NSNumber*)arrobj[i]).floatValue;
+                ((float_t *)buffer)[offset+i] = ((NSNumber *)arrobj[i]).floatValue;
             }
         }];
         

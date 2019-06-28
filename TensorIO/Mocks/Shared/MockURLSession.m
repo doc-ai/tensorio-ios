@@ -23,7 +23,7 @@
     NSURLRequest *_mockRequest;
 }
 
-- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest {
+- (instancetype)initWithMockURLRequest:(NSURLRequest *)mockRequest {
     if ((self=[super init])) {
         _mockRequest = mockRequest;
     }
@@ -34,11 +34,11 @@
     _calledResume = YES;
 }
 
-- (NSURLRequest*)originalRequest {
+- (NSURLRequest *)originalRequest {
     return _mockRequest;
 }
 
-- (NSURLRequest*)currentRequest {
+- (NSURLRequest *)currentRequest {
     return _mockRequest;
 }
 
@@ -48,7 +48,7 @@
     NSURLRequest *_mockRequest;
 }
 
-- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest {
+- (instancetype)initWithMockURLRequest:(NSURLRequest *)mockRequest {
     if ((self=[super init])) {
         _mockRequest = mockRequest;
     }
@@ -59,11 +59,11 @@
     _calledResume = YES;
 }
 
-- (NSURLRequest*)originalRequest {
+- (NSURLRequest *)originalRequest {
     return _mockRequest;
 }
 
-- (NSURLRequest*)currentRequest {
+- (NSURLRequest *)currentRequest {
     return _mockRequest;
 }
 
@@ -73,7 +73,7 @@
     NSURLRequest *_mockRequest;
 }
 
-- (instancetype)initWithMockURLRequest:(NSURLRequest*)mockRequest {
+- (instancetype)initWithMockURLRequest:(NSURLRequest *)mockRequest {
     if ((self=[super init])) {
         _mockRequest = mockRequest;
     }
@@ -84,11 +84,11 @@
     _calledResume = YES;
 }
 
-- (NSURLRequest*)originalRequest {
+- (NSURLRequest *)originalRequest {
     return _mockRequest;
 }
 
-- (NSURLRequest*)currentRequest {
+- (NSURLRequest *)currentRequest {
     return _mockRequest;
 }
 
@@ -100,7 +100,7 @@
     NSMutableArray<id<MockSessionResponse>> *_responseQueue;
 }
 
-- (instancetype)initWithJSONResponse:(NSDictionary*)JSON {
+- (instancetype)initWithJSONResponse:(NSDictionary *)JSON {
     if ((self=[super init])) {
         _JSONResponse = JSON;
         _JSONData = [NSJSONSerialization dataWithJSONObject:JSON options:0 error:nil];
@@ -112,28 +112,28 @@
     return self;
 }
 
-- (instancetype)initWithJSONData:(NSData*)JSONData {
+- (instancetype)initWithJSONData:(NSData *)JSONData {
     if ((self=[super init])) {
         _JSONData = JSONData;
     }
     return self;
 }
 
-- (instancetype)initWithDownload:(NSURL*)download {
+- (instancetype)initWithDownload:(NSURL *)download {
     if ((self=[super init])) {
         _download = download;
     }
     return self;
 }
 
-- (instancetype)initWithUpload:(NSURL*)upload {
+- (instancetype)initWithUpload:(NSURL *)upload {
     if ((self=[super init])) {
         _upload = upload;
     }
     return self;
 }
 
-- (instancetype)initWithError:(NSError*)error {
+- (instancetype)initWithError:(NSError *)error {
     if ((self=[super init])) {
         _error = error;
     }
@@ -159,15 +159,15 @@
     id<MockSessionResponse> next = _responseQueue.firstObject;
     
     if ( [next isKindOfClass:NSDictionary.class] ) {
-        _JSONResponse = (NSDictionary*)next;
-        _JSONData = [NSJSONSerialization dataWithJSONObject:(NSDictionary*)next options:0 error:nil];
+        _JSONResponse = (NSDictionary *)next;
+        _JSONData = [NSJSONSerialization dataWithJSONObject:(NSDictionary *)next options:0 error:nil];
     } else if ( [next isKindOfClass:NSData.class] ) {
-        _JSONData = (NSData*)next;
+        _JSONData = (NSData *)next;
     } else if ( [next isKindOfClass:NSURL.class] ) {
-        _download = (NSURL*)next;
-        _upload = (NSURL*)next;
+        _download = (NSURL *)next;
+        _upload = (NSURL *)next;
     } else if ( [next isKindOfClass:NSError.class] ) {
-        _error = (NSError*)next;
+        _error = (NSError *)next;
     }
     
     [_responseQueue removeObjectAtIndex:0];
@@ -179,7 +179,7 @@
 
 // MARK: -
 
-- (NSURLSessionDataTask*)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+- (NSURLSessionDataTask *)dataTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSURLRequest *URLRequest = [NSURLRequest requestWithURL:url];
     NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:url];
     
@@ -200,7 +200,7 @@
     return [[MockSessionDataTask alloc] initWithMockURLRequest:URLRequest];
 }
 
-- (NSURLSessionDownloadTask*)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+- (NSURLSessionDownloadTask *)downloadTaskWithURL:(NSURL *)url completionHandler:(void (^)(NSURL * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     NSURLRequest *URLRequest = [NSURLRequest requestWithURL:url];
     NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:url];
     
@@ -222,7 +222,7 @@
     return [[MockSessionDownloadTask alloc] initWithMockURLRequest:URLRequest];
 }
 
-- (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+- (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromFile:(NSURL *)fileURL completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     
     NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:request.URL];
     
@@ -240,7 +240,7 @@
     return [[MockSessionUploadTask alloc] initWithMockURLRequest:request];
 }
 
-- (NSURLSessionUploadTask*)uploadTaskWithRequest:(NSURLRequest *)request fromData:(NSData *)bodyData completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
+- (NSURLSessionUploadTask *)uploadTaskWithRequest:(NSURLRequest *)request fromData:(NSData *)bodyData completionHandler:(void (^)(NSData * _Nullable, NSURLResponse * _Nullable, NSError * _Nullable))completionHandler {
     
     NSURLResponse *URLResponse = [MockURLSession URLResponse200OK:request.URL];
     
@@ -260,7 +260,7 @@
 
 // MARK: -
 
-- (nullable NSURL*)copyToTemporaryDirectory:(NSURL*)URL {
+- (nullable NSURL *)copyToTemporaryDirectory:(NSURL *)URL {
     NSURL *tempDir = [NSURL fileURLWithPath:NSTemporaryDirectory()];
     NSURL *destURL = [tempDir URLByAppendingPathComponent:URL.lastPathComponent];
     
@@ -276,7 +276,7 @@
     return destURL;
 }
 
-+ (NSHTTPURLResponse*)URLResponse200OK:(NSURL*)URL {
++ (NSHTTPURLResponse *)URLResponse200OK:(NSURL *)URL {
     return [[NSHTTPURLResponse alloc] initWithURL:URL statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:nil];
 }
 

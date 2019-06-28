@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Initializes an update with a bundle and repository.
  */
 
-- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepositoryClient*)repository NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelBundle:(TIOModelBundle *)bundle repository:(TIOModelRepositoryClient *)repository NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer

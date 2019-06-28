@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  * designated initializer in the superclass.
  */
 
-- (instancetype)initWithMockedModel:(id<TIOModel>)model path:(NSString*)path;
+- (instancetype)initWithMockedModel:(id<TIOModel>)model path:(NSString *)path;
 
 /**
  * Overrides newModel to return the mocked model

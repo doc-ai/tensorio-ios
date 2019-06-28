@@ -34,11 +34,11 @@
 
 #pragma GCC diagnostic pop
 
-+ (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
++ (nullable instancetype)modelWithBundleAtPath:(NSString *)path {
     return [[TIOMockTrainableModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
 
-- (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle {
+- (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle {
     if ((self=[super init])) {
         _runCount = 0;
         _trainCount = 0;
@@ -47,7 +47,7 @@
     return self;
 }
 
-- (BOOL)load:(NSError**)error {
+- (BOOL)load:(NSError * _Nullable *)error {
     return YES;
 }
 
@@ -74,7 +74,7 @@
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name {
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
@@ -82,12 +82,12 @@
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name {
     // Dummy value
     return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
 }
 
-- (id<TIOData>)train:(TIOBatch*)batch {
+- (id<TIOData>)train:(TIOBatch *)batch {
     _trainCount++;
     return @{};
 }
@@ -97,7 +97,7 @@
     return @{};
 }
 
-- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error {
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error {
     _trainCount++;
     
     // Dummy export
@@ -108,7 +108,9 @@
         
         if ( fmError != nil ) {
             NSLog(@"Unable to acquire contents of mock exports url: %@, error: %@", self.mockExportsURL, fmError);
-            *error = fmError;
+            if (error) {
+                *error = fmError;
+            }
             return NO;
         }
         
@@ -118,7 +120,9 @@
             
             if ( fmError != nil ) {
                 NSLog(@"Unable to copy some mock content at url: %@, to url: %@, error: %@", sourceURL, destURL, fmError);
-                *error = fmError;
+                if (error) {
+                    *error = fmError;
+                }
                 return NO;
             }
         }

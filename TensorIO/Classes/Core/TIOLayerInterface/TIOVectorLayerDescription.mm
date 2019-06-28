@@ -49,7 +49,7 @@
     return self.labels != nil && self.labels.count != 0;
 }
 
-- (NSDictionary<NSString*,NSNumber*>*)labeledValues:(TIOVector*)vector {
+- (NSDictionary<NSString*,NSNumber*>*)labeledValues:(TIOVector *)vector {
     assert(self.isLabeled);
     
     NSMutableDictionary<NSString*,NSNumber*> *labeledValues = NSMutableDictionary.dictionary;

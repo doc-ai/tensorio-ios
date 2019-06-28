@@ -41,7 +41,7 @@
  * Creates a validator from a model bundle at filename
  */
 
-- (TIOModelBundleValidator*)validatorForFilename:(NSString*)filename {
+- (TIOModelBundleValidator *)validatorForFilename:(NSString *)filename {
     NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
     TIOModelBundleValidator *validator = [[TIOModelBundleValidator alloc] initWithModelBundleAtPath:path];
     return validator;

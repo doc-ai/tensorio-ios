@@ -41,7 +41,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
 
 @implementation TIOModelUpdater
 
-- (instancetype)initWithModelBundle:(TIOModelBundle*)bundle repository:(TIOModelRepositoryClient*)repository {
+- (instancetype)initWithModelBundle:(TIOModelBundle *)bundle repository:(TIOModelRepositoryClient *)repository {
     if ((self=[super init])) {
         _bundle = bundle;
         _repository = repository;
@@ -216,7 +216,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
  * error = `nil`. Otherwise, error will be set to some value.
  */
 
-- (void)updateModelWithId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointId:(NSString*)checkpointId callback:(void(^)(BOOL updated, NSURL * _Nullable downloadURL, NSError * _Nullable error))responseBlock {
+- (void)updateModelWithId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId checkpointId:(NSString *)checkpointId callback:(void(^)(BOOL updated, NSURL * _Nullable downloadURL, NSError * _Nullable error))responseBlock {
     
     [self.repository GETHyperparameterForModelWithId:modelId hyperparametersId:hyperparametersId callback:^(TIOMRHyperparameter * _Nullable hyperparameter, NSError * _Nullable error) {
         if ( error != nil ) {
@@ -321,7 +321,7 @@ static NSInteger TIOMRUpdateFileCopyError = 204;
  * which should be a temporary directory.
  */
 
-- (BOOL)unzipModelBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL callback:(void(^)(NSURL * _Nullable bundleURL, NSError * _Nullable error))callback {
+- (BOOL)unzipModelBundleAtURL:(NSURL *)sourceURL toURL:(NSURL *)destinationURL callback:(void(^)(NSURL * _Nullable bundleURL, NSError * _Nullable error))callback {
     NSFileManager *fm = NSFileManager.defaultManager;
     
     [SSZipArchive unzipFileAtPath:sourceURL.path toDestination:destinationURL.path progressHandler:nil completionHandler:^(NSString * _Nonnull path, BOOL succeeded, NSError * _Nullable error) {

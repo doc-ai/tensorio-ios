@@ -46,7 +46,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNil(error);
@@ -75,7 +75,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -96,7 +96,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[repository downloadModelBundleAtURL:testURL withModelId:@"happy-face" hyperparametersId:@"batch-9-2-0-1-5" checkpointId:@"model.ckpt-321312" callback:^(TIOMRDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);

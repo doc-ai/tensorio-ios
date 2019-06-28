@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  * needed to convert a pixel buffer to a format that can be accepted by the model.
  */
 
-- (instancetype)initWithTIOPixelBufferDescription:(TIOPixelBufferLayerDescription*)pixelBufferDescription;
+- (instancetype)initWithTIOPixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription;
 
 /**
  * Use the designated initializer.

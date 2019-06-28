@@ -23,7 +23,7 @@
 
 @implementation TIOMRCheckpoints
 
-- (nullable instancetype)initWithJSON:(NSDictionary*)JSON error:(NSError**)error {
+- (nullable instancetype)initWithJSON:(NSDictionary *)JSON error:(NSError**)error {
     if ((self=[super init])) {
         if ( JSON[@"checkpointIds"] == nil || ![JSON[@"checkpointIds"] isKindOfClass:NSArray.class] ) {
             *error = TIOMRJSONParsingError(self.class, @"checkpointIds", JSON);
@@ -49,7 +49,7 @@
     return self;
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
     NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
     NSString *cs = [NSString stringWithFormat:@"Checkpoint IDs: %@", self.checkpointIds];

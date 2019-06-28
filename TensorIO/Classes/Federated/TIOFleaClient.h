@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
  * `nil` may be sufficient.
  */
 
-- (instancetype)initWithBaseURL:(NSURL*)baseURL session:(nullable NSURLSession*)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBaseURL:(NSURL *)baseURL session:(nullable NSURLSession *)URLSession downloadSession:(nullable NSURLSession *)downloadURLSession NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer
@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
  * A background session identifier to be used with background session configuration
  */
 
-+ (NSString*)backgroundSessionIdentifier;
++ (NSString *)backgroundSessionIdentifier;
 
 // MARK: - Primitive Repository Methods
 
@@ -126,33 +126,33 @@ NS_ASSUME_NONNULL_BEGIN
  * Checks if the repository is up and correctly running
  */
 
-- (NSURLSessionTask*)GETHealthStatus:(void(^)(TIOFleaStatus * _Nullable status, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask *)GETHealthStatus:(void(^)(TIOFleaStatus * _Nullable status, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves a list of tasks ids for a (model, hyperparameters, checkpoint) tuple.
  * Any of the tuple values may be nil.
  */
 
-- (NSURLSessionTask*)GETTasksWithModelId:(nullable NSString*)modelId hyperparametersId:(nullable NSString*)hyperparametersId checkpointId:(nullable NSString*)checkpointId callback:(void(^)(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask *)GETTasksWithModelId:(nullable NSString *)modelId hyperparametersId:(nullable NSString *)hyperparametersId checkpointId:(nullable NSString *)checkpointId callback:(void(^)(TIOFleaTasks * _Nullable tasks, NSError * _Nullable error))responseBlock;
 
 /**
  * Retrieves metadata for a task with id, including a link to the task bundle
  */
 
-- (NSURLSessionTask*)GETTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTask * _Nullable task, NSError * _Nullable error))responseBlock;
+- (NSURLSessionTask *)GETTaskWithTaskId:(NSString *)taskId callback:(void(^)(TIOFleaTask * _Nullable task, NSError * _Nullable error))responseBlock;
 
 /**
  * Informs the server that the client will begin working on a task
  */
 
- - (NSURLSessionTask*)GETStartTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaJob * _Nullable job, NSError * _Nullable error))responseBlock;
+ - (NSURLSessionTask *)GETStartTaskWithTaskId:(NSString *)taskId callback:(void(^)(TIOFleaJob * _Nullable job, NSError * _Nullable error))responseBlock;
 
 /**
  * Informs the server of an error while processing a job for a task.
  * A temporary API.
  */
 
-- (nullable NSURLSessionTask*)POSTErrorMessage:(NSString*)errorMessage taskId:(NSString*)taskId jobId:(NSString*)jobId callback:(void(^)(BOOL success, NSError * _Nullable error))responseBlock;
+- (nullable NSURLSessionTask *)POSTErrorMessage:(NSString *)errorMessage taskId:(NSString *)taskId jobId:(NSString *)jobId callback:(void(^)(BOOL success, NSError * _Nullable error))responseBlock;
 
 /**
  * Downloads a zipped task bundle.
@@ -161,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
  * for progress.
  */
 
-- (NSURLSessionDownloadTask*)downloadTaskBundleAtURL:(NSURL*)URL withTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock;
+- (NSURLSessionDownloadTask *)downloadTaskBundleAtURL:(NSURL *)URL withTaskId:(NSString *)taskId callback:(void(^)(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error))responseBlock;
 
 /**
  * Uploads the results of a job to the server. The sourceURL should be a zipped
@@ -175,7 +175,7 @@ NS_ASSUME_NONNULL_BEGIN
  * does not exist
  */
 
-- (nullable NSURLSessionUploadTask*)uploadJobResultsAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL withJobId:(NSString*)jobId callback:(void(^)(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error))responseBlock;
+- (nullable NSURLSessionUploadTask *)uploadJobResultsAtURL:(NSURL *)sourceURL toURL:(NSURL *)destinationURL withJobId:(NSString *)jobId callback:(void(^)(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error))responseBlock;
 
 @end
 

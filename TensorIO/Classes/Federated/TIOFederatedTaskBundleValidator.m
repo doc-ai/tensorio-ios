@@ -34,37 +34,43 @@ static NSError * TIOFTTaskValidationError(void);
 
 @implementation TIOFederatedTaskBundleValidator
 
-- (instancetype)initWithModelBundleAtPath:(NSString*)path {
+- (instancetype)initWithModelBundleAtPath:(NSString *)path {
     if ((self=[super init])) {
         _path = path;
     }
     return self;
 }
 
-- (BOOL)validate:(NSError**)error {
+- (BOOL)validate:(NSError * _Nullable *)error {
     return [self validate:nil error:error];
 }
 
-- (BOOL)validate:(_Nullable TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError**)error {
+- (BOOL)validate:(_Nullable TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError * _Nullable *)error {
     NSFileManager *fm = NSFileManager.defaultManager;
     BOOL isDirectory;
     
     // Validate path
     
     if ( ![fm fileExistsAtPath:self.path isDirectory:&isDirectory] || !isDirectory ) {
-        *error = TIOFTInvalidFilepathError(self.path);
+        if (error) {
+            *error = TIOFTInvalidFilepathError(self.path);
+        }
         return NO;
     }
     
     // Validate bundle structure
     
     if ( ![self.path.pathExtension isEqualToString:TIOFederatedTaskBundleExtension] ) {
-        *error = TIOFTInvalidExtensionError(self.path);
+       if (error) {
+            *error = TIOFTInvalidExtensionError(self.path);
+        }
         return NO;
     }
     
     if ( ![fm fileExistsAtPath:self.JSONPath isDirectory:&isDirectory] || isDirectory ) {
-        *error = TIOFTNoTaskJSONFileError();
+        if (error) {
+            *error = TIOFTNoTaskJSONFileError();
+        }
         return NO;
     }
     
@@ -73,7 +79,9 @@ static NSError * TIOFTTaskValidationError(void);
     NSDictionary *JSON = [self loadJSON];
     
     if ( JSON == nil ) {
-        *error = TIOFTMalformedJSONError();
+        if (error) {
+            *error = TIOFTMalformedJSONError();
+        }
         return NO;
     }
     
@@ -83,7 +91,9 @@ static NSError * TIOFTTaskValidationError(void);
     DSJSONSchema *schema = [self JSONSchema:&schemaError];
     
     if (schemaError) {
-        *error = TIOFTTaskSchemaError();
+        if (error) {
+            *error = TIOFTTaskSchemaError();
+        }
         NSLog(@"There was a problem loading the task schema, error: %@", schemaError);
         return NO;
     }
@@ -92,7 +102,9 @@ static NSError * TIOFTTaskValidationError(void);
     [schema validateObject:JSON withError:&validationError];
     
     if (validationError) {
-        *error = TIOFTTaskValidationError();
+        if (error) {
+            *error = TIOFTTaskValidationError();
+        }
         NSLog(@"The task.json file failed validation, error: %@", validationError);
         return NO;
     }
@@ -106,17 +118,17 @@ static NSError * TIOFTTaskValidationError(void);
     return YES;
 }
 
-- (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError**)error {
+- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOFederatedTaskBundleValidationBlock)customValidator error:(NSError * _Nullable *)error {
     return customValidator(self.path, JSON, error);
 }
 
 // MARK: - Utilities
 
-- (NSString*)JSONPath {
+- (NSString *)JSONPath {
     return [self.path stringByAppendingPathComponent:TIOTaskInfoFile];
 }
 
-- (NSDictionary*)loadJSON {
+- (NSDictionary *)loadJSON {
     NSString *path = self.JSONPath;
     NSData *data = [NSData dataWithContentsOfFile:path];
     
@@ -131,7 +143,7 @@ static NSError * TIOFTTaskValidationError(void);
     return JSON;
 }
 
-- (DSJSONSchema*)JSONSchema:(NSError**)error {
+- (DSJSONSchema *)JSONSchema:(NSError * _Nullable *)error {
     NSBundle *frameworkBundle = [NSBundle bundleForClass:self.class];
     NSURL *resourceURL = [frameworkBundle.resourceURL URLByAppendingPathComponent:TIOFederatedAssetBundle];
     NSBundle *resourceBundle = [NSBundle bundleWithURL:resourceURL];

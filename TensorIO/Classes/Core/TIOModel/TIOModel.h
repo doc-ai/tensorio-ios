@@ -196,7 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype An instance of the conforming class, may be `nil`.
  */
 
-- (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle;
+- (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle;
 
 /**
  * Convenience method for initializing a model directly from bundle at some path
@@ -206,7 +206,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return instancetype An instance of the model, or `nil`.
  */
 
-+ (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
++ (nullable instancetype)modelWithBundleAtPath:(NSString *)path;
 
 // MARK: - Lifecycle
 
@@ -224,7 +224,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @return BOOL `YES` if the model is successfully loaded, `NO` otherwise.
  */
 
-- (BOOL)load:(NSError**)error;
+- (BOOL)load:(NSError * _Nullable *)error;
 
 /**
  * Unloads a model from memory
@@ -280,7 +280,7 @@ NS_ASSUME_NONNULL_BEGIN
  * for more information about this json file.
  */
  
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name;
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name;
 
 /**
  * Returns a description of the model's output at a given index
@@ -308,7 +308,7 @@ NS_ASSUME_NONNULL_BEGIN
  * for more information about this json file.
  */
 
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name;
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name;
 
 @end
 

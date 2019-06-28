@@ -48,25 +48,25 @@ static float kDotViewDim = 5.0;
 
 @implementation ImageInputPreviewView
 
-- (UIImageView*)alphaImageView {
+- (UIImageView *)alphaImageView {
     return self.pixelFormat == kCVPixelFormatType_32ARGB
         ? bufferChannel0ImageView
         : bufferChannel3ImageView;
 }
 
-- (UIImageView*)redImageView {
+- (UIImageView *)redImageView {
     return self.pixelFormat == kCVPixelFormatType_32ARGB
         ? bufferChannel1ImageView
         : bufferChannel2ImageView;
 }
 
-- (UIImageView*)greenImageView {
+- (UIImageView *)greenImageView {
     return self.pixelFormat == kCVPixelFormatType_32ARGB
         ? bufferChannel2ImageView
         : bufferChannel1ImageView;
 }
 
-- (UIImageView*)blueImageView {
+- (UIImageView *)blueImageView {
     return self.pixelFormat == kCVPixelFormatType_32ARGB
         ? bufferChannel3ImageView
         : bufferChannel0ImageView;
@@ -155,7 +155,7 @@ static float kDotViewDim = 5.0;
     [self.greenImageView addSubview:greenDot];
 }
 
-- (void)setProperties:(UIImageView*)imageView {
+- (void)setProperties:(UIImageView *)imageView {
     imageView.translatesAutoresizingMaskIntoConstraints = false;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -165,7 +165,7 @@ static float kDotViewDim = 5.0;
     [imageView.widthAnchor constraintEqualToConstant:kViewDim].active = YES;
 }
 
-- (void)setDotProperties:(UIView*)view color:(UIColor*)color {
+- (void)setDotProperties:(UIView *)view color:(UIColor *)color {
     view.frame = CGRectMake(kDotViewOffset, kDotViewOffset, kDotViewDim, kDotViewDim);
     view.backgroundColor = color;
     view.clipsToBounds = YES;

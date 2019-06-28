@@ -22,7 +22,7 @@
 
 @implementation TIOModelBundle (TIOTensorFlowModel)
 
-- (NSString*)modelPredictPath {
+- (NSString *)modelPredictPath {
     if (self.isPlaceholder) {
         return nil;
     } else {
@@ -30,7 +30,7 @@
     }
 }
 
-- (NSString*)modelTrainPath {
+- (NSString *)modelTrainPath {
     if (self.isPlaceholder) {
         return nil;
     } else {
@@ -38,7 +38,7 @@
     }
 }
 
-- (NSString*)modelEvalPath {
+- (NSString *)modelEvalPath {
     return nil;
 }
 

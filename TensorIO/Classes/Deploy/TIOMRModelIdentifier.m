@@ -21,7 +21,7 @@
 
 @implementation TIOMRModelIdentifier
 
-- (instancetype)initWithModelId:(NSString*)modelId hyperparametersId:(NSString*)hyperparametersId checkpointsId:(NSString*)checkpointId {
+- (instancetype)initWithModelId:(NSString *)modelId hyperparametersId:(NSString *)hyperparametersId checkpointsId:(NSString *)checkpointId {
     if ((self=[super init])) {
         _modelId = modelId;
         _hyperparametersId = hyperparametersId;
@@ -30,7 +30,7 @@
     return self;
 }
 
-- (nullable instancetype)initWithBundleId:(NSString*)bundleId {
+- (nullable instancetype)initWithBundleId:(NSString *)bundleId {
     NSURL *URL = [NSURL URLWithString:bundleId];
     
     if ( ![URL.scheme isEqualToString:@"tio"] ) {
@@ -52,7 +52,7 @@
     return [self initWithModelId:components[2] hyperparametersId:components[4] checkpointsId:components[6]];
 }
 
-- (NSString*)description {
+- (NSString *)description {
     NSString *ms = [NSString stringWithFormat:@"Model ID: %@", self.modelId];
     NSString *hs = [NSString stringWithFormat:@"Hyperparameters ID: %@", self.hyperparametersId];
     NSString *cs = [NSString stringWithFormat:@"Checkpoint ID: %@", self.checkpointId];

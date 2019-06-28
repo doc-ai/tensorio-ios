@@ -49,7 +49,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNil(error);
@@ -76,7 +76,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -99,7 +99,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -122,7 +122,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNil(error);
@@ -150,7 +150,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNil(error);
@@ -170,7 +170,7 @@
 - (void)testGETModelURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://storage.googleapis.com/doc-ai-models"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {}];
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {}];
     
     NSURL *expectedURL = [[[NSURL
         URLWithString:@"https://storage.googleapis.com/doc-ai-models"]
@@ -189,7 +189,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -211,7 +211,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -233,7 +233,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -253,7 +253,7 @@
     
     TIOModelRepositoryClient *repository = [[TIOModelRepositoryClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[repository GETModelWithId:@"happy-face" callback:^(TIOMRModel * _Nullable model, NSError * _Nonnull error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);

@@ -42,7 +42,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
     
         XCTAssertNil(error);
@@ -69,7 +69,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -90,7 +90,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@""] session:session downloadSession:session];
     
-    MockSessionDownloadTask *task = (MockSessionDownloadTask*)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
+    MockSessionDownloadTask *task = (MockSessionDownloadTask *)[client downloadTaskBundleAtURL:testURL withTaskId:@"task-id" callback:^(TIOFleaTaskDownload * _Nullable download, double progress, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);

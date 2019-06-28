@@ -92,21 +92,21 @@ NS_ASSUME_NONNULL_BEGIN
  * the presence of `-1` in that dimension.
  */
 
-- (NSArray*)excludingBatch;
+- (NSArray *)excludingBatch;
 
 /**
  * Returns a subset of the array excluding the first item, or an empty array
  * if the array is empty.
  */
 
-- (NSArray*)excludingFirst;
+- (NSArray *)excludingFirst;
 
 /**
  * Returns a subset of the array excluding the last item, or an empty array
  * if the array is empty.
  */
 
-- (NSArray*)excludingLast;
+- (NSArray *)excludingLast;
 
 @end
 
@@ -122,7 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Groups the items in the array by some key, returning a dictionary of those key-grouping pairs.
  */
 
-- (NSDictionary *)groupBy:(NSString*)key;
+- (NSDictionary *)groupBy:(NSString *)key;
 
 @end
 

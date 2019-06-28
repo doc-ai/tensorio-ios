@@ -22,14 +22,14 @@
 
 @implementation TIOInMemoryBatchDataSource
 
-- (instancetype)initWithBatch:(TIOBatch*)batch {
+- (instancetype)initWithBatch:(TIOBatch *)batch {
     if ((self=[super init])) {
         _batch = batch;
     }
     return self;
 }
 
-- (instancetype)initWithItem:(TIOBatchItem*)item {
+- (instancetype)initWithItem:(TIOBatchItem *)item {
     return [self initWithBatch:[[TIOBatch alloc] initWithItem:item]];
 }
 
@@ -41,7 +41,7 @@
     return self.batch.count;
 }
 
-- (TIOBatchItem*)itemAtIndex:(NSUInteger)index {
+- (TIOBatchItem *)itemAtIndex:(NSUInteger)index {
     return [self.batch itemAtIndex:index];
 }
 

@@ -89,14 +89,14 @@ NSString * TIOFrameworkVersion() {
 
 @implementation TIOFederatedManager
 
-- (instancetype)initWithClient:(TIOFleaClient*)client {
+- (instancetype)initWithClient:(TIOFleaClient *)client {
     if ((self=[super init])) {
         _client = client;
     }
     return self;
 }
 
-- (instancetype)initWithClient:(TIOFleaClient*)client dataSourceProvider:(id<TIOFederatedManagerDataSourceProvider>)dataSourceProvider delegate:(nullable id<TIOFederatedManagerDelegate>)delegate {
+- (instancetype)initWithClient:(TIOFleaClient *)client dataSourceProvider:(id<TIOFederatedManagerDataSourceProvider>)dataSourceProvider delegate:(nullable id<TIOFederatedManagerDelegate>)delegate {
     if ((self=[self initWithClient:client])) {
         _registeredModelIds = NSMutableSet.set;
         _dataSourceProvider = dataSourceProvider;
@@ -105,12 +105,12 @@ NSString * TIOFrameworkVersion() {
     return self;
 }
 
-- (void)registerForTasksForModelWithId:(NSString*)modelId {
+- (void)registerForTasksForModelWithId:(NSString *)modelId {
     // TODO: update in data store
     [[self mutableSetValueForKey:@"registeredModelIds"] addObject:modelId];
 }
 
-- (void)unregisterForTasksForModelWithId:(NSString*)modelId {
+- (void)unregisterForTasksForModelWithId:(NSString *)modelId {
     // TODO: update in data store
     [[self mutableSetValueForKey:@"registeredModelIds"] removeObject:modelId];
 }
@@ -179,7 +179,7 @@ NSString * TIOFrameworkVersion() {
 
 // MARK: -
 
-- (void)processTask:(NSString*)taskId forModel:(NSString*)modelId {
+- (void)processTask:(NSString *)taskId forModel:(NSString *)modelId {
     [self informDelegateTaskWillBeginProcessing:taskId];
     
     [self taskForTaskId:taskId callback:^(TIOFleaTask * _Nullable task) {
@@ -228,7 +228,7 @@ NSString * TIOFrameworkVersion() {
     }]; // taskForTaskId
 }
 
-- (void)tasksForModelId:(NSString*)modelId callback:(void(^)(TIOFleaTasks * _Nullable tasks))callback {
+- (void)tasksForModelId:(NSString *)modelId callback:(void(^)(TIOFleaTasks * _Nullable tasks))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerGetTasks];
     
     TIOFleaModelIdentifier *identifier = [[TIOFleaModelIdentifier alloc] initWithBundleId:modelId];
@@ -244,7 +244,7 @@ NSString * TIOFrameworkVersion() {
     }];
 }
 
-- (void)taskForTaskId:(NSString*)taskId callback:(void(^)(TIOFleaTask * _Nullable task))callback {
+- (void)taskForTaskId:(NSString *)taskId callback:(void(^)(TIOFleaTask * _Nullable task))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerGetTask];
     
     [self.client GETTaskWithTaskId:taskId callback:^(TIOFleaTask * _Nullable task, NSError * _Nullable error) {
@@ -258,7 +258,7 @@ NSString * TIOFrameworkVersion() {
     }];
 }
 
-- (void)taskBundleForTaskId:(NSString*)taskId URL:(NSURL*)downloadLink callback:(void(^)(TIOFleaTaskDownload * _Nullable taskDownload, NSURL * _Nullable bundleURL))callback {
+- (void)taskBundleForTaskId:(NSString *)taskId URL:(NSURL *)downloadLink callback:(void(^)(TIOFleaTaskDownload * _Nullable taskDownload, NSURL * _Nullable bundleURL))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerDownloadTaskBundle];
     
     // This method could return a bundle from local storage if we've already downloaded it
@@ -293,7 +293,7 @@ NSString * TIOFrameworkVersion() {
     }];
 }
 
-- (void)unzipAndValidateTaskBundleAtURL:(NSURL*)zipURL callback:(void(^)(NSURL * _Nullable bundleURL))callback {
+- (void)unzipAndValidateTaskBundleAtURL:(NSURL *)zipURL callback:(void(^)(NSURL * _Nullable bundleURL))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerUnpackageTaskBundle];
     
     // Create Temporary Directory
@@ -332,7 +332,7 @@ NSString * TIOFrameworkVersion() {
  * an error and allows the calling method to inform the delegate of that error.
  */
 
-- (void)unzipTaskBundleAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL callback:(void(^)(NSURL * _Nullable bundleURL, NSError * _Nullable error))callback {
+- (void)unzipTaskBundleAtURL:(NSURL *)sourceURL toURL:(NSURL *)destinationURL callback:(void(^)(NSURL * _Nullable bundleURL, NSError * _Nullable error))callback {
     NSFileManager *fm = NSFileManager.defaultManager;
     
     [SSZipArchive unzipFileAtPath:sourceURL.path toDestination:destinationURL.path progressHandler:nil completionHandler:^(NSString * _Nonnull path, BOOL succeeded, NSError * _Nullable error) {
@@ -394,7 +394,7 @@ NSString * TIOFrameworkVersion() {
     }];
 }
 
-- (void)startTaskWithTaskId:(NSString*)taskId callback:(void(^)(TIOFleaJob * _Nullable job))callback {
+- (void)startTaskWithTaskId:(NSString *)taskId callback:(void(^)(TIOFleaJob * _Nullable job))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerStartTask];
     
     [self.client GETStartTaskWithTaskId:taskId callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
@@ -408,7 +408,7 @@ NSString * TIOFrameworkVersion() {
     }];
 }
 
-- (void)executeTaskWithTaskId:(NSString*)taskId modelId:(NSString*)modelId taskDownload:(TIOFleaTaskDownload*)taskDownload job:(TIOFleaJob*)job taskBundleURL:(NSURL*)taskBundleURL callback:(void(^)(NSURL * _Nullable resultsBundleZip))callback {
+- (void)executeTaskWithTaskId:(NSString *)taskId modelId:(NSString *)modelId taskDownload:(TIOFleaTaskDownload *)taskDownload job:(TIOFleaJob *)job taskBundleURL:(NSURL *)taskBundleURL callback:(void(^)(NSURL * _Nullable resultsBundleZip))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerLoadTask];
     
     // Load Task
@@ -538,7 +538,7 @@ NSString * TIOFrameworkVersion() {
     }];
 }
 
-- (void)saveJobResults:(NSString*)jobId JSON:(NSDictionary*)JSON model:(id<TIOTrainableModel>)model callback:(void(^)(NSURL * _Nullable zipFileURL, NSError * _Nullable error))callback {
+- (void)saveJobResults:(NSString *)jobId JSON:(NSDictionary *)JSON model:(id<TIOTrainableModel>)model callback:(void(^)(NSURL * _Nullable zipFileURL, NSError * _Nullable error))callback {
     NSFileManager *fm = NSFileManager.defaultManager;
     NSError *fmError;
     
@@ -635,7 +635,7 @@ NSString * TIOFrameworkVersion() {
     callback(zipFile, nil);
 }
 
-- (void)uploadJobResultsAtURL:(NSURL*)sourceURL toURL:(NSURL*)destinationURL withJobId:(NSString*)jobId callback:(void(^)(BOOL success))callback {
+- (void)uploadJobResultsAtURL:(NSURL *)sourceURL toURL:(NSURL *)destinationURL withJobId:(NSString *)jobId callback:(void(^)(BOOL success))callback {
     [self informDelegateActionHasBegun:TIOFederatedManagerUploadTaskResults];
     
     [self.client uploadJobResultsAtURL:sourceURL toURL:destinationURL withJobId:jobId callback:^(TIOFleaJobUpload * _Nullable upload, double progress, NSError * _Nullable error) {
@@ -659,7 +659,7 @@ NSString * TIOFrameworkVersion() {
 
 // MARK: - Error Reporting
 
-- (void)reportError:(NSError*)error taskId:(NSString*)taskId jobId:(NSString*)jobId {
+- (void)reportError:(NSError *)error taskId:(NSString *)taskId jobId:(NSString *)jobId {
     NSString *errorMessage = error.localizedDescription;
     if (error == nil ) {
         errorMessage = [NSString stringWithFormat:@"An error occurred for task: %@, job: %@, no localized description provided", taskId, jobId];
@@ -675,17 +675,17 @@ NSString * TIOFrameworkVersion() {
 
 // MARK: - Data Source Interactions
 
-- (nullable TIOModelBundle*)modelBundleForId:(NSString*)modelId {
+- (nullable TIOModelBundle *)modelBundleForId:(NSString *)modelId {
     return [self.dataSourceProvider federatedManager:self modelBundleForModelWithId:modelId];
 }
 
-- (id<TIOBatchDataSource>)dataSourceForTask:(TIOFederatedTask*)task {
+- (id<TIOBatchDataSource>)dataSourceForTask:(TIOFederatedTask *)task {
     return [self.dataSourceProvider federatedManager:self dataSourceForTaskWithId:task.identifier];
 }
 
 // MARK: - Delegate Interactions
 
-- (void)informDelegateTaskHasCompleted:(NSString*)taskId {
+- (void)informDelegateTaskHasCompleted:(NSString *)taskId {
     if ( !self.delegate ) {
         return;
     }
@@ -698,7 +698,7 @@ NSString * TIOFrameworkVersion() {
     });
 }
 
-- (void)informDelegateTaskWillBeginProcessing:(NSString*)taskId {
+- (void)informDelegateTaskWillBeginProcessing:(NSString *)taskId {
     if ( !self.delegate ) {
         return;
     }
@@ -724,7 +724,7 @@ NSString * TIOFrameworkVersion() {
     });
 }
 
-- (void)informDelegateOfError:(NSError*)error forAction:(TIOFederatedManagerAction)action {
+- (void)informDelegateOfError:(NSError *)error forAction:(TIOFederatedManagerAction)action {
      if ( !self.delegate ) {
         return;
     }

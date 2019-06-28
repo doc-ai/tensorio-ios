@@ -56,7 +56,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return instancetype A validator instance.
  */
 
-- (instancetype)initWithModelBundleAtPath:(NSString*)path NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModelBundleAtPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
@@ -87,7 +87,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
 
-- (BOOL)validate:(_Nullable TIOModelBundleValidationBlock)customValidator error:(NSError**)error;
+- (BOOL)validate:(_Nullable TIOModelBundleValidationBlock)customValidator error:(NSError * _Nullable *)error;
 
 /**
  * A convenience method for validating the bundle when no custom validation is needed.
@@ -97,7 +97,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
 
-- (BOOL)validate:(NSError**)error;
+- (BOOL)validate:(NSError * _Nullable *)error;
 
 /**
  * Validates presence of assets identified in JSON dictionary. Called by `validate:error:`
@@ -108,7 +108,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
 
-- (BOOL)validateAssets:(NSDictionary*)JSON error:(NSError**)error;
+- (BOOL)validateAssets:(NSDictionary *)JSON error:(NSError * _Nullable *)error;
 
 /**
  * Executes a custom validator. Called by `validate:error:`
@@ -122,7 +122,7 @@ typedef BOOL (^TIOModelBundleValidationBlock)(NSString *path, NSDictionary *JSON
  * @return BOOL `YES` if the bundle was successfully validated, `NO` otherwise.
  */
 
-- (BOOL)validateCustomValidator:(NSDictionary*)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError**)error;
+- (BOOL)validateCustomValidator:(NSDictionary *)JSON validator:(TIOModelBundleValidationBlock)customValidator error:(NSError * _Nullable *)error;
 
 @end
 

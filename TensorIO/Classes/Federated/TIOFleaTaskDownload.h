@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
  * are retured by requests to a `TIOFleaClient`.
  */
 
-- (instancetype)initWithURL:(NSURL*)URL taskId:(NSString*)taskId NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithURL:(NSURL *)URL taskId:(NSString *)taskId NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.

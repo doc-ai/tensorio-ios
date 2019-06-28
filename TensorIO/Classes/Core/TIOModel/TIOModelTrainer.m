@@ -67,7 +67,7 @@
  * Prepares a batch for the training pass.
  */
 
-- (TIOBatch*)_batchAtIndex:(NSUInteger)index {
+- (TIOBatch *)_batchAtIndex:(NSUInteger)index {
     TIOBatch *batch = [[TIOBatch alloc] initWithKeys:self.dataSource.keys];
     NSUInteger numberOfItems = self.dataSource.numberOfItems;
     NSRange itemRange;

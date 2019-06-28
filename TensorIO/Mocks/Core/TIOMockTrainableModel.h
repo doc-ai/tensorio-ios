@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // MARK: - TIOModel
 
-+ (nullable instancetype)modelWithBundleAtPath:(NSString*)path;
++ (nullable instancetype)modelWithBundleAtPath:(NSString *)path;
 
 // Model Protocol Properties
 
@@ -84,11 +84,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) TIOModelModes *modes;
 @property (readonly) BOOL loaded;
 
-- (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (BOOL)load:(NSError**)error;
+- (BOOL)load:(NSError * _Nullable *)error;
 - (void)unload;
 
 - (id<TIOData>)runOn:(id<TIOData>)input;
@@ -99,17 +99,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
 
 - (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index __attribute__((deprecated));
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name __attribute__((deprecated));
 
 - (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index __attribute__((deprecated));
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name __attribute__((deprecated));
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name __attribute__((deprecated));
 
 // MARK: - TIOTrainableModel
 
 - (id<TIOData>)train:(TIOBatch *)batch;
 - (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
-- (BOOL)exportTo:(NSURL*)fileURL error:(NSError**)error;
+- (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error;
 
 @end
 

@@ -39,12 +39,12 @@
 
 // MARK: -
 
-- (TIOModelBundle*)bundleWithName:(NSString*)filename {
+- (TIOModelBundle *)bundleWithName:(NSString *)filename {
     NSString *path = [self.modelsPath stringByAppendingPathComponent:filename];
     return [[TIOModelBundle alloc] initWithPath:path];
 }
 
-- (id<TIOModel>)loadModelFromBundle:(nonnull TIOModelBundle*)bundle {
+- (id<TIOModel>)loadModelFromBundle:(nonnull TIOModelBundle *)bundle {
     
     id<TIOModel> model = (id<TIOModel>)[bundle newModel];
     NSError *modelError;
@@ -82,7 +82,7 @@
     // Run the model on a number
     
     NSNumber *numericInput = @(2);
-    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput error:&error];
+    NSDictionary *numericResults = (NSDictionary *)[model runOn:numericInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(numericResults.count == 1);
@@ -92,7 +92,7 @@
     
     float_t bytes[1] = {2};
     NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(float_t)*1];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput error:&error];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
@@ -101,7 +101,7 @@
     // Run the model on a vector
     
     TIOVector *vectorInput = @[@(2)];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
@@ -130,7 +130,7 @@
     // Run the model on a vector
     
     TIOVector *vectorInput = @[@(1),@(2),@(3),@(4)];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
@@ -140,7 +140,7 @@
     
     float_t bytes[4] = {1,2,3,4};
     NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(float_t)*4];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput error:&error];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
@@ -166,7 +166,7 @@
         @[@1,  @2,  @3,  @4],
         @[@10, @20, @30, @40]
     ];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInputs error:&error];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInputs error:&error];
     
     XCTAssertNil(error);
     XCTAssert(vectorResults.count == 2);
@@ -182,7 +182,7 @@
         [NSData dataWithBytes:byteInputs1 length:4*sizeof(float_t)],
         [NSData dataWithBytes:byteInputs2 length:4*sizeof(float_t)],
     ];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs error:&error];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInputs error:&error];
     
     XCTAssertNil(error);
     XCTAssert(byteResults.count == 2);
@@ -234,7 +234,7 @@
             @5000,@6000,@7000,@8000
         ]
     ];
-    NSDictionary *matrixResults = (NSDictionary*)[model runOn:matrixInput error:&error];
+    NSDictionary *matrixResults = (NSDictionary *)[model runOn:matrixInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(matrixResults.count == 2);
@@ -260,7 +260,7 @@
         [NSData dataWithBytes:matrixInput1 length:16*sizeof(float_t)],
         [NSData dataWithBytes:matrixInput2 length:16*sizeof(float_t)],
     ];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInputs error:&error];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInputs error:&error];
     
     XCTAssertNil(error);
     XCTAssert(byteResults.count == 2);
@@ -297,7 +297,7 @@
         @(100),@(200),@(300),@(400),@(500),@(600),@(700),@(800),@(900)
     ];
     
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
@@ -312,7 +312,7 @@
     };
     NSData *byteData = [NSData dataWithBytes:byteInput length:sizeof(float_t)*27];
     
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteData error:&error];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteData error:&error];
     
     XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
@@ -379,7 +379,7 @@
     // Run model on pixel buffer
     
     TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
-    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper error:&error];
+    NSDictionary *output = (NSDictionary *)[model runOn:pixelBufferWrapper error:&error];
     
     XCTAssertNil(error);
     
@@ -470,7 +470,7 @@
     
     TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
-    NSDictionary *output = (NSDictionary*)[model runOn:pixelBufferWrapper error:&error];
+    NSDictionary *output = (NSDictionary *)[model runOn:pixelBufferWrapper error:&error];
     
     XCTAssertNil(error);
     
@@ -525,7 +525,7 @@
     // Run the model on a number
     
     NSNumber *numericInput = @(2);
-    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput error:&error];
+    NSDictionary *numericResults = (NSDictionary *)[model runOn:numericInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(numericResults.count == 1);
@@ -535,7 +535,7 @@
     
     int32_t bytes[1] = {2};
     NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(int32_t)*1];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput error:&error];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
@@ -544,7 +544,7 @@
     // Run the model on a vector
     
     TIOVector *vectorInput = @[@(2)];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
@@ -572,7 +572,7 @@
     // Run the model on a number
     
     NSNumber *numericInput = @(2);
-    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput error:&error];
+    NSDictionary *numericResults = (NSDictionary *)[model runOn:numericInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(numericResults.count == 1);
@@ -582,7 +582,7 @@
     
     int64_t bytes[1] = {2};
     NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(int64_t)*1];
-    NSDictionary *byteResults = (NSDictionary*)[model runOn:byteInput error:&error];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(byteResults.count == 1);
@@ -591,7 +591,7 @@
     // Run the model on a vector
     
     TIOVector *vectorInput = @[@(2)];
-    NSDictionary *vectorResults = (NSDictionary*)[model runOn:vectorInput error:&error];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(vectorResults.count == 1);
@@ -618,7 +618,7 @@
     // Run the model on a number
     
     NSNumber *numericInput = @(2);
-    NSDictionary *numericResults = (NSDictionary*)[model runOn:numericInput error:&error];
+    NSDictionary *numericResults = (NSDictionary *)[model runOn:numericInput error:&error];
     
     XCTAssertNil(error);
     XCTAssert(numericResults.count == 1);
@@ -646,7 +646,7 @@
     TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
     
     NSError *error;
-    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    NSDictionary *output = (NSDictionary *)[model run:batch error:&error];
     
     XCTAssertNil(error);
     XCTAssert(output.count == 1);
@@ -663,7 +663,7 @@
     TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
     
     NSError *error;
-    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    NSDictionary *output = (NSDictionary *)[model run:batch error:&error];
     
     XCTAssertNil(error);
     XCTAssert(output.count == 1);
@@ -677,7 +677,7 @@
     TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
     
     NSError *error;
-    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    NSDictionary *output = (NSDictionary *)[model run:batch error:&error];
     
     XCTAssertNil(error);
     XCTAssert(output.count == 1);
@@ -707,7 +707,7 @@
     TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
     
     NSError *error;
-    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    NSDictionary *output = (NSDictionary *)[model run:batch error:&error];
     
     XCTAssertNil(error);
     XCTAssert(output.count == 2);
@@ -728,7 +728,7 @@
     TIOBatch *batch = [[TIOBatch alloc] initWithItem:item];
     
     NSError *error;
-    NSDictionary *output = (NSDictionary*)[model run:batch error:&error];
+    NSDictionary *output = (NSDictionary *)[model run:batch error:&error];
     
     XCTAssertNil(error);
     XCTAssert(output.count == 2);

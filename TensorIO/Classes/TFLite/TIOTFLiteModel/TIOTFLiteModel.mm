@@ -51,7 +51,7 @@
     std::unique_ptr<tflite::Interpreter> interpreter;
 }
 
-+ (nullable instancetype)modelWithBundleAtPath:(NSString*)path {
++ (nullable instancetype)modelWithBundleAtPath:(NSString *)path {
     return [[TIOTFLiteModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
 
@@ -61,7 +61,7 @@
     #endif
 }
 
-- (nullable instancetype)initWithBundle:(TIOModelBundle*)bundle {
+- (nullable instancetype)initWithBundle:(TIOModelBundle *)bundle {
     if (self = [super init]) {
         _bundle = bundle;
         _options = bundle.options;
@@ -92,7 +92,7 @@
  * @return BOOL `YES` if the model is successfully loaded, `NO` otherwise.
  */
 
-- (BOOL)load:(NSError**)error {
+- (BOOL)load:(NSError * _Nullable *)error {
     if ( _loaded ) {
         return YES;
     }
@@ -105,7 +105,9 @@
     
     if (!model) {
         NSLog(@"Failed to mmap model at path %@", graphPath);
-        *error = kTIOTFLiteModelLoadModelError;
+        if (error) {
+            *error = kTIOTFLiteModelLoadModelError;
+        }
         return NO;
     }
 
@@ -127,17 +129,20 @@
    
     if (!interpreter) {
         NSLog(@"Failed to construct interpreter for model %@", self.identifier);
-        *error = kTIOTFLiteModelConstructInterpreterError;
+        if (error) {
+            *error = kTIOTFLiteModelConstructInterpreterError;
+        }
         return NO;
     }
     if (interpreter->AllocateTensors() != kTfLiteOk) {
         NSLog(@"Failed to allocate tensors for model %@", self.identifier);
-        *error = kTIOTFLiteModelAllocateTensorsError;
+        if (error) {
+            *error = kTIOTFLiteModelAllocateTensorsError;
+        }
         return NO;
     }
     
     _loaded = YES;
-    
     return YES;
 }
 
@@ -173,7 +178,7 @@
     return self.io.inputs[index].dataDescription;
 }
 
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name {
     return self.io.inputs[name].dataDescription;
 }
 
@@ -181,7 +186,7 @@
     return self.io.outputs[index].dataDescription;
 }
 
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString*)name {
+- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name {
     return self.io.outputs[name].dataDescription;
 }
 
@@ -262,7 +267,7 @@
         // With a dictionary input, regardless the count, iterate through the keys and values, mapping them to indices,
         // and prepare the indexed tensors with the values
     
-        NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary*)data;
+        NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary *)data;
         NSAssert([[NSSet setWithArray:dictionaryData.allKeys] isEqualToSet:[NSSet setWithArray:self.io.inputs.keys]],
             @"Batch keys do not match input layer names");
     
@@ -293,7 +298,7 @@
         
         // With an array input, iterate through its entries, preparing the indexed tensors with their values
         
-        NSArray<id<TIOData>> *arrayData = (NSArray*)data;
+        NSArray<id<TIOData>> *arrayData = (NSArray *)data;
         assert(arrayData.count == self.io.inputs.count);
         
         for ( int index = 0; index < arrayData.count; index++ ) {
@@ -314,7 +319,7 @@
  * @param interface A description of the data which the tensor expects
  */
 
-- (void)_prepareInput:(id<TIOData>)input tensor:(void *)tensor interface:(TIOLayerInterface*)interface {
+- (void)_prepareInput:(id<TIOData>)input tensor:(void *)tensor interface:(TIOLayerInterface *)interface {
 
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
@@ -373,7 +378,7 @@
  * @param interface A description of the data which this tensor contains
  */
 
-- (id<TIOData>)_captureOutput:(void *)tensor interface:(TIOLayerInterface*)interface {
+- (id<TIOData>)_captureOutput:(void *)tensor interface:(TIOLayerInterface *)interface {
     __block id<TIOData> data;
     
     [interface

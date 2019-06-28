@@ -43,7 +43,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNil(error);
@@ -63,7 +63,7 @@
 - (void)testGETStartTaskURL {
     MockURLSession *session = [[MockURLSession alloc] init];
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://foo.com"] session:session downloadSession:session];
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error){}];
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error){}];
     
     NSURL *expectedURL = [NSURL URLWithString:@"https://foo.com/start_task/task-id"];
     XCTAssertEqualObjects(task.currentRequest.URL, expectedURL);
@@ -81,7 +81,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -104,7 +104,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -127,7 +127,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
@@ -149,7 +149,7 @@
     
     TIOFleaClient *client = [[TIOFleaClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://foo.com"] session:session downloadSession:session];
     
-    MockSessionDataTask *task = (MockSessionDataTask*)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
+    MockSessionDataTask *task = (MockSessionDataTask *)[client GETStartTaskWithTaskId:@"task-id" callback:^(TIOFleaJob * _Nullable job, NSError * _Nullable error) {
         [expectation fulfill];
         
         XCTAssertNotNil(error);
