@@ -596,7 +596,14 @@
     // Prepare image input
     
     UIImage *image = [UIImage imageNamed:@"example-image"];
-    TIOPixelBufferLayerDescription *description = (TIOPixelBufferLayerDescription *)[model descriptionOfInputAtIndex:0];
+    
+    __block TIOPixelBufferLayerDescription *description;
+    [model.io.inputs[0] matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
+        description = pixelBufferDescription;
+    } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+        XCTFail(@"Model does not contains image input at index 0");
+    }];
+    
     TIOVisionPipeline *pipeline = [[TIOVisionPipeline alloc] initWithTIOPixelBufferDescription:description];
     CVPixelBufferRef pixelBuffer = [pipeline transform:image.pixelBuffer orientation:kCGImagePropertyOrientationUp];
     TIOPixelBuffer *imageFeature = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
