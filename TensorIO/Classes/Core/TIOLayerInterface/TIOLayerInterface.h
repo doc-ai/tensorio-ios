@@ -92,15 +92,6 @@ typedef void (^TIOVectorMatcher)(TIOVectorLayerDescription *vectorDescription);
 @property (readonly,getter=isInput) BOOL input;
 
 /**
- * The underlying data description.
- *
- * Generally you should use the match-case function instead of accessing the underlying
- * `TIOLayerDescription` directly.
- */
-
-@property (readonly) id<TIOLayerDescription> dataDescription;
-
-/**
  * Use this function to switch on the underlying description.
  *
  * When preparing inputs and capturing outputs, a `TIOModel` uses the underlying description of a layer
