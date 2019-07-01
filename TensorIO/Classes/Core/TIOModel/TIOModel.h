@@ -167,20 +167,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) TIOModelIO *io;
 
-/**
- * Returns descriptions of the model's inputs indexed to the order they appear in model.json.
- * This attribute is deprecated. Use `io` instead.
- */
-
-@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
-
-/**
- * Returns descriptions of the model's outputs indexed to the order they appear in model.json.
- * This attribute is deprecated. Use `io` instead.
- */
-
-@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
-
  // MARK: - Initialization
 
 /**

@@ -164,16 +164,6 @@
     _loaded = NO;
 }
 
-// MARK: - Input and Output Features
-
-- (NSArray<TIOLayerInterface*>*)inputs {;
-    return self.io.inputs.all;
-}
-
-- (NSArray<TIOLayerInterface*>*)outputs {
-    return self.io.outputs.all;
-}
-
 // MARK: - Perform Inference
 
 - (id<TIOData>)runOn:(id<TIOData>)input {

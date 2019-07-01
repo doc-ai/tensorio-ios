@@ -96,9 +96,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<TIOData>)runOn:(id<TIOData>)input error:(NSError * _Nullable *)error;
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error;
 
-@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
-@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
-
 // MARK: - TIOTrainableModel
 
 - (id<TIOData>)train:(TIOBatch *)batch;
