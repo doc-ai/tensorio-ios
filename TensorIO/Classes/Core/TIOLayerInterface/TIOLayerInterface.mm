@@ -29,6 +29,7 @@ typedef enum : NSUInteger {
 } TIOLayerInterfaceType;
 
 @implementation TIOLayerInterface {
+    id<TIOLayerDescription> _layerDescription;
     TIOLayerInterfaceType _type;
 }
 
@@ -37,7 +38,7 @@ typedef enum : NSUInteger {
         _name = name;
         _input = isInput;
         _type = TIOLayerInterfaceTypePixelBuffer;
-        _dataDescription = pixelBufferDescription;
+        _layerDescription = pixelBufferDescription;
     }
     return self;
 }
@@ -47,7 +48,7 @@ typedef enum : NSUInteger {
         _name = name;
         _input = isInput;
         _type = TIOLayerInterfaceTypeVector;
-        _dataDescription = vectorDescription;
+        _layerDescription = vectorDescription;
     }
     return self;
 }
@@ -56,10 +57,10 @@ typedef enum : NSUInteger {
     
     switch ( _type ) {
     case TIOLayerInterfaceTypePixelBuffer:
-        pixelBufferMatcher((TIOPixelBufferLayerDescription *)_dataDescription);
+        pixelBufferMatcher((TIOPixelBufferLayerDescription *)_layerDescription);
         break;
     case TIOLayerInterfaceTypeVector:
-        vectorMatcher((TIOVectorLayerDescription *)_dataDescription);
+        vectorMatcher((TIOVectorLayerDescription *)_layerDescription);
         break;
     }
 }
