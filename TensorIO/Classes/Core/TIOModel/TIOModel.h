@@ -167,20 +167,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly) TIOModelIO *io;
 
-/**
- * Returns descriptions of the model's inputs indexed to the order they appear in model.json.
- * This attribute is deprecated. Use `io` instead.
- */
-
-@property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
-
-/**
- * Returns descriptions of the model's outputs indexed to the order they appear in model.json.
- * This attribute is deprecated. Use `io` instead.
- */
-
-@property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
-
  // MARK: - Initialization
 
 /**
@@ -251,64 +237,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<TIOData>)runOn:(id<TIOData>)input __attribute__((deprecated));
 - (id<TIOData>)runOn:(id<TIOData>)input error:(NSError* _Nullable *)error;
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error;
-
-// MARK: - Input/Output Layers
-
-/**
- * Returns a description of the model's input at a given index
- *
- * Model inputs and outputs are organized by index and name. In the model.json file that describes
- * the interface to a model, an array of named inputs includes information such as the type of
- * data the input expects, its volume, and any transformations that will be applied to it.
- *
- * This information is encapsulated in a `TIOLayerDescription`, which is used to prepare
- * inputs provided to the `runOn:` method prior to performing inference. See TIOModelBundleJSONSchema.h
- * for more information about this json file.
- */
-
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index;
-
-/**
- * Returns a description of the model's input for a given name
- *
- * Model inputs and outputs are organized by index and name. In the model.json file that describes
- * the interface to a model, an array of named inputs includes information such as the type of
- * data the input expects, its volume, and any transformations that will be applied to it.
- *
- * This information is encapsulated in a `TIOLayerDescription`, which is used to prepare
- * inputs provided to the `runOn:` method prior to performing inference. See TIOModelBundleJSONSchema.h
- * for more information about this json file.
- */
- 
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name;
-
-/**
- * Returns a description of the model's output at a given index
- *
- * Model inputs and outputs are organized by index and name. In the model.json file that describes
- * the interface to a model, an array of named inputs includes information such as the type of
- * data the input expects, its volume, and any transformations that will be applied to it.
- *
- * This information is encapsulated in a `TIOLayerDescription`, which is used to prepare the results
- * of performing inference and returned from the `runOn:` method. See TIOModelBundleJSONSchema.h
- * for more information about this json file.
- */
-
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index;
-
-/**
- * Returns a description of the model's output for a given name
- *
- * Model inputs and outputs are organized by index and name. In the model.json file that describes
- * the interface to a model, an array of named inputs includes information such as the type of
- * data the input expects, its volume, and any transformations that will be applied to it.
- *
- * This information is encapsulated in a `TIOLayerDescription`, which is used to prepare the results
- * of performing inference and returned from the `runOn:` method. See TIOModelBundleJSONSchema.h
- * for more information about this json file.
- */
-
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name;
 
 @end
 
