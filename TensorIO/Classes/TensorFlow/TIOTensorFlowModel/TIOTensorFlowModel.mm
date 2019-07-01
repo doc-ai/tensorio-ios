@@ -206,22 +206,6 @@ typedef std::vector<std::string> TensorNames;
     return self.io.outputs.all;
 }
 
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index {
-    return self.io.inputs[index].dataDescription;
-}
-
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name {
-    return self.io.inputs[name].dataDescription;
-}
-
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index {
-    return self.io.outputs[index].dataDescription;
-}
-
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name {
-    return self.io.outputs[name].dataDescription;
-}
-
 // MARK: - Perform Inference
 
 - (id<TIOData>)runOn:(id<TIOData>)input {

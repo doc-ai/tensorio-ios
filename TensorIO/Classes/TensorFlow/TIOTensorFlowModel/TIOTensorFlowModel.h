@@ -90,12 +90,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSArray<TIOLayerInterface*> *inputs __attribute__((deprecated));
 @property (readonly) NSArray<TIOLayerInterface*> *outputs __attribute__((deprecated));
 
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index __attribute__((deprecated));
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name __attribute__((deprecated));
-
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index __attribute__((deprecated));
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name __attribute__((deprecated));
-
 @end
 
 // MARK: - Training

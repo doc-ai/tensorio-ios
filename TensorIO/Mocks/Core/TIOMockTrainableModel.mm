@@ -70,23 +70,6 @@
     return @{};
 }
 
-- (id<TIOLayerDescription>)descriptionOfInputAtIndex:(NSUInteger)index {
-    // Dummy value
-    return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
-}
-- (id<TIOLayerDescription>)descriptionOfInputWithName:(NSString *)name {
-    // Dummy value
-    return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
-}
-- (id<TIOLayerDescription>)descriptionOfOutputAtIndex:(NSUInteger)index {
-    // Dummy value
-    return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
-}
-- (id<TIOLayerDescription>)descriptionOfOutputWithName:(NSString *)name {
-    // Dummy value
-    return [[TIOVectorLayerDescription alloc] initWithShape:@[] batched:NO dtype:(TIODataTypeFloat32) labels:nil quantized:NO quantizer:nil dequantizer:nil];
-}
-
 - (id<TIOData>)train:(TIOBatch *)batch {
     _trainCount++;
     return @{};
