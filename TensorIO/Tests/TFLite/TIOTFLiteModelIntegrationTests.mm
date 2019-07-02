@@ -397,7 +397,7 @@
     // Error handling
     
     if ( status != kCVReturnSuccess ) {
-        NSLog(@"Couldn't create pixel buffer");
+        XCTFail(@"Couldn't create pixel buffer");
     }
     
     // Copy bytes to pixel buffer
