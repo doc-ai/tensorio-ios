@@ -279,7 +279,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     if ( description.isQuantized ) {
         tensorflow::Tensor tensor(tensorflow::DT_UINT8, shape);
         
-        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
            
             CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer *)obj).pixelBuffer;
@@ -318,7 +318,7 @@ CVReturn TIOCreateCVPixelBufferFromTensorFlowTensor(_Nonnull CVPixelBufferRef * 
     } else {
         tensorflow::Tensor tensor(tensorflow::DT_FLOAT, shape);
         
-        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [column enumerateObjectsUsingBlock:^(id<TIOTensorFlowData> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             size_t offset = idx * length;
             
             CVPixelBufferRef pixelBuffer = ((TIOPixelBuffer *)obj).pixelBuffer;
