@@ -36,7 +36,9 @@
 
 @implementation TIOTensorFlowDataTests
 
-- (void)setUp { }
+- (void)setUp {
+    self.continueAfterFailure = NO;
+}
 
 - (void)tearDown { }
 
@@ -65,7 +67,7 @@
 // Note that the zeroth index of a mapped tensor is always the batch
 // Our tests use batch sizes of 1
 
-// MARK: - NSNumber + TIOData Get Tensor
+// MARK: - NSNumber + TIOTensorFlowData Get Tensor
 
 - (void)testNumberGetTensorFloatUnquantized {
     // It should get the float_t numeric value
@@ -325,7 +327,7 @@
     XCTAssertEqual(maped(1,0), max64bit);
 }
 
-// MARK: - NSNumber + TIOTFLiteData Init with Tensor
+// MARK: - NSNumber + TIOTensorFlowData Init with Tensor
 
 - (void)testNumberInitWithTensorFloatUnquantized {
     // It should return a number with the float_t numeric value
@@ -452,7 +454,7 @@
     XCTAssertEqual((int64_t)n1.longLongValue, max64bit);
 }
 
-// MARK: - NSArray + TIOTFLiteData Get Tensor
+// MARK: - NSArray + TIOTensorFlowData Get Tensor
 
 - (void)testArrayGetTensorFloatUnquantized {
     // It should get the float_t numeric values
@@ -712,7 +714,7 @@
     XCTAssertEqual(tensor_mapped(1,1), max64bit-1);
 }
 
-// MARK: - NSArray + TIOTFLiteData Init with Tensor
+// MARK: - NSArray + TIOTensorFlowData Init with Tensor
 
 - (void)testArrayInitWithTensorFloatUnquantized {
     // It should return an array of numbers with the float_t numeric values
@@ -836,7 +838,7 @@
     XCTAssertEqual((int64_t)numbers[1].longValue, max64bit);
 }
 
-// MARK: - NSData + TIOTFLiteData Get Tensor
+// MARK: - NSData + TIOTensorFlowData Get Tensor
 
 - (void)testDataGetTensorFloatUnquantized {
     // It should get the float_t numeric values
@@ -1106,7 +1108,7 @@
     XCTAssertEqual(tensor_mapped(1,1), max64bit-1);
 }
 
-// MARK: - NSData + TIOTFLiteData Init with Tensor
+// MARK: - NSData + TIOTensorFlowData Init with Tensor
 
 - (void)testDataInitWithTensorFloatUnquantized {
     // It should return an array of numbers with the float_t numeric values
@@ -1233,6 +1235,586 @@
     int64_t *buffer = (int64_t *)numbers.bytes;
     XCTAssertEqual(buffer[0], min64bit);
     XCTAssertEqual(buffer[1], max64bit);
+}
+
+// MARK: - TIOPixelBuffer + TIOTensorFlowData Get Tensor
+
+- (void)testPixelBufferGetTensorUnnormalized {
+    // Create ARGB bytes
+    
+    const int width = 224;
+    const int height = 224;
+    const int channels = 4;
+    
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+        
+        pixel[0] = 255; // A
+        pixel[1] = 255; // R
+        pixel[2] = 0;   // G
+        pixel[3] = 0;   // B
+    }
+    
+    // Create a pixel buffer for those bytes
+    
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+    
+    // Error handling
+    
+    if ( status != kCVReturnSuccess ) {
+        XCTFail(@"Couldn't create pixel buffer");
+    }
+    
+    // Copy bytes to pixel buffer
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    
+    // Get bytes from pixel buffer
+    
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    NSArray *shape = @[@(224),@(224),@(3)];
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    
+    TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
+        initWithPixelFormat:kCVPixelFormatType_32ARGB
+        shape:shape
+        imageVolume:volume
+        batched:NO
+        normalizer:nil
+        denormalizer:nil
+        quantized:YES];
+    
+    tensorflow::Tensor tensor = [pixelBufferWrapper tensorWithDescription:description];
+    uint8_t *tensor_bytes = tensor.flat<uint8_t>().data();
+    
+    const int tensor_channels = 3;
+    uint8_t espilon = 1;
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = tensor_bytes + (i * tensor_channels);
+        
+        XCTAssertEqualWithAccuracy(pixel[0], 255, espilon); // R
+        XCTAssertEqualWithAccuracy(pixel[1], 0, espilon);   // G
+        XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // B
+    }
+    
+    // Free memory
+    
+    CFRelease(pixelBuffer);
+    free(bytes);
+}
+
+- (void)testPixelBufferGetTensorNormalized {
+    // Create ARGB bytes
+
+    const int width = 224;
+    const int height = 224;
+    const int channels = 4;
+
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+
+        pixel[0] = 255; // A
+        pixel[1] = 255; // R
+        pixel[2] = 0;   // G
+        pixel[3] = 0;   // B
+    }
+
+    // Create a pixel buffer for those bytes
+
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+
+    // Error handling
+
+    if ( status != kCVReturnSuccess ) {
+        XCTFail(@"Couldn't create pixel buffer");
+    }
+
+    // Copy bytes to pixel buffer
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+
+    // Get bytes from pixel buffer
+
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    NSArray *shape = @[@(224),@(224),@(3)];
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    TIOPixelNormalizer normalizer = TIOPixelNormalizerZeroToOne();
+
+    TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
+        initWithPixelFormat:kCVPixelFormatType_32ARGB
+        shape:shape
+        imageVolume:volume
+        batched:NO
+        normalizer:normalizer
+        denormalizer:nil
+        quantized:NO];
+
+    tensorflow::Tensor tensor = [pixelBufferWrapper tensorWithDescription:description];
+    float_t *tensor_bytes = tensor.flat<float_t>().data();
+
+    const int tensor_channels = 3;
+    uint8_t espilon = 0.1;
+
+    for ( int i = 0; i < width * height; i++) {
+        float_t *pixel = tensor_bytes + (i * tensor_channels);
+
+        XCTAssertEqualWithAccuracy(pixel[0], 1, espilon);   // R
+        XCTAssertEqualWithAccuracy(pixel[1], 0, espilon);   // G
+        XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // B
+    }
+
+    // Free memory
+
+    CFRelease(pixelBuffer);
+    free(bytes);
+}
+
+// MARK: - Batched
+
+- (void)testBatchPixelBufferGetTensorUnnormalized {
+    TIOPixelBuffer *pixelBufferWrapper1;
+    TIOPixelBuffer *pixelBufferWrapper2;
+    
+    const int width = 224;
+    const int height = 224;
+    const int channels = 4;
+    const int tensor_channels = 3;
+    
+    // Create Pixel Buffer 1 ARGB bytes
+{
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+        
+        pixel[0] = 255; // A
+        pixel[1] = 255; // R
+        pixel[2] = 0;   // G
+        pixel[3] = 0;   // B
+    }
+    
+    // Create a pixel buffer for those bytes
+    
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+    
+    // Error handling
+    
+    if ( status != kCVReturnSuccess ) {
+        XCTFail(@"Couldn't create pixel buffer");
+    }
+    
+    // Copy bytes to pixel buffer
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    
+    pixelBufferWrapper1 = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    CFRelease(pixelBuffer);
+}
+    // Create Pixel Buffer 2 ARGB bytes
+{
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+        
+        pixel[0] = 255; // A
+        pixel[1] = 0;   // R
+        pixel[2] = 255; // G
+        pixel[3] = 0;   // B
+    }
+    
+    // Create a pixel buffer for those bytes
+    
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+    
+    // Error handling
+    
+    if ( status != kCVReturnSuccess ) {
+        XCTFail(@"Couldn't create pixel buffer");
+    }
+    
+    // Copy bytes to pixel buffer
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    
+    pixelBufferWrapper2 = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    CFRelease(pixelBuffer);
+}
+
+    // Get tensor from column of pixel buffers
+
+    NSArray *shape = @[@(-1),@(224),@(224),@(3)];
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+
+    TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
+        initWithPixelFormat:kCVPixelFormatType_32ARGB
+        shape:shape
+        imageVolume:volume
+        batched:YES
+        normalizer:nil
+        denormalizer:nil
+        quantized:YES];
+
+    tensorflow::Tensor tensor = [TIOPixelBuffer tensorWithColumn:@[
+        pixelBufferWrapper1,
+        pixelBufferWrapper2
+    ] description:description];
+    
+    // Check Tensor Bytes 1
+{
+    int offset = 0;
+    uint8_t *tensor_bytes = tensor.flat<uint8_t>().data() + offset;
+
+    const int tensor_channels = 3;
+    uint8_t espilon = 1;
+
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = tensor_bytes + (i * tensor_channels);
+
+        XCTAssertEqualWithAccuracy(pixel[0], 255, espilon); // R
+        XCTAssertEqualWithAccuracy(pixel[1], 0, espilon);   // G
+        XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // B
+    }
+}
+    // Check Tensor Bytes 2
+{
+    int offset = 1 * width * height * tensor_channels;
+    uint8_t *tensor_bytes = tensor.flat<uint8_t>().data() + offset;
+
+    const int tensor_channels = 3;
+    uint8_t espilon = 1;
+
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = tensor_bytes + (i * tensor_channels);
+
+        XCTAssertEqualWithAccuracy(pixel[0], 0, espilon);   // R
+        XCTAssertEqualWithAccuracy(pixel[1], 255, espilon); // G
+        XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // B
+    }
+}
+
+}
+
+- (void)testBatchPixelBufferGetTensorNormalized {
+    TIOPixelBuffer *pixelBufferWrapper1;
+    TIOPixelBuffer *pixelBufferWrapper2;
+    
+    const int width = 224;
+    const int height = 224;
+    const int channels = 4;
+    const int tensor_channels = 3;
+    
+    // Create Pixel Buffer 1 ARGB bytes
+{
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+        
+        pixel[0] = 255; // A
+        pixel[1] = 255; // R
+        pixel[2] = 0;   // G
+        pixel[3] = 0;   // B
+    }
+    
+    // Create a pixel buffer for those bytes
+    
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+    
+    // Error handling
+    
+    if ( status != kCVReturnSuccess ) {
+        XCTFail(@"Couldn't create pixel buffer");
+    }
+    
+    // Copy bytes to pixel buffer
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    
+    pixelBufferWrapper1 = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    CFRelease(pixelBuffer);
+}
+    // Create Pixel Buffer 2 ARGB bytes
+{
+    uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
+    
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+        
+        pixel[0] = 255; // A
+        pixel[1] = 0;   // R
+        pixel[2] = 255; // G
+        pixel[3] = 0;   // B
+    }
+    
+    // Create a pixel buffer for those bytes
+    
+    const OSType format = kCVPixelFormatType_32ARGB;
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(
+        kCFAllocatorDefault,
+        width,
+        height,
+        format,
+        NULL,
+        &pixelBuffer);
+    
+    // Error handling
+    
+    if ( status != kCVReturnSuccess ) {
+        XCTFail(@"Couldn't create pixel buffer");
+    }
+    
+    // Copy bytes to pixel buffer
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+    memcpy(baseAddress, bytes, width * height * channels);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+    
+    pixelBufferWrapper2 = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    CFRelease(pixelBuffer);
+}
+
+    // Get tensor from column of pixel buffers
+
+    NSArray *shape = @[@(-1),@(224),@(224),@(3)];
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    TIOPixelNormalizer normalizer = TIOPixelNormalizerZeroToOne();
+
+    TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
+        initWithPixelFormat:kCVPixelFormatType_32ARGB
+        shape:shape
+        imageVolume:volume
+        batched:YES
+        normalizer:normalizer
+        denormalizer:nil
+        quantized:NO];
+
+    tensorflow::Tensor tensor = [TIOPixelBuffer tensorWithColumn:@[
+        pixelBufferWrapper1,
+        pixelBufferWrapper2
+    ] description:description];
+    
+    // Check Tensor Bytes 1
+{
+    int offset = 0;
+    float_t *tensor_bytes = tensor.flat<float_t>().data() + offset;
+
+    const int tensor_channels = 3;
+    float_t espilon = 0.1;
+
+    for ( int i = 0; i < width * height; i++) {
+        float_t *pixel = tensor_bytes + (i * tensor_channels);
+
+        XCTAssertEqualWithAccuracy(pixel[0], 1.0, espilon); // R
+        XCTAssertEqualWithAccuracy(pixel[1], 0.0, espilon); // G
+        XCTAssertEqualWithAccuracy(pixel[2], 0.0, espilon); // B
+    }
+}
+    // Check Tensor Bytes 2
+{
+    int offset = 1 * width * height * tensor_channels;
+    float_t *tensor_bytes = tensor.flat<float_t>().data() + offset;
+
+    const int tensor_channels = 3;
+    float_t espilon = 0.1;
+
+    for ( int i = 0; i < width * height; i++) {
+        float_t *pixel = tensor_bytes + (i * tensor_channels);
+
+        XCTAssertEqualWithAccuracy(pixel[0], 0.0, espilon); // R
+        XCTAssertEqualWithAccuracy(pixel[1], 1.0, espilon); // G
+        XCTAssertEqualWithAccuracy(pixel[2], 0.0, espilon); // B
+    }
+}
+}
+
+// MARK: - TIOPixelBuffer + TIOTensorFlowData Init With Tensor
+
+- (void)testPixelBufferInitWithTensorUnnormalized {
+    // Create RGB tensor
+
+    const int width = 224;
+    const int height = 224;
+    const int channels = 3;
+
+    tensorflow::Tensor tensor(tensorflow::DT_UINT8, {width,height,channels});
+    uint8_t *bytes = tensor.flat<uint8_t>().data();
+
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = bytes + (i * channels);
+
+        pixel[0] = 255; // R
+        pixel[1] = 0;   // G
+        pixel[2] = 0;   // B
+    }
+
+    // Create a pixel buffer from them
+
+    NSArray *shape = @[@(224),@(224),@(3)];
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+
+    TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
+        initWithPixelFormat:kCVPixelFormatType_32ARGB
+        shape:shape
+        imageVolume:volume
+        batched:NO
+        normalizer:nil
+        denormalizer:nil
+        quantized:YES];
+    
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithTensor:tensor description:description];
+    CVPixelBufferRef pixelBuffer = pixelBufferWrapper.pixelBuffer;
+
+    // Get bytes to pixel buffer
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *pixel_bytes = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+
+    const int pixel_channels = 4;
+    uint8_t espilon = 1;
+
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = pixel_bytes + (i * pixel_channels);
+
+        XCTAssertEqualWithAccuracy(pixel[0], 255, espilon); // A
+        XCTAssertEqualWithAccuracy(pixel[1], 255, espilon); // R
+        XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // G
+        XCTAssertEqualWithAccuracy(pixel[3], 0, espilon);   // B
+    }
+
+    // Free memory
+
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
+}
+
+- (void)testPixelBufferInitWithTensorNormalized {
+    // Create floating point RGB bytes
+
+    const int width = 224;
+    const int height = 224;
+    const int channels = 3;
+
+    tensorflow::Tensor tensor(tensorflow::DT_FLOAT, {width,height,channels});
+    float_t *bytes = tensor.flat<float_t>().data();
+    
+    for ( int i = 0; i < width * height; i++) {
+        float_t *pixel = bytes + (i * channels);
+
+        pixel[0] = 1.0; // R
+        pixel[1] = 0.0; // G
+        pixel[2] = 0.0; // B
+    }
+
+    // Create a pixel buffer from them
+
+    NSArray *shape = @[@(224),@(224),@(3)];
+    TIOImageVolume volume = TIOImageVolumeForShape(shape);
+    TIOPixelDenormalizer denormalizer = TIOPixelDenormalizerZeroToOne();
+
+    TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
+        initWithPixelFormat:kCVPixelFormatType_32ARGB
+        shape:shape
+        imageVolume:volume
+        batched:NO
+        normalizer:nil
+        denormalizer:denormalizer
+        quantized:NO];
+
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithTensor:tensor description:description];
+    CVPixelBufferRef pixelBuffer = pixelBufferWrapper.pixelBuffer;
+
+    // Get bytes to pixel buffer
+
+    CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
+    uint8_t *pixel_bytes = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
+
+    const int pixel_channels = 4;
+    uint8_t espilon = 1;
+
+    for ( int i = 0; i < width * height; i++) {
+        uint8_t *pixel = pixel_bytes + (i * pixel_channels);
+
+        XCTAssertEqualWithAccuracy(pixel[0], 255, espilon); // A
+        XCTAssertEqualWithAccuracy(pixel[1], 255, espilon); // R
+        XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // G
+        XCTAssertEqualWithAccuracy(pixel[3], 0, espilon);   // B
+    }
+
+    // Free memory
+
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
 }
 
 @end
