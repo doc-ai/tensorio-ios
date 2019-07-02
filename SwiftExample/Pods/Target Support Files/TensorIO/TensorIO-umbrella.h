@@ -44,6 +44,7 @@
 #import "TIOCVPixelBufferHelpers.h"
 #import "TIOErrorHandling.h"
 #import "TIOMeasurable.h"
+#import "TIOMemorySampler.h"
 #import "TIOObjcDefer.h"
 #import "UIImage+TIOCVPixelBufferExtensions.h"
 #import "NSArray+TIOTFLiteData.h"
