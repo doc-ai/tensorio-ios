@@ -50,6 +50,7 @@
 #import "TIOBatchDataSource.h"
 #import "TIOMeasurable.h"
 #import "TIOErrorHandling.h"
+#import "TIOMemorySampler.h"
 
 #import <sys/utsname.h>
 
@@ -497,12 +498,18 @@ NSString * TIOFrameworkVersion() {
     }
     
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
+    TIOMemorySampler *memorySampler = [[TIOMemorySampler alloc] initWithInterval:0.1];
+    
     __block id<TIOData> results;
     double cpuLatency;
     
+    // Train!
+    
+    [memorySampler start];
     tio_measuring_latency(&cpuLatency, ^{
         results = [trainer train];
     });
+    [memorySampler stop];
     
     // Prepare JSON result and save the job output
     
@@ -522,7 +529,8 @@ NSString * TIOFrameworkVersion() {
             @"tensorIOVersion": TIOFrameworkVersion()
         },
         @"profiling": @{
-            @"cpuTime": @(cpuLatency)
+            @"cpuTime": @(cpuLatency),
+            @"maxMemory": memorySampler.max
         }
     };
     
