@@ -67,6 +67,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSUInteger batchSize;
 
 /**
+ * `YES` if batch items should be shuffled, `NO` otherwise
+ */
+
+@property (readonly) BOOL shuffle;
+
+/**
  * The placeholder values, e.g. hyperparameters, to be injected into the model
  * when executing the task. Currently unused.
  */

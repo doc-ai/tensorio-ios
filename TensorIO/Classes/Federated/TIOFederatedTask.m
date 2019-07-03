@@ -30,6 +30,7 @@
         _modelIdentifier = JSON[@"model"][@"id"];
         _epochs = ((NSNumber *)JSON[@"taskParameters"][@"numEpochs"]).unsignedIntegerValue;
         _batchSize = ((NSNumber *)JSON[@"taskParameters"][@"batchSize"]).unsignedIntegerValue;
+        _shuffle = ((NSNumber *)JSON[@"taskParameters"][@"shuffle"]).boolValue;
         
         [self parsePlacholders:JSON[@"taskParameters"][@"placeholders"]];
     }

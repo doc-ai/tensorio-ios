@@ -66,6 +66,7 @@
       "properties": {
         "numEpochs":    { "type": "integer" },
         "batchSize":    { "type": "integer" },
+        "shuffle":      { "type": "boolean" },
         "placeholders": { "$ref":  "#/definitions/placeholders" }
       }
     }
@@ -88,9 +89,9 @@
     "id":               { "type": "string" },
     "model":            { "$ref": "#/definitions/model" },
     "taskParameters":  { "$ref": "#/definitions/taskParameters" },
-    "task":             { 
+    "task":             {
       "type": "string",
-      "enum": ["train"] 
+      "enum": ["train"]
     }
   }
 }

@@ -24,7 +24,7 @@
 @implementation TIOModelTrainer (FederatedTask)
 
 - (instancetype)initWithModel:(id<TIOTrainableModel>)model task:(TIOFederatedTask *)task dataSource:(id<TIOBatchDataSource>)dataSource {
-    return [self initWithModel:model dataSource:dataSource placeholders:nil epochs:task.epochs batchSize:task.batchSize];
+    return [self initWithModel:model dataSource:dataSource placeholders:nil epochs:task.epochs batchSize:task.batchSize shuffle:task.shuffle];
 }
 
 @end
