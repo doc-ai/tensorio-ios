@@ -370,7 +370,7 @@
 
 // MARK: - NSData + TIOTFLiteData Get Bytes
 
-- (void)testDataGetBytesFloatUnquantized {
+- (void)testDataGetVectorBytesFloatUnquantized {
     // It should get the float_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
@@ -396,7 +396,7 @@
     free(bytes);
 }
 
-- (void)testDataGetBytesUInt8QuantizedWithoutQuantizer {
+- (void)testDataGetVectorBytesUInt8QuantizedWithoutQuantizer {
     // It should get the uint8_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
@@ -422,7 +422,7 @@
     free(bytes);
 }
 
-- (void)testDataGetBytesUInt8QuantizedWithQuantizer {
+- (void)testDataGetVectorBytesUInt8QuantizedWithQuantizer {
     // It should convert the float_t numeric values to uint8_t values
     
     TIODataQuantizer quantizer = ^uint8_t(float_t value) {
@@ -453,9 +453,53 @@
     free(bytes);
 }
 
+- (void)testDataGetStringBytesFloat {
+    // It should get the float_t numeric values
+    
+    TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(3)]
+        batched:NO
+        dtype:TIODataTypeFloat32];
+    
+    size_t length = 3 * sizeof(float_t);
+    float_t *bytes = (float *)malloc(length);
+    
+    float_t srcBytes[3] = { -1.0f, 0.0f, 1.0f};
+    NSData *data = [NSData dataWithBytes:srcBytes length:length];
+    
+    [data getBytes:bytes description:description];
+    XCTAssertEqual(bytes[0], -1.0f);
+    XCTAssertEqual(bytes[1], 0.0f);
+    XCTAssertEqual(bytes[2], 1.0f);
+    
+    free(bytes);
+}
+
+- (void)testDataGetStringBytesUInt8 {
+    // It should get the uint8_t numeric values
+    
+    TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(3)]
+        batched:NO
+        dtype:TIODataTypeUInt8];
+    
+    size_t length = 3 * sizeof(uint8_t);
+    uint8_t *bytes = (uint8_t *)malloc(length);
+    
+    uint8_t srcBytes[3] = { 0, 1, 255};
+    NSData *data = [NSData dataWithBytes:srcBytes length:length];
+    
+    [data getBytes:bytes description:description];
+    XCTAssertEqual(bytes[0], 0);
+    XCTAssertEqual(bytes[1], 1);
+    XCTAssertEqual(bytes[2], 255);
+    
+    free(bytes);
+}
+
 // MARK: - NSData + TIOTFLiteData Init with Bytes
 
-- (void)testDataInitWithBytesFloatUnquantized {
+- (void)testDataInitWithVectorBytesFloatUnquantized {
     // It should return an array of numbers with the float_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
@@ -476,7 +520,7 @@
     XCTAssertEqual(buffer[2], 1.0f);
 }
 
-- (void)testDataInitWithBytesUInt8QuantizedWithoutDequantizer {
+- (void)testDataInitWithVectorBytesUInt8QuantizedWithoutDequantizer {
     // It should return an array of numbers with the uint8_t numeric values
     
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
@@ -497,7 +541,7 @@
     XCTAssertEqual(buffer[2], 255);
 }
 
-- (void)testDataInitWithBytesUInt8QuantizedWithDequantizer {
+- (void)testDataInitWithVectorBytesUInt8QuantizedWithDequantizer {
     // It should return an array of numbers by converting uint8_t values to float_t values
     
     TIODataDequantizer dequantizer = ^float_t(uint8_t value) {
@@ -520,6 +564,40 @@
     XCTAssertEqual(buffer[0], 0.0);
     XCTAssertEqual(buffer[1], 1.0);
     XCTAssertEqual(buffer[2], 255.0);
+}
+
+- (void)testDataInitWithStringBytesFloat {
+    // It should return an array of numbers with the float_t numeric values
+    
+    TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(3)]
+        batched:NO
+        dtype:TIODataTypeFloat32];
+    
+    float_t bytes[3] = { -1.0f, 0.0f, 1.0f };
+    
+    NSData *numbers = [[NSData alloc] initWithBytes:bytes description:description];
+    float_t *buffer = (float_t *)numbers.bytes;
+    XCTAssertEqual(buffer[0], -1.0f);
+    XCTAssertEqual(buffer[1], 0.0f);
+    XCTAssertEqual(buffer[2], 1.0f);
+}
+
+- (void)testDataInitWithStringBytesUInt8 {
+    // It should return an array of numbers with the uint8_t numeric values
+    
+    TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(3)]
+        batched:NO
+        dtype:TIODataTypeUInt8];
+    
+    uint8_t bytes[3] = { 0, 1, 255 };
+    
+    NSData *numbers = [[NSData alloc] initWithBytes:bytes description:description];
+    uint8_t *buffer = (uint8_t *)numbers.bytes;
+    XCTAssertEqual(buffer[0], 0);
+    XCTAssertEqual(buffer[1], 1);
+    XCTAssertEqual(buffer[2], 255);
 }
 
 // MARK: - TIOPixelBuffer + TIOTFLiteData Get Bytes
