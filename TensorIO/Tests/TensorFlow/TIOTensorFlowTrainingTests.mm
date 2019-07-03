@@ -168,7 +168,7 @@
     
     TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithBatch:batch];
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:10 batchSize:2];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:10 batchSize:2 shuffle:NO];
     NSDictionary *results = (NSDictionary *)[trainer train];
     
     XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232

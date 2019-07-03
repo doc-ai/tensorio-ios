@@ -8,6 +8,7 @@
   },
   "taskParameters": {
     "numEpochs": 10,
-    "batchSize": 2
+    "batchSize": 2,
+    "shuffle": false,
   }
 }
