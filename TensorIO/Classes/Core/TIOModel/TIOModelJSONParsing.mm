@@ -25,6 +25,7 @@
 #import "TIOLayerInterface.h"
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
+#import "TIOStringLayerDescription.h"
 
 static NSError * const kTIOParserInvalidPixelNormalizationError = [NSError errorWithDomain:@"ai.doc.tensorio" code:201 userInfo:@{
     NSLocalizedDescriptionKey: @"Unable to parse normalize field in description of input or output layer"
@@ -42,7 +43,7 @@ static NSError * const kTIOParserInvalidDequantizerError = [NSError errorWithDom
     NSLocalizedDescriptionKey: @"Unable to parse the dequantize field in description of input or output layer"
 }];
 
-// MARK: -
+// MARK: - Top Level Parsing
 
 TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, BOOL isInput, BOOL quantized, TIOModelBundle *bundle) {
     NSArray<NSNumber*> *shape = dict[@"shape"];
@@ -184,6 +185,28 @@ TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionar
     return interface;
 }
 
+TIOLayerInterface * _Nullable TIOModelParseTIOStringDescription(NSDictionary *dict, BOOL isInput, BOOL quantized) {
+    NSArray<NSNumber*> *shape = dict[@"shape"];
+    BOOL batched = shape[0].integerValue == -1;
+    NSString *name = dict[@"name"];
+    
+    // Data Type
+    
+    TIODataType dtype = TIODataTypeForString(dict[@"dtype"]);
+    
+    // Interface
+    
+    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name isInput:isInput stringDescription:
+        [[TIOStringLayerDescription alloc]
+            initWithShape:shape
+            batched:batched
+            dtype:dtype]];
+    
+    return interface;
+}
+
+// MARK: - Vector Quantization
+
 _Nullable TIODataQuantizer TIODataQuantizerForDict(NSDictionary * _Nullable dict, NSError **error) {
     if ( dict == nil ) {
         return nil;
@@ -245,6 +268,8 @@ _Nullable TIODataDequantizer TIODataDequantizerForDict(NSDictionary * _Nullable 
         return nil;
     }
 }
+
+// MARK: - Image Parsing
 
 TIOImageVolume TIOImageVolumeForShape(NSArray<NSNumber*> * _Nullable shape) {
     
@@ -414,6 +439,8 @@ TIOPixelDenormalizer _Nullable TIOPixelDenormalizerForDictionary(NSDictionary * 
         }
     }
 }
+
+// MARK: - Data Types
 
 TIODataType TIODataTypeForString(NSString * _Nullable string) {
     string = string.lowercaseString;

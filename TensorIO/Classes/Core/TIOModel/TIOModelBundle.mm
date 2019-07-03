@@ -177,6 +177,7 @@ NSString * const TIOModelAssetsDirectory = @"assets";
     
     static NSString * const kTensorTypeVector = @"array";
     static NSString * const kTensorTypeImage = @"image";
+    static NSString * const kTensorTypeString = @"string";
     
     NSMutableArray<TIOLayerInterface*> *interfaces = NSMutableArray.array;
     BOOL isQuantized = self.quantized;
@@ -190,6 +191,8 @@ NSString * const TIOModelAssetsDirectory = @"assets";
             interface = TIOModelParseTIOVectorDescription(input, isInput, isQuantized, self);
         } else if ( [type isEqualToString:kTensorTypeImage] ) {
             interface = TIOModelParseTIOPixelBufferDescription(input, isInput, isQuantized);
+        } else if ( [type isEqualToString:kTensorTypeString] ) {
+            interface = TIOModelParseTIOStringDescription(input, isInput, isQuantized);
         }
         
         if ( interface == nil ) {
