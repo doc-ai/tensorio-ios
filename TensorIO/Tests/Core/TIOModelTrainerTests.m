@@ -37,6 +37,8 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+// MARK: - Unshuffled Tests
+
 - (void)testBaseCaseWithOneItemOneEpochBatchSizeOfOne {
     TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:1];
     TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
@@ -44,7 +46,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:NO];
     
     [trainer train];
     
@@ -59,7 +61,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:NO];
     
     [trainer train];
     
@@ -74,7 +76,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:3];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:3 shuffle:NO];
     
     [trainer train];
     
@@ -89,7 +91,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:3];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:3 shuffle:NO];
     
     [trainer train];
     
@@ -104,7 +106,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1 shuffle:NO];
     
     [trainer train];
     
@@ -119,7 +121,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:NO];
     
     [trainer train];
     
@@ -135,7 +137,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1 shuffle:NO];
     
     [trainer train];
     
@@ -151,7 +153,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:2];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:2 shuffle:NO];
     
     [trainer train];
     
@@ -167,7 +169,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:NO];
     
     [trainer train];
     
@@ -184,7 +186,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:2];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:2 shuffle:NO];
     
     [trainer train];
     
@@ -201,7 +203,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:3];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:3 shuffle:NO];
     
     [trainer train];
     
@@ -218,7 +220,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1 shuffle:NO];
     
     [trainer train];
     
@@ -235,7 +237,7 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:2];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:2 shuffle:NO];
     
     [trainer train];
     
@@ -252,7 +254,234 @@
     XCTAssertNotNil(dataSource);
     XCTAssertNotNil(model);
     
-    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:3];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:3 shuffle:NO];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:2] == 2);
+}
+
+// MARK: - Shuffled Tests
+
+- (void)testBaseCaseWithOneItemOneEpochBatchSizeOfOneShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:1];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 1);
+}
+
+- (void)testOneItemOneEpochBatchSizeOfTwoShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:1];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 1);
+}
+
+- (void)testOneItemOneEpochBatchSizeOfThreeShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:1];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:3 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 1);
+}
+
+- (void)testOneItemTwoEpochsBatchSizeOfThreeShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:1];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:3 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 2);
+}
+
+- (void)testOneItemTwoEpochsBatchSizeOfOneShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:1];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 2);
+}
+
+- (void)testTwoItemsOneEpochBatchSizeOfOneShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:2];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 1);
+}
+
+- (void)testTwoItemsTwoEpochsBatchSizeOfOneShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:2];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 4);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 2);
+}
+
+- (void)testTwoItemsTwoEpochBatchSizeOfTwoShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:2];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:2 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 2);
+}
+
+- (void)testThreeItemsOneEpochBatchSizeOfOneShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:3];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:1 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 3);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:2] == 1);
+}
+
+- (void)testThreeItemsOneEpochBatchSizeOfTwoShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:3];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:2 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:2] == 1);
+}
+
+- (void)testThreeItemsOneEpochBatchSizeOfThreeShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:3];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:1 batchSize:3 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 1);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:2] == 1);
+}
+
+- (void)testThreeItemsTwoEpochsBatchSizeOfOneShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:3];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:1 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 6);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:2] == 2);
+}
+
+- (void)testThreeItemsTwoEpochsBatchSizeOfTwoShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:3];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:2 shuffle:YES];
+    
+    [trainer train];
+    
+    XCTAssert(model.trainCount == 4);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:0] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:1] == 2);
+    XCTAssert([dataSource itemAtIndexCountAtIndex:2] == 2);
+}
+
+- (void)testThreeItemsTwoEpochBatchSizeOfThreeShuffled {
+    TIOMockBatchDataSource *dataSource = [[TIOMockBatchDataSource alloc] initWithItemCount:3];
+    TIOMockTrainableModel *model = [[TIOMockTrainableModel alloc] initMock];
+    
+    XCTAssertNotNil(dataSource);
+    XCTAssertNotNil(model);
+    
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model dataSource:dataSource placeholders:nil epochs:2 batchSize:3 shuffle:YES];
     
     [trainer train];
     
