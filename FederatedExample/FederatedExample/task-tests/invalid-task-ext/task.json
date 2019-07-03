@@ -9,6 +9,7 @@
   "taskParameters": {
     "numEpochs": 1,
     "batchSize": 8,
+    "shuffle": false,
     "placeholders": [
       {
         "name": "adam-alpha",
