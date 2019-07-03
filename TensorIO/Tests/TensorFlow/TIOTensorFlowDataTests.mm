@@ -959,6 +959,23 @@
     XCTAssertEqual(tensor_mapped(0,1), max64bit);
 }
 
+- (void)testDataGetTensorString {
+    TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(1),@(3)]
+        batched:NO
+        dtype:TIODataTypeUInt8];
+    
+    size_t len = 3 * sizeof(uint8_t);
+    uint8_t bytes[3] = {0, 1, 255};
+    NSData *data = [NSData dataWithBytes:bytes length:len];
+    tensorflow::Tensor tensor = [data tensorWithDescription:description];
+    auto tensor_mapped = tensor.tensor<uint8_t, 2>();
+    
+    XCTAssertEqual(tensor_mapped(0,0), 0);
+    XCTAssertEqual(tensor_mapped(0,1), 1);
+    XCTAssertEqual(tensor_mapped(0,2), 255);
+}
+
 // MARK: - Batched
 
 - (void)testBatchDataGetTensorFloatUnquantized {
@@ -1108,6 +1125,31 @@
     XCTAssertEqual(tensor_mapped(1,1), max64bit-1);
 }
 
+- (void)testBatchDataGetTensorString {
+    // It should get the uint8_t numeric values
+    
+    TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(-1),@(3)]
+        batched:YES
+        dtype:TIODataTypeUInt8];
+    
+    NSArray *column = @[
+        [NSData dataWithBytes:(uint8_t[]){0, 1, 2} length:sizeof(uint8_t)*3],
+        [NSData dataWithBytes:(uint8_t[]){255, 254, 253} length:sizeof(uint8_t)*3]
+    ];
+    
+    tensorflow::Tensor tensor = [NSData tensorWithColumn:column description:description];
+    auto tensor_mapped = tensor.tensor<uint8_t, 2>();
+    
+    XCTAssertEqual(tensor_mapped(0,0), 0);
+    XCTAssertEqual(tensor_mapped(0,1), 1);
+    XCTAssertEqual(tensor_mapped(0,2), 2);
+    
+    XCTAssertEqual(tensor_mapped(1,0), 255);
+    XCTAssertEqual(tensor_mapped(1,1), 254);
+    XCTAssertEqual(tensor_mapped(1,2), 253);
+}
+
 // MARK: - NSData + TIOTensorFlowData Init with Tensor
 
 - (void)testDataInitWithTensorFloatUnquantized {
@@ -1130,6 +1172,7 @@
     
     NSData *numbers = [[NSData alloc] initWithTensor:tensor description:description];
     float_t *buffer = (float_t *)numbers.bytes;
+    
     XCTAssertEqual(buffer[0], -1.0f);
     XCTAssertEqual(buffer[1], 0.0f);
     XCTAssertEqual(buffer[2], 1.0f);
@@ -1155,6 +1198,7 @@
     
     NSData *numbers = [[NSData alloc] initWithTensor:tensor description:description];
     uint8_t *buffer = (uint8_t *)numbers.bytes;
+    
     XCTAssertEqual(buffer[0], 0);
     XCTAssertEqual(buffer[1], 1);
     XCTAssertEqual(buffer[2], 255);
@@ -1184,6 +1228,7 @@
     
     NSData *numbers = [[NSData alloc] initWithTensor:tensor description:description];
     float_t *buffer = (float_t *)numbers.bytes;
+    
     XCTAssertEqual(buffer[0], 0.0);
     XCTAssertEqual(buffer[1], 1.0);
     XCTAssertEqual(buffer[2], 255.0);
@@ -1209,6 +1254,7 @@
     
     NSData *numbers = [[NSData alloc] initWithTensor:tensor description:description];
     int32_t *buffer = (int32_t *)numbers.bytes;
+   
     XCTAssertEqual(buffer[0], min32bit);
     XCTAssertEqual(buffer[1], max32bit);
 }
@@ -1233,8 +1279,31 @@
     
     NSData *numbers = [[NSData alloc] initWithTensor:tensor description:description];
     int64_t *buffer = (int64_t *)numbers.bytes;
+    
     XCTAssertEqual(buffer[0], min64bit);
     XCTAssertEqual(buffer[1], max64bit);
+}
+
+- (void)testDataInitWithTensorString {
+    // It should return an array of numbers with the uint8_t numeric values
+    
+    TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(1),@(3)]
+        batched:NO
+        dtype:TIODataTypeUInt8];
+    
+    tensorflow::Tensor tensor(tensorflow::DT_UINT8, tensorflow::TensorShape({1,3}));
+    auto tensor_mapped = tensor.tensor<uint8_t, 2>();
+    tensor_mapped(0,0) = 0;
+    tensor_mapped(0,1) = 1;
+    tensor_mapped(0,2) = 255;
+    
+    NSData *numbers = [[NSData alloc] initWithTensor:tensor description:description];
+    uint8_t *buffer = (uint8_t *)numbers.bytes;
+    
+    XCTAssertEqual(buffer[0], 0);
+    XCTAssertEqual(buffer[1], 1);
+    XCTAssertEqual(buffer[2], 255);
 }
 
 // MARK: - TIOPixelBuffer + TIOTensorFlowData Get Tensor

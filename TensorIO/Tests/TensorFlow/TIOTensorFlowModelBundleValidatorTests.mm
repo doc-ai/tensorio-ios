@@ -64,7 +64,18 @@
     
     XCTAssertTrue(valid);
     XCTAssertNil(error);
+   
+     // it should validate
     
+    error = nil;
+    valid = NO;
+    
+    validator = [self validatorForFilename:@"1_in_1_out_string_test.tiobundle"];
+    valid = [validator validate:&error];
+    
+    XCTAssertTrue(valid);
+    XCTAssertNil(error);
+   
     // it should validate
     
     error = nil;

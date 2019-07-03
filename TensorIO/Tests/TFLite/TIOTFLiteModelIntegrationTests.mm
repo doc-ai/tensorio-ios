@@ -556,7 +556,7 @@
     NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
     NSData *output = byteResults[@"output"];
     
-    float out_bytes[1] = {0};
+    float_t out_bytes[1] = {0};
     [output getBytes:out_bytes length:sizeof(float_t)*1];
     
     XCTAssertNil(error);

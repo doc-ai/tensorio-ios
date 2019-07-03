@@ -45,10 +45,12 @@
 #import "TIOLayerDescription.h"
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
+#import "TIOStringLayerDescription.h"
 #import "TIOPixelBuffer.h"
 #import "TIOTensorFlowData.h"
 #import "NSArray+TIOTensorFlowData.h"
 #import "TIOPixelBuffer+TIOTensorFlowData.h"
+#import "NSData+TIOTensorFlowData.h"
 #import "TIOTensorFlowErrors.h"
 #import "TIOModelModes.h"
 #import "TIOModelIO.h"
@@ -314,7 +316,6 @@ typedef std::vector<std::string> TensorNames;
     NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
     
     [interface matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
-        
         assert( [column[0] isKindOfClass:TIOPixelBuffer.class] );
         
         tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:pixelBufferDescription];
@@ -323,12 +324,19 @@ typedef std::vector<std::string> TensorNames;
         named_tensor = NamedTensor(name, tensor);
         
     } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
-        
         assert( [column[0] isKindOfClass:NSArray.class]
             ||  [column[0] isKindOfClass:NSData.class]
             ||  [column[0] isKindOfClass:NSNumber.class] );
         
         tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:vectorDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+        
+    } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
+        assert( [column[0] isKindOfClass:NSData.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:stringDescription];
         std::string name = interface.name.UTF8String;
     
         named_tensor = NamedTensor(name, tensor);
@@ -410,7 +418,6 @@ typedef std::vector<std::string> TensorNames;
     
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
-            
             assert( [input isKindOfClass:TIOPixelBuffer.class] );
             
             tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:pixelBufferDescription];
@@ -419,12 +426,19 @@ typedef std::vector<std::string> TensorNames;
             named_tensor = NamedTensor(name, tensor);
             
         } caseVector:^(TIOVectorLayerDescription *vectorDescription) {
-            
             assert( [input isKindOfClass:NSArray.class]
                 ||  [input isKindOfClass:NSData.class]
                 ||  [input isKindOfClass:NSNumber.class] );
             
             tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:vectorDescription];
+            std::string name = interface.name.UTF8String;
+            
+            named_tensor = NamedTensor(name, tensor);
+            
+        } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
+            assert( [input isKindOfClass:NSData.class] );
+            
+            tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:stringDescription];
             std::string name = interface.name.UTF8String;
             
             named_tensor = NamedTensor(name, tensor);
@@ -516,6 +530,10 @@ typedef std::vector<std::string> TensorNames;
                     ? vector[0]
                     : vector;
             }
+            
+        } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
+            
+            data = [[NSData alloc] initWithTensor:tensor description:stringDescription];
         }];
     
     return data;
@@ -608,6 +626,14 @@ typedef std::vector<std::string> TensorNames;
             ||  [column[0] isKindOfClass:NSNumber.class] );
         
         tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:vectorDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
+        
+    } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
+        assert( [column[0] isKindOfClass:NSData.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:stringDescription];
         std::string name = interface.name.UTF8String;
     
         named_tensor = NamedTensor(name, tensor);
@@ -728,6 +754,10 @@ typedef std::vector<std::string> TensorNames;
                     ? vector[0]
                     : vector;
             }
+            
+        } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
+            
+            data = [[NSData alloc] initWithTensor:tensor description:stringDescription];
         }];
     
     return data;
