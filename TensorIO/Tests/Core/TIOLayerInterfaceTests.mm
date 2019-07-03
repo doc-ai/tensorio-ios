@@ -63,4 +63,45 @@
     XCTAssert(description.length == 42);
 }
 
+// MARK: - String Layer Description Tests
+
+- (void)testStringLengthIsCalculatedFromShapeAndDType {
+    TIOStringLayerDescription *descriptionUInt8 = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(6),@(7)]
+        batched:NO
+        dtype:TIODataTypeUInt8];
+    
+    XCTAssert(descriptionUInt8.length == 42);
+    
+    TIOStringLayerDescription *descriptionFloat32 = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(6),@(7)]
+        batched:NO
+        dtype:TIODataTypeFloat32];
+    
+    XCTAssert(descriptionFloat32.length == 42);
+    
+    TIOStringLayerDescription *descriptionInt32 = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(6),@(7)]
+        batched:NO
+        dtype:TIODataTypeInt32];
+    
+    XCTAssert(descriptionInt32.length == 42);
+    
+    TIOStringLayerDescription *descriptionInt64 = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(6),@(7)]
+        batched:NO
+        dtype:TIODataTypeInt64];
+    
+    XCTAssert(descriptionInt64.length == 42);
+}
+
+- (void)testStringLengthIsAlwaysPositive {
+    TIOStringLayerDescription *descriptionUInt8 = [[TIOStringLayerDescription alloc]
+        initWithShape:@[@(-1),@(6),@(7)]
+        batched:NO
+        dtype:TIODataTypeUInt8];
+    
+    XCTAssert(descriptionUInt8.length == 42);
+}
+
 @end

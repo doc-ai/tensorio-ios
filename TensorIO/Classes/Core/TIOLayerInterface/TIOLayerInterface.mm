@@ -22,10 +22,12 @@
 
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
+#import "TIOStringLayerDescription.h"
 
 typedef enum : NSUInteger {
     TIOLayerInterfaceTypePixelBuffer,
     TIOLayerInterfaceTypeVector,
+    TIOLayerInterfaceTypeString
 } TIOLayerInterfaceType;
 
 @implementation TIOLayerInterface {
@@ -53,14 +55,28 @@ typedef enum : NSUInteger {
     return self;
 }
 
-- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher {
-    
+- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput stringDescription:(TIOStringLayerDescription *)stringDescription {
+    if ( self = [super init] ) {
+        _name = name;
+        _input = isInput;
+        _type = TIOLayerInterfaceTypeString;
+        _layerDescription = stringDescription;
+    }
+    return self;
+}
+
+// MARK: -
+
+- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher caseString:(TIOStringMatcher)stringMatcher {
     switch ( _type ) {
     case TIOLayerInterfaceTypePixelBuffer:
         pixelBufferMatcher((TIOPixelBufferLayerDescription *)_layerDescription);
         break;
     case TIOLayerInterfaceTypeVector:
         vectorMatcher((TIOVectorLayerDescription *)_layerDescription);
+        break;
+    case TIOLayerInterfaceTypeString:
+        stringMatcher((TIOStringLayerDescription *)_layerDescription);
         break;
     }
 }

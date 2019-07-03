@@ -27,9 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TIOPixelBufferLayerDescription;
 @class TIOVectorLayerDescription;
+@class TIOStringLayerDescription;
 
 typedef void (^TIOPixelBufferMatcher)(TIOPixelBufferLayerDescription *pixelBufferDescription);
 typedef void (^TIOVectorMatcher)(TIOVectorLayerDescription *vectorDescription);
+typedef void (^TIOStringMatcher)(TIOStringLayerDescription *stringDescription);
 
 /**
  * Encapsulates information about the input and output layers of a model, fully described by a
@@ -70,6 +72,17 @@ typedef void (^TIOVectorMatcher)(TIOVectorLayerDescription *vectorDescription);
 - (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput vectorDescription:(TIOVectorLayerDescription *)vectorDescription NS_DESIGNATED_INITIALIZER;
 
 /**
+ * Initializes a `TIOLayerInterface` with a string description, e.g. the description
+ * of a tensor taking raw bytes.
+ *
+ * @param stringDescription Description of the expected vector
+ *
+ * @return TIOLayerInterface The encapsulated description
+ */
+
+- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput stringDescription:(TIOStringLayerDescription *)stringDescription NS_DESIGNATED_INITIALIZER;
+
+/**
  * Use one of the above initializers
  */
 
@@ -98,7 +111,7 @@ typedef void (^TIOVectorMatcher)(TIOVectorLayerDescription *vectorDescription);
  * in order to determine how to move bytes around.
  */
 
-- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher;
+- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher caseString:(TIOStringMatcher)stringMatcher;
 
 @end
 
