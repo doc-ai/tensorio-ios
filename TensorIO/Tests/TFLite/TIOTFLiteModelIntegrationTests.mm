@@ -533,6 +533,37 @@
     free(bytes);
 }
 
+// MARK: - String Tests
+
+- (void)test1In1OutStringModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_string_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
+    
+    // Run the model on bytes
+    
+    float_t in_bytes[1] = {2};
+    NSData *byteInput = [NSData dataWithBytes:in_bytes length:sizeof(float_t)*1];
+    
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
+    NSData *output = byteResults[@"output"];
+    
+    float_t out_bytes[1] = {0};
+    [output getBytes:out_bytes length:sizeof(float_t)*1];
+    
+    XCTAssertNil(error);
+    XCTAssert(byteResults.count == 1);
+    XCTAssert(out_bytes[0] == 25);
+}
+
 // MARK: - Tensor Flow Classification Models
 
 - (void)testMobileNetClassificationModel {
@@ -601,6 +632,8 @@
     [model.io.inputs[0] matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
         description = pixelBufferDescription;
     } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
+        XCTFail(@"Model does not contains image input at index 0");
+    } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
         XCTFail(@"Model does not contains image input at index 0");
     }];
     

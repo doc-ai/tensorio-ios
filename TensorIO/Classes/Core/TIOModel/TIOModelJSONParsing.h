@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param quantized `YES` if the layer expects or returns quantized bytes, `NO` otherwise.
  * @param bundle `The ModelBundel` that is being parsed, needed to derive a path to the labels file.
  *
- * @return TIOLayerInterface An interface that describes this pixel buffer input or output.
+ * @return TIOLayerInterface An interface that describes this vector input or output.
  */
 
 TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, BOOL isInput, BOOL quantized, TIOModelBundle *bundle);
@@ -61,6 +61,22 @@ TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *di
  */
 
 TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionary *dict, BOOL isInput, BOOL quantized);
+
+/**
+ * Parses the JSON description of a string input or output.
+ *
+ * String inputs provides access to the underlying raw bytes that are sent into
+ * or out of a tensor. Although they are described as "string" data types in
+ * both TensorFlow and Caffe, they are handled by `NSData` here.
+ *
+ * @param dict The JSON description in `NSDictionary` format.
+ * @param isInput `YES` if this is an input layer, `NO` if it is an output layer.
+ * @param quantized `YES` if the layer expects or returns quantized bytes, `NO` otherwise.
+ *
+ * @return TIOLayerInterface An interface that describes this string input or output.
+ */
+
+TIOLayerInterface * _Nullable TIOModelParseTIOStringDescription(NSDictionary *dict, BOOL isInput, BOOL quantized);
 
 /**
  * Parses the `quantization` key of an input description and returns an associated data quantizer.
