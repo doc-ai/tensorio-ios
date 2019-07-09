@@ -27,13 +27,15 @@
 @property TIOLayerInterface *barIn;
 @property TIOLayerInterface *fooOut;
 @property TIOLayerInterface *barOut;
+@property TIOLayerInterface *fooPlaceholder;
+@property TIOLayerInterface *barPlaceholder;
 
 @end
 
 @implementation TIOModelIOTests
 
 - (void)setUp {
-    self.fooIn = [[TIOLayerInterface alloc] initWithName:@"foo" isInput:YES vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.fooIn = [[TIOLayerInterface alloc] initWithName:@"foo" mode:TIOLayerInterfaceModeInput vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -41,7 +43,7 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.barIn = [[TIOLayerInterface alloc] initWithName:@"bar" isInput:YES vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.barIn = [[TIOLayerInterface alloc] initWithName:@"bar" mode:TIOLayerInterfaceModeInput vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -49,7 +51,7 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.fooOut = [[TIOLayerInterface alloc] initWithName:@"foo" isInput:NO vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.fooOut = [[TIOLayerInterface alloc] initWithName:@"foo" mode:TIOLayerInterfaceModeOutput vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -57,7 +59,23 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.barOut = [[TIOLayerInterface alloc] initWithName:@"bar" isInput:NO vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.barOut = [[TIOLayerInterface alloc] initWithName:@"bar" mode:TIOLayerInterfaceModeOutput vectorDescription:[[TIOVectorLayerDescription alloc]
+        initWithShape:@[@(1)]
+        batched:NO
+        dtype:TIODataTypeFloat32
+        labels:nil
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil]];
+    self.fooPlaceholder = [[TIOLayerInterface alloc] initWithName:@"foo" mode:TIOLayerInterfaceModePlaceholder vectorDescription:[[TIOVectorLayerDescription alloc]
+        initWithShape:@[@(1)]
+        batched:NO
+        dtype:TIODataTypeFloat32
+        labels:nil
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil]];
+    self.barPlaceholder = [[TIOLayerInterface alloc] initWithName:@"bar" mode:TIOLayerInterfaceModePlaceholder vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -72,54 +90,66 @@
 // MARK: -
 
 - (void)testModelIOPreservesIndex {
-    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut]];
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
     
     XCTAssertEqualObjects(io.inputs[0], self.fooIn);
     XCTAssertEqualObjects(io.inputs[1], self.barIn);
     
     XCTAssertEqualObjects(io.outputs[0], self.fooOut);
     XCTAssertEqualObjects(io.outputs[1], self.barOut);
+    
+    XCTAssertEqualObjects(io.placeholders[0], self.fooPlaceholder);
+    XCTAssertEqualObjects(io.placeholders[1], self.barPlaceholder);
 }
 
 - (void)testModelIOPreservesName {
-    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut]];
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
     
     XCTAssertEqualObjects(io.inputs[@"foo"], self.fooIn);
     XCTAssertEqualObjects(io.inputs[@"bar"], self.barIn);
     
     XCTAssertEqualObjects(io.outputs[@"foo"], self.fooOut);
     XCTAssertEqualObjects(io.outputs[@"bar"], self.barOut);
+    
+    XCTAssertEqualObjects(io.placeholders[@"foo"], self.fooPlaceholder);
+    XCTAssertEqualObjects(io.placeholders[@"bar"], self.barPlaceholder);
 }
 
 - (void)testModelIOReturnsAllObject {
-    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut]];
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
     
     XCTAssertEqualObjects(io.inputs.all, (@[self.fooIn, self.barIn]));
     XCTAssertEqualObjects(io.outputs.all, (@[self.fooOut, self.barOut]));
+    XCTAssertEqualObjects(io.placeholders.all, (@[self.fooPlaceholder, self.barPlaceholder]));
 }
 
 - (void)testModelIOReturnsAllKeys {
-    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut]];
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
     
     XCTAssertEqualObjects([NSSet setWithArray:io.inputs.keys], ([NSSet setWithArray:@[@"foo", @"bar"]]));
     XCTAssertEqualObjects([NSSet setWithArray:io.outputs.keys], ([NSSet setWithArray:@[@"foo", @"bar"]]));
+    XCTAssertEqualObjects([NSSet setWithArray:io.placeholders.keys], ([NSSet setWithArray:@[@"foo", @"bar"]]));
 }
 
 - (void)testModelIOCountIsCorrect {
-    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut]];
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
     
     XCTAssert(io.inputs.count == 2);
     XCTAssert(io.outputs.count == 2);
+    XCTAssert(io.placeholders.count == 2);
 }
 
 - (void)testReturnsIndexForName {
-    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut]];
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
     
     XCTAssert([io.inputs indexForName:@"foo"].integerValue == 0);
     XCTAssert([io.inputs indexForName:@"bar"].integerValue == 1);
     
     XCTAssert([io.outputs indexForName:@"foo"].integerValue == 0);
     XCTAssert([io.outputs indexForName:@"bar"].integerValue == 1);
+    
+    XCTAssert([io.placeholders indexForName:@"foo"].integerValue == 0);
+    XCTAssert([io.placeholders indexForName:@"bar"].integerValue == 1);
 }
 
 @end
