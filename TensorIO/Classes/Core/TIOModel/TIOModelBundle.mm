@@ -41,6 +41,8 @@ NSString * const TIOModelAssetsDirectory = @"assets";
 
 @end
 
+// MARK: -
+
 @implementation TIOModelBundle
 
 - (nullable instancetype)initWithPath:(NSString *)path {
@@ -81,25 +83,40 @@ NSString * const TIOModelAssetsDirectory = @"assets";
         
         // Input and output parsing
         
-        NSArray<TIOLayerInterface*> *inputInterfaces = [self _parseIO:_info[@"inputs"] isInput:YES];
+        NSArray<TIOLayerInterface*> *inputInterfaces = [self _parseIO:_info[@"inputs"] mode:TIOLayerInterfaceModeInput];
         
         if ( !inputInterfaces ) {
-            NSLog(@"Unable to parse input field in model.json");
+            NSLog(@"Unable to parse inputs field in model.json");
             return nil;
         }
         
-        NSArray<TIOLayerInterface*> *outputInterfaces = [self _parseIO:_info[@"outputs"] isInput:NO];
+        NSArray<TIOLayerInterface*> *outputInterfaces = [self _parseIO:_info[@"outputs"] mode:TIOLayerInterfaceModeOutput];
         
         if ( !outputInterfaces ) {
-            NSLog(@"Unable to parse output field in model.json");
+            NSLog(@"Unable to parse outputs field in model.json");
             return nil;
         }
         
-        _io = [[TIOModelIO alloc] initWithInputInterfaces:inputInterfaces ouputInterfaces:outputInterfaces];
+        // Placeholder parsing, may be nil
+        
+        NSArray<TIOLayerInterface*> *placeholderInterfaces = nil;
+        
+        if ( _info[@"placeholders"] != nil ) {
+            placeholderInterfaces = [self _parseIO:_info[@"placeholders"] mode:TIOLayerInterfaceModeInput];
+            
+            if ( !placeholderInterfaces ) {
+                NSLog(@"Unable to parse placeholders field in model.json");
+                return nil;
+            }
+        }
+        
+        _io = [[TIOModelIO alloc] initWithInputInterfaces:inputInterfaces ouputInterfaces:outputInterfaces placeholderInterfaces:placeholderInterfaces];
     }
     
     return self;
 }
+
+// MARK: -
 
 - (NSString *)modelClassName {
     NSString *classname = _info[@"model"][@"class"];
@@ -169,11 +186,12 @@ NSString * const TIOModelAssetsDirectory = @"assets";
  * constructs a `TIOLayerInterface` for each one.
  *
  * @param io An array of dictionaries describing the model's input or output layers
- * @param isInput A boolean value indicating if the io descriptions or for the input or output
+ * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder,
+ *  describing the kind of layer this is.
  * @return NSArray An array of `TIOLayerInterface` matching the descriptions, or `nil` if parsing failed
  */
 
-- (nullable NSArray<TIOLayerInterface*> *)_parseIO:(NSArray<NSDictionary<NSString*,id>*>*)io isInput:(BOOL)isInput {
+- (nullable NSArray<TIOLayerInterface*> *)_parseIO:(NSArray<NSDictionary<NSString*,id>*>*)io mode:(TIOLayerInterfaceMode)mode {
     
     static NSString * const kTensorTypeVector = @"array";
     static NSString * const kTensorTypeImage = @"image";
@@ -188,11 +206,11 @@ NSString * const TIOModelAssetsDirectory = @"assets";
         TIOLayerInterface *interface;
         
         if ( [type isEqualToString:kTensorTypeVector] ) {
-            interface = TIOModelParseTIOVectorDescription(input, isInput, isQuantized, self);
+            interface = TIOModelParseTIOVectorDescription(input, mode, isQuantized, self);
         } else if ( [type isEqualToString:kTensorTypeImage] ) {
-            interface = TIOModelParseTIOPixelBufferDescription(input, isInput, isQuantized);
+            interface = TIOModelParseTIOPixelBufferDescription(input, mode, isQuantized);
         } else if ( [type isEqualToString:kTensorTypeString] ) {
-            interface = TIOModelParseTIOStringDescription(input, isInput, isQuantized);
+            interface = TIOModelParseTIOStringDescription(input, mode, isQuantized);
         }
         
         if ( interface == nil ) {
