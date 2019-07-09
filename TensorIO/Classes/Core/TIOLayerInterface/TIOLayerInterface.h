@@ -34,9 +34,19 @@ typedef void (^TIOVectorMatcher)(TIOVectorLayerDescription *vectorDescription);
 typedef void (^TIOStringMatcher)(TIOStringLayerDescription *stringDescription);
 
 /**
- * Encapsulates information about the input and output layers of a model, fully described by a
+ * The kind of layer this interface describes, one of input, output, or placeholder.
+ */
+
+typedef enum : NSUInteger {
+    TIOLayerInterfaceModeInput,
+    TIOLayerInterfaceModeOutput,
+    TIOLayerInterfaceModePlaceholder,
+} TIOLayerInterfaceMode;
+
+/**
+ * Encapsulates information about the input, output, and placeholder layers of a model, fully described by a
  * `TIOLayerDescription`. Used internally by a model when parsing its description. Also used to
- * match inputs and outputs to their corresponding layers.
+ * match inputs, outputs, and placeholders to their corresponding layers.
  *
  * This is an algebraic data type inspired by Remodel: https://github.com/facebook/remodel.
  * In Swift it would be an Enumeration with Associated Values. The intent is to capture the
@@ -58,7 +68,7 @@ typedef void (^TIOStringMatcher)(TIOStringLayerDescription *stringDescription);
  * @return TIOLayerInterface The encapsulated description
  */
 
-- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription NS_DESIGNATED_INITIALIZER;
 
 /**
  * Initializes a `TIOLayerInterface` with a vector description, e.g. the description of a vector,
@@ -69,7 +79,7 @@ typedef void (^TIOStringMatcher)(TIOStringLayerDescription *stringDescription);
  * @return TIOLayerInterface The encapsulated description
  */
 
-- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput vectorDescription:(TIOVectorLayerDescription *)vectorDescription NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode vectorDescription:(TIOVectorLayerDescription *)vectorDescription NS_DESIGNATED_INITIALIZER;
 
 /**
  * Initializes a `TIOLayerInterface` with a string description, e.g. the description
@@ -80,7 +90,7 @@ typedef void (^TIOStringMatcher)(TIOStringLayerDescription *stringDescription);
  * @return TIOLayerInterface The encapsulated description
  */
 
-- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput stringDescription:(TIOStringLayerDescription *)stringDescription NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode stringDescription:(TIOStringLayerDescription *)stringDescription NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use one of the above initializers
@@ -99,10 +109,10 @@ typedef void (^TIOStringMatcher)(TIOStringLayerDescription *stringDescription);
 @property (readonly) NSString *name;
 
 /**
- * `YES` if this describes an input to the model, `NO` if this describes an output to the model.
+ * The layer's mode, one of input, output, or placeholder.
  */
 
-@property (readonly,getter=isInput) BOOL input;
+@property (readonly) TIOLayerInterfaceMode mode;
 
 /**
  * Use this function to switch on the underlying description.

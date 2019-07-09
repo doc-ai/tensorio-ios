@@ -38,14 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
  * one dimensional unrolled vector with an optional labels entry.
  *
  * @param dict The JSON description in `NSDictionary` format.
- * @param isInput `YES` if this is an input layer, `NO` if it is an output layer.
+ * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder.
  * @param quantized `YES` if the layer expects or returns quantized bytes, `NO` otherwise.
  * @param bundle `The ModelBundel` that is being parsed, needed to derive a path to the labels file.
  *
  * @return TIOLayerInterface An interface that describes this vector input or output.
  */
 
-TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, BOOL isInput, BOOL quantized, TIOModelBundle *bundle);
+TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized, TIOModelBundle *bundle);
 
 /**
  * Parses the JSON description of a pixel buffer input or output.
@@ -54,13 +54,13 @@ TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *di
  * of byte alignment and pixel format conversion requirements.
  *
  * @param dict The JSON description in `NSDictionary` format.
- * @param isInput `YES` if this is an input layer, `NO` if it is an output layer.
+ * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder.
  * @param quantized `YES` if the layer expects or returns quantized bytes, `NO` otherwise.
  *
  * @return TIOLayerInterface An interface that describes this pixel buffer input or output.
  */
 
-TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionary *dict, BOOL isInput, BOOL quantized);
+TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized);
 
 /**
  * Parses the JSON description of a string input or output.
@@ -70,13 +70,13 @@ TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionar
  * both TensorFlow and Caffe, they are handled by `NSData` here.
  *
  * @param dict The JSON description in `NSDictionary` format.
- * @param isInput `YES` if this is an input layer, `NO` if it is an output layer.
+ * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder.
  * @param quantized `YES` if the layer expects or returns quantized bytes, `NO` otherwise.
  *
  * @return TIOLayerInterface An interface that describes this string input or output.
  */
 
-TIOLayerInterface * _Nullable TIOModelParseTIOStringDescription(NSDictionary *dict, BOOL isInput, BOOL quantized);
+TIOLayerInterface * _Nullable TIOModelParseTIOStringDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized);
 
 /**
  * Parses the `quantization` key of an input description and returns an associated data quantizer.

@@ -35,30 +35,30 @@ typedef enum : NSUInteger {
     TIOLayerInterfaceType _type;
 }
 
-- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription {
+- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription {
     if ( self = [super init] ) {
         _name = name;
-        _input = isInput;
+        _mode = mode;
         _type = TIOLayerInterfaceTypePixelBuffer;
         _layerDescription = pixelBufferDescription;
     }
     return self;
 }
 
-- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput vectorDescription:(TIOVectorLayerDescription *)vectorDescription {
+- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode vectorDescription:(TIOVectorLayerDescription *)vectorDescription {
     if ( self = [super init] ) {
         _name = name;
-        _input = isInput;
+        _mode = mode;
         _type = TIOLayerInterfaceTypeVector;
         _layerDescription = vectorDescription;
     }
     return self;
 }
 
-- (instancetype)initWithName:(NSString *)name isInput:(BOOL)isInput stringDescription:(TIOStringLayerDescription *)stringDescription {
+- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode stringDescription:(TIOStringLayerDescription *)stringDescription {
     if ( self = [super init] ) {
         _name = name;
-        _input = isInput;
+        _mode = mode;
         _type = TIOLayerInterfaceTypeString;
         _layerDescription = stringDescription;
     }
