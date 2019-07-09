@@ -31,6 +31,13 @@
     return self;
 }
 
+- (instancetype)initWithInputInterfaces:(NSArray<TIOLayerInterface*> *)inputInterfaces ouputInterfaces:(NSArray<TIOLayerInterface*> *)outputInterfaces placeholderInterfaces:(nullable NSArray<TIOLayerInterface*> *)placeholderInterfaces {
+    if ((self = [self initWithInputInterfaces:inputInterfaces ouputInterfaces:outputInterfaces])) {
+        _placeholders = [[TIOModelIOList alloc] initWithLayerInterfaces:placeholderInterfaces];
+    }
+    return self;
+}
+
 @end
 
 // MARK: -

@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class TIOModelIOList;
 
 /**
- * Encapsulates information about the inputs and outputs to a model.
+ * Encapsulates information about the inputs, outputs, and placeholders for a model.
  */
 
 @interface TIOModelIO : NSObject
@@ -36,6 +36,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (instancetype)initWithInputInterfaces:(NSArray<TIOLayerInterface*> *)inputInterfaces ouputInterfaces:(NSArray<TIOLayerInterface*> *)outputInterfaces NS_DESIGNATED_INITIALIZER;
+
+/**
+ * Initializes an instance of TIOModelIO with input, output, and placeholder interfaces.
+ */
+
+- (instancetype)initWithInputInterfaces:(NSArray<TIOLayerInterface*> *)inputInterfaces ouputInterfaces:(NSArray<TIOLayerInterface*> *)outputInterfaces placeholderInterfaces:(nullable NSArray<TIOLayerInterface*> *)placeholderInterfaces;
 
 /**
  * Use the designated initializer.
@@ -66,6 +72,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 @property (readonly) TIOModelIOList *outputs;
+
+/**
+ * The placeholders list. May be `nil`. Access the values in this list using
+ * indexed subscripting by name or by key.
+ *
+ * @code
+ * placeholders[0]
+ * placeholders[@"label"]
+ * @endcode
+ */
+
+@property (nullable, readonly) TIOModelIOList *placeholders;
 
 @end
 
