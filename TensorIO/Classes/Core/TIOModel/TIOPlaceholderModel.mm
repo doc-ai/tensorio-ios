@@ -85,15 +85,23 @@
  * A placeholder model performs no inference and returns an empty dictionary
  */
 
-- (id<TIOData>)runOn:(id<TIOData>)input {
+- (id<TIOData>)runOn:(id<TIOData>)input error:(NSError* _Nullable *)error {
     return @{};
 }
 
-- (id<TIOData>)runOn:(nonnull id<TIOData>)input error:(NSError * _Nullable *)error {
+- (id<TIOData>)runOn:(id<TIOData>)input placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError* _Nullable *)error {
     return @{};
 }
 
-- (id<TIOData>)run:(nonnull TIOBatch *)batch error:(NSError * _Nullable *)error {
+- (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
+    return @{};
+}
+
+- (id<TIOData>)run:(TIOBatch *)batch placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError * _Nullable *)error {
+    return @{};
+}
+
+- (id<TIOData>)runOn:(id<TIOData>)input __attribute__((deprecated)) {
     return @{};
 }
 

@@ -34,6 +34,8 @@
 
 #pragma GCC diagnostic pop
 
+// MARK: - Initialization
+
 + (nullable instancetype)modelWithBundleAtPath:(NSString *)path {
     return [[TIOMockTrainableModel alloc] initWithBundle:[[TIOModelBundle alloc] initWithPath:path]];
 }
@@ -47,6 +49,8 @@
     return self;
 }
 
+// MARK: - Lifecycle
+
 - (BOOL)load:(NSError * _Nullable *)error {
     return YES;
 }
@@ -54,6 +58,8 @@
 - (void)unload {
 
 }
+
+// MARK: - Run
 
 - (id<TIOData>)runOn:(id<TIOData>)input {
     _runCount++;
@@ -70,6 +76,18 @@
     return @{};
 }
 
+- (id<TIOData>)runOn:(id<TIOData>)input placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError* _Nullable *)error {
+    _runCount++;
+    return @{};
+}
+
+- (id<TIOData>)run:(TIOBatch *)batch placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError * _Nullable *)error {
+    _runCount++;
+    return @{};
+}
+
+// MARK: - Train
+
 - (id<TIOData>)train:(TIOBatch *)batch {
     _trainCount++;
     return @{};
@@ -79,6 +97,13 @@
     _trainCount++;
     return @{};
 }
+
+- (id<TIOData>)train:(TIOBatch *)batch placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError * _Nullable *)error {
+    _trainCount++;
+    return @{};
+}
+
+// MARK: - Export
 
 - (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error {
     _trainCount++;
