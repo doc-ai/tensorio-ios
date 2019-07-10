@@ -200,6 +200,8 @@ typedef std::vector<std::string> TensorNames;
 
 // MARK: - Perform Inference
 
+// All run method eventually call run:placeholders:error:
+
 - (id<TIOData>)runOn:(id<TIOData>)input {
     return [self runOn:input error:nil];
 }
@@ -209,51 +211,47 @@ typedef std::vector<std::string> TensorNames;
 }
 
 - (id<TIOData>)runOn:(id<TIOData>)input placeholders:(NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError* _Nullable *)error {
-    NSError *loadError;
-    NSError *inferenceError;
+    // Convert TIOData to TIOBatch and call run:placeholders:error:
     
-    // Load Model
+    TIOBatch *batch;
     
-    [self load:&loadError];
-    
-    if (loadError != nil) {
-        NSLog(@"There was a problem loading the model from runOn, error: %@", loadError);
-        if (error) {
-            *error = loadError;
+    if ( [input isKindOfClass:NSDictionary.class] ) {
+        // Converts directly to TIOBatchItem
+        batch = [[TIOBatch alloc] initWithItem:(TIOBatchItem *)input];
+        
+    } else if ( self.io.inputs.count == 1 ) {
+        // Get name of input, convert to TIOBatchItem
+        batch = [[TIOBatch alloc] initWithItem:@{
+            self.io.inputs[0].name: input
+        }];
+        
+    } else {
+        // More than one input must be array with same number of items as inputs
+        assert( [input isKindOfClass:NSArray.class] );
+        assert( ((NSArray *)input).count == self.io.inputs.count );
+        
+        // Match array items to named indexes and convert to TIOBatchItem
+        NSMutableDictionary *item = NSMutableDictionary.dictionary;
+        
+        for ( NSUInteger i = 0; i < self.io.inputs.count; i++ ) {
+            item[self.io.inputs[i].name] = ((NSArray *)input)[i];
         }
-        return @{};
+        
+        batch = [[TIOBatch alloc] initWithItem:(TIOBatchItem *)item];
     }
     
-    // Prepare Inputs and Placeholders
-    
-    NamedTensors inputs_t = [self _prepareInput:input];
-    
-    if ( placeholders != nil ) {
-        const NamedTensors placeholders_t = [self _preparePlaceholders:[[TIOBatch alloc] initWithItem:placeholders]];
-        inputs_t.insert(inputs_t.end(), placeholders_t.begin(), placeholders_t.end());
-    }
-    
-    // Run Model
-    
-    const Tensors outputs = [self _runInference:inputs_t error:&inferenceError];
-    
-    if (inferenceError != nil ) {
-        NSLog(@"There was a problem running inference, error: %@", inferenceError);
-        if (error) {
-            *error = inferenceError;
-        }
-        return @{};
-    }
-    
-    // Return Outputs
-    
-    const id<TIOData> results = [self _captureOutput:outputs];
-    return results;
+    return [self run:batch placeholders:placeholders error:error];
 }
 
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
     return [self run:batch placeholders:nil error:error];
 }
+
+// * Internally the method converts the placeholders to a TIOBatch and treats all
+// * the placeholders values as a single batch item, corresponding to a collection
+// * of keys and values, which is all that placeholders, and named tensors, are.
+// * This approach allows us to reuse the tensor preparation code across inference
+// * inputs, training inputs, and placeholders.
 
 - (id<TIOData>)run:(TIOBatch *)batch placeholders:(NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError * _Nullable *)error {
     NSAssert([[NSSet setWithArray:batch.keys] isEqualToSet:[NSSet setWithArray:self.io.inputs.keys]], @"Batch keys do not match input layer names");
@@ -276,10 +274,11 @@ typedef std::vector<std::string> TensorNames;
     
     // Pepare Inputs and Placeholders
     
-    NamedTensors inputs_t = [self _prepareBatchInput:batch];
+    NamedTensors inputs_t = [self _namedTensorsForBatch:batch layers:self.io.inputs];
     
     if ( placeholders != nil ) {
-        const NamedTensors placeholders_t = [self _preparePlaceholders:[[TIOBatch alloc] initWithItem:placeholders]];
+        TIOBatch *placeholdersBatch = [[TIOBatch alloc] initWithItem:(TIOBatchItem *)placeholders];
+        const NamedTensors placeholders_t = [self _namedTensorsForBatch:placeholdersBatch layers:self.io.placeholders];
         inputs_t.insert(inputs_t.end(), placeholders_t.begin(), placeholders_t.end());
     }
     
@@ -304,36 +303,38 @@ typedef std::vector<std::string> TensorNames;
 // MARK: - Prepare Inputs
 
 /**
- * Iterates through the contents of batch, matching them to the model's inference
- * input layers, and prepares tensors with them.
+ * Iterates through the contents of batch, matching them to the provided io
+ * layers, and prepares tensors with them.
  *
- * @param batch A batch of training data
- * @return NamedTensors Tensors ready to be passing to an inference session
+ * @param batch A batch of training data.
+ * @param layers The IO layer descriptions that direct how the batch data
+ *  is processed;
+ * @return NamedTensors Tensors ready to be passing to an run session.
  */
 
-- (NamedTensors)_prepareBatchInput:(TIOBatch *)batch  {
-    NamedTensors inputs;
+- (NamedTensors)_namedTensorsForBatch:(TIOBatch *)batch layers:(TIOModelIOList*)layers {
+    NamedTensors tensors;
     
     for ( NSString *key in batch.keys ) {
-        TIOLayerInterface *interface = self.io.inputs[key];
-        NamedTensor input = [self _prepareBatchInput:batch interface:interface];
-        inputs.push_back(input);
+        NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:key];
+        TIOLayerInterface *interface = layers[key];
+        
+        NamedTensor tensor = [self _namedTensorForColumn:column interface:interface];
+        tensors.push_back(tensor);
     }
     
-    return inputs;
+    return tensors;
 }
 
 /**
  * Prepares a tensor from an inference input
  *
- * @param batch The data whose bytes will be copied to the tensor
+ * @param column A colun of data for the specified interface
  * @param interface A description of the data which the tensor expects
  */
 
-- (NamedTensor)_prepareBatchInput:(TIOBatch *)batch interface:(TIOLayerInterface *)interface {
+- (NamedTensor)_namedTensorForColumn:(NSArray<id<TIOTensorFlowData>> *)column interface:(TIOLayerInterface *)interface {
     __block NamedTensor named_tensor;
-    
-    NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
     
     [interface matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
         assert( [column[0] isKindOfClass:TIOPixelBuffer.class] );
@@ -361,108 +362,6 @@ typedef std::vector<std::string> TensorNames;
     
         named_tensor = NamedTensor(name, tensor);
     }];
-    
-    return named_tensor;
-}
-
-/**
- * Iterates through the provided `TIOData` inputs, matching them to the model's input layers, and
- * prepares tensors with them.
- *
- * @param data Any class conforming to the `TIOData` protocol
- * @return NamedTensors Tensors ready to be passing to an inference session
- */
-
-- (NamedTensors)_prepareInput:(id<TIOData>)data  {
-    NamedTensors inputs;
-    
-    // When preparing inputs we take into account the type of input provided
-    // and the number of inputs that are available
-    
-    if ( [data isKindOfClass:NSDictionary.class] ) {
-        
-        // With a dictionary input, regardless the count, iterate through the keys and values, mapping them to indices,
-        // and prepare the indexed tensors with the values
-    
-        NSDictionary<NSString*,id<TIOData>> *dictionaryData = (NSDictionary *)data;
-        
-        for ( NSString *name in dictionaryData ) {
-            assert([self.io.inputs.keys containsObject:name]);
-        
-            TIOLayerInterface *interface = self.io.inputs[name];
-            id<TIOData> inputData = dictionaryData[name];
-        
-            NamedTensor input = [self _prepareInput:inputData interface:interface];
-            inputs.push_back(input);
-        }
-    } else if ( self.io.inputs.count == 1 ) {
-    
-        // If there is a single input available, simply take the input as it is
-        
-        TIOLayerInterface *interface = self.io.inputs[0];
-        id<TIOData> inputData = data;
-        
-        NamedTensor input = [self _prepareInput:inputData interface:interface];
-        inputs.push_back(input);
-    } else {
-        
-        // With more than one input, we must accept an array
-        
-        assert( [data isKindOfClass:NSArray.class] );
-        
-        // With an array input, iterate through its entries, preparing the indexed tensors with their values
-        
-        NSArray<id<TIOData>> *arrayData = (NSArray *)data;
-        assert(arrayData.count == self.io.inputs.count);
-        
-        for ( NSUInteger index = 0; index < arrayData.count; index++ ) {
-            TIOLayerInterface *interface = self.io.inputs[index];
-            id<TIOData> inputData = arrayData[index];
-            NamedTensor input = [self _prepareInput:inputData interface:interface];
-            inputs.push_back(input);
-        }
-    }
-    
-    return inputs;
-}
-
-/**
- * Prepares a tensor from an input
- *
- * @param input The data whose bytes will be copied to the tensor
- * @param interface A description of the data which the tensor expects
- */
-
-- (NamedTensor)_prepareInput:(id<TIOData>)input interface:(TIOLayerInterface *)interface {
-    __block NamedTensor named_tensor;
-    
-    [interface
-        matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
-            assert( [input isKindOfClass:TIOPixelBuffer.class] );
-            
-            tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:pixelBufferDescription];
-            std::string name = interface.name.UTF8String;
-            
-            named_tensor = NamedTensor(name, tensor);
-            
-        } caseVector:^(TIOVectorLayerDescription *vectorDescription) {
-            assert( [input isKindOfClass:NSArray.class]
-                ||  [input isKindOfClass:NSData.class]
-                ||  [input isKindOfClass:NSNumber.class] );
-            
-            tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:vectorDescription];
-            std::string name = interface.name.UTF8String;
-            
-            named_tensor = NamedTensor(name, tensor);
-            
-        } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
-            assert( [input isKindOfClass:NSData.class] );
-            
-            tensorflow::Tensor tensor = [(id<TIOTensorFlowData>)input tensorWithDescription:stringDescription];
-            std::string name = interface.name.UTF8String;
-            
-            named_tensor = NamedTensor(name, tensor);
-        }];
     
     return named_tensor;
 }
@@ -563,78 +462,6 @@ typedef std::vector<std::string> TensorNames;
     return data;
 }
 
-// MARK: - Prepare Placeholders
-
-// TODO: Use NSDictionary interface, not TIOBatch
-
-/**
- * Iterates through the contents of batch, matching them to the model's
- * placeholder layers, and prepares tensors with them.
- *
- * @param batch A batch of training data
- * @return NamedTensors Tensors ready to be passing to a training session
- */
-
-- (NamedTensors)_preparePlaceholders:(TIOBatch *)batch  {
-    NamedTensors inputs;
-    
-    for ( NSString *key in batch.keys ) {
-        TIOLayerInterface *interface = self.io.placeholders[key];
-        NamedTensor input = [self _preparePlaceholder:batch interface:interface];
-        inputs.push_back(input);
-    }
-    
-    return inputs;
-}
-
-/**
- * Prepares a placeholder tensor from a placeholder batch.
- *
- * @warning
- * Although implemented for both pixel buffer and byte (string) placeholders,
- * only array placeholders are actually currently supported.
- *
- * @param batch The data whose bytes will be copied to the tensor
- * @param interface A description of the data which the tensor expects
- */
-
-- (NamedTensor)_preparePlaceholder:(TIOBatch *)batch interface:(TIOLayerInterface *)interface {
-    __block NamedTensor named_tensor;
-    
-    NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
-    
-    [interface matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
-        
-        assert( [column[0] isKindOfClass:TIOPixelBuffer.class] );
-        
-        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:pixelBufferDescription];
-        std::string name = interface.name.UTF8String;
-    
-        named_tensor = NamedTensor(name, tensor);
-        
-    } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
-        
-        assert( [column[0] isKindOfClass:NSArray.class]
-            ||  [column[0] isKindOfClass:NSData.class]
-            ||  [column[0] isKindOfClass:NSNumber.class] );
-        
-        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:vectorDescription];
-        std::string name = interface.name.UTF8String;
-    
-        named_tensor = NamedTensor(name, tensor);
-        
-    } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
-        assert( [column[0] isKindOfClass:NSData.class] );
-        
-        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:stringDescription];
-        std::string name = interface.name.UTF8String;
-    
-        named_tensor = NamedTensor(name, tensor);
-    }];
-    
-    return named_tensor;
-}
-
 @end
 
 // MARK: - Training
@@ -648,6 +475,12 @@ typedef std::vector<std::string> TensorNames;
 - (id<TIOData>)train:(TIOBatch *)batch error:(NSError * _Nullable *)error {
     return [self train:batch placeholders:nil error:error];
 }
+
+// * Internally the method converts the placeholders to a TIOBatch and treats all
+// * the placeholders values as a single batch item, corresponding to a collection
+// * of keys and values, which is all that placeholders, and named tensors, are.
+// * This approach allows us to reuse the tensor preparation code across inference
+// * inputs, training inputs, and placeholders.
 
 - (id<TIOData>)train:(TIOBatch *)batch placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError * _Nullable *)error {
     NSError *loadError;
@@ -663,10 +496,11 @@ typedef std::vector<std::string> TensorNames;
         return @{};
     }
     
-    NamedTensors inputs_t = [self _prepareTrainingInput:batch];
+    NamedTensors inputs_t = [self _namedTensorsForBatch:batch layers:self.io.inputs];
     
     if ( placeholders != nil ) {
-        const NamedTensors placeholders_t = [self _preparePlaceholders:[[TIOBatch alloc] initWithItem:placeholders]];
+        TIOBatch *placeholdersBatch = [[TIOBatch alloc] initWithItem:(TIOBatchItem *)placeholders];
+        const NamedTensors placeholders_t = [self _namedTensorsForBatch:placeholdersBatch layers:self.io.placeholders];
         inputs_t.insert(inputs_t.end(), placeholders_t.begin(), placeholders_t.end());
     }
     
@@ -682,72 +516,6 @@ typedef std::vector<std::string> TensorNames;
     
     const id<TIOData> results = [self _captureTrainingOutput:outputs_t];
     return results;
-}
-
-// MARK: - Prepare Inputs
-
-/**
- * Iterates through the contents of batch, matching them to the model's training
- * input layers, and prepares tensors with them.
- *
- * @param batch A batch of training data
- * @return NamedTensors Tensors ready to be passing to a training session
- */
-
-- (NamedTensors)_prepareTrainingInput:(TIOBatch *)batch  {
-    NamedTensors inputs;
-    
-    for ( NSString *key in batch.keys ) {
-        TIOLayerInterface *interface = self.io.inputs[key];
-        NamedTensor input = [self _prepareTrainingInput:batch interface:interface];
-        inputs.push_back(input);
-    }
-    
-    return inputs;
-}
-
-/**
- * Prepares an input tensor from a training input
- *
- * @param batch The data whose bytes will be copied to the tensor
- * @param interface A description of the data which the tensor expects
- */
-
-- (NamedTensor)_prepareTrainingInput:(TIOBatch *)batch interface:(TIOLayerInterface *)interface {
-    __block NamedTensor named_tensor;
-    
-    NSArray<id<TIOTensorFlowData>> *column = (NSArray<id<TIOTensorFlowData>>*)[batch valuesForKey:interface.name];
-    
-    [interface matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
-        
-        assert( [column[0] isKindOfClass:TIOPixelBuffer.class] );
-        
-        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:pixelBufferDescription];
-        std::string name = interface.name.UTF8String;
-    
-        named_tensor = NamedTensor(name, tensor);
-        
-    } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
-        
-        assert( [column[0] isKindOfClass:NSArray.class]
-            ||  [column[0] isKindOfClass:NSData.class]
-            ||  [column[0] isKindOfClass:NSNumber.class] );
-        
-        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:vectorDescription];
-        std::string name = interface.name.UTF8String;
-    
-        named_tensor = NamedTensor(name, tensor);
-        
-    } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
-        assert( [column[0] isKindOfClass:NSData.class] );
-        
-        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:stringDescription];
-        std::string name = interface.name.UTF8String;
-    
-        named_tensor = NamedTensor(name, tensor);
-    }];
-    
-    return named_tensor;
 }
 
 // MARK: - Execute Training
@@ -836,8 +604,6 @@ typedef std::vector<std::string> TensorNames;
     return outputs.copy;
 }
 
-// MARK: - Export
-
 /**
  * Copies bytes from the tensor to an appropriate class that conforms to `TIOData`
  *
@@ -876,6 +642,8 @@ typedef std::vector<std::string> TensorNames;
     
     return data;
 }
+
+// MARK: - Export
 
 - (BOOL)exportTo:(NSURL *)fileURL error:(NSError * _Nullable *)error {
     NSFileManager *fm = NSFileManager.defaultManager;
