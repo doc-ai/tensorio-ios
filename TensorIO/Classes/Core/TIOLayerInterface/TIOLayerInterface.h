@@ -63,40 +63,51 @@ typedef enum : NSUInteger {
 /**
  * Initializes a `TIOLayerInterface` with a pixel buffer description.
  *
+ * @param name The name of the layer
+ * @param JSON The JSON description from whic this layer was parsed, may be nil
+ * @param mode The function of this layer, one of input, output, or placeholder
  * @param pixelBufferDescription Description of the expected pixel buffer
  *
  * @return TIOLayerInterface The encapsulated description
  */
 
-- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription NS_DESIGNATED_INITIALIZER;
 
 /**
  * Initializes a `TIOLayerInterface` with a vector description, e.g. the description of a vector,
  * matrix, or other tensor.
  *
+ * @param name The name of the layer
+ * @param JSON The JSON description from whic this layer was parsed, may be nil
+ * @param mode The function of this layer, one of input, output, or placeholder
  * @param vectorDescription Description of the expected vector
  *
  * @return TIOLayerInterface The encapsulated description
  */
 
-- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode vectorDescription:(TIOVectorLayerDescription *)vectorDescription NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode vectorDescription:(TIOVectorLayerDescription *)vectorDescription NS_DESIGNATED_INITIALIZER;
 
 /**
  * Initializes a `TIOLayerInterface` with a string description, e.g. the description
  * of a tensor taking raw bytes.
  *
+ * @param name The name of the layer
+ * @param JSON The JSON description from whic this layer was parsed, may be nil
+ * @param mode The function of this layer, one of input, output, or placeholder
  * @param stringDescription Description of the expected vector
  *
  * @return TIOLayerInterface The encapsulated description
  */
 
-- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode stringDescription:(TIOStringLayerDescription *)stringDescription NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode stringDescription:(TIOStringLayerDescription *)stringDescription NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use one of the above initializers
  */
 
 - (instancetype)init NS_UNAVAILABLE;
+
+// MARK: -
 
 /**
  * The name of the model interface
@@ -115,6 +126,16 @@ typedef enum : NSUInteger {
 @property (readonly) TIOLayerInterfaceMode mode;
 
 /**
+ * The underlying JSON description. May be `nil` if the layer description was
+ * not parsed from JSON. You should not need to access this property yourself,
+ * but it is used for debugging and to check for object equality.
+ */
+
+@property (nullable, readonly) NSDictionary *JSON;
+
+// MARK: -
+
+/**
  * Use this function to switch on the underlying description.
  *
  * When preparing inputs and capturing outputs, a `TIOModel` uses the underlying description of a layer
@@ -122,6 +143,17 @@ typedef enum : NSUInteger {
  */
 
 - (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher caseString:(TIOStringMatcher)stringMatcher;
+
+/**
+ * Checks for object equality. The `JSON` property is used to check for equality
+ * and must not be `nil` for both objects to be equal.
+ *
+ * Attributes of the underlying layer description cannot be used because they
+ * include block properties which cannot be compared.
+ *
+ */
+
+- (BOOL)isEqualToLayerInterface:(TIOLayerInterface *)otherLayerInterface;
 
 @end
 

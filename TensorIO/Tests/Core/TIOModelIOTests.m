@@ -35,7 +35,7 @@
 @implementation TIOModelIOTests
 
 - (void)setUp {
-    self.fooIn = [[TIOLayerInterface alloc] initWithName:@"foo" mode:TIOLayerInterfaceModeInput vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.fooIn = [[TIOLayerInterface alloc] initWithName:@"foo" JSON:nil mode:TIOLayerInterfaceModeInput vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -43,7 +43,7 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.barIn = [[TIOLayerInterface alloc] initWithName:@"bar" mode:TIOLayerInterfaceModeInput vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.barIn = [[TIOLayerInterface alloc] initWithName:@"bar" JSON:nil mode:TIOLayerInterfaceModeInput vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -51,7 +51,7 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.fooOut = [[TIOLayerInterface alloc] initWithName:@"foo" mode:TIOLayerInterfaceModeOutput vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.fooOut = [[TIOLayerInterface alloc] initWithName:@"foo" JSON:nil mode:TIOLayerInterfaceModeOutput vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -59,7 +59,7 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.barOut = [[TIOLayerInterface alloc] initWithName:@"bar" mode:TIOLayerInterfaceModeOutput vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.barOut = [[TIOLayerInterface alloc] initWithName:@"bar" JSON:nil mode:TIOLayerInterfaceModeOutput vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -67,7 +67,7 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.fooPlaceholder = [[TIOLayerInterface alloc] initWithName:@"foo" mode:TIOLayerInterfaceModePlaceholder vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.fooPlaceholder = [[TIOLayerInterface alloc] initWithName:@"foo" JSON:nil mode:TIOLayerInterfaceModePlaceholder vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32
@@ -75,7 +75,7 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil]];
-    self.barPlaceholder = [[TIOLayerInterface alloc] initWithName:@"bar" mode:TIOLayerInterfaceModePlaceholder vectorDescription:[[TIOVectorLayerDescription alloc]
+    self.barPlaceholder = [[TIOLayerInterface alloc] initWithName:@"bar" JSON:nil mode:TIOLayerInterfaceModePlaceholder vectorDescription:[[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
         dtype:TIODataTypeFloat32

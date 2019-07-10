@@ -35,9 +35,10 @@ typedef enum : NSUInteger {
     TIOLayerInterfaceType _type;
 }
 
-- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription {
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode pixelBufferDescription:(TIOPixelBufferLayerDescription *)pixelBufferDescription {
     if ( self = [super init] ) {
         _name = name;
+        _JSON = JSON;
         _mode = mode;
         _type = TIOLayerInterfaceTypePixelBuffer;
         _layerDescription = pixelBufferDescription;
@@ -45,9 +46,10 @@ typedef enum : NSUInteger {
     return self;
 }
 
-- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode vectorDescription:(TIOVectorLayerDescription *)vectorDescription {
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode vectorDescription:(TIOVectorLayerDescription *)vectorDescription {
     if ( self = [super init] ) {
         _name = name;
+        _JSON = JSON;
         _mode = mode;
         _type = TIOLayerInterfaceTypeVector;
         _layerDescription = vectorDescription;
@@ -55,9 +57,10 @@ typedef enum : NSUInteger {
     return self;
 }
 
-- (instancetype)initWithName:(NSString *)name mode:(TIOLayerInterfaceMode)mode stringDescription:(TIOStringLayerDescription *)stringDescription {
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode stringDescription:(TIOStringLayerDescription *)stringDescription {
     if ( self = [super init] ) {
         _name = name;
+        _JSON = JSON;
         _mode = mode;
         _type = TIOLayerInterfaceTypeString;
         _layerDescription = stringDescription;
@@ -79,6 +82,23 @@ typedef enum : NSUInteger {
         stringMatcher((TIOStringLayerDescription *)_layerDescription);
         break;
     }
+}
+
+- (BOOL)isEqualToLayerInterface:(TIOLayerInterface *)otherLayerInterface {
+    if ( self.JSON == nil || otherLayerInterface.JSON == nil ) {
+        NSLog(@"Unable to compare interfaces because one or the other JSON value is nil");
+        return NO;
+    }
+    
+    return [self.JSON isEqualToDictionary:otherLayerInterface.JSON];
+}
+
+- (BOOL)isEqual:(id)object {
+    if ( ![object isKindOfClass:TIOLayerInterface.class] ) {
+        return NO;
+    }
+    
+    return [self isEqualToLayerInterface:object];
 }
 
 @end
