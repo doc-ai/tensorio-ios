@@ -45,6 +45,39 @@ static NSError * const kTIOParserInvalidDequantizerError = [NSError errorWithDom
 
 // MARK: - Top Level Parsing
 
+NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle *bundle, NSArray<NSDictionary<NSString*,id>*> *io, TIOLayerInterfaceMode mode) {
+    static NSString * const kTensorTypeVector = @"array";
+    static NSString * const kTensorTypeImage = @"image";
+    static NSString * const kTensorTypeString = @"string";
+    
+    NSMutableArray<TIOLayerInterface*> *interfaces = NSMutableArray.array;
+    BOOL isQuantized = bundle.quantized;
+    
+    __block BOOL error = NO;
+    [io enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull input, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *type = input[@"type"];
+        TIOLayerInterface *interface;
+        
+        if ( [type isEqualToString:kTensorTypeVector] ) {
+            interface = TIOModelParseTIOVectorDescription(input, mode, isQuantized, bundle);
+        } else if ( [type isEqualToString:kTensorTypeImage] ) {
+            interface = TIOModelParseTIOPixelBufferDescription(input, mode, isQuantized);
+        } else if ( [type isEqualToString:kTensorTypeString] ) {
+            interface = TIOModelParseTIOStringDescription(input, mode, isQuantized);
+        }
+        
+        if ( interface == nil ) {
+            error = YES;
+            *stop = YES;
+            return;
+        }
+        
+        [interfaces addObject:interface];
+    }];
+    
+    return error ? nil : interfaces.copy;
+}
+
 TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized, TIOModelBundle *bundle) {
     NSArray<NSNumber*> *shape = dict[@"shape"];
     BOOL batched = shape[0].integerValue == -1;
@@ -112,7 +145,7 @@ TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *di
     
     // Interface
 
-    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name mode:mode vectorDescription:
+    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name JSON:dict mode:mode vectorDescription:
         [[TIOVectorLayerDescription alloc]
             initWithShape:shape
             batched:batched
@@ -192,7 +225,7 @@ TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionar
 
     // Description
     
-    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name mode:mode pixelBufferDescription:
+    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name JSON:dict mode:mode pixelBufferDescription:
         [[TIOPixelBufferLayerDescription alloc]
             initWithPixelFormat:pixelFormat
             shape:shape
@@ -216,7 +249,7 @@ TIOLayerInterface * _Nullable TIOModelParseTIOStringDescription(NSDictionary *di
     
     // Interface
     
-    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name mode:mode stringDescription:
+    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name JSON:dict mode:mode stringDescription:
         [[TIOStringLayerDescription alloc]
             initWithShape:shape
             batched:batched

@@ -32,6 +32,19 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ * Enumerates through the JSON description of a model's inputs or outputs and
+ * constructs a `TIOLayerInterface` for each one.
+ *
+ * @param bundle The model bundle whose layer descriptions are being parsed
+ * @param io An array of dictionaries describing the model's input or output layers
+ * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder,
+ *  describing the kind of layer this is.
+ * @return NSArray An array of `TIOLayerInterface` matching the descriptions, or `nil` if parsing failed
+ */
+
+NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle *bundle, NSArray<NSDictionary<NSString*,id>*> *io, TIOLayerInterfaceMode mode);
+
+/**
  * Parses the JSON description of a vector input or output.
  *
  * Handles a vector, matrix, or other multidimensional array (tensor), described as a
