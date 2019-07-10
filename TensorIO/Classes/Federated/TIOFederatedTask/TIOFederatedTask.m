@@ -37,9 +37,28 @@
     return self;
 }
 
-- (void)parsePlacholders:(NSArray *)placeholders {
-    // Currently unused
-    _placeholders = nil;
+// Note that other information encapsulated in the placeholder dictionary, such
+// as type, dtype, and shape, are currently ignored but should match the
+// placeholder description in the target model.
+
+- (void)parsePlacholders:(nullable NSArray *)JSON {
+    if ( JSON == nil ) {
+        _placeholders = nil;
+        return;
+    }
+    
+    NSMutableDictionary *placeholders = NSMutableDictionary.dictionary;
+    
+    for ( NSDictionary *item in JSON ) {
+        placeholders[item[@"name"]] = item[@"value"];
+    }
+    
+    if ( placeholders.count == 0 ) {
+        _placeholders = nil;
+        return;
+    }
+    
+    _placeholders = placeholders.copy;
 }
 
 @end

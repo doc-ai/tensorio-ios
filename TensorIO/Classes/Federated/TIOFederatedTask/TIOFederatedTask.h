@@ -22,6 +22,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol TIOData;
+
 /**
  * A federated task represents a federated learning task for a specific
  * TensorIO model. You should not need to instantiate this class directly.
@@ -77,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
  * when executing the task. Currently unused.
  */
 
-@property (nullable, readonly) NSArray *placeholders;
+@property (nullable, readonly) NSDictionary<NSString*, id<TIOData>> *placeholders;
 
 /**
  * Designated initializer.

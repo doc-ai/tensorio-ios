@@ -52,7 +52,7 @@
     NSArray<NSNumber*> *_itemOrder;
 }
 
-- (instancetype)initWithModel:(id<TIOTrainableModel>)model dataSource:(id<TIOBatchDataSource>)dataSource placeholders:(NSDictionary<NSString*, id<TIOData>>*)placeholders epochs:(NSUInteger)epochs batchSize:(NSUInteger)batchSize shuffle:(BOOL)shuffle {
+- (instancetype)initWithModel:(id<TIOTrainableModel>)model dataSource:(id<TIOBatchDataSource>)dataSource placeholders:(NSDictionary<NSString*, id<TIOData>> *)placeholders epochs:(NSUInteger)epochs batchSize:(NSUInteger)batchSize shuffle:(BOOL)shuffle {
     if ((self=[super init])) {
         _model = model;
         _dataSource = dataSource;
@@ -76,7 +76,7 @@
                 TIOBatch *batch = [self _batchAtIndex:batchIndex];
                 NSError *error;
                 
-                results = [self.model train:batch error:&error];
+                results = [self.model train:batch placeholders:self.placeholders error:&error];
             }
         }
     }

@@ -40,7 +40,22 @@
         @"taskParameters": @{
             @"numEpochs": @(1),
             @"batchSize": @(8),
-            @"placeholders": @[]
+            @"placeholders": @[
+                @{
+                    @"name": @"beta",
+                    @"type": @"array",
+                    @"dtype": @"float32",
+                    @"shape": @[@(1)],
+                    @"value": @(0.001)
+                },
+                @{
+                    @"name": @"espilon",
+                    @"type": @"array",
+                    @"dtype": @"float32",
+                    @"shape": @[@(1)],
+                    @"value": @(0.0001)
+                }
+            ]
         }
     };
 }
@@ -77,9 +92,12 @@
     XCTAssert(task.batchSize == 8);
 }
 
-- (void)testIgnoresPlaceholders {
+- (void)testParsesPlaceholders {
     TIOFederatedTask *task = [[TIOFederatedTask alloc] initWithJSON:self.JSON];
-    XCTAssertNil(task.placeholders);
+    
+    XCTAssert(task.placeholders.count == 2);
+    XCTAssert([task.placeholders[@"beta"] isEqual:@(0.001)]);
+    XCTAssert([task.placeholders[@"espilon"] isEqual:@(0.0001)]);
 }
 
 @end
