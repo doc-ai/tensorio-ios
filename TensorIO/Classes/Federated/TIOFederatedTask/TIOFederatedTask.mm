@@ -19,6 +19,8 @@
 //
 
 #import "TIOFederatedTask.h"
+#import "TIOModelJSONParsing.h"
+#import "TIOModelIO.h"
 
 @implementation TIOFederatedTask
 
@@ -37,15 +39,25 @@
     return self;
 }
 
-// Note that other information encapsulated in the placeholder dictionary, such
-// as type, dtype, and shape, are currently ignored but should match the
-// placeholder description in the target model.
-
 - (void)parsePlacholders:(nullable NSArray *)JSON {
     if ( JSON == nil ) {
         _placeholders = nil;
+        _io = nil;
         return;
     }
+    
+    // Parse Interfaces
+    
+    NSArray<TIOLayerInterface*> *interfaces = TIOModelParseIO(nil, JSON, TIOLayerInterfaceModePlaceholder);
+    
+    if ( !interfaces ) {
+        NSLog(@"Unable to parse placeholders field in task.json");
+        _placeholders = nil;
+        _io = nil;
+        return;
+    }
+    
+    // Parse Values
     
     NSMutableDictionary *placeholders = NSMutableDictionary.dictionary;
     
@@ -55,10 +67,25 @@
     
     if ( placeholders.count == 0 ) {
         _placeholders = nil;
+        _io = nil;
         return;
     }
     
+    _io = [[TIOTaskIO alloc] initWithPlaceholderInterfaces:interfaces];
     _placeholders = placeholders.copy;
+}
+
+@end
+
+// MARK: -
+
+@implementation TIOTaskIO
+
+- (instancetype)initWithPlaceholderInterfaces:(nullable NSArray<TIOLayerInterface*> *)placeholderInterfaces {
+    if ((self = [super init])) {
+        _placeholders = [[TIOModelIOList alloc] initWithLayerInterfaces:placeholderInterfaces];
+    }
+    return self;
 }
 
 @end

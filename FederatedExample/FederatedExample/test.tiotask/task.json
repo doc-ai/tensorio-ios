@@ -16,14 +16,14 @@
         "type": "array",
         "dtype": "float32",
         "shape": [1],
-        "value": 0.001
+        "value": [0.001]
       },
       {
         "name": "adam-epsilon",
         "type": "array",
         "dtype": "float32",
         "shape": [1],
-        "value": 0.0001
+        "value": [0.0001]
       }
     ]
   }
