@@ -300,6 +300,39 @@ typedef std::vector<std::string> TensorNames;
     return results;
 }
 
+// MARK: - Execute Inference
+
+/**
+ * Runs inference on the model with prepared inputs.
+ *
+ * @param inputs `NamedTensors` that are ready to be passed to an inference session
+ * @return Tensors The output tensors that are a result of running inference
+ */
+
+- (Tensors)_runInference:(NamedTensors)inputs error:(NSError * _Nullable *)error {
+    TensorNames output_names;
+    Tensors outputs;
+    
+    for (TIOLayerInterface *interface in self.io.outputs.all) {
+        output_names.push_back(interface.name.UTF8String);
+    }
+    
+    tensorflow::Session *session = _saved_model_bundle.session.get();
+    tensorflow::Status status;
+    
+    status = session->Run(inputs, output_names, {}, &outputs);
+    
+    if ( status != tensorflow::Status::OK() ) {
+        NSLog(@"Run error on session->Run with the inputs and output_names: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
+        if (error) {
+            *error = TIOTensorFlowModelSessionInferenceError;
+        }
+        return outputs;
+    }
+    
+    return outputs;
+}
+
 // MARK: - Prepare Inputs
 
 /**
@@ -364,39 +397,6 @@ typedef std::vector<std::string> TensorNames;
     }];
     
     return named_tensor;
-}
-
-// MARK: - Execute Inference
-
-/**
- * Runs inference on the model with prepared inputs.
- *
- * @param inputs `NamedTensors` that are ready to be passed to an inference session
- * @return Tensors The output tensors that are a result of running inference
- */
-
-- (Tensors)_runInference:(NamedTensors)inputs error:(NSError * _Nullable *)error {
-    TensorNames output_names;
-    Tensors outputs;
-    
-    for (TIOLayerInterface *interface in self.io.outputs.all) {
-        output_names.push_back(interface.name.UTF8String);
-    }
-    
-    tensorflow::Session *session = _saved_model_bundle.session.get();
-    tensorflow::Status status;
-    
-    status = session->Run(inputs, output_names, {}, &outputs);
-    
-    if ( status != tensorflow::Status::OK() ) {
-        NSLog(@"Run error on session->Run with the inputs and output_names: %@", [NSString stringWithUTF8String:status.ToString().c_str()]);
-        if (error) {
-            *error = TIOTensorFlowModelSessionInferenceError;
-        }
-        return outputs;
-    }
-    
-    return outputs;
 }
 
 // MARK: - Capture Outputs
@@ -514,7 +514,7 @@ typedef std::vector<std::string> TensorNames;
         return @{};
     }
     
-    const id<TIOData> results = [self _captureTrainingOutput:outputs_t];
+    const id<TIOData> results = [self _captureOutput:outputs_t];
     return results;
 }
 
@@ -575,72 +575,6 @@ typedef std::vector<std::string> TensorNames;
     // TF_CHECK_OK(session->Run(inputs, output_names, training_names, &outputs));
     
     return outputs;
-}
-
-// MARK: - Capture Outputs
-
-/**
- * Captures training outputs from the model.
- *
- * @param outputTensors `Tensors` that have been produced by a training session
- * @return TIOData A class that is appropriate to the model output. Currently all outputs are
- *  wrapped in an instance of `NSDictionary` whose keys are taken from the JSON description of the
- *  model's training outputs.
- */
-
-- (id<TIOData>)_captureTrainingOutput:(Tensors)outputTensors {
-   // Note that this implementation is currently identical to _captureOutput:
-   
-    NSMutableDictionary<NSString*,id<TIOData>> *outputs = [[NSMutableDictionary alloc] init];
-
-    for ( int index = 0; index < self.io.outputs.count; index++ ) {
-        TIOLayerInterface *interface = self.io.outputs[index];
-        tensorflow::Tensor tensor = outputTensors[index];
-        
-        id<TIOData> data = [self _captureTrainingOutput:tensor interface:interface];
-        outputs[interface.name] = data;
-    }
-    
-    return outputs.copy;
-}
-
-/**
- * Copies bytes from the tensor to an appropriate class that conforms to `TIOData`
- *
- * @param tensor The output tensor whose bytes will be captured
- * @param interface A description of the data which this tensor contains
- */
-
-- (id<TIOData>)_captureTrainingOutput:(tensorflow::Tensor)tensor interface:(TIOLayerInterface *)interface {
-    // Note that this implementation is currently identical to _captureOutput:interface
-    
-    __block id<TIOData> data;
-    
-    [interface
-        matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
-            
-            data = [[TIOPixelBuffer alloc] initWithTensor:tensor description:pixelBufferDescription];
-        
-        } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
-            
-            TIOVector *vector = [[TIOVector alloc] initWithTensor:tensor description:vectorDescription];
-            
-            if ( vectorDescription.isLabeled ) {
-                // If the vector's output is labeled, return a dictionary mapping labels to values
-                data = [vectorDescription labeledValues:vector];
-            } else {
-                // If the vector's output is single-valued just return that value
-                data = vector.count == 1
-                    ? vector[0]
-                    : vector;
-            }
-            
-        } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
-            
-            data = [[NSData alloc] initWithTensor:tensor description:stringDescription];
-        }];
-    
-    return data;
 }
 
 // MARK: - Export
