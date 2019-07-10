@@ -72,30 +72,42 @@ TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *di
     
     TIODataQuantizer quantizer;
     
-    if ( mode == TIOLayerInterfaceModeInput ) {
+    switch (mode) {
+    case TIOLayerInterfaceModeInput:
+    case TIOLayerInterfaceModePlaceholder:
+        {
         NSError *error;
         quantizer = TIODataQuantizerForDict(dict[@"quantize"], &error);
         if ( error != nil ) {
             NSLog(@"Expected quantize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict);
             return nil;
         }
-    } else {
+        }
+        break;
+    case TIOLayerInterfaceModeOutput:
         quantizer = TIODataQuantizerNone();
+        break;
     }
     
     // Dequantization
     
     TIODataDequantizer dequantizer;
     
-    if ( mode == TIOLayerInterfaceModeOutput ) {
+    switch (mode) {
+    case TIOLayerInterfaceModeOutput:
+        {
         NSError *error;
         dequantizer = TIODataDequantizerForDict(dict[@"dequantize"], &error);
         if ( error != nil ) {
             NSLog(@"Expected dequantize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict);
             return nil;
         }
-    } else {
+        }
+        break;
+    case TIOLayerInterfaceModeInput:
+    case TIOLayerInterfaceModePlaceholder:
         dequantizer = TIODataDequantizerNone();
+        break;
     }
     
     // Interface
@@ -140,30 +152,42 @@ TIOLayerInterface * _Nullable TIOModelParseTIOPixelBufferDescription(NSDictionar
     
     TIOPixelNormalizer normalizer;
     
-    if ( mode == TIOLayerInterfaceModeInput ) {
+    switch (mode) {
+    case TIOLayerInterfaceModeInput:
+    case TIOLayerInterfaceModePlaceholder:
+        {
         NSError *error;
         normalizer = TIOPixelNormalizerForDictionary(dict[@"normalize"], &error);
         if ( error != nil ) {
             NSLog(@"Expected normalize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict[@"normalize"]);
             return nil;
         }
-    } else {
+        }
+        break;
+    case TIOLayerInterfaceModeOutput:
         normalizer = TIOPixelNormalizerNone();
+        break;
     }
     
     // Denormalization
     
     TIOPixelDenormalizer denormalizer;
 
-    if ( mode == TIOLayerInterfaceModeOutput ) {
+    switch (mode) {
+    case TIOLayerInterfaceModeOutput:
+        {
         NSError *error;
         denormalizer = TIOPixelDenormalizerForDictionary(dict[@"denormalize"], &error);
         if ( error != nil ) {
             NSLog(@"Expected denormalize string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict[@"normalize"]);
             return nil;
         }
-    } else {
+        }
+        break;
+    case TIOLayerInterfaceModeInput:
+    case TIOLayerInterfaceModePlaceholder:
         denormalizer = TIOPixelDenormalizerNone();
+        break;
     }
 
     // Description
