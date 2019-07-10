@@ -842,4 +842,45 @@
     }
 }
 
+// MARK: - Placeholder Tests
+
+// At the C++ level it's all feed dicts, and the serving input receiver function
+// for the estmator APIs in python are ensuring we have placeholder layers for
+// inputs.
+
+// The toy test models here use pure placeholders for inputs so we can test
+// placeholders by sending some values in as inputs to the inference method and
+// others in as placeholders.
+
+- (void)test1x1x2VectorsModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_placeholder_2_out_vectors_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs, placeholders, and outputs return correct count
+    
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.placeholders.count == 1);
+    XCTAssert(model.io.outputs.count == 2);
+    
+    // Run model on number
+    
+    NSDictionary *inputs = @{
+        @"input1": @[@1,  @2,  @3,  @4]
+    };
+    NSDictionary *placeholders = @{
+        @"input2": @[@10, @20, @30, @40]
+    };
+    
+    NSDictionary *results = (NSDictionary *)[model runOn:inputs placeholders:placeholders error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(results.count == 2);
+    XCTAssert([results[@"output1"] isEqualToNumber:@(240)]);
+    XCTAssert([results[@"output2"] isEqualToNumber:@(64)]);
+}
+
 @end
