@@ -45,13 +45,13 @@ static NSError * const kTIOParserInvalidDequantizerError = [NSError errorWithDom
 
 // MARK: - Top Level Parsing
 
-NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle *bundle, NSArray<NSDictionary<NSString*,id>*> *io, TIOLayerInterfaceMode mode) {
+NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle * _Nullable bundle, NSArray<NSDictionary<NSString*,id>*> *io, TIOLayerInterfaceMode mode) {
     static NSString * const kTensorTypeVector = @"array";
     static NSString * const kTensorTypeImage = @"image";
     static NSString * const kTensorTypeString = @"string";
     
     NSMutableArray<TIOLayerInterface*> *interfaces = NSMutableArray.array;
-    BOOL isQuantized = bundle.quantized;
+    BOOL isQuantized = bundle.quantized; // Always NO (ignored) if bundle is nil
     
     __block BOOL error = NO;
     [io enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull input, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -78,7 +78,7 @@ NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle *bundle, 
     return error ? nil : interfaces.copy;
 }
 
-TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized, TIOModelBundle *bundle) {
+TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized, TIOModelBundle *_Nullable bundle) {
     NSArray<NSNumber*> *shape = dict[@"shape"];
     BOOL batched = shape[0].integerValue == -1;
     NSString *name = dict[@"name"];
@@ -88,6 +88,11 @@ TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *di
     NSArray<NSString*> *labels = nil;
 
     if ( NSString *labelsFilename = dict[@"labels"] ) {
+        if ( bundle == nil ) {
+            NSLog(@"Bundle is nil but labels values are provided");
+            return nil;
+        }
+        
         NSError *error = nil;
         labels = [[NSString stringWithContentsOfFile:[bundle pathToAsset:labelsFilename] encoding:NSUTF8StringEncoding error:&error] componentsSeparatedByString:@"\n"];
         

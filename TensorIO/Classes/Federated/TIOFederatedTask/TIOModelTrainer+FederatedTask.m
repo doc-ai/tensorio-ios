@@ -24,6 +24,9 @@
 @implementation TIOModelTrainer (FederatedTask)
 
 - (instancetype)initWithModel:(id<TIOTrainableModel>)model task:(TIOFederatedTask *)task dataSource:(id<TIOBatchDataSource>)dataSource {
+    
+    // TODO: validate that the task placeholder descriptions match the model placeholder descriptions or return nil
+    
     return [self initWithModel:model dataSource:dataSource placeholders:task.placeholders epochs:task.epochs batchSize:task.batchSize shuffle:task.shuffle];
 }
 

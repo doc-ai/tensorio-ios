@@ -35,14 +35,15 @@ NS_ASSUME_NONNULL_BEGIN
  * Enumerates through the JSON description of a model's inputs or outputs and
  * constructs a `TIOLayerInterface` for each one.
  *
- * @param bundle The model bundle whose layer descriptions are being parsed
+ * @param bundle The model bundle whose layer descriptions are being parsed.
+ *  May be `nil` if descriptions are being parsed from something other than a bundle.
  * @param io An array of dictionaries describing the model's input or output layers
  * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder,
  *  describing the kind of layer this is.
  * @return NSArray An array of `TIOLayerInterface` matching the descriptions, or `nil` if parsing failed
  */
 
-NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle *bundle, NSArray<NSDictionary<NSString*,id>*> *io, TIOLayerInterfaceMode mode);
+NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle * _Nullable bundle, NSArray<NSDictionary<NSString*,id>*> *io, TIOLayerInterfaceMode mode);
 
 /**
  * Parses the JSON description of a vector input or output.
@@ -54,11 +55,12 @@ NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle *bundle, 
  * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder.
  * @param quantized `YES` if the layer expects or returns quantized bytes, `NO` otherwise.
  * @param bundle `The ModelBundel` that is being parsed, needed to derive a path to the labels file.
+ * May be `nil` if descriptions are being parsed from something other than a bundle.
  *
  * @return TIOLayerInterface An interface that describes this vector input or output.
  */
 
-TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized, TIOModelBundle *bundle);
+TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized, TIOModelBundle *_Nullable bundle);
 
 /**
  * Parses the JSON description of a pixel buffer input or output.
