@@ -102,7 +102,7 @@ NSString * const TIOModelAssetsDirectory = @"assets";
         NSArray<TIOLayerInterface*> *placeholderInterfaces = nil;
         
         if ( _info[@"placeholders"] != nil ) {
-            placeholderInterfaces = [self _parseIO:_info[@"placeholders"] mode:TIOLayerInterfaceModeInput];
+            placeholderInterfaces = [self _parseIO:_info[@"placeholders"] mode:TIOLayerInterfaceModePlaceholder];
             
             if ( !placeholderInterfaces ) {
                 NSLog(@"Unable to parse placeholders field in model.json");
