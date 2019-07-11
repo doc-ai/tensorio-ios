@@ -112,6 +112,69 @@
     }
 }
 
+- (void)testTrainCatsDogsWithPlaceholderModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-with-placeholder-train.tiobundle"];
+    id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    // labels: 0=cat, 1=dog
+    
+    TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
+    
+    [batch addItem:@{
+        @"image": cat,
+        @"labels": @(0)
+    }];
+    
+    [batch addItem:@{
+        @"image": dog,
+        @"labels": @(1)
+    }];
+    
+    // Train with two sets of placeholder values and test that changing the placeholder
+    // actually has an effect
+    
+    NSDictionary *placeholders1 = @{
+        @"placeholder_adam_learning_rate": @(0.0001)
+    };
+    
+    NSDictionary *placeholders2 = @{
+        @"placeholder_adam_learning_rate": @(0.001)
+    };
+    
+    NSMutableArray *results1 = NSMutableArray.array;
+    NSMutableArray *results2 = NSMutableArray.array;
+    
+    for (NSUInteger epoch = 0; epoch < 10; epoch++) {
+        NSError *error;
+        NSDictionary *results = (NSDictionary *)[model train:batch placeholders:placeholders1 error:&error];
+        
+        XCTAssertNil(error);
+        XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
+        XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
+        
+        [results1 addObject:results[@"sigmoid_cross_entropy_loss/value"]];
+    }
+    
+    for (NSUInteger epoch = 0; epoch < 10; epoch++) {
+        NSError *error;
+        NSDictionary *results = (NSDictionary *)[model train:batch placeholders:placeholders2 error:&error];
+        
+        XCTAssertNil(error);
+        XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
+        XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
+        
+        [results2 addObject:results[@"sigmoid_cross_entropy_loss/value"]];
+    }
+    
+    XCTAssertNotEqualObjects(results1, results2);
+}
+
 - (void)testExportsModel {
     TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train.tiobundle"];
     id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
