@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @warning placeholders is currently unsupported.
  */
 
-- (instancetype)initWithModel:(id<TIOTrainableModel>)model dataSource:(id<TIOBatchDataSource>)dataSource placeholders:(nullable NSDictionary<NSString*, id<TIOData>>*)placeholders epochs:(NSUInteger)epochs batchSize:(NSUInteger)batchSize shuffle:(BOOL)shuffle NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithModel:(id<TIOTrainableModel>)model dataSource:(id<TIOBatchDataSource>)dataSource placeholders:(nullable NSDictionary<NSString*, id<TIOData>> *)placeholders epochs:(NSUInteger)epochs batchSize:(NSUInteger)batchSize shuffle:(BOOL)shuffle NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * A dictionary of placeholder values that will be injected into the underlying
  * model. Except for the number of epochs and the batch size, hyperparameters
- * are be passed into the model trainer via this property. Currently unuspported.
+ * are usually passed into the model trainer via this property.
  */
 
 @property (nullable, readonly) NSDictionary<NSString*, id<TIOData>> *placeholders;

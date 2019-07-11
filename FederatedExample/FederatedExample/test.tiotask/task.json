@@ -9,22 +9,6 @@
   "taskParameters": {
     "numEpochs": 1,
     "batchSize": 8,
-    "shuffle": false,
-    "placeholders": [
-      {
-        "name": "adam-alpha",
-        "type": "array",
-        "dtype": "float32",
-        "shape": [1],
-        "value": 0.001
-      },
-      {
-        "name": "adam-epsilon",
-        "type": "array",
-        "dtype": "float32",
-        "shape": [1],
-        "value": 0.0001
-      }
-    ]
+    "shuffle": false
   }
 }

@@ -19,12 +19,24 @@
 //
 
 #import "TIOModelTrainer+FederatedTask.h"
+#import "TIOTrainableModel.h"
+#import "TIOModelIO.h"
 #import "TIOFederatedTask.h"
 
 @implementation TIOModelTrainer (FederatedTask)
 
 - (instancetype)initWithModel:(id<TIOTrainableModel>)model task:(TIOFederatedTask *)task dataSource:(id<TIOBatchDataSource>)dataSource {
-    return [self initWithModel:model dataSource:dataSource placeholders:nil epochs:task.epochs batchSize:task.batchSize shuffle:task.shuffle];
+    
+    BOOL modelPlaceholdersEmpty = model.io.placeholders == nil || model.io.placeholders.count == 0;
+    BOOL taskPlaceholdersEmpty = task.io.placeholders == nil || task.io.placeholders.count == 0;
+    
+    if ( !(modelPlaceholdersEmpty && taskPlaceholdersEmpty)
+      && ![model.io.placeholders isEqualToModelIOList:task.io.placeholders] ) {
+        NSLog(@"Model placeholder descriptions are not equal to task placeholder descriptions");
+        return nil;
+    }
+    
+    return [self initWithModel:model dataSource:dataSource placeholders:task.placeholders epochs:task.epochs batchSize:task.batchSize shuffle:task.shuffle];
 }
 
 @end

@@ -38,10 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
  * @param task The training task.
  * @param dataSource A data source that will provide batch items.
  *
- * @warning task.placeholders is currently ignore.
+ * This initializer will return `nil` if the task.io.placeholders descriptions
+ * are not equal to the model.io.placeholders descriptions.
  */
 
-- (instancetype)initWithModel:(id<TIOTrainableModel>)model task:(TIOFederatedTask *)task dataSource:(id<TIOBatchDataSource>)dataSource;
+- (nullable instancetype)initWithModel:(id<TIOTrainableModel>)model task:(TIOFederatedTask *)task dataSource:(id<TIOBatchDataSource>)dataSource;
 
 @end
 

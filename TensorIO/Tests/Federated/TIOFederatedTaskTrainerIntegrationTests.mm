@@ -92,6 +92,8 @@
     
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
     
+    XCTAssertNotNil(trainer);
+    
     XCTAssert(trainer.epochs == task.epochs);
     XCTAssert(trainer.batchSize == task.batchSize);
     
@@ -129,9 +131,51 @@
     
     TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithBatch:batch];
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
+    
+    XCTAssertNotNil(trainer);
+    
     NSDictionary *results = (NSDictionary *)[trainer train];
     
     XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
+    XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
+}
+
+- (void)testTrainerWithTaskAndPlaceholdersIntegration {
+    TIOModelBundle *modelBundle = [self modelBundleWithName:@"cats-vs-dogs-train-with-placeholder.tiobundle"];
+    id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:modelBundle];
+    
+    TIOFederatedTaskBundle *taskBundle = [self taskBundleWithName:@"cats-vs-dogs-train-with-placeholder.tiotask"];
+    TIOFederatedTask *task = taskBundle.task;
+    
+    XCTAssertNotNil(modelBundle);
+    XCTAssertNotNil(model);
+    
+    XCTAssertNotNil(taskBundle);
+    XCTAssertNotNil(task);
+    
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    
+    TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
+    
+    [batch addItem:@{
+        @"image": cat,
+        @"labels": @(0)
+    }];
+    
+    [batch addItem:@{
+        @"image": dog,
+        @"labels": @(1)
+    }];
+    
+    TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithBatch:batch];
+    TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
+    
+    XCTAssertNotNil(trainer);
+    
+    NSDictionary *results = (NSDictionary *)[trainer train];
+    
+    XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.3473
     XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
 }
 

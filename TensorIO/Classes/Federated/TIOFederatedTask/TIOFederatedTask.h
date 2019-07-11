@@ -19,13 +19,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TIOLayerInterface.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol TIOData;
+@class TIOModelIOList;
+@class TIOTaskIO;
 
 /**
  * A federated task represents a federated learning task for a specific
  * TensorIO model. You should not need to instantiate this class directly.
  * Instead load a task from a bundle with `TIOFederatedTaskBundle`.
+ *
+ * With respect to placeholders, information encapsulated in a placeholder
+ * dictionary other than the name and value, such are ignored here but the
+ * description must match the placeholder description in the target model .
+ * These are verifed when a `TIOModelTrainer` is instantiated with a federated
+ * task.
  */
 
 @interface TIOFederatedTask : NSObject
@@ -73,11 +84,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) BOOL shuffle;
 
 /**
- * The placeholder values, e.g. hyperparameters, to be injected into the model
- * when executing the task. Currently unused.
+ * Encapsulates information about the task's placeholders, e.g. hyperparameters.
+ * May be empty and must match the placeholder descriptions of the model this
+ * task targets.
+ *
+ * @code
+ * io.placeholders[0]
+ * io.placeholders[@"label"]
+ * @endcode
  */
 
-@property (nullable, readonly) NSArray *placeholders;
+@property (readonly) TIOTaskIO *io;
+
+/**
+ * The actual placeholder values, e.g. hyperparameters, to be injected into the
+ * model when executing the task. May be `nil`.
+ */
+
+@property (nullable, readonly) NSDictionary<NSString*, id<TIOData>> *placeholders;
 
 /**
  * Designated initializer.
@@ -94,6 +118,44 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (instancetype)init NS_UNAVAILABLE;
+
+@end
+
+// MARK: -
+
+/**
+ * Encapsulates information about the placeholders supported by a task.
+ *
+ * Equivalent to the `TIOModelIO` object that encapsulates information about a
+ * model's inputs, outputs, and placeholders, and is used to compare placeholder
+ * descriptions between a model and a task.
+ */
+
+@interface TIOTaskIO : NSObject
+
+/**
+ * Initializes an instance with and placeholder interfaces.
+ */
+
+- (instancetype)initWithPlaceholderInterfaces:(nullable NSArray<TIOLayerInterface*> *)placeholderInterfaces;
+
+/**
+ * Use the designated initializer.
+ */
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/**
+ * The placeholders list. May be `nil`. Access the values in this list using
+ * indexed subscripting by name or by key.
+ *
+ * @code
+ * placeholders[0]
+ * placeholders[@"label"]
+ * @endcode
+ */
+
+@property (nullable, readonly) TIOModelIOList *placeholders;
 
 @end
 

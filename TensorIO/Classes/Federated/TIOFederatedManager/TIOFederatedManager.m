@@ -65,6 +65,7 @@ static NSInteger TIOFederatedManagerFileSystemError = 202;
 static NSInteger TIOFederatedManagerTaskBundleError = 203;
 static NSInteger TIOFederatedManagerModelBundleError = 204;
 static NSInteger TIOFederatedManagerDataSourceProviderError = 205;
+static NSInteger TIOFederatedManagerModelTrainerError = 206;
 static NSInteger TIOFederatedManagerZipError = 207;
 
 static NSInteger TIOFederatedManagerAvailableTasksError = 300;
@@ -498,12 +499,25 @@ NSString * TIOFrameworkVersion() {
     }
     
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
-    TIOMemorySampler *memorySampler = [[TIOMemorySampler alloc] initWithInterval:0.1];
     
-    __block id<TIOData> results;
-    double cpuLatency;
+    if (trainer == nil) {
+        NSError *error;
+        TIO_LOGSET_ERROR(
+            ([NSString stringWithFormat:@"Unable to instantiate model trainer for task with id: %@", task.identifier]),
+            TIOFederatedManagerErrorDomain,
+            TIOFederatedManagerModelTrainerError,
+            error);
+        [self informDelegateOfError:error forAction:TIOFederatedManagerTrainModel];
+        [self reportError:error taskId:taskId jobId:job.jobId];
+        callback(nil);
+        return;
+    }
     
     // Train!
+    
+    __block id<TIOData> results;
+    TIOMemorySampler *memorySampler = [[TIOMemorySampler alloc] initWithInterval:0.1];
+    double cpuLatency;
     
     [memorySampler start];
     tio_measuring_latency(&cpuLatency, ^{

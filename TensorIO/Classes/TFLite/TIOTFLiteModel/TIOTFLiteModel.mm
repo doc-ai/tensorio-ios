@@ -189,6 +189,11 @@
     return [self _captureOutput];
 }
 
+- (id<TIOData>)runOn:(id<TIOData>)input placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError* _Nullable *)error {
+    NSAssert(NO, @"TFLite models do not support placeholders.");
+    return @{};
+}
+
 - (id<TIOData>)run:(TIOBatch *)batch error:(NSError * _Nullable *)error {
     NSAssert([[NSSet setWithArray:batch.keys] isEqualToSet:[NSSet setWithArray:self.io.inputs.keys]], @"Batch keys do not match input layer names");
     NSAssert(batch.count == 1, @"Batch size must be 1 for TensorFlow Lite models");
@@ -224,6 +229,13 @@
     [self _runInference];
     return [self _captureOutput];
 }
+
+- (id<TIOData>)run:(TIOBatch *)batch placeholders:(nullable NSDictionary<NSString*,id<TIOData>> *)placeholders error:(NSError * _Nullable *)error {
+    NSAssert(NO, @"TFLite models do not support placeholders.");
+    return @{};
+}
+
+// MARK: - Prepare Inputs
 
 /**
  * Iterates through the provided `TIOData` inputs, matching them to the model's input layers, and
@@ -316,6 +328,8 @@
         }];
 }
 
+// MARK: - Execute Inference
+
 /**
  * Runs inference on the model. Inputs must be copied to the input tensors prior to calling this method
  */
@@ -325,6 +339,8 @@
         NSLog(@"Failed to invoke for model %@", self.identifier);
     }
 }
+
+// MARK: - Capture Outputs
 
 /**
  * Captures outputs from the model.
