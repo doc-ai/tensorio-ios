@@ -9,6 +9,6 @@
   "taskParameters": {
     "numEpochs": 10,
     "batchSize": 2,
-    "shuffle": false,
+    "shuffle": false
   }
 }

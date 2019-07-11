@@ -113,7 +113,7 @@
 }
 
 - (void)testTrainCatsDogsWithPlaceholderModel {
-    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-with-placeholder-train.tiobundle"];
+    TIOModelBundle *bundle = [self bundleWithName:@"cats-vs-dogs-train-with-placeholder.tiobundle"];
     id<TIOTrainableModel> model = (id<TIOTrainableModel>)[self loadModelFromBundle:bundle];
     
     XCTAssertNotNil(bundle);
