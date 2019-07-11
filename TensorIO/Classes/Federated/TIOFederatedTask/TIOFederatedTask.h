@@ -85,6 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Encapsulates information about the task's placeholders, e.g. hyperparameters.
+ * May be empty and must match the placeholder descriptions of the model this
+ * task targets.
  *
  * @code
  * io.placeholders[0]
@@ -92,11 +94,11 @@ NS_ASSUME_NONNULL_BEGIN
  * @endcode
  */
 
-@property (nullable, readonly) TIOTaskIO *io;
+@property (readonly) TIOTaskIO *io;
 
 /**
  * The actual placeholder values, e.g. hyperparameters, to be injected into the
- * model when executing the task.
+ * model when executing the task. May be `nil`.
  */
 
 @property (nullable, readonly) NSDictionary<NSString*, id<TIOData>> *placeholders;

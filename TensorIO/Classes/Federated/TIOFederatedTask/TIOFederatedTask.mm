@@ -21,6 +21,7 @@
 #import "TIOFederatedTask.h"
 #import "TIOModelJSONParsing.h"
 #import "TIOModelIO.h"
+#import "NSArray+TIOExtensions.h"
 
 @implementation TIOFederatedTask
 
@@ -41,19 +42,20 @@
 
 - (void)parsePlacholders:(nullable NSArray *)JSON {
     if ( JSON == nil ) {
+        _io = [[TIOTaskIO alloc] initWithPlaceholderInterfaces:nil];
         _placeholders = nil;
-        _io = nil;
         return;
     }
     
     // Parse Interfaces
     
-    NSArray<TIOLayerInterface*> *interfaces = TIOModelParseIO(nil, JSON, TIOLayerInterfaceModePlaceholder);
+    NSArray *JSONNoValues = [self JSONRemovingValues:JSON];
+    NSArray<TIOLayerInterface*> *interfaces = TIOModelParseIO(nil, JSONNoValues, TIOLayerInterfaceModePlaceholder);
     
     if ( !interfaces ) {
         NSLog(@"Unable to parse placeholders field in task.json");
+        _io = [[TIOTaskIO alloc] initWithPlaceholderInterfaces:nil];
         _placeholders = nil;
-        _io = nil;
         return;
     }
     
@@ -66,13 +68,21 @@
     }
     
     if ( placeholders.count == 0 ) {
+        _io = [[TIOTaskIO alloc] initWithPlaceholderInterfaces:nil];
         _placeholders = nil;
-        _io = nil;
         return;
     }
     
     _io = [[TIOTaskIO alloc] initWithPlaceholderInterfaces:interfaces];
     _placeholders = placeholders.copy;
+}
+
+- (NSArray<NSDictionary*> *)JSONRemovingValues:(NSArray<NSDictionary*> *)JSON {
+    return [JSON map:^id _Nonnull(NSDictionary * _Nonnull obj) {
+        NSMutableDictionary *update = obj.mutableCopy;
+        [update removeObjectForKey:@"value"];
+        return update.copy;
+    }];
 }
 
 @end

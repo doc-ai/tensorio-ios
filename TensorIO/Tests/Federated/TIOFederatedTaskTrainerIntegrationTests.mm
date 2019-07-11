@@ -92,6 +92,8 @@
     
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
     
+    XCTAssertNotNil(trainer);
+    
     XCTAssert(trainer.epochs == task.epochs);
     XCTAssert(trainer.batchSize == task.batchSize);
     
@@ -129,6 +131,9 @@
     
     TIOInMemoryBatchDataSource *dataSource = [[TIOInMemoryBatchDataSource alloc] initWithBatch:batch];
     TIOModelTrainer *trainer = [[TIOModelTrainer alloc] initWithModel:model task:task dataSource:dataSource];
+    
+    XCTAssertNotNil(trainer);
+    
     NSDictionary *results = (NSDictionary *)[trainer train];
     
     XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232

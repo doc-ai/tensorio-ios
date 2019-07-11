@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) TIOModelIOList *outputs;
 
 /**
- * The placeholders list. May be `nil`. Access the values in this list using
+ * The placeholders list. May be empty. Access the values in this list using
  * indexed subscripting by name or by key.
  *
  * @code
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @endcode
  */
 
-@property (nullable, readonly) TIOModelIOList *placeholders;
+@property (readonly) TIOModelIOList *placeholders;
 
 @end
 
@@ -98,9 +98,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Initializes an indexed model list with a list interfaces. You should not
  * need to create instances of this class yourself.
+ *
+ * If the initializing interfaces parameter is nil, it will be treated as an
+ * empty list.
  */
 
-- (instancetype)initWithLayerInterfaces:(NSArray<TIOLayerInterface*> *)interfaces NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithLayerInterfaces:(nullable NSArray<TIOLayerInterface*> *)interfaces NS_DESIGNATED_INITIALIZER;
 
 /**
  * Use the designated initializer.
@@ -161,6 +164,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 - (void)setObject:(TIOLayerInterface *)obj forKeyedSubscript:(NSString *)key;
+
+// MARK: -
+
+- (BOOL)isEqualToModelIOList:(TIOModelIOList *)otherList;
 
 @end
 
