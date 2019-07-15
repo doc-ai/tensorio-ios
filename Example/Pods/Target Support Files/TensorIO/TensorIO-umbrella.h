@@ -48,12 +48,6 @@
 #import "TIOMemorySampler.h"
 #import "TIOObjcDefer.h"
 #import "UIImage+TIOCVPixelBufferExtensions.h"
-#import "NSArray+TIOTFLiteData.h"
-#import "NSData+TIOTFLiteData.h"
-#import "NSDictionary+TIOTFLiteData.h"
-#import "NSNumber+TIOTFLiteData.h"
-#import "TIOPixelBuffer+TIOTFLiteData.h"
-#import "TIOTFLiteData.h"
 #import "TIOTFLiteErrors.h"
 #import "TIOTFLiteModel.h"
 

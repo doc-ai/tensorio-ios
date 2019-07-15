@@ -55,6 +55,9 @@
         ]
       },
       "source_files": "TensorIO/Classes/TFLite/**/*",
+      "private_header_files": [
+        "TensorIO/Classes/TFLite/TIOTFLiteData/**/*.h"
+      ],
       "resource_bundles": {
         "TFLite": "TensorIO/Assets/TFLite/**/*"
       },
@@ -77,7 +80,8 @@
       },
       "source_files": "TensorIO/Classes/TensorFlow/**/*",
       "private_header_files": [
-        "TensorIO/Classes/TensorFlow/SavedModel/**/*.h"
+        "TensorIO/Classes/TensorFlow/SavedModel/**/*.h",
+        "TensorIO/Classes/TensorFlow/TIOTensorFlowData/**/*.h"
       ],
       "resource_bundles": {
         "TensorFlow": "TensorIO/Assets/TensorFlow/**/*"

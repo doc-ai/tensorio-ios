@@ -30,6 +30,56 @@
 
 #pragma clang diagnostic pop
 
+// Expose private methods so that we can access them for testing
+
+@protocol TIOTensorFlowData;
+
+namespace tensorflow {
+    class Tensor;
+}
+
+@interface NSArray (TIOTensorFlowData_Testing)
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+- (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface NSData (TIOTensorFlowData_Testing)
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+- (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface NSDictionary (TIOTensorFlowData_Testing)
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+- (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface NSNumber (TIOTensorFlowData_Testing)
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+- (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface TIOPixelBuffer (TIOTensorFlowData_Testing)
+
+- (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description;
+- (tensorflow::Tensor)tensorWithDescription:(id<TIOLayerDescription>)description;
++ (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description;
+
+@end
+
+// MARK: -
+
 @interface TIOTensorFlowDataTests : XCTestCase
 
 @end

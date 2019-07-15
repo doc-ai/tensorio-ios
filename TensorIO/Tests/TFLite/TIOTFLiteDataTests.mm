@@ -21,6 +21,47 @@
 #import <XCTest/XCTest.h>
 #import <TensorIO/TensorIO-umbrella.h>
 
+// Expose private methods so that we can access them for testing
+
+@protocol TIOTensorFlowData;
+
+@interface NSArray (TIOTFLiteData_Testing)
+
+- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface NSData (TIOTFLiteData_Testing)
+
+- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface NSDictionary (TIOTFLiteData_Testing)
+
+- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface NSNumber (TIOTFLiteData_Testing)
+
+- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+
+@end
+
+@interface TIOPixelBuffer (TIOTFLiteData_Testing)
+
+- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+
+@end
+
+// MARK: -
+
 @interface TIOTFLiteDataTests : XCTestCase
 
 @end
