@@ -61,7 +61,8 @@ Pod::Spec.new do |s|
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
-      'TensorIO/Classes/TensorFlow/SavedModel/**/*.h'
+      'TensorIO/Classes/TensorFlow/SavedModel/**/*.h',
+      'TensorIO/Classes/TensorFlow/TIOTensorFlowData/**/*.h'
     ]
     ss.resource_bundles = { 
       'TensorFlow' => 'TensorIO/Assets/TensorFlow/**/*' 
