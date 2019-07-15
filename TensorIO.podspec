@@ -42,6 +42,9 @@ Pod::Spec.new do |s|
     ss.dependency 'TensorFlowLite'
     
     ss.source_files = 'TensorIO/Classes/TFLite/**/*'
+    ss.private_header_files = [
+      'TensorIO/Classes/TFLite/TIOTFLiteData/**/*.h'
+    ]
     ss.resource_bundles = { 
       'TFLite' => 'TensorIO/Assets/TFLite/**/*' 
     }
@@ -61,7 +64,8 @@ Pod::Spec.new do |s|
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
-      'TensorIO/Classes/TensorFlow/SavedModel/**/*.h'
+      'TensorIO/Classes/TensorFlow/SavedModel/**/*.h',
+      'TensorIO/Classes/TensorFlow/TIOTensorFlowData/**/*.h'
     ]
     ss.resource_bundles = { 
       'TensorFlow' => 'TensorIO/Assets/TensorFlow/**/*' 

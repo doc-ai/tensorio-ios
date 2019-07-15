@@ -37,8 +37,8 @@
 		DA2AF41C95B16CE06292C366 /* Pods-SwiftExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftExample.debug.xcconfig"; path = "Target Support Files/Pods-SwiftExample/Pods-SwiftExample.debug.xcconfig"; sourceTree = "<group>"; };
 		E30058CB221505C2002F41AE /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = SOURCE_ROOT; };
 		E30058CD22150B15002F41AE /* SwiftExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftExample-Bridging-Header.h"; sourceTree = "<group>"; };
-		E30058CE22150B16002F41AE /* ResultInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ResultInfoView.m; path = ../../Example/TensorIO/ResultInfoView.m; sourceTree = "<group>"; };
-		E30058CF22150B16002F41AE /* ResultInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResultInfoView.h; path = ../../Example/TensorIO/ResultInfoView.h; sourceTree = "<group>"; };
+		E30058CE22150B16002F41AE /* ResultInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultInfoView.m; sourceTree = "<group>"; };
+		E30058CF22150B16002F41AE /* ResultInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultInfoView.h; sourceTree = "<group>"; };
 		E31FAD9E22C54C4C0051BD3E /* TIOSwiftTFLiteModelIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TIOSwiftTFLiteModelIntegrationTests.swift; path = ../../TensorIO/Tests/Swift/TIOSwiftTFLiteModelIntegrationTests.swift; sourceTree = "<group>"; };
 		E34F12CC2277C565000A0DD7 /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
 		E35A64A52215010D0047D035 /* SwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
