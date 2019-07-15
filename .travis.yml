@@ -9,6 +9,9 @@ language: objective-c
 cache: cocoapods
 podfile: Example/Podfile
 
+# Note that tests are not included for SwiftTensorFlowExample because of issues validating the TensorIOTensorFlow pod
+# See https://github.com/doc-ai/tensorio-tensorflow-ios/issues/3
+
 before_install:
 - brew update
 - gem install cocoapods -v 1.6.0 # Since Travis is not always on latest version

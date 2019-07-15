@@ -7,12 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		782AF015838CB527C69629DC /* Pods_SwiftTensorFlowExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1045E8BAE22B5E19AF2076 /* Pods_SwiftTensorFlowExample.framework */; };
+		A267AF1869B840DA17A18285 /* Pods_SwiftTensorFlowExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA302346E259AD6829060CE6 /* Pods_SwiftTensorFlowExampleTests.framework */; };
 		E31B589F22DD15680037DB84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31B589E22DD15680037DB84 /* AppDelegate.swift */; };
 		E31B58A122DD15680037DB84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31B58A022DD15680037DB84 /* ViewController.swift */; };
 		E31B58A422DD15680037DB84 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E31B58A222DD15680037DB84 /* Main.storyboard */; };
 		E31B58A622DD15690037DB84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E31B58A522DD15690037DB84 /* Assets.xcassets */; };
 		E31B58A922DD15690037DB84 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E31B58A722DD15690037DB84 /* LaunchScreen.storyboard */; };
 		E31B58B422DD15690037DB84 /* SwiftTensorFlowExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31B58B322DD15690037DB84 /* SwiftTensorFlowExampleTests.swift */; };
+		E31B58C422DD185E0037DB84 /* ResultInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E31B58C222DD185E0037DB84 /* ResultInfoView.m */; };
+		E31B58C922DD19CE0037DB84 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E31B58C722DD19CE0037DB84 /* cat.jpg */; };
+		E31B58CA22DD19CE0037DB84 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E31B58C822DD19CE0037DB84 /* dog.jpg */; };
+		E3660AF722DD1B1200EDE685 /* models in Resources */ = {isa = PBXBuildFile; fileRef = E3660AF522DD1B1200EDE685 /* models */; };
+		E3660AF822DD1B1200EDE685 /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3660AF622DD1B1200EDE685 /* models-tests */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +33,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D4B3C1790F3AD62E19FE464 /* Pods-SwiftTensorFlowExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1BEC44C00EF7F93F65125C5C /* Pods-SwiftTensorFlowExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExample.debug.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample.debug.xcconfig"; sourceTree = "<group>"; };
+		55ED6CB6DC95EDC7A3A6200F /* Pods-SwiftTensorFlowExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExample.release.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample.release.xcconfig"; sourceTree = "<group>"; };
+		8A1045E8BAE22B5E19AF2076 /* Pods_SwiftTensorFlowExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftTensorFlowExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C00E00986A3B64E3C04558DE /* Pods-SwiftTensorFlowExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExampleTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		E31B589B22DD15680037DB84 /* SwiftTensorFlowExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftTensorFlowExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E31B589E22DD15680037DB84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E31B58A022DD15680037DB84 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +48,14 @@
 		E31B58AF22DD15690037DB84 /* SwiftTensorFlowExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftTensorFlowExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E31B58B322DD15690037DB84 /* SwiftTensorFlowExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTensorFlowExampleTests.swift; sourceTree = "<group>"; };
 		E31B58B522DD15690037DB84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E31B58C122DD185E0037DB84 /* SwiftTensorFlowExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftTensorFlowExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		E31B58C222DD185E0037DB84 /* ResultInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultInfoView.m; sourceTree = "<group>"; };
+		E31B58C322DD185E0037DB84 /* ResultInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultInfoView.h; sourceTree = "<group>"; };
+		E31B58C722DD19CE0037DB84 /* cat.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cat.jpg; sourceTree = SOURCE_ROOT; };
+		E31B58C822DD19CE0037DB84 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = SOURCE_ROOT; };
+		E3660AF522DD1B1200EDE685 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = SOURCE_ROOT; };
+		E3660AF622DD1B1200EDE685 /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
+		FA302346E259AD6829060CE6 /* Pods_SwiftTensorFlowExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftTensorFlowExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				782AF015838CB527C69629DC /* Pods_SwiftTensorFlowExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,18 +71,41 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A267AF1869B840DA17A18285 /* Pods_SwiftTensorFlowExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2DE62843C410DA1E45DCFA03 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1BEC44C00EF7F93F65125C5C /* Pods-SwiftTensorFlowExample.debug.xcconfig */,
+				55ED6CB6DC95EDC7A3A6200F /* Pods-SwiftTensorFlowExample.release.xcconfig */,
+				0D4B3C1790F3AD62E19FE464 /* Pods-SwiftTensorFlowExampleTests.debug.xcconfig */,
+				C00E00986A3B64E3C04558DE /* Pods-SwiftTensorFlowExampleTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		3C855E507FFFFF7CD643B33C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8A1045E8BAE22B5E19AF2076 /* Pods_SwiftTensorFlowExample.framework */,
+				FA302346E259AD6829060CE6 /* Pods_SwiftTensorFlowExampleTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E31B589222DD15680037DB84 = {
 			isa = PBXGroup;
 			children = (
 				E31B589D22DD15680037DB84 /* SwiftTensorFlowExample */,
 				E31B58B222DD15690037DB84 /* SwiftTensorFlowExampleTests */,
 				E31B589C22DD15680037DB84 /* Products */,
+				2DE62843C410DA1E45DCFA03 /* Pods */,
+				3C855E507FFFFF7CD643B33C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,11 +121,18 @@
 		E31B589D22DD15680037DB84 /* SwiftTensorFlowExample */ = {
 			isa = PBXGroup;
 			children = (
-				E31B589E22DD15680037DB84 /* AppDelegate.swift */,
-				E31B58A022DD15680037DB84 /* ViewController.swift */,
+				E31B58C122DD185E0037DB84 /* SwiftTensorFlowExample-Bridging-Header.h */,
+				E31B58A722DD15690037DB84 /* LaunchScreen.storyboard */,
 				E31B58A222DD15680037DB84 /* Main.storyboard */,
 				E31B58A522DD15690037DB84 /* Assets.xcassets */,
-				E31B58A722DD15690037DB84 /* LaunchScreen.storyboard */,
+				E3660AF522DD1B1200EDE685 /* models */,
+				E3660AF622DD1B1200EDE685 /* models-tests */,
+				E31B58C722DD19CE0037DB84 /* cat.jpg */,
+				E31B58C822DD19CE0037DB84 /* dog.jpg */,
+				E31B589E22DD15680037DB84 /* AppDelegate.swift */,
+				E31B58A022DD15680037DB84 /* ViewController.swift */,
+				E31B58C322DD185E0037DB84 /* ResultInfoView.h */,
+				E31B58C222DD185E0037DB84 /* ResultInfoView.m */,
 				E31B58AA22DD15690037DB84 /* Info.plist */,
 			);
 			path = SwiftTensorFlowExample;
@@ -103,9 +154,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E31B58B822DD15690037DB84 /* Build configuration list for PBXNativeTarget "SwiftTensorFlowExample" */;
 			buildPhases = (
+				D78DBEAFAC5DAE430C7AF8A1 /* [CP] Check Pods Manifest.lock */,
 				E31B589722DD15680037DB84 /* Sources */,
 				E31B589822DD15680037DB84 /* Frameworks */,
 				E31B589922DD15680037DB84 /* Resources */,
+				A265069D8E6D3E34B9DA1D9A /* [CP] Embed Pods Frameworks */,
+				C65D146EBC67E643FE39C56B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -120,6 +174,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E31B58BB22DD15690037DB84 /* Build configuration list for PBXNativeTarget "SwiftTensorFlowExampleTests" */;
 			buildPhases = (
+				C089E6EAFF6EED6644A5F6B1 /* [CP] Check Pods Manifest.lock */,
 				E31B58AB22DD15690037DB84 /* Sources */,
 				E31B58AC22DD15690037DB84 /* Frameworks */,
 				E31B58AD22DD15690037DB84 /* Resources */,
@@ -146,6 +201,7 @@
 				TargetAttributes = {
 					E31B589A22DD15680037DB84 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
 					};
 					E31B58AE22DD15690037DB84 = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -178,7 +234,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E31B58A922DD15690037DB84 /* LaunchScreen.storyboard in Resources */,
+				E31B58CA22DD19CE0037DB84 /* dog.jpg in Resources */,
+				E3660AF722DD1B1200EDE685 /* models in Resources */,
 				E31B58A622DD15690037DB84 /* Assets.xcassets in Resources */,
+				E3660AF822DD1B1200EDE685 /* models-tests in Resources */,
+				E31B58C922DD19CE0037DB84 /* cat.jpg in Resources */,
 				E31B58A422DD15680037DB84 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,12 +252,104 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A265069D8E6D3E34B9DA1D9A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DSJSONSchemaValidation/DSJSONSchemaValidation.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DSJSONSchemaValidation.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C089E6EAFF6EED6644A5F6B1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SwiftTensorFlowExampleTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C65D146EBC67E643FE39C56B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TensorIO/TensorFlow.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TensorFlow.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D78DBEAFAC5DAE430C7AF8A1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SwiftTensorFlowExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E31B589722DD15680037DB84 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				E31B58A122DD15680037DB84 /* ViewController.swift in Sources */,
+				E31B58C422DD185E0037DB84 /* ResultInfoView.m in Sources */,
 				E31B589F22DD15680037DB84 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,8 +510,10 @@
 		};
 		E31B58B922DD15690037DB84 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1BEC44C00EF7F93F65125C5C /* Pods-SwiftTensorFlowExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = SwiftTensorFlowExample/Info.plist;
@@ -367,8 +521,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_CFLAGS = (
+					"-fmodules",
+					"-fcxx-modules",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.SwiftTensorFlowExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTensorFlowExample/SwiftTensorFlowExample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -376,8 +536,10 @@
 		};
 		E31B58BA22DD15690037DB84 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55ED6CB6DC95EDC7A3A6200F /* Pods-SwiftTensorFlowExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = SwiftTensorFlowExample/Info.plist;
@@ -385,8 +547,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_CFLAGS = (
+					"-fmodules",
+					"-fcxx-modules",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.SwiftTensorFlowExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTensorFlowExample/SwiftTensorFlowExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -394,6 +561,7 @@
 		};
 		E31B58BC22DD15690037DB84 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D4B3C1790F3AD62E19FE464 /* Pods-SwiftTensorFlowExampleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -415,6 +583,7 @@
 		};
 		E31B58BD22DD15690037DB84 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C00E00986A3B64E3C04558DE /* Pods-SwiftTensorFlowExampleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
