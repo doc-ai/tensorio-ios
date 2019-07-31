@@ -79,31 +79,4 @@ Pod::Spec.new do |s|
     }
   end
 
-  # The deploy subspec contains the tensorio-models repository client side code
-
-  s.subspec 'Deploy' do |ss|
-    ss.dependency 'TensorIO/Core'
-    ss.dependency 'SSZipArchive'
-
-    ss.source_files = 'TensorIO/Classes/Deploy/**/*'
-    ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_DEPLOY=1'
-    }
-  end
-
-  # The federated subspec contains federated learning classes and flea client side code
-
-  s.subspec 'Federated' do |ss|
-    ss.dependency 'TensorIO/Core'
-    ss.dependency 'SSZipArchive'
-
-    ss.source_files = 'TensorIO/Classes/Federated/**/*'
-    ss.resource_bundles = { 
-      'Federated' => 'TensorIO/Assets/Federated/**/*' 
-    }
-    ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_FEDERATED=1'
-    }
-  end
-
 end
