@@ -6,7 +6,7 @@ target 'SwiftTensorFlowExample' do
   pod 'TensorIO/TensorFlow', :path => '../'
 
   target 'SwiftTensorFlowExampleTests' do
-    inherit! :search_paths
+    # inherit! :search_paths
     # Pods for testing
   end
 

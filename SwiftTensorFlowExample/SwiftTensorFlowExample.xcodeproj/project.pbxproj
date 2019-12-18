@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		782AF015838CB527C69629DC /* Pods_SwiftTensorFlowExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1045E8BAE22B5E19AF2076 /* Pods_SwiftTensorFlowExample.framework */; };
-		A267AF1869B840DA17A18285 /* Pods_SwiftTensorFlowExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA302346E259AD6829060CE6 /* Pods_SwiftTensorFlowExampleTests.framework */; };
+		C5276B02289FA6FC591D94FA /* Pods_SwiftTensorFlowExample_SwiftTensorFlowExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632F58CE8FBEA273E7B9622C /* Pods_SwiftTensorFlowExample_SwiftTensorFlowExampleTests.framework */; };
 		E31B589F22DD15680037DB84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31B589E22DD15680037DB84 /* AppDelegate.swift */; };
 		E31B58A122DD15680037DB84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31B58A022DD15680037DB84 /* ViewController.swift */; };
 		E31B58A422DD15680037DB84 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E31B58A222DD15680037DB84 /* Main.storyboard */; };
@@ -19,7 +19,9 @@
 		E31B58C922DD19CE0037DB84 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E31B58C722DD19CE0037DB84 /* cat.jpg */; };
 		E31B58CA22DD19CE0037DB84 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E31B58C822DD19CE0037DB84 /* dog.jpg */; };
 		E3660AF722DD1B1200EDE685 /* models in Resources */ = {isa = PBXBuildFile; fileRef = E3660AF522DD1B1200EDE685 /* models */; };
-		E3660AF822DD1B1200EDE685 /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3660AF622DD1B1200EDE685 /* models-tests */; };
+		E39C8B1A23AAD1B100BA7520 /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E3660AF622DD1B1200EDE685 /* models-tests */; };
+		E39C8B1B23AAD1B500BA7520 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E31B58C822DD19CE0037DB84 /* dog.jpg */; };
+		E39C8B1C23AAD1B700BA7520 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E31B58C722DD19CE0037DB84 /* cat.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,8 +37,11 @@
 /* Begin PBXFileReference section */
 		0D4B3C1790F3AD62E19FE464 /* Pods-SwiftTensorFlowExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1BEC44C00EF7F93F65125C5C /* Pods-SwiftTensorFlowExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExample.debug.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample.debug.xcconfig"; sourceTree = "<group>"; };
+		5132EE44952413B6E3D2792D /* Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		55ED6CB6DC95EDC7A3A6200F /* Pods-SwiftTensorFlowExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExample.release.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample.release.xcconfig"; sourceTree = "<group>"; };
+		632F58CE8FBEA273E7B9622C /* Pods_SwiftTensorFlowExample_SwiftTensorFlowExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftTensorFlowExample_SwiftTensorFlowExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A1045E8BAE22B5E19AF2076 /* Pods_SwiftTensorFlowExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftTensorFlowExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCD9F8A83957E5C534FF7223 /* Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		C00E00986A3B64E3C04558DE /* Pods-SwiftTensorFlowExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftTensorFlowExampleTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		E31B589B22DD15680037DB84 /* SwiftTensorFlowExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftTensorFlowExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E31B589E22DD15680037DB84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,7 +60,6 @@
 		E31B58C822DD19CE0037DB84 /* dog.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dog.jpg; sourceTree = SOURCE_ROOT; };
 		E3660AF522DD1B1200EDE685 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = SOURCE_ROOT; };
 		E3660AF622DD1B1200EDE685 /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
-		FA302346E259AD6829060CE6 /* Pods_SwiftTensorFlowExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftTensorFlowExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A267AF1869B840DA17A18285 /* Pods_SwiftTensorFlowExampleTests.framework in Frameworks */,
+				C5276B02289FA6FC591D94FA /* Pods_SwiftTensorFlowExample_SwiftTensorFlowExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +89,8 @@
 				55ED6CB6DC95EDC7A3A6200F /* Pods-SwiftTensorFlowExample.release.xcconfig */,
 				0D4B3C1790F3AD62E19FE464 /* Pods-SwiftTensorFlowExampleTests.debug.xcconfig */,
 				C00E00986A3B64E3C04558DE /* Pods-SwiftTensorFlowExampleTests.release.xcconfig */,
+				5132EE44952413B6E3D2792D /* Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.debug.xcconfig */,
+				BCD9F8A83957E5C534FF7223 /* Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -93,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				8A1045E8BAE22B5E19AF2076 /* Pods_SwiftTensorFlowExample.framework */,
-				FA302346E259AD6829060CE6 /* Pods_SwiftTensorFlowExampleTests.framework */,
+				632F58CE8FBEA273E7B9622C /* Pods_SwiftTensorFlowExample_SwiftTensorFlowExampleTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -178,6 +184,8 @@
 				E31B58AB22DD15690037DB84 /* Sources */,
 				E31B58AC22DD15690037DB84 /* Frameworks */,
 				E31B58AD22DD15690037DB84 /* Resources */,
+				0C008B3516C4D31B44D6D1F3 /* [CP] Embed Pods Frameworks */,
+				B93A98A6F63137710FC4E6F8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -205,7 +213,6 @@
 					};
 					E31B58AE22DD15690037DB84 = {
 						CreatedOnToolsVersion = 10.2.1;
-						TestTargetID = E31B589A22DD15680037DB84;
 					};
 				};
 			};
@@ -237,7 +244,6 @@
 				E31B58CA22DD19CE0037DB84 /* dog.jpg in Resources */,
 				E3660AF722DD1B1200EDE685 /* models in Resources */,
 				E31B58A622DD15690037DB84 /* Assets.xcassets in Resources */,
-				E3660AF822DD1B1200EDE685 /* models-tests in Resources */,
 				E31B58C922DD19CE0037DB84 /* cat.jpg in Resources */,
 				E31B58A422DD15680037DB84 /* Main.storyboard in Resources */,
 			);
@@ -247,12 +253,32 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E39C8B1C23AAD1B700BA7520 /* cat.jpg in Resources */,
+				E39C8B1B23AAD1B500BA7520 /* dog.jpg in Resources */,
+				E39C8B1A23AAD1B100BA7520 /* models-tests in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0C008B3516C4D31B44D6D1F3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A265069D8E6D3E34B9DA1D9A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -270,6 +296,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B93A98A6F63137710FC4E6F8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C089E6EAFF6EED6644A5F6B1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -285,7 +328,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SwiftTensorFlowExampleTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -555,10 +598,9 @@
 		};
 		E31B58BC22DD15690037DB84 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0D4B3C1790F3AD62E19FE464 /* Pods-SwiftTensorFlowExampleTests.debug.xcconfig */;
+			baseConfigurationReference = 5132EE44952413B6E3D2792D /* Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = SwiftTensorFlowExampleTests/Info.plist;
@@ -571,16 +613,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftTensorFlowExample.app/SwiftTensorFlowExample";
 			};
 			name = Debug;
 		};
 		E31B58BD22DD15690037DB84 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C00E00986A3B64E3C04558DE /* Pods-SwiftTensorFlowExampleTests.release.xcconfig */;
+			baseConfigurationReference = BCD9F8A83957E5C534FF7223 /* Pods-SwiftTensorFlowExample-SwiftTensorFlowExampleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = SwiftTensorFlowExampleTests/Info.plist;
@@ -593,7 +633,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftTensorFlowExample.app/SwiftTensorFlowExample";
 			};
 			name = Release;
 		};
