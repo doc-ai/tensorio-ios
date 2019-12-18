@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -259,16 +259,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/DSJSONSchemaValidation/DSJSONSchemaValidation.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DSJSONSchemaValidation.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -303,16 +298,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/TensorIO/TensorFlow.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TensorFlow.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftTensorFlowExample/Pods-SwiftTensorFlowExample-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -517,10 +507,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = SwiftTensorFlowExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.9.7;
 				OTHER_CFLAGS = (
 					"-fmodules",
 					"-fcxx-modules",
@@ -543,10 +535,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = SwiftTensorFlowExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.9.7;
 				OTHER_CFLAGS = (
 					"-fmodules",
 					"-fcxx-modules",
