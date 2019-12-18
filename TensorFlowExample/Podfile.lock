@@ -14,7 +14,6 @@ PODS:
 DEPENDENCIES:
   - TensorIO (from `../`)
   - TensorIO/TensorFlow (from `../`)
-  - TensorIOTensorFlow
 
 SPEC REPOS:
   trunk:
@@ -30,6 +29,6 @@ SPEC CHECKSUMS:
   TensorIO: 428a8b90ee4a14622a6be6eced43e1eb04b6cdf7
   TensorIOTensorFlow: a427c146fd01d83e7d804f13d5ffc9a44ff33dce
 
-PODFILE CHECKSUM: fbdabb7621a7bf39895ca430e691607ef9298094
+PODFILE CHECKSUM: f3621b2a05e457cf5ae380adfb2c157901c0ecd4
 
 COCOAPODS: 1.8.4

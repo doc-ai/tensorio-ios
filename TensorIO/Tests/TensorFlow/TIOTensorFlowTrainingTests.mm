@@ -30,7 +30,7 @@
 @implementation TIOTrainingTests
 
 - (void)setUp {
-    self.modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
+    self.modelsPath = [[NSBundle bundleForClass:self.class] pathForResource:@"models-tests" ofType:nil];
 }
 
 - (void)tearDown {
@@ -64,6 +64,14 @@
     return model;
 }
 
+- (UIImage *)imageNamed:(NSString *)name {
+    NSString *filename = name.stringByDeletingPathExtension;
+    NSString *ext = name.pathExtension;
+    NSString *path = [[NSBundle bundleForClass:self.class] pathForResource:filename ofType:ext];
+    
+    return [UIImage imageWithContentsOfFile:path];
+}
+
 // MARK: - Model Train Method
 
 - (void)testConformsToModel {
@@ -85,8 +93,8 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
-    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
-    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[self imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[self imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
     // labels: 0=cat, 1=dog
     
@@ -119,8 +127,8 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
-    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
-    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[self imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[self imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
     // labels: 0=cat, 1=dog
     
@@ -214,8 +222,8 @@
     XCTAssertNotNil(bundle);
     XCTAssertNotNil(model);
     
-    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
-    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[UIImage imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *cat = [[TIOPixelBuffer alloc] initWithPixelBuffer:[self imageNamed:@"cat.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
+    TIOPixelBuffer *dog = [[TIOPixelBuffer alloc] initWithPixelBuffer:[self imageNamed:@"dog.jpg"].pixelBuffer orientation:kCGImagePropertyOrientationUp];
     
     TIOBatch *batch = [[TIOBatch alloc] initWithKeys:@[@"image", @"labels"]];
     

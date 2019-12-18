@@ -30,7 +30,7 @@
 @implementation TensorIOTensorFlowModelIntegrationTests
 
 - (void)setUp {
-    self.modelsPath = [[NSBundle mainBundle] pathForResource:@"models-tests" ofType:nil];
+    self.modelsPath = [[NSBundle bundleForClass:self.class] pathForResource:@"models-tests" ofType:nil];
 }
 
 - (void)tearDown {
