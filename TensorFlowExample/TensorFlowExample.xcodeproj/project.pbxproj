@@ -3,17 +3,20 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		7D40D2E275669BA1692FF75F /* Pods_TensorFlowExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB2356484CED97CD15F97E3 /* Pods_TensorFlowExample.framework */; };
-		E31524D72264F8E5007F594D /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E31524D62264F8E5007F594D /* models-tests */; };
+		820F796986E1A46AA70DB6E0 /* Pods_TensorFlowExample_TensorFlowExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E0E387FF95F88D00F7BF06 /* Pods_TensorFlowExample_TensorFlowExampleTests.framework */; };
 		E31FAD7C22C54BCA0051BD3E /* TIOTensorFlowDataTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD7722C54BCA0051BD3E /* TIOTensorFlowDataTests.mm */; };
 		E31FAD7D22C54BCA0051BD3E /* TIOTensorFlowModelBundleValidatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD7822C54BCA0051BD3E /* TIOTensorFlowModelBundleValidatorTests.mm */; };
 		E31FAD7E22C54BCA0051BD3E /* TIOModelBackendTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD7922C54BCA0051BD3E /* TIOModelBackendTests.mm */; };
 		E31FAD7F22C54BCA0051BD3E /* TIOTensorFlowModelIntegrationTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD7A22C54BCA0051BD3E /* TIOTensorFlowModelIntegrationTests.mm */; };
 		E31FAD8022C54BCA0051BD3E /* TIOTensorFlowTrainingTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = E31FAD7B22C54BCA0051BD3E /* TIOTensorFlowTrainingTests.mm */; };
+		E39C8B1723AACB9E00BA7520 /* models-tests in Resources */ = {isa = PBXBuildFile; fileRef = E31524D62264F8E5007F594D /* models-tests */; };
+		E39C8B1823AACF0200BA7520 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAE225EA12B00691A07 /* dog.jpg */; };
+		E39C8B1923AACF0400BA7520 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAC225EA07B00691A07 /* cat.jpg */; };
 		E3C9DDAD225EA09700691A07 /* cat.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAC225EA07B00691A07 /* cat.jpg */; };
 		E3C9DDAF225EA12B00691A07 /* dog.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E3C9DDAE225EA12B00691A07 /* dog.jpg */; };
 		E3CDE4BD225D3EC100C6A558 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E3CDE4BC225D3EC100C6A558 /* AppDelegate.m */; };
@@ -25,7 +28,6 @@
 		E3CDE50A225D5ACD00C6A558 /* models in Resources */ = {isa = PBXBuildFile; fileRef = E3CDE509225D5ACD00C6A558 /* models */; };
 		E3F9576A22653C8700D51FE9 /* ImageInputPreviewView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E3F9576622653C8600D51FE9 /* ImageInputPreviewView.mm */; };
 		E3F9576B22653C8700D51FE9 /* ResultInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3F9576922653C8600D51FE9 /* ResultInfoView.m */; };
-		F3A7F51E6DDA5619F6C0CBC4 /* Pods_TensorFlowExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2CD577F2F15843D10516781 /* Pods_TensorFlowExampleTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,12 +41,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07E0E387FF95F88D00F7BF06 /* Pods_TensorFlowExample_TensorFlowExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorFlowExample_TensorFlowExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EE139358F9F8EB89A974C61 /* Pods-TensorFlowExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExample.release.xcconfig"; path = "Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample.release.xcconfig"; sourceTree = "<group>"; };
 		3AC32DCBFF1F3A48503C7FD6 /* Pods-TensorFlowExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExample.debug.xcconfig"; path = "Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample.debug.xcconfig"; sourceTree = "<group>"; };
 		4B002D689FE1108B55CBF08B /* Pods-TensorFlowExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExampleTests.release.xcconfig"; path = "Target Support Files/Pods-TensorFlowExampleTests/Pods-TensorFlowExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		4CB2356484CED97CD15F97E3 /* Pods_TensorFlowExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorFlowExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93850338F3045F00D66AB394 /* Pods-TensorFlowExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TensorFlowExampleTests/Pods-TensorFlowExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		B2CD577F2F15843D10516781 /* Pods_TensorFlowExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TensorFlowExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B43FDEFF2657C2F60F37CF3E /* Pods-TensorFlowExample-TensorFlowExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExample-TensorFlowExampleTests.release.xcconfig"; path = "Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		D889D6CB4D0DDD0AA43A2062 /* Pods-TensorFlowExample-TensorFlowExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TensorFlowExample-TensorFlowExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E31524D62264F8E5007F594D /* models-tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "models-tests"; sourceTree = SOURCE_ROOT; };
 		E31FAD7722C54BCA0051BD3E /* TIOTensorFlowDataTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOTensorFlowDataTests.mm; path = ../../TensorIO/Tests/TensorFlow/TIOTensorFlowDataTests.mm; sourceTree = "<group>"; };
 		E31FAD7822C54BCA0051BD3E /* TIOTensorFlowModelBundleValidatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TIOTensorFlowModelBundleValidatorTests.mm; path = ../../TensorIO/Tests/TensorFlow/TIOTensorFlowModelBundleValidatorTests.mm; sourceTree = "<group>"; };
@@ -85,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3A7F51E6DDA5619F6C0CBC4 /* Pods_TensorFlowExampleTests.framework in Frameworks */,
+				820F796986E1A46AA70DB6E0 /* Pods_TensorFlowExample_TensorFlowExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				4CB2356484CED97CD15F97E3 /* Pods_TensorFlowExample.framework */,
-				B2CD577F2F15843D10516781 /* Pods_TensorFlowExampleTests.framework */,
+				07E0E387FF95F88D00F7BF06 /* Pods_TensorFlowExample_TensorFlowExampleTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -108,6 +112,8 @@
 				0EE139358F9F8EB89A974C61 /* Pods-TensorFlowExample.release.xcconfig */,
 				93850338F3045F00D66AB394 /* Pods-TensorFlowExampleTests.debug.xcconfig */,
 				4B002D689FE1108B55CBF08B /* Pods-TensorFlowExampleTests.release.xcconfig */,
+				D889D6CB4D0DDD0AA43A2062 /* Pods-TensorFlowExample-TensorFlowExampleTests.debug.xcconfig */,
+				B43FDEFF2657C2F60F37CF3E /* Pods-TensorFlowExample-TensorFlowExampleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -208,6 +214,8 @@
 				E3CDE4CC225D3EC200C6A558 /* Sources */,
 				E3CDE4CD225D3EC200C6A558 /* Frameworks */,
 				E3CDE4CE225D3EC200C6A558 /* Resources */,
+				C0D0AC9630DC3062FCC9C934 /* [CP] Embed Pods Frameworks */,
+				EE1D6D9380A72DB85CD7EEFA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -233,7 +241,6 @@
 					};
 					E3CDE4CF225D3EC200C6A558 = {
 						CreatedOnToolsVersion = 10.2;
-						TestTargetID = E3CDE4B7225D3EC100C6A558;
 					};
 				};
 			};
@@ -265,7 +272,6 @@
 				E3CDE4C5225D3EC200C6A558 /* Assets.xcassets in Resources */,
 				E3CDE50A225D5ACD00C6A558 /* models in Resources */,
 				E3C9DDAF225EA12B00691A07 /* dog.jpg in Resources */,
-				E31524D72264F8E5007F594D /* models-tests in Resources */,
 				E3C9DDAD225EA09700691A07 /* cat.jpg in Resources */,
 				E3CDE4C3225D3EC100C6A558 /* Main.storyboard in Resources */,
 			);
@@ -275,6 +281,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E39C8B1923AACF0400BA7520 /* cat.jpg in Resources */,
+				E39C8B1823AACF0200BA7520 /* dog.jpg in Resources */,
+				E39C8B1723AACB9E00BA7520 /* models-tests in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,16 +296,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/TensorIO/TensorFlow.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TensorFlow.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -309,16 +313,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/DSJSONSchemaValidation/DSJSONSchemaValidation.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DSJSONSchemaValidation.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample/Pods-TensorFlowExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -340,11 +339,28 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TensorFlowExampleTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TensorFlowExample-TensorFlowExampleTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C0D0AC9630DC3062FCC9C934 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D4B9626F89A521AC738189ED /* [CP] Check Pods Manifest.lock */ = {
@@ -367,6 +383,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EE1D6D9380A72DB85CD7EEFA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TensorFlowExample-TensorFlowExampleTests/Pods-TensorFlowExample-TensorFlowExampleTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -477,7 +510,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -530,7 +563,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -546,11 +579,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = TensorFlowExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.9.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.TensorFlowExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -565,11 +599,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				INFOPLIST_FILE = TensorFlowExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.9.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.TensorFlowExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -578,9 +613,8 @@
 		};
 		E3CDE4DD225D3EC200C6A558 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93850338F3045F00D66AB394 /* Pods-TensorFlowExampleTests.debug.xcconfig */;
+			baseConfigurationReference = D889D6CB4D0DDD0AA43A2062 /* Pods-TensorFlowExample-TensorFlowExampleTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				HEADER_SEARCH_PATHS = (
@@ -590,6 +624,7 @@
 					"\"${SRCROOT}/Pods/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers\"",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -598,15 +633,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.TensorFlowExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TensorFlowExample.app/TensorFlowExample";
 			};
 			name = Debug;
 		};
 		E3CDE4DE225D3EC200C6A558 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B002D689FE1108B55CBF08B /* Pods-TensorFlowExampleTests.release.xcconfig */;
+			baseConfigurationReference = B43FDEFF2657C2F60F37CF3E /* Pods-TensorFlowExample-TensorFlowExampleTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				HEADER_SEARCH_PATHS = (
@@ -616,6 +649,7 @@
 					"\"${SRCROOT}/Pods/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers\"",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -624,7 +658,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.TensorFlowExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TensorFlowExample.app/TensorFlowExample";
 			};
 			name = Release;
 		};

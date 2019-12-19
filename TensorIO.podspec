@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.9.6'
+  s.version          = '0.9.7'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for Federated Learning.'
   s.description      = 'Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.authors          = { 'doc.ai' => 'philip@doc.ai' }
   s.source           = { :git => 'https://github.com/doc-ai/tensorio-ios.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '9.3'
+  s.ios.deployment_target = '12.0'
   s.static_framework = true
   
   s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'Accelerate', 'VideoToolbox'

@@ -1,13 +1,12 @@
-platform :ios, '9.3'
+platform :ios, '12.0'
+use_frameworks!
 
 target 'SwiftTensorFlowExample' do
-  use_frameworks!
-
   pod 'TensorIO', :path => '../'
   pod 'TensorIO/TensorFlow', :path => '../'
 
   target 'SwiftTensorFlowExampleTests' do
-    inherit! :search_paths
+    # inherit! :search_paths
     # Pods for testing
   end
 

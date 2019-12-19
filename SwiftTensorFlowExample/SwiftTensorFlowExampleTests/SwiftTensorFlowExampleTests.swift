@@ -8,11 +8,10 @@
 
 import XCTest
 import TensorIO
-@testable import SwiftTensorFlowExample
 
 class SwiftTensorFlowExampleTests: XCTestCase {
 
-    let testModelsDir = Bundle.main.path(forResource: "models-tests", ofType: nil)!
+    let testModelsDir = Bundle(for: SwiftTensorFlowExampleTests.self).path(forResource: "models-tests", ofType: nil)!
     
     func bundle(named name: String) -> TIOModelBundle? {
         let path = URL(fileURLWithPath: testModelsDir).appendingPathComponent(name).path
@@ -33,6 +32,18 @@ class SwiftTensorFlowExampleTests: XCTestCase {
         return model
     }
     
+    func image(named name: String) -> UIImage {
+        let components = name.components(separatedBy: ".")
+        let filename = components[0]
+        let ext = components[1]
+        
+        let bundle = Bundle(for: type(of: self))
+        let path = bundle.path(forResource: filename, ofType: ext)!
+        let image = UIImage(contentsOfFile: path)!
+        
+        return image
+    }
+    
     // MARK: -
     
     override func setUp() { }
@@ -42,7 +53,7 @@ class SwiftTensorFlowExampleTests: XCTestCase {
 
     func testCatsVsDogsPredict() {
         
-        let image = UIImage(named: "cat.jpg")!
+        let image = self.image(named: "cat.jpg")
         let pixels = image.pixelBuffer()!
         let value = pixels.takeUnretainedValue() as CVPixelBuffer
         let buffer = TIOPixelBuffer(pixelBuffer: value, orientation: .up)
@@ -73,8 +84,8 @@ class SwiftTensorFlowExampleTests: XCTestCase {
        
         // Prepare Data
        
-        let cat = TIOPixelBuffer(pixelBuffer: UIImage(named: "cat.jpg")!.pixelBuffer()!.takeUnretainedValue() as CVPixelBuffer, orientation: .up)
-        let dog = TIOPixelBuffer(pixelBuffer: UIImage(named: "dog.jpg")!.pixelBuffer()!.takeUnretainedValue() as CVPixelBuffer, orientation: .up)
+        let cat = TIOPixelBuffer(pixelBuffer: self.image(named: "cat.jpg").pixelBuffer()!.takeUnretainedValue() as CVPixelBuffer, orientation: .up)
+        let dog = TIOPixelBuffer(pixelBuffer: self.image(named: "dog.jpg").pixelBuffer()!.takeUnretainedValue() as CVPixelBuffer, orientation: .up)
         
         // labels: 0=cat, 1=dog
         
