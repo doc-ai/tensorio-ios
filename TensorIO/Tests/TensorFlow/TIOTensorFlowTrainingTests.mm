@@ -115,7 +115,7 @@
         NSDictionary *results = (NSDictionary *)[model train:batch error:&error];
         
         XCTAssertNil(error);
-        XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232
+        XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232 (0.2305)
         XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
     }
 }
