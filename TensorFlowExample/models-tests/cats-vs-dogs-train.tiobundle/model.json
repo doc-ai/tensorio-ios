@@ -6,7 +6,7 @@
 	"author": "doc.ai",
 	"license": "Apache License. Version 2.0 http://www.apache.org/licenses/LICENSE-2.0",
 	"model": {
-		"file": "train",
+		"file": "train-lisi",
 		"quantized": false,
 		"type": "image.classification.catsvsdogs",
 		"backend": "tensorflow",
