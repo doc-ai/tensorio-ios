@@ -346,9 +346,10 @@
 				ORGANIZATIONNAME = doc.ai;
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = X44T8YD52X;
+						DevelopmentTeam = K5SNYPF7SQ;
 					};
 					6003F5AD195388D20070C39A = {
+						DevelopmentTeam = K5SNYPF7SQ;
 						TestTargetID = 6003F589195388D20070C39A;
 					};
 				};
@@ -659,7 +660,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = X44T8YD52X;
+				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TensorIO/TensorIO-Prefix.pch";
 				INFOPLIST_FILE = "TensorIO/TensorIO-Info.plist";
@@ -678,7 +679,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = X44T8YD52X;
+				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TensorIO/TensorIO-Prefix.pch";
 				INFOPLIST_FILE = "TensorIO/TensorIO-Info.plist";
@@ -696,6 +697,7 @@
 			baseConfigurationReference = 3A83CDEBA2CAA2DAD26D91B8 /* Pods-TensorIO_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -721,6 +723,7 @@
 			baseConfigurationReference = D1579456E256DCF716202489 /* Pods-TensorIO_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = K5SNYPF7SQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

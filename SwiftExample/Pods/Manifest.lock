@@ -1,5 +1,5 @@
 PODS:
-  - DSJSONSchemaValidation (2.0.5)
+  - DSJSONSchemaValidation (2.0.7)
   - TensorFlowLite (1.13.1)
   - TensorIO (0.9.7):
     - DSJSONSchemaValidation
@@ -25,10 +25,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DSJSONSchemaValidation: a0d791d3c8a4801cb3c72f3c8701342e2cb66f58
+  DSJSONSchemaValidation: 46e30ccfa9908c49d184f453d556f55aa0aac1ff
   TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
   TensorIO: 428a8b90ee4a14622a6be6eced43e1eb04b6cdf7
 
 PODFILE CHECKSUM: 2e76eddda1d036cc6dc70ac8020f70ff2f67e8af
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.0
