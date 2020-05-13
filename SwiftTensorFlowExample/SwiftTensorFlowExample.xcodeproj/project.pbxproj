@@ -209,10 +209,11 @@
 				TargetAttributes = {
 					E31B589A22DD15680037DB84 = {
 						CreatedOnToolsVersion = 10.2.1;
-						LastSwiftMigration = 1020;
+						LastSwiftMigration = 1130;
 					};
 					E31B58AE22DD15690037DB84 = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -566,7 +567,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTensorFlowExample/SwiftTensorFlowExample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -593,7 +594,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.SwiftTensorFlowExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTensorFlowExample/SwiftTensorFlowExample-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -613,7 +614,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.SwiftTensorFlowExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -633,7 +634,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.SwiftTensorFlowExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -49,7 +49,7 @@ class ViewController: UIViewController {
         // Show results
         
         self.imageView.image = image
-        infoView.classifications = classification.description
+        self.infoView.classifications = classification.description
         
         // Log the results
     
