@@ -6,8 +6,8 @@
 //  Copyright © 2019 doc.ai. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import <TensorIO/TensorIO-umbrella.h>
+@import XCTest;
+@import TensorIO;
 
 @interface TIOModelModesTests : XCTestCase
 

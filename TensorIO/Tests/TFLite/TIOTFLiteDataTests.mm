@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-#import <XCTest/XCTest.h>
-#import <TensorIO/TensorIO-umbrella.h>
+@import XCTest;
+@import TensorIO;
 
 // Expose private methods so that we can access them for testing
 

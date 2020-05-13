@@ -18,8 +18,9 @@
 //  limitations under the License.
 //
 
-#import <XCTest/XCTest.h>
-#import <TensorIO/TensorIO-umbrella.h>
+@import XCTest;
+@import TensorIO;
+
 #import "TIOMockBatchDataSource.h"
 #import "TIOMockTrainableModel.h"
 
