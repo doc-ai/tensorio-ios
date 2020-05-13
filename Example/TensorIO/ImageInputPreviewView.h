@@ -18,8 +18,9 @@
 //  limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
+@import UIKit;
+@import AVFoundation;
+@import TensorIO;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -19,8 +19,6 @@
 //
 
 #import "MainViewController.h"
-
-#import <TensorIO/TensorIO-umbrella.h>
 #import "ResultInfoView.h"
 
 @interface MainViewController ()

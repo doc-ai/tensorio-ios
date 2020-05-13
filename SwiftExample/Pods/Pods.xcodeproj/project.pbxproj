@@ -1474,42 +1474,6 @@
 			};
 			name = Debug;
 		};
-		51BF5E8B228D55629B68FB2FDFBE8651 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F718DCF66F57AAB66A420A8ED7B41BB /* DSJSONSchemaValidation.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation.modulemap";
-				PRODUCT_MODULE_NAME = DSJSONSchemaValidation;
-				PRODUCT_NAME = DSJSONSchemaValidation;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		56810CDDB817B2500F14DE7C3125FFDD /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DBAE85C0B09AF387B99A95FD3FC71BEB /* Pods-SwiftExample.release.xcconfig */;
@@ -1549,11 +1513,10 @@
 			};
 			name = Release;
 		};
-		881006D957D266F6D1961DCFCC710C63 /* Release */ = {
+		572F6125228611797847B796C9E0C42A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18B33D29103D75AC191ABC585C8B936F /* TensorIO.release.xcconfig */;
+			baseConfigurationReference = 8A1509109E26E4274ADB2896B84C5FB1 /* DSJSONSchemaValidation.debug.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1563,29 +1526,27 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/TensorIO/TensorIO-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/TensorIO/TensorIO-Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/TensorIO/TensorIO.modulemap";
-				PRODUCT_MODULE_NAME = TensorIO;
-				PRODUCT_NAME = TensorIO;
+				MODULEMAP_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation.modulemap";
+				PRODUCT_MODULE_NAME = DSJSONSchemaValidation;
+				PRODUCT_NAME = DSJSONSchemaValidation;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
 		89A8CAF3D410EDF31825A7C539645727 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1680,7 +1641,60 @@
 			};
 			name = Debug;
 		};
-		B4E278D3933196F34F2D3F10E5EADAD3 /* Debug */ = {
+		CD101FDC4228447A135554718228A8AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 31101CA701D6BB9C567130EC97D245FE /* TensorIO.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/TensorIO";
+				IBSC_MODULE = TensorIO;
+				INFOPLIST_FILE = "Target Support Files/TensorIO/ResourceBundle-TFLite-TensorIO-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_NAME = TFLite;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		DE48B0EC7EB1ACBFF1039BE20E125484 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5F718DCF66F57AAB66A420A8ED7B41BB /* DSJSONSchemaValidation.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation.modulemap";
+				PRODUCT_MODULE_NAME = DSJSONSchemaValidation;
+				PRODUCT_NAME = DSJSONSchemaValidation;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E1C92579EC09F5B190A06E2141726F9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 31101CA701D6BB9C567130EC97D245FE /* TensorIO.debug.xcconfig */;
 			buildSettings = {
@@ -1710,34 +1724,18 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		CD101FDC4228447A135554718228A8AD /* Debug */ = {
+		EC576268B957F6418EFA20CDC50866B6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 31101CA701D6BB9C567130EC97D245FE /* TensorIO.debug.xcconfig */;
+			baseConfigurationReference = 18B33D29103D75AC191ABC585C8B936F /* TensorIO.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/TensorIO";
-				IBSC_MODULE = TensorIO;
-				INFOPLIST_FILE = "Target Support Files/TensorIO/ResourceBundle-TFLite-TensorIO-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				PRODUCT_NAME = TFLite;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		D57147346FED767A694F5C963BCB0200 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A1509109E26E4274ADB2896B84C5FB1 /* DSJSONSchemaValidation.debug.xcconfig */;
-			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1747,27 +1745,29 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation-Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/TensorIO/TensorIO-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/TensorIO/TensorIO-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MODULEMAP_FILE = "Target Support Files/DSJSONSchemaValidation/DSJSONSchemaValidation.modulemap";
-				PRODUCT_MODULE_NAME = DSJSONSchemaValidation;
-				PRODUCT_NAME = DSJSONSchemaValidation;
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/TensorIO/TensorIO.modulemap";
+				PRODUCT_MODULE_NAME = TensorIO;
+				PRODUCT_NAME = TensorIO;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		F090CD07A80273D5A73C8EA19224ADDB /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1897,8 +1897,8 @@
 		B2262320B9380FCB83B06F5691EA08E4 /* Build configuration list for PBXNativeTarget "TensorIO" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B4E278D3933196F34F2D3F10E5EADAD3 /* Debug */,
-				881006D957D266F6D1961DCFCC710C63 /* Release */,
+				E1C92579EC09F5B190A06E2141726F9E /* Debug */,
+				EC576268B957F6418EFA20CDC50866B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1906,8 +1906,8 @@
 		F384CDD717950E910B899641A9169C5C /* Build configuration list for PBXNativeTarget "DSJSONSchemaValidation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D57147346FED767A694F5C963BCB0200 /* Debug */,
-				51BF5E8B228D55629B68FB2FDFBE8651 /* Release */,
+				572F6125228611797847B796C9E0C42A /* Debug */,
+				DE48B0EC7EB1ACBFF1039BE20E125484 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '0.9.8'
+  s.version          = '0.9.9'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for Federated Learning.'
   s.description      = 'Perform inference with TensorFlow Lite or full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -18,6 +18,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '12.0'
   s.static_framework = true
+  s.requires_arc = true
   
   s.frameworks = 'Foundation', 'UIKit', 'AVFoundation', 'CoreGraphics', 'CoreMedia', 'CoreVideo', 'Accelerate', 'VideoToolbox'
   s.library = 'c++'
@@ -26,6 +27,10 @@ Pod::Spec.new do |s|
   
   s.default_subspec = 'Core'
   
+  s.user_target_xcconfig = {
+    'OTHER_CFLAGS' => '-fcxx-modules -fmodules'
+  }
+
   # Core subspec contains base classes and protocol definitions but no model implementation
   
   s.subspec 'Core' do |ss|

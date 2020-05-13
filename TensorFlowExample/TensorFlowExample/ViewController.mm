@@ -19,8 +19,6 @@
 //
 
 #import "ViewController.h"
-
-#import <TensorIO/TensorIO-umbrella.h>
 #import "ResultInfoView.h"
 
 @interface ViewController ()
