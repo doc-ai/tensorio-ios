@@ -20,8 +20,6 @@
 
 #import "ImageInputPreviewView.h"
 
-#import <TensorIO/TensorIO-umbrella.h>
-
 static float kViewDim = UIScreen.mainScreen.bounds.size.width <= 320 ? 54.0 : 64.0;
 static float kDotViewOffset = 0.0;
 static float kDotViewDim = 5.0;
