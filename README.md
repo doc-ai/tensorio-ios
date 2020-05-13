@@ -150,20 +150,7 @@ Tensor/IO is available under the Apache 2 license. See the LICENSE file for more
 
 Because the umbrella Tensor/IO header imports headers with C++ syntax, any files that use Tensor/IO must have Obj-C++ extensions. Rename your `.m` files to `.mm`.
 
-Wherever you'd like to use Tensor/IO, import the umbrella header:
-
-```objc
-#import <TensorIO/TensorIO-umbrella.h>
-```
-
-To use Tensor/IO as a module, make sure `use_frameworks!` is uncommented in your Podfile, and add the following *Other C Flags* to your project's build settings:
-
-```
--fmodules
--fcxx-modules
-```
-
-Wherever you'd like to use Tensor/IO, add:
+Then wherever you'd like to use Tensor/IO, simply import it:
 
 ```objc
 @import TensorIO;

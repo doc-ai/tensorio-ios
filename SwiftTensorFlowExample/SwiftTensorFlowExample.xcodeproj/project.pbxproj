@@ -559,10 +559,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.9.7;
-				OTHER_CFLAGS = (
-					"-fmodules",
-					"-fcxx-modules",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.SwiftTensorFlowExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTensorFlowExample/SwiftTensorFlowExample-Bridging-Header.h";
@@ -587,10 +583,6 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.9.7;
-				OTHER_CFLAGS = (
-					"-fmodules",
-					"-fcxx-modules",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.doc.SwiftTensorFlowExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftTensorFlowExample/SwiftTensorFlowExample-Bridging-Header.h";
