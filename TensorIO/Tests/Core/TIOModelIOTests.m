@@ -152,4 +152,29 @@
     XCTAssert([io.placeholders indexForName:@"bar"].integerValue == 1);
 }
 
+- (void)testInputsFastEnumerator {
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
+    
+    NSMutableArray *inputs = [[NSMutableArray alloc] init];
+    
+    for ( TIOLayerInterface *interface in io.inputs ) {
+        [inputs addObject:interface];
+    }
+    
+    XCTAssert([inputs isEqualToArray:io.inputs.all]);
+}
+
+- (void)testOutputsFastEnumeration {
+    TIOModelIO *io = [[TIOModelIO alloc] initWithInputInterfaces:@[self.fooIn, self.barIn] ouputInterfaces:@[self.fooOut, self.barOut] placeholderInterfaces:@[self.fooPlaceholder, self.barPlaceholder]];
+
+    NSMutableArray *outputs = [[NSMutableArray alloc] init];
+
+    for ( TIOLayerInterface *interface in io.outputs ) {
+        [outputs addObject:interface];
+    }
+
+    XCTAssert([outputs isEqualToArray:io.outputs.all]);
+
+}
+
 @end
