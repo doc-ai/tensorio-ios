@@ -18,7 +18,8 @@
 //  limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+@import TensorIO;
 
 @class ResultInfoView;
 

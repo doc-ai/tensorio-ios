@@ -18,10 +18,8 @@
 //  limitations under the License.
 //
 
-//  TODO: Add pixel buffer tests (#63)
-
-#import <XCTest/XCTest.h>
-#import <TensorIO/TensorIO-umbrella.h>
+@import XCTest;
+@import TensorIO;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
