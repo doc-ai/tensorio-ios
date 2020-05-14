@@ -9,7 +9,7 @@
 
 Tensor/IO iOS is an Objective-C wrapper for machine learning with support for TensorFlow and TensorFlow Lite. It abstracts the work of copying bytes into and out of tensors and allows you to interract with native types instead, such as numbers, arrays, dictionaries, and pixel buffers. Tensor/IO for iOS supports packaging and deployment, inference, and training. This implementation is part of the [Tensor/IO project](https://doc-ai.github.io/tensorio/) with support for machine learning on iOS, Android, and React Native.
 
-For more complete documentation, see the [Tensor/IO Documentation](https://github.com/doc-ai/tensorio/tree/documentation/documentation).
+For more complete documentation, see the [Tensor/IO Documentation](https://github.com/doc-ai/tensorio/tree/master/documentation).
 
 ## Example
 
@@ -87,9 +87,9 @@ Make sure `use_frameworks!` is uncommented in your Podfile, and wherever you'd l
 import TensorIO
 ```
 
-For more informaiton on using Tensor/IO, refer to the [complete documentation](https://github.com/doc-ai/tensorio/tree/documentation/documentation) or see the four example projects included in this repo.
+For more informaiton on using Tensor/IO, refer to the [complete documentation](https://github.com/doc-ai/tensorio/tree/master/documentation) or see the four example projects included in this repo.
 
-We also maintain a repository of example jupyter notebooks demonstrating how to build models for on device inference and training with Tensor/IO and include sample iOS code in Swift for running those models. See [tensorio-examples](https://github.com/doc-ai/tensorio-examples) for more information.
+We also maintain a repository of example jupyter notebooks demonstrating how to build models for on device inference and training with Tensor/IO and include sample iOS code in Swift for running those models. See [tensorio/examples](https://github.com/doc-ai/tensorio/tree/master/examples) for more information.
 
 ## License
 
