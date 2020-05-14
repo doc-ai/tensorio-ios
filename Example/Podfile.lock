@@ -1,12 +1,12 @@
 PODS:
   - DSJSONSchemaValidation (2.0.7)
   - TensorFlowLite (1.13.1)
-  - TensorIO (0.9.9):
+  - TensorIO (1.0):
     - DSJSONSchemaValidation
-    - TensorIO/Core (= 0.9.9)
-  - TensorIO/Core (0.9.9):
+    - TensorIO/Core (= 1.0)
+  - TensorIO/Core (1.0):
     - DSJSONSchemaValidation
-  - TensorIO/TFLite (0.9.9):
+  - TensorIO/TFLite (1.0):
     - DSJSONSchemaValidation
     - TensorFlowLite
     - TensorIO/Core
@@ -27,7 +27,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DSJSONSchemaValidation: 46e30ccfa9908c49d184f453d556f55aa0aac1ff
   TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
-  TensorIO: 7c3b592acaed3966b0bef75bb1dac77d982dcd9c
+  TensorIO: a8676eb2f819d136bbbdc458a8a010b92342ac0d
 
 PODFILE CHECKSUM: 3ec20863fd64cde2866456ffa1a33adad3b2b12c
 
