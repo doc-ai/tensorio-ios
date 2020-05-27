@@ -4,130 +4,103 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 
-// #include "tensorflow/core/protobuf/saved_model.pb.h"
-#include "saved_model.pb.h"
+#include "saved_model.pb.h" // "tensorflow/core/protobuf/saved_model.pb.h"
 
 #include <algorithm>
 
 #include <google/protobuf/stubs/common.h>
-#include <google/protobuf/stubs/port.h>
 #include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/wire_format_lite_inl.h>
+#include <google/protobuf/extension_set.h>
+#include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
-// This is a temporary google only hack
-#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-#include "third_party/protobuf/version.h"
-#endif
 // @@protoc_insertion_point(includes)
+#include <google/protobuf/port_def.inc>
 
 #pragma clang diagnostic pop
 
-namespace protobuf_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto {
-extern PROTOBUF_INTERNAL_EXPORT_protobuf_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto ::google::protobuf::internal::SCCInfo<7> scc_info_MetaGraphDef;
-}  // namespace protobuf_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto
+extern PROTOBUF_INTERNAL_EXPORT_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<7> scc_info_MetaGraphDef_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto;
 namespace tensorflow {
 class SavedModelDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<SavedModel>
-      _instance;
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SavedModel> _instance;
 } _SavedModel_default_instance_;
 }  // namespace tensorflow
-namespace protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto {
-static void InitDefaultsSavedModel() {
+static void InitDefaultsscc_info_SavedModel_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
     void* ptr = &::tensorflow::_SavedModel_default_instance_;
     new (ptr) ::tensorflow::SavedModel();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
   ::tensorflow::SavedModel::InitAsDefaultInstance();
 }
 
-::google::protobuf::internal::SCCInfo<1> scc_info_SavedModel =
-    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsSavedModel}, {
-      &protobuf_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto::scc_info_MetaGraphDef.base,}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SavedModel_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, InitDefaultsscc_info_SavedModel_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto}, {
+      &scc_info_MetaGraphDef_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto.base,}};
 
-void InitDefaults() {
-  ::google::protobuf::internal::InitSCC(&scc_info_SavedModel.base);
-}
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto[1];
+static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto = nullptr;
+static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto = nullptr;
 
-::google::protobuf::Metadata file_level_metadata[1];
-
-const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tensorflow::SavedModel, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::tensorflow::SavedModel, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tensorflow::SavedModel, saved_model_schema_version_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tensorflow::SavedModel, meta_graphs_),
+  PROTOBUF_FIELD_OFFSET(::tensorflow::SavedModel, saved_model_schema_version_),
+  PROTOBUF_FIELD_OFFSET(::tensorflow::SavedModel, meta_graphs_),
 };
-static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::tensorflow::SavedModel)},
 };
 
-static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::tensorflow::_SavedModel_default_instance_),
+static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::tensorflow::_SavedModel_default_instance_),
 };
 
-void protobuf_AssignDescriptors() {
-  AddDescriptors();
-  AssignDescriptors(
-      "tensorflow/core/protobuf/saved_model.proto", schemas, file_default_instances, TableStruct::offsets,
-      file_level_metadata, NULL, NULL);
-}
+const char descriptor_table_protodef_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto[] =
+  "\n*tensorflow/core/protobuf/saved_model.p"
+  "roto\022\ntensorflow\032)tensorflow/core/protob"
+  "uf/meta_graph.proto\"_\n\nSavedModel\022\"\n\032sav"
+  "ed_model_schema_version\030\001 \001(\003\022-\n\013meta_gr"
+  "aphs\030\002 \003(\0132\030.tensorflow.MetaGraphDefBo\n\030"
+  "org.tensorflow.frameworkB\020SavedModelProt"
+  "osP\001Z<github.com/tensorflow/tensorflow/t"
+  "ensorflow/go/core/protobuf\370\001\001b\006proto3"
+  ;
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_deps[1] = {
+  &::descriptor_table_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_sccs[1] = {
+  &scc_info_SavedModel_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto.base,
+};
+static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_once;
+static bool descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_initialized = false;
+const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto = {
+  &descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_initialized, descriptor_table_protodef_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto, "tensorflow/core/protobuf/saved_model.proto", 317,
+  &descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_once, descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_sccs, descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto_deps, 1, 1,
+  schemas, file_default_instances, TableStruct_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::offsets,
+  file_level_metadata_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto, 1, file_level_enum_descriptors_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto, file_level_service_descriptors_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto,
+};
 
-void protobuf_AssignDescriptorsOnce() {
-  static ::google::protobuf::internal::once_flag once;
-  ::google::protobuf::internal::call_once(once, protobuf_AssignDescriptors);
-}
-
-void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
-void protobuf_RegisterTypes(const ::std::string&) {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 1);
-}
-
-void AddDescriptorsImpl() {
-  InitDefaults();
-  static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n*tensorflow/core/protobuf/saved_model.p"
-      "roto\022\ntensorflow\032)tensorflow/core/protob"
-      "uf/meta_graph.proto\"_\n\nSavedModel\022\"\n\032sav"
-      "ed_model_schema_version\030\001 \001(\003\022-\n\013meta_gr"
-      "aphs\030\002 \003(\0132\030.tensorflow.MetaGraphDefBo\n\030"
-      "org.tensorflow.frameworkB\020SavedModelProt"
-      "osP\001Z<github.com/tensorflow/tensorflow/t"
-      "ensorflow/go/core/protobuf\370\001\001b\006proto3"
-  };
-  ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 317);
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
-    "tensorflow/core/protobuf/saved_model.proto", &protobuf_RegisterTypes);
-  ::protobuf_tensorflow_2fcore_2fprotobuf_2fmeta_5fgraph_2eproto::AddDescriptors();
-}
-
-void AddDescriptors() {
-  static ::google::protobuf::internal::once_flag once;
-  ::google::protobuf::internal::call_once(once, AddDescriptorsImpl);
-}
-// Force AddDescriptors() to be called at dynamic initialization time.
-struct StaticDescriptorInitializer {
-  StaticDescriptorInitializer() {
-    AddDescriptors();
-  }
-} static_descriptor_initializer;
-}  // namespace protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto
+// Force running AddDescriptors() at dynamic initialization time.
+static bool dynamic_init_dummy_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto), true);
 namespace tensorflow {
 
 // ===================================================================
 
 void SavedModel::InitAsDefaultInstance() {
 }
+class SavedModel::HasBitSetters {
+ public:
+};
+
 void SavedModel::clear_meta_graphs() {
   meta_graphs_.Clear();
 }
@@ -137,24 +110,21 @@ const int SavedModel::kMetaGraphsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SavedModel::SavedModel()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  ::google::protobuf::internal::InitSCC(
-      &protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::scc_info_SavedModel.base);
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
   // @@protoc_insertion_point(constructor:tensorflow.SavedModel)
 }
-SavedModel::SavedModel(::google::protobuf::Arena* arena)
-  : ::google::protobuf::Message(),
+SavedModel::SavedModel(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
   _internal_metadata_(arena),
   meta_graphs_(arena) {
-  ::google::protobuf::internal::InitSCC(&protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::scc_info_SavedModel.base);
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:tensorflow.SavedModel)
 }
 SavedModel::SavedModel(const SavedModel& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr),
       meta_graphs_(from.meta_graphs_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   saved_model_schema_version_ = from.saved_model_schema_version_;
@@ -162,7 +132,8 @@ SavedModel::SavedModel(const SavedModel& from)
 }
 
 void SavedModel::SharedCtor() {
-  saved_model_schema_version_ = GOOGLE_LONGLONG(0);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SavedModel_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto.base);
+  saved_model_schema_version_ = PROTOBUF_LONGLONG(0);
 }
 
 SavedModel::~SavedModel() {
@@ -171,57 +142,99 @@ SavedModel::~SavedModel() {
 }
 
 void SavedModel::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaNoVirtual() == NULL);
+  GOOGLE_DCHECK(GetArenaNoVirtual() == nullptr);
 }
 
 void SavedModel::ArenaDtor(void* object) {
   SavedModel* _this = reinterpret_cast< SavedModel* >(object);
   (void)_this;
 }
-void SavedModel::RegisterArenaDtor(::google::protobuf::Arena* arena) {
+void SavedModel::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
 }
 void SavedModel::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const ::google::protobuf::Descriptor* SavedModel::descriptor() {
-  ::protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
 const SavedModel& SavedModel::default_instance() {
-  ::google::protobuf::internal::InitSCC(&protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::scc_info_SavedModel.base);
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SavedModel_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto.base);
   return *internal_default_instance();
 }
 
 
 void SavedModel::Clear() {
 // @@protoc_insertion_point(message_clear_start:tensorflow.SavedModel)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   meta_graphs_.Clear();
-  saved_model_schema_version_ = GOOGLE_LONGLONG(0);
+  saved_model_schema_version_ = PROTOBUF_LONGLONG(0);
   _internal_metadata_.Clear();
 }
 
+#if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+const char* SavedModel::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArenaNoVirtual(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // int64 saved_model_schema_version = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          saved_model_schema_version_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // repeated .tensorflow.MetaGraphDef meta_graphs = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(add_meta_graphs(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<::PROTOBUF_NAMESPACE_ID::uint8>(ptr) == 18);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+#else  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 bool SavedModel::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
+    ::PROTOBUF_NAMESPACE_ID::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!PROTOBUF_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::PROTOBUF_NAMESPACE_ID::uint32 tag;
   // @@protoc_insertion_point(parse_start:tensorflow.SavedModel)
   for (;;) {
-    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    ::std::pair<::PROTOBUF_NAMESPACE_ID::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+    switch (::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // int64 saved_model_schema_version = 1;
       case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (8 & 0xFF)) {
 
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+          DO_((::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadPrimitive<
+                   ::PROTOBUF_NAMESPACE_ID::int64, ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_INT64>(
                  input, &saved_model_schema_version_)));
         } else {
           goto handle_unusual;
@@ -231,9 +244,8 @@ bool SavedModel::MergePartialFromCodedStream(
 
       // repeated .tensorflow.MetaGraphDef meta_graphs = 2;
       case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+        if (static_cast< ::PROTOBUF_NAMESPACE_ID::uint8>(tag) == (18 & 0xFF)) {
+          DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::ReadMessage(
                 input, add_meta_graphs()));
         } else {
           goto handle_unusual;
@@ -246,7 +258,7 @@ bool SavedModel::MergePartialFromCodedStream(
         if (tag == 0) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
+        DO_(::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SkipField(
               input, tag, _internal_metadata_.mutable_unknown_fields()));
         break;
       }
@@ -260,57 +272,57 @@ failure:
   return false;
 #undef DO_
 }
+#endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
 
 void SavedModel::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
+    ::PROTOBUF_NAMESPACE_ID::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:tensorflow.SavedModel)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // int64 saved_model_schema_version = 1;
   if (this->saved_model_schema_version() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->saved_model_schema_version(), output);
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64(1, this->saved_model_schema_version(), output);
   }
 
   // repeated .tensorflow.MetaGraphDef meta_graphs = 2;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->meta_graphs_size()); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteMessageMaybeToArray(
       2,
       this->meta_graphs(static_cast<int>(i)),
       output);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFields(
+        _internal_metadata_.unknown_fields(), output);
   }
   // @@protoc_insertion_point(serialize_end:tensorflow.SavedModel)
 }
 
-::google::protobuf::uint8* SavedModel::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
+::PROTOBUF_NAMESPACE_ID::uint8* SavedModel::InternalSerializeWithCachedSizesToArray(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:tensorflow.SavedModel)
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // int64 saved_model_schema_version = 1;
   if (this->saved_model_schema_version() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->saved_model_schema_version(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(1, this->saved_model_schema_version(), target);
   }
 
   // repeated .tensorflow.MetaGraphDef meta_graphs = 2;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->meta_graphs_size()); i < n; i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessageToArray(
-        2, this->meta_graphs(static_cast<int>(i)), deterministic, target);
+        2, this->meta_graphs(static_cast<int>(i)), target);
   }
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tensorflow.SavedModel)
   return target;
@@ -320,18 +332,22 @@ size_t SavedModel::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:tensorflow.SavedModel)
   size_t total_size = 0;
 
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+  if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::ComputeUnknownFieldsSize(
+        _internal_metadata_.unknown_fields());
   }
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
   // repeated .tensorflow.MetaGraphDef meta_graphs = 2;
   {
     unsigned int count = static_cast<unsigned int>(this->meta_graphs_size());
     total_size += 1UL * count;
     for (unsigned int i = 0; i < count; i++) {
       total_size +=
-        ::google::protobuf::internal::WireFormatLite::MessageSize(
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           this->meta_graphs(static_cast<int>(i)));
     }
   }
@@ -339,24 +355,24 @@ size_t SavedModel::ByteSizeLong() const {
   // int64 saved_model_schema_version = 1;
   if (this->saved_model_schema_version() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
         this->saved_model_schema_version());
   }
 
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SavedModel::MergeFrom(const ::google::protobuf::Message& from) {
+void SavedModel::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:tensorflow.SavedModel)
   GOOGLE_DCHECK_NE(&from, this);
   const SavedModel* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const SavedModel>(
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SavedModel>(
           &from);
-  if (source == NULL) {
+  if (source == nullptr) {
   // @@protoc_insertion_point(generalized_merge_from_cast_fail:tensorflow.SavedModel)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
   // @@protoc_insertion_point(generalized_merge_from_cast_success:tensorflow.SavedModel)
     MergeFrom(*source);
@@ -367,7 +383,7 @@ void SavedModel::MergeFrom(const SavedModel& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:tensorflow.SavedModel)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   meta_graphs_.MergeFrom(from.meta_graphs_);
@@ -376,7 +392,7 @@ void SavedModel::MergeFrom(const SavedModel& from) {
   }
 }
 
-void SavedModel::CopyFrom(const ::google::protobuf::Message& from) {
+void SavedModel::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
 // @@protoc_insertion_point(generalized_copy_from_start:tensorflow.SavedModel)
   if (&from == this) return;
   Clear();
@@ -403,7 +419,7 @@ void SavedModel::Swap(SavedModel* other) {
     temp->MergeFrom(*other);
     other->CopyFrom(*this);
     InternalSwap(temp);
-    if (GetArenaNoVirtual() == NULL) {
+    if (GetArenaNoVirtual() == nullptr) {
       delete temp;
     }
   }
@@ -415,25 +431,23 @@ void SavedModel::UnsafeArenaSwap(SavedModel* other) {
 }
 void SavedModel::InternalSwap(SavedModel* other) {
   using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   CastToBase(&meta_graphs_)->InternalSwap(CastToBase(&other->meta_graphs_));
   swap(saved_model_schema_version_, other->saved_model_schema_version_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::google::protobuf::Metadata SavedModel::GetMetadata() const {
-  protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_tensorflow_2fcore_2fprotobuf_2fsaved_5fmodel_2eproto::file_level_metadata[kIndexInFileMessages];
+::PROTOBUF_NAMESPACE_ID::Metadata SavedModel::GetMetadata() const {
+  return GetMetadataStatic();
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace tensorflow
-namespace google {
-namespace protobuf {
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::tensorflow::SavedModel* Arena::CreateMaybeMessage< ::tensorflow::SavedModel >(Arena* arena) {
+PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::tensorflow::SavedModel* Arena::CreateMaybeMessage< ::tensorflow::SavedModel >(Arena* arena) {
   return Arena::CreateMessageInternal< ::tensorflow::SavedModel >(arena);
 }
-}  // namespace protobuf
-}  // namespace google
+PROTOBUF_NAMESPACE_CLOSE
 
 // @@protoc_insertion_point(global_scope)
+#include <google/protobuf/port_undef.inc>
