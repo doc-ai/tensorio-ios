@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '1.0.1'
+  s.version          = '1.1'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for on device training.'
   s.description      = 'On device inference with TensorFlow Lite or inference and training with full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
     'OTHER_CFLAGS' => '-fcxx-modules -fmodules'
   }
 
-  # Core subspec contains base classes and protocol definitions but no model implementation
+  # Core subspec contains base classes and protocol definitions but no backend implementation
   
   s.subspec 'Core' do |ss|
     ss.source_files = 'TensorIO/Classes/Core/**/*'
@@ -65,7 +65,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'TensorFlow' do |ss|
     ss.dependency 'TensorIO/Core'
-    ss.dependency 'TensorIOTensorFlow', '~> 1.13.0'
+    ss.dependency 'TensorIOTensorFlow', '~> 1.15.0'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
