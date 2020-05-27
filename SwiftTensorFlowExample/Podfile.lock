@@ -9,26 +9,28 @@ PODS:
     - DSJSONSchemaValidation
     - TensorIO/Core
     - TensorIOTensorFlow
-  - TensorIOTensorFlow (1.13.5)
+  - TensorIOTensorFlow (1.15)
 
 DEPENDENCIES:
   - TensorIO (from `../`)
   - TensorIO/TensorFlow (from `../`)
+  - TensorIOTensorFlow (from `https://raw.githubusercontent.com/doc-ai/tensorio-tensorflow-ios/r1.15/TensorIOTensorFlow.podspec`)
 
 SPEC REPOS:
   trunk:
     - DSJSONSchemaValidation
-    - TensorIOTensorFlow
 
 EXTERNAL SOURCES:
   TensorIO:
     :path: "../"
+  TensorIOTensorFlow:
+    :podspec: https://raw.githubusercontent.com/doc-ai/tensorio-tensorflow-ios/r1.15/TensorIOTensorFlow.podspec
 
 SPEC CHECKSUMS:
   DSJSONSchemaValidation: 46e30ccfa9908c49d184f453d556f55aa0aac1ff
-  TensorIO: a8676eb2f819d136bbbdc458a8a010b92342ac0d
-  TensorIOTensorFlow: 66391fb72910e7814aec5c0ab1d4789a81ac3399
+  TensorIO: d0b373e65e1aa4623a413c8555b23d9b50de5cc4
+  TensorIOTensorFlow: 6f9a38d7f522e9999d3bd05f8ed5058cb9359365
 
-PODFILE CHECKSUM: 122273e44cda5617be20b61aa18cf3a20991bfab
+PODFILE CHECKSUM: a47037e21727812998adc073304146d3ea7f97c7
 
 COCOAPODS: 1.9.1
