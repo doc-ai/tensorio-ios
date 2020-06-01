@@ -13,19 +13,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+#include "tensorflow/cc/saved_model/reader.h"
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 
-#include "tensorflow/cc/saved_model/reader.h"
-
 #include <unordered_set>
 
-#include "constants.h" // "tensorflow/cc/saved_model/constants.h"
+#include "tensorflow/cc/saved_model/constants.h"
 #include "tensorflow/core/lib/io/path.h"
 #include "tensorflow/core/lib/strings/str_util.h"
 #include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/platform/env.h"
-#include "saved_model.pb.h" // "tensorflow/core/protobuf/saved_model.pb.h"
+#include "saved_model.pb.h"
 
 #pragma clang diagnostic pop
 
@@ -56,7 +56,7 @@ Status ReadSavedModel(const string& export_dir, SavedModel* saved_model_proto) {
 Status FindMetaGraphDef(const SavedModel& saved_model_proto,
                         const std::unordered_set<string>& tags,
                         MetaGraphDef* meta_graph_def) {
-  LOG(INFO) << "Reading meta graph with tags { " << str_util::Join(tags, " ")
+  LOG(INFO) << "Reading meta graph with tags { " << absl::StrJoin(tags, " ")
             << " }";
   for (const MetaGraphDef& graph_def : saved_model_proto.meta_graphs()) {
     // Get tags from the graph_def.
@@ -74,7 +74,7 @@ Status FindMetaGraphDef(const SavedModel& saved_model_proto,
       error::Code::NOT_FOUND,
       strings::StrCat(
           "Could not find meta graph def matching supplied tags: { ",
-          str_util::Join(tags, " "),
+          absl::StrJoin(tags, " "),
           " }. To inspect available tag-sets in the SavedModel, please "
           "use the SavedModel CLI: `saved_model_cli`"));
 }
