@@ -3,8 +3,6 @@ use_frameworks!
 
 target 'SwiftTensorFlowExample' do
 
-  pod 'TensorIOTensorFlow', podspec: 'https://raw.githubusercontent.com/doc-ai/tensorio-tensorflow-ios/r2.0/TensorIOTensorFlow.podspec'
-
   pod 'TensorIO', :path => '../'
   pod 'TensorIO/TensorFlow', :path => '../'
 
