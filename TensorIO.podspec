@@ -65,7 +65,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'TensorFlow' do |ss|
     ss.dependency 'TensorIO/Core'
-    ss.dependency 'TensorIOTensorFlow', '~> 2.0'
+    ss.dependency 'TensorIOTensorFlow', '~> 2.0.2'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
