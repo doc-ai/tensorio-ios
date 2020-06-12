@@ -33,8 +33,8 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdocumentation"
 
-#include "loader.h"
-#include "tag_constants.h"
+#include "tensorflow/cc/saved_model/loader.h"
+#include "tensorflow/cc/saved_model/tag_constants.h"
 #include "tensorflow/core/public/session.h"
 
 #pragma clang diagnostic pop
