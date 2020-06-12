@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '1.2.2'
+  s.version          = '1.2.3'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for on device training.'
   s.description      = 'On device inference with TensorFlow Lite or inference and training with full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -65,7 +65,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'TensorFlow' do |ss|
     ss.dependency 'TensorIO/Core'
-    ss.dependency 'TensorIOTensorFlow', '~> 2.0.2'
+    ss.dependency 'TensorIOTensorFlow', '~> 2.0.3'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
@@ -77,7 +77,7 @@ Pod::Spec.new do |s|
     }
     ss.xcconfig = {
       'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/Headers"',
-      'OTHER_LDFLAGS' => '-force_load "${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow" "-L ${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework"'
+      'OTHER_LDFLAGS' => '-force_load "${PODS_ROOT}/TensorIOTensorFlow/Frameworks/tensorflow.framework/tensorflow"'
     }
     ss.pod_target_xcconfig = {
       'GCC_PREPROCESSOR_DEFINITIONS' => 'TIO_TENSORFLOW=1'
