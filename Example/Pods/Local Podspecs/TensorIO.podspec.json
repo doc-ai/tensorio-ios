@@ -1,6 +1,6 @@
 {
   "name": "TensorIO",
-  "version": "1.2",
+  "version": "1.2.1",
   "summary": "An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for on device training.",
   "description": "On device inference with TensorFlow Lite or inference and training with full TensorFlow models using all the conveniences of Objective-C or Swift",
   "homepage": "https://github.com/doc-ai/tensorio-ios",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/doc-ai/tensorio-ios.git",
-    "tag": "1.2"
+    "tag": "1.2.1"
   },
   "platforms": {
     "ios": "12.0"
@@ -45,7 +45,7 @@
       "name": "Core",
       "source_files": "TensorIO/Classes/Core/**/*",
       "pod_target_xcconfig": {
-        "GCC_PREPROCESSOR_DEFINITIONS": "TIO_CORE=1 TIO_VERSION=1.2"
+        "GCC_PREPROCESSOR_DEFINITIONS": "TIO_CORE=1 TIO_VERSION=1.2.1"
       }
     },
     {
@@ -79,7 +79,7 @@
 
         ],
         "TensorIOTensorFlow": [
-          "~> 2.0"
+          "2.0.1"
         ]
       },
       "source_files": "TensorIO/Classes/TensorFlow/**/*",
