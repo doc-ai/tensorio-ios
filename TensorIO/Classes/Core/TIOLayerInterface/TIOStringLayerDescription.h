@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 // MARK: - Init
 
 /**
- * Designated initializer. Creates a vector description from the properties parsed in a model.json
+ * Designated initializer. Creates a string description from the properties parsed in a model.json
  * file.
  *
  * @param shape The shape of the underlying tensor
