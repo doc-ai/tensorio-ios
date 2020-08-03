@@ -1,7 +1,7 @@
 {
 	"name": "Placeholder model",
 	"details": "Bundle with no model file that should otherwise parse the json and instantiate an empty model.",
-	"id": "placeholder_test",
+	"id": "deprecated_tfbundle_test",
 	"version": "1",
 	"author": "doc.ai",
 	"license": "",
