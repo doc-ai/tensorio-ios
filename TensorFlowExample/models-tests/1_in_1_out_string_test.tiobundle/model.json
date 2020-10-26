@@ -1,7 +1,7 @@
 {
-	"name": "1 in 1 out numeric test",
+	"name": "1 in 1 out string test",
 	"details": "Simple model with a single valued input and single valued output",
-	"id": "1_in_1_out_number_test",
+	"id": "1_in_1_out_string_test",
 	"version": "1",
 	"author": "doc.ai",
 	"license": "",
