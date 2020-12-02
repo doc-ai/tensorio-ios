@@ -110,14 +110,22 @@
         @"labels": @(1)
     }];
     
+    NSArray *results0 = @[@0.f, @0.f, @0.f, @0.f, @0.f, @0.f, @0.f, @0.f, @0.f, @0.f];
+    NSMutableArray *results1 = NSMutableArray.array;
+    
     for (NSUInteger epoch = 0; epoch < 10; epoch++) {
         NSError *error;
         NSDictionary *results = (NSDictionary *)[model train:batch error:&error];
         
         XCTAssertNil(error);
-        XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]); // at epoch 0 ~ 0.2232 (0.2305)
+        XCTAssertNotNil(results[@"sigmoid_cross_entropy_loss/value"]);
         XCTAssert([results[@"sigmoid_cross_entropy_loss/value"] isKindOfClass:NSNumber.class]);
+        
+        [results1 addObject:results[@"sigmoid_cross_entropy_loss/value"]];
     }
+    
+    // the loss values are vanishingly small with the lisi model and normal looking with the default
+    XCTAssertNotEqualObjects(results0, results1);
 }
 
 - (void)testTrainCatsDogsWithPlaceholderModel {
@@ -168,6 +176,8 @@
         
         [results1 addObject:results[@"sigmoid_cross_entropy_loss/value"]];
     }
+    
+    [model unload];
     
     for (NSUInteger epoch = 0; epoch < 10; epoch++) {
         NSError *error;

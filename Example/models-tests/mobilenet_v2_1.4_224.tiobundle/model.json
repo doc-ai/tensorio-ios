@@ -26,7 +26,7 @@
 		{
 			"name": "classification",
 			"type": "array",
-			"shape": [1,1000],
+			"shape": [1,1001],
 			"labels": "labels.txt"
 		}
 	],

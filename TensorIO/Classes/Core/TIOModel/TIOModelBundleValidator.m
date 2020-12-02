@@ -173,7 +173,7 @@ static NSError * TIOModelValidationError(void);
     for ( NSDictionary *output in JSON[@"outputs"] ) {
         NSString *labelsFilename = output[@"labels"];
         if ( labelsFilename == nil ) {
-            break;
+            continue;
         }
         
         NSString *labelsFilepath = [[self.path stringByAppendingPathComponent:TIOModelAssetsDirectory] stringByAppendingPathComponent:labelsFilename];
