@@ -10,7 +10,7 @@ PODS:
     - TensorIO/Core
     - TensorIOTensorFlow (~> 2.0.3)
   - TensorIOTensorFlow (2.0.7)
-  
+
 DEPENDENCIES:
   - TensorIO (from `../`)
   - TensorIO/TensorFlow (from `../`)
