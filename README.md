@@ -69,6 +69,8 @@ If you would prefer to use the TensorFlow backend add the following instead:
 pod 'TensorIO/TensorFlow'
 ```
 
+Note that the TensorIO/TensorFlow dependency that vends TensorFlow only supports the arm64 architecture as of v2.0.6 of that dependency.
+
 #### Objective-C
 
 Because the umbrella Tensor/IO header imports headers with C++ syntax, any files that use Tensor/IO must have Obj-C++ extensions. Rename your `.m` files to `.mm`.
