@@ -26,6 +26,7 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOStringLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 
 static NSError * const kTIOParserInvalidPixelNormalizationError = [NSError errorWithDomain:@"ai.doc.tensorio" code:201 userInfo:@{
     NSLocalizedDescriptionKey: @"Unable to parse normalize field in description of input or output layer"
@@ -49,6 +50,7 @@ NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle * _Nullab
     static NSString * const kTensorTypeVector = @"array";
     static NSString * const kTensorTypeImage = @"image";
     static NSString * const kTensorTypeString = @"string";
+    static NSString * const kTensorTypeScalar = @"scalar";
     
     NSMutableArray<TIOLayerInterface*> *interfaces = NSMutableArray.array;
     BOOL isQuantized = bundle.quantized; // Always NO (ignored) if bundle is nil
@@ -64,6 +66,8 @@ NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle * _Nullab
             interface = TIOModelParseTIOPixelBufferDescription(input, mode, isQuantized);
         } else if ( [type isEqualToString:kTensorTypeString] ) {
             interface = TIOModelParseTIOStringDescription(input, mode, isQuantized);
+        } else if ( [type isEqualToString:kTensorTypeScalar] ) {
+            interface = TIOModelParseTIOScalarDescription(input, mode, isQuantized);
         }
         
         if ( interface == nil ) {
@@ -160,6 +164,71 @@ TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *di
             quantizer:quantizer
             dequantizer:dequantizer]];
     
+    return interface;
+}
+
+TIOLayerInterface * _Nullable TIOModelParseTIOScalarDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized) {
+    NSArray<NSNumber*> *shape = dict[@"shape"];
+    BOOL batched = shape[0].integerValue == -1;
+    NSString *name = dict[@"name"];
+    
+    // Data Type
+    
+    TIODataType dtype = TIODataTypeForString(dict[@"dtype"]);
+    
+    // Quantization
+    
+    TIODataQuantizer quantizer;
+    
+    switch (mode) {
+    case TIOLayerInterfaceModeInput:
+    case TIOLayerInterfaceModePlaceholder:
+        {
+        NSError *error;
+        quantizer = TIODataQuantizerForDict(dict[@"quantize"], &error);
+        if ( error != nil ) {
+            NSLog(@"Expected quantize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict);
+            return nil;
+        }
+        }
+        break;
+    case TIOLayerInterfaceModeOutput:
+        quantizer = TIODataQuantizerNone();
+        break;
+    }
+    
+    // Dequantization
+    
+    TIODataDequantizer dequantizer;
+    
+    switch (mode) {
+    case TIOLayerInterfaceModeOutput:
+        {
+        NSError *error;
+        dequantizer = TIODataDequantizerForDict(dict[@"dequantize"], &error);
+        if ( error != nil ) {
+            NSLog(@"Expected dequantize.standard string to be '[0,1]' or '[-1,1]', or to find scale and bias values, found: %@", dict);
+            return nil;
+        }
+        }
+        break;
+    case TIOLayerInterfaceModeInput:
+    case TIOLayerInterfaceModePlaceholder:
+        dequantizer = TIODataDequantizerNone();
+        break;
+    }
+    
+    // Interface
+    
+    TIOLayerInterface *interface = [[TIOLayerInterface alloc] initWithName:name JSON:dict mode:mode scalarDescription:
+        [[TIOScalarLayerDescription alloc]
+            initWithShape:shape
+            batched:batched
+            dtype:dtype
+            quantized:quantized
+            quantizer:quantizer
+            dequantizer:dequantizer]];
+            
     return interface;
 }
 

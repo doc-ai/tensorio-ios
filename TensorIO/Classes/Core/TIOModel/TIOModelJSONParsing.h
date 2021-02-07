@@ -63,6 +63,21 @@ NSArray<TIOLayerInterface*> * _Nullable TIOModelParseIO(TIOModelBundle * _Nullab
 TIOLayerInterface * _Nullable TIOModelParseTIOVectorDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized, TIOModelBundle *_Nullable bundle);
 
 /**
+ * Parses the JSON description of a scalar input or output.
+ *
+ * Scalar inputs and outputs are singled values without dimension, which are treated
+ * differently than vectors with a single value.
+ *
+ * @param dict The JSON description in `NSDictionary` format.
+ * @param mode `TIOLayerInterfaceMode` one of input, output, or placeholder.
+ * @param quantized `YES` if the layer expects or returns quantized bytes, `NO` otherwise.
+ *
+ * @return TIOLayerInterface An interface that describes this scalar input or output.
+ */
+
+TIOLayerInterface * _Nullable TIOModelParseTIOScalarDescription(NSDictionary *dict, TIOLayerInterfaceMode mode, BOOL quantized);
+
+/**
  * Parses the JSON description of a pixel buffer input or output.
  *
  * Pixel buffers are handled as their own case instead of as a three-dimensional volume because

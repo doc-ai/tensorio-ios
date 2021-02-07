@@ -21,13 +21,21 @@
 #import "NSNumber+TIOTFLiteData.h"
 
 #import "TIOVectorLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 
 @implementation NSNumber (TIOTFLiteData)
 
 - (nullable instancetype)initWithBytes:(const void *)buffer description:(id<TIOLayerDescription>)description {
-    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
-    TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
+    TIODataDequantizer dequantizer;
+    
+    if ([description isKindOfClass:TIOVectorLayerDescription.class]) {
+         dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
+    } else if ([description isKindOfClass:TIOScalarLayerDescription.class]) {
+        dequantizer = ((TIOScalarLayerDescription *)description).dequantizer;
+    }
     
     if ( description.isQuantized && dequantizer != nil ) {
         return [self initWithFloat:dequantizer(((uint8_t *)buffer)[0])];
@@ -39,9 +47,16 @@
 }
 
 - (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
-    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
-    TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+    TIODataQuantizer quantizer;
+    
+    if ([description isKindOfClass:TIOVectorLayerDescription.class]) {
+        quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+    } else if ([description isKindOfClass:TIOScalarLayerDescription.class]) {
+        quantizer = ((TIOScalarLayerDescription *)description).quantizer;
+    }
     
     if ( description.isQuantized && quantizer != nil ) {
         ((uint8_t *)buffer)[0] = quantizer(self.floatValue);

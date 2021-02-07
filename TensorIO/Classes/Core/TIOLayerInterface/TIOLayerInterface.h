@@ -28,10 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 @class TIOPixelBufferLayerDescription;
 @class TIOVectorLayerDescription;
 @class TIOStringLayerDescription;
+@class TIOScalarLayerDescription;
 
 typedef void (^TIOPixelBufferMatcher)(TIOPixelBufferLayerDescription *pixelBufferDescription);
 typedef void (^TIOVectorMatcher)(TIOVectorLayerDescription *vectorDescription);
 typedef void (^TIOStringMatcher)(TIOStringLayerDescription *stringDescription);
+typedef void (^TIOScalarMatcher)(TIOScalarLayerDescription *scalarDescription);
 
 /**
  * The kind of layer this interface describes, one of input, output, or placeholder.
@@ -102,6 +104,20 @@ typedef enum : NSUInteger {
 - (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode stringDescription:(TIOStringLayerDescription *)stringDescription NS_DESIGNATED_INITIALIZER;
 
 /**
+ * Initializes a `TIOLayerInterface` with a scalar description, e.g. the description
+ * of a tensor taking scalar values without dimension
+ *
+ * @param name The name of the layer
+ * @param JSON The JSON description from whic this layer was parsed, may be nil
+ * @param mode The function of this layer, one of input, output, or placeholder
+ * @param scalarDescription Description of the expected vector
+ *
+ * @return TIOLayerInterface The encapsulated description
+ */
+
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode scalarDescription:(TIOScalarLayerDescription *)scalarDescription NS_DESIGNATED_INITIALIZER;
+
+/**
  * Use one of the above initializers
  */
 
@@ -142,7 +158,7 @@ typedef enum : NSUInteger {
  * in order to determine how to move bytes around.
  */
 
-- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher caseString:(TIOStringMatcher)stringMatcher;
+- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher caseString:(TIOStringMatcher)stringMatcher caseScalar:(TIOScalarMatcher)scalarMatcher;
 
 /**
  * Checks for object equality. The `JSON` property is used to check for equality
