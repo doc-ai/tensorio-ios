@@ -23,6 +23,7 @@
 #import "NSData+TIOTensorFlowData.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOStringLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 #import "NSArray+TIOExtensions.h"
 
 #pragma clang diagnostic push
@@ -34,9 +35,14 @@
 
 - (nullable instancetype)initWithTensor:(tensorflow::Tensor)tensor description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
-        || [description isKindOfClass:TIOStringLayerDescription.class]);
+        || [description isKindOfClass:TIOStringLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
-    if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
+    if ( [description isKindOfClass:TIOVectorLayerDescription.class]
+      || [description isKindOfClass:TIOScalarLayerDescription.class] ) {
+        
+        // TODO: Vector or Scalar but the duck typing works
+        
         TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
         NSUInteger length = ((TIOVectorLayerDescription *)description).length;
         TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
@@ -128,9 +134,14 @@
 
 + (tensorflow::Tensor)tensorWithColumn:(NSArray<id<TIOTensorFlowData>>*)column description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
-        || [description isKindOfClass:TIOStringLayerDescription.class]);
+        || [description isKindOfClass:TIOStringLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
-    if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
+    if ( [description isKindOfClass:TIOVectorLayerDescription.class]
+      || [description isKindOfClass:TIOScalarLayerDescription.class] ) {
+        
+        // TODO: Vector or Scalar but the duck typing works
+        
         TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
         TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
         NSUInteger length = ((TIOVectorLayerDescription *)description).length;
@@ -144,8 +155,12 @@
             dims.push_back(batch_size);
         }
         
-        for ( NSNumber *dim in description.shape.excludingBatch ) {
-            dims.push_back(dim.integerValue);
+        // Ignore any shape but batch if scalar layer
+    
+        if ( ![description isKindOfClass:TIOScalarLayerDescription.class] ) {
+            for ( NSNumber *dim in description.shape.excludingBatch ) {
+                dims.push_back(dim.integerValue);
+            }
         }
         
         tensorflow::gtl::ArraySlice<tensorflow::int64> dim_sizes(dims);

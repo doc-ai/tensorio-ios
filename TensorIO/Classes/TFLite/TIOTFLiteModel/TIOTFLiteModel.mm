@@ -37,6 +37,7 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOStringLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 #import "TIOPixelBuffer.h"
 #import "NSArray+TIOTFLiteData.h"
 #import "NSNumber+TIOTFLiteData.h"
@@ -325,6 +326,12 @@
             assert( [input isKindOfClass:NSData.class]);
             
             [(id<TIOTFLiteData>)input getBytes:tensor description:stringDescription];
+        } caseScalar:^(TIOScalarLayerDescription * _Nonnull scalarDescription) {
+            assert( [input isKindOfClass:NSArray.class]
+                ||  [input isKindOfClass:NSData.class]
+                ||  [input isKindOfClass:NSNumber.class] );
+                
+            [(id<TIOTFLiteData>)input getBytes:tensor description:scalarDescription];
         }];
 }
 
@@ -377,7 +384,6 @@
     
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
-            
             data = [[TIOPixelBuffer alloc] initWithBytes:tensor description:pixelBufferDescription];
         
         } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
@@ -394,8 +400,10 @@
                     : vector;
             }
         } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
-            
             data = [[NSData alloc] initWithBytes:tensor description:stringDescription];
+        
+        } caseScalar:^(TIOScalarLayerDescription * _Nonnull scalarDescription) {
+            data = [[NSNumber alloc] initWithBytes:tensor description:scalarDescription];
         }];
     
     return data;

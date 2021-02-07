@@ -1,0 +1,28 @@
+{
+	"name": "Scalar numeric test",
+	"details": "Simple model with a single valued input and single valued output as scalars",
+	"id": "scalar_numeric_test",
+	"version": "1",
+	"author": "doc.ai",
+	"license": "",
+	"model": {
+		"file": "model.tflite",
+		"quantized": false,
+		"backend": "tflite",
+		"modes": ["predict"]
+	},
+	"inputs": [
+		{
+			"name": "input",
+			"type": "scalar",
+			"shape": [1]
+		}
+	],
+	"outputs": [
+		{
+			"name": "output",
+			"type": "scalar",
+			"shape": [1]
+		}
+	]
+}

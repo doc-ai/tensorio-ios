@@ -46,6 +46,7 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOStringLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 #import "TIOPixelBuffer.h"
 #import "TIOTensorFlowData.h"
 #import "NSArray+TIOTensorFlowData.h"
@@ -394,6 +395,15 @@ typedef std::vector<std::string> TensorNames;
         std::string name = interface.name.UTF8String;
     
         named_tensor = NamedTensor(name, tensor);
+    } caseScalar:^(TIOScalarLayerDescription * _Nonnull scalarDescription) {
+        assert( [column[0] isKindOfClass:NSArray.class]
+            ||  [column[0] isKindOfClass:NSData.class]
+            ||  [column[0] isKindOfClass:NSNumber.class] );
+        
+        tensorflow::Tensor tensor = [column[0].class tensorWithColumn:column description:scalarDescription];
+        std::string name = interface.name.UTF8String;
+    
+        named_tensor = NamedTensor(name, tensor);
     }];
     
     return named_tensor;
@@ -437,11 +447,9 @@ typedef std::vector<std::string> TensorNames;
     
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
-            
             data = [[TIOPixelBuffer alloc] initWithTensor:tensor description:pixelBufferDescription];
         
         } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
-            
             TIOVector *vector = [[TIOVector alloc] initWithTensor:tensor description:vectorDescription];
             
             if ( vectorDescription.isLabeled ) {
@@ -455,8 +463,16 @@ typedef std::vector<std::string> TensorNames;
             }
             
         } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
-            
             data = [[NSData alloc] initWithTensor:tensor description:stringDescription];
+        
+        } caseScalar:^(TIOScalarLayerDescription * _Nonnull scalarDescription) {
+            TIOVector *vector = [[TIOVector alloc] initWithTensor:tensor description:scalarDescription];
+            // TODO: Use NSNumber
+            
+            // If the vector's output is single-valued just return that value
+            data = vector.count == 1
+                ? vector[0]
+                : vector;
         }];
     
     return data;

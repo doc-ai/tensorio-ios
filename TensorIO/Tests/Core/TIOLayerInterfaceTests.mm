@@ -104,4 +104,60 @@
     XCTAssert(descriptionUInt8.length == 42);
 }
 
+// MARK: - Scalar Layer Tests
+
+- (void)testScalarLengthIsAlways1 {
+    TIOScalarLayerDescription *descriptionUInt8 = [[TIOScalarLayerDescription alloc]
+        initWithShape:@[@(1)]
+        batched:NO
+        dtype:TIODataTypeUInt8
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    XCTAssert(descriptionUInt8.length == 1);
+    
+    TIOScalarLayerDescription *descriptionFloat32 = [[TIOScalarLayerDescription alloc]
+        initWithShape:@[@(1)]
+        batched:NO
+        dtype:TIODataTypeFloat32
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    XCTAssert(descriptionFloat32.length == 1);
+    
+    TIOScalarLayerDescription *descriptionInt32 = [[TIOScalarLayerDescription alloc]
+        initWithShape:@[@(1)]
+        batched:NO
+        dtype:TIODataTypeInt32
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    XCTAssert(descriptionInt32.length == 1);
+    
+    TIOScalarLayerDescription *descriptionInt64 = [[TIOScalarLayerDescription alloc]
+        initWithShape:@[@(1)]
+        batched:NO
+        dtype:TIODataTypeInt64
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    XCTAssert(descriptionInt64.length == 1);
+}
+
+- (void)testScalarLengthIsAlwaysPositive1 {
+    TIOScalarLayerDescription *descriptionUInt8 = [[TIOScalarLayerDescription alloc]
+        initWithShape:@[@(-1), @(1)]
+        batched:NO
+        dtype:TIODataTypeUInt8
+        quantized:NO
+        quantizer:nil
+        dequantizer:nil];
+    
+    XCTAssert(descriptionUInt8.length == 1);
+}
+
 @end

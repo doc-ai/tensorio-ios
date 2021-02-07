@@ -21,11 +21,13 @@
 #import "NSArray+TIOTFLiteData.h"
 
 #import "TIOVectorLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 
 @implementation NSArray (TIOTFLiteData)
 
 - (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
-    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
     NSUInteger length = ((TIOVectorLayerDescription *)description).length;
@@ -49,7 +51,12 @@
 }
 
 - (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
-    assert([description isKindOfClass:TIOVectorLayerDescription.class]);
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
+    
+    if ([description isKindOfClass:TIOScalarLayerDescription.class]) {
+        assert(self.count == 1);
+    }
 
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
 
