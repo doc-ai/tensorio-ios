@@ -925,4 +925,32 @@
     XCTAssert([results[@"output2"] isEqualToNumber:@(64)]);
 }
 
+// MARK: - Tree Tests
+
+- (void)testTreeModelPredicts {
+    TIOModelBundle *bundle = [self bundleWithName:@"tree_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    NSDictionary *inputs = @{
+        @"survived": @(0),
+        @"sex": @(1),
+        @"age": @(35.1),
+        @"n_siblings_spouses": @(0),
+        @"parch": @(0),
+        @"embark_town": @(2),
+        @"class": @(2),
+        @"deck": @(6),
+        @"alone": @(1)
+    };
+    
+    NSDictionary *results = (NSDictionary *)[model runOn:inputs error:&error];
+    
+    XCTAssertNil(error);
+    
+}
+
 @end
