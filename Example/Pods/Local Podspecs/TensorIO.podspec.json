@@ -38,7 +38,10 @@
   },
   "default_subspecs": "Core",
   "user_target_xcconfig": {
-    "OTHER_CFLAGS": "-fcxx-modules -fmodules"
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
+  },
+  "pod_target_xcconfig": {
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"
   },
   "subspecs": [
     {

@@ -31,6 +31,12 @@ Pod::Spec.new do |s|
     'OTHER_CFLAGS' => '-fcxx-modules -fmodules'
   }
 
+  # Xcode 12.2 build fix
+  # https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios
+  
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+
   # Core subspec contains base classes and protocol definitions but no backend implementation
   
   s.subspec 'Core' do |ss|
