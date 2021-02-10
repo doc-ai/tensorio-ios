@@ -1,0 +1,79 @@
+{
+	"name": "Tree Test",
+	"details": "Tests a tree model built on the titanic dataset",
+	"id": "tree-test",
+	"version": "1",
+	"author": "doc.ai",
+	"license": "",
+	"model": {
+		"file": "predict",
+		"quantized": false,
+		"type": "tree",
+		"backend": "tensorflow",
+		"modes": ["predict"]
+	},
+	"inputs": [
+		{
+			"name": "age",
+			"type": "scalar",
+            "dtype": "float32",
+			"shape": [-1,1]
+        },
+        {
+			"name": "alone",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+        },
+        {
+			"name": "class",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+        },
+        {
+			"name": "deck",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+        },
+        {
+			"name": "embark_town",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+        },
+        {
+			"name": "n_siblings_spouses",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+        },
+        {
+			"name": "parch",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+        },
+        {
+			"name": "sex",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+        },
+        {
+			"name": "survived",
+			"type": "scalar",
+            "dtype": "int64",
+			"shape": [-1,1]
+		}
+	],
+	"outputs": [
+		{
+			"name": "boosted_trees/BoostedTreesPredict",
+			"type": "array",
+			"dtype": "float32",
+			"shape": [-1,1]
+		}
+	]
+}

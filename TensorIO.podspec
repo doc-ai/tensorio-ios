@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '1.2.3'
+  s.version          = '1.2.4'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for on device training.'
   s.description      = 'On device inference with TensorFlow Lite or inference and training with full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -65,7 +65,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'TensorFlow' do |ss|
     ss.dependency 'TensorIO/Core'
-    ss.dependency 'TensorIOTensorFlow', '~> 2.0.3'
+    ss.dependency 'TensorIOTensorFlow', '~> 2.0.8'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [
