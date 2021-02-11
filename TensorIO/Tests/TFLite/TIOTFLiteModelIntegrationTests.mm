@@ -123,6 +123,59 @@
     }
 }
 
+- (void)testScalarModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"scalar_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
+    
+    // Run the model on a number
+    
+    NSNumber *numericInput = @(2);
+    NSDictionary *numericResults = (NSDictionary *)[model runOn:numericInput error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(numericResults.count == 1);
+    XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on bytes
+    
+    float_t bytes[1] = {2};
+    NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(float_t)*1];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(byteResults.count == 1);
+    XCTAssert([byteResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on a vector
+    
+    TIOVector *vectorInput = @[@(2)];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInput error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(vectorResults.count == 1);
+    XCTAssert([vectorResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Via a dictionary
+    
+    {
+    NSDictionary *input = @{@"input": @(2)};
+    NSDictionary *output = (NSDictionary *)[model runOn:input error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(output.count == 1);
+    XCTAssert([output[@"output"] isEqualToNumber:@(25)]);
+    }
+}
+
 // MARK: - Vector, Matrix, Tensor Tests
 
 - (void)test1x1VectorsModel {
@@ -633,6 +686,8 @@
     } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
         XCTFail(@"Model does not contains image input at index 0");
     } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
+        XCTFail(@"Model does not contains image input at index 0");
+    } caseScalar:^(TIOScalarLayerDescription * _Nonnull scalarDescription) {
         XCTFail(@"Model does not contains image input at index 0");
     }];
     

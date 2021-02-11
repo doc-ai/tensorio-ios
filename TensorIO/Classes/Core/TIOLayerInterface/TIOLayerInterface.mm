@@ -23,11 +23,13 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOStringLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 
 typedef enum : NSUInteger {
     TIOLayerInterfaceTypePixelBuffer,
     TIOLayerInterfaceTypeVector,
-    TIOLayerInterfaceTypeString
+    TIOLayerInterfaceTypeString,
+    TIOLayerInterfaceTypeScalar
 } TIOLayerInterfaceType;
 
 @implementation TIOLayerInterface {
@@ -68,9 +70,20 @@ typedef enum : NSUInteger {
     return self;
 }
 
+- (instancetype)initWithName:(NSString *)name JSON:(nullable NSDictionary *)JSON mode:(TIOLayerInterfaceMode)mode scalarDescription:(TIOScalarLayerDescription *)scalarDescription {
+    if ( self = [super init] ) {
+        _name = name;
+        _JSON = JSON;
+        _mode = mode;
+        _type = TIOLayerInterfaceTypeScalar;
+        _layerDescription = scalarDescription;
+    }
+    return self;
+}
+
 // MARK: -
 
-- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher caseString:(TIOStringMatcher)stringMatcher {
+- (void)matchCasePixelBuffer:(TIOPixelBufferMatcher)pixelBufferMatcher caseVector:(TIOVectorMatcher)vectorMatcher caseString:(TIOStringMatcher)stringMatcher caseScalar:(TIOScalarMatcher)scalarMatcher {
     switch ( _type ) {
     case TIOLayerInterfaceTypePixelBuffer:
         pixelBufferMatcher((TIOPixelBufferLayerDescription *)_layerDescription);
@@ -80,6 +93,9 @@ typedef enum : NSUInteger {
         break;
     case TIOLayerInterfaceTypeString:
         stringMatcher((TIOStringLayerDescription *)_layerDescription);
+        break;
+    case TIOLayerInterfaceTypeScalar:
+        scalarMatcher((TIOScalarLayerDescription *)_layerDescription);
         break;
     }
 }

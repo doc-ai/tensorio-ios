@@ -20,6 +20,7 @@
 #import "TIOLayerDescription.h"
 #import "TIOLayerInterface.h"
 #import "TIOPixelBufferLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 #import "TIOStringLayerDescription.h"
 #import "TIOVectorLayerDescription.h"
 #import "TIOModel.h"

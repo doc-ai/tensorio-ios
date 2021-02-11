@@ -66,6 +66,48 @@
 
 // MARK: - Single Valued Tests
 
+- (void)testScalarModel {
+    TIOModelBundle *bundle = [self bundleWithName:@"scalar_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    // Ensure inputs and outputs return correct count
+    
+    XCTAssert(model.io.inputs.count == 1);
+    XCTAssert(model.io.outputs.count == 1);
+    
+    // Run the model on a number
+    
+    NSNumber *numericInput = @(2);
+    NSDictionary *numericResults = (NSDictionary *)[model runOn:numericInput error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(numericResults.count == 1);
+    XCTAssert([numericResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on bytes
+    
+    float_t bytes[1] = {2};
+    NSData *byteInput = [NSData dataWithBytes:bytes length:sizeof(float_t)*1];
+    NSDictionary *byteResults = (NSDictionary *)[model runOn:byteInput error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(byteResults.count == 1);
+    XCTAssert([byteResults[@"output"] isEqualToNumber:@(25)]);
+    
+    // Run the model on a vector
+    
+    TIOVector *vectorInput = @[@(2)];
+    NSDictionary *vectorResults = (NSDictionary *)[model runOn:vectorInput error:&error];
+    
+    XCTAssertNil(error);
+    XCTAssert(vectorResults.count == 1);
+    XCTAssert([vectorResults[@"output"] isEqualToNumber:@(25)]);
+}
+
 - (void)test1In1OutNumberModel {
     TIOModelBundle *bundle = [self bundleWithName:@"1_in_1_out_number_test.tiobundle"];
     id<TIOModel> model = [self loadModelFromBundle:bundle];
@@ -881,6 +923,34 @@
     XCTAssert(results.count == 2);
     XCTAssert([results[@"output1"] isEqualToNumber:@(240)]);
     XCTAssert([results[@"output2"] isEqualToNumber:@(64)]);
+}
+
+// MARK: - Tree Tests
+
+- (void)testTreeModelPredicts {
+    TIOModelBundle *bundle = [self bundleWithName:@"tree_test.tiobundle"];
+    id<TIOModel> model = [self loadModelFromBundle:bundle];
+    NSError *error;
+    
+    XCTAssertNotNil(bundle);
+    XCTAssertNotNil(model);
+    
+    NSDictionary *inputs = @{
+        @"survived": @(0),
+        @"sex": @(1),
+        @"age": @(35.1),
+        @"n_siblings_spouses": @(0),
+        @"parch": @(0),
+        @"embark_town": @(2),
+        @"class": @(2),
+        @"deck": @(6),
+        @"alone": @(1)
+    };
+    
+    NSDictionary *results = (NSDictionary *)[model runOn:inputs error:&error];
+    
+    XCTAssertNil(error);
+    
 }
 
 @end

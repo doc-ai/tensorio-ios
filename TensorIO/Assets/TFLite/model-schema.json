@@ -37,7 +37,7 @@
       }
     },
 
-    "input.array.quantize": {
+    "input.quantize": {
       "type": "object",
       "oneOf": [
         {
@@ -56,6 +56,36 @@
           }
         }
       ]
+    },
+
+    "input.scalar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "shape"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["scalar"]
+        },
+        "dtype": {
+          "type": "string",
+          "enum": ["uint8", "float32"]
+        },
+        "shape": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "quantize": {
+          "$ref": "#/definitions/input.quantize"
+        }
+      }
     },
 
     "input.array": {
@@ -83,7 +113,7 @@
           "items": { "type": "integer" }
         },
         "quantize": {
-          "$ref": "#/definitions/input.array.quantize"
+          "$ref": "#/definitions/input.quantize"
         }
       }
     },
@@ -176,7 +206,7 @@
       }
     },
 
-    "output.array.dequantize": {
+    "output.dequantize": {
       "type": "object",
       "oneOf": [
         {
@@ -195,6 +225,36 @@
           }
         }
       ]
+    },
+
+    "output.scalar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "shape"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["scalar"]
+        },
+        "dtype": {
+          "type": "string",
+          "enum": ["uint8", "float32"]
+        },
+        "shape": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "dequantize": {
+          "$ref": "#/definitions/output.dequantize"
+        }
+      }
     },
 
     "output.array": {
@@ -225,7 +285,7 @@
           "type": "string"
         },
         "dequantize": {
-          "$ref": "#/definitions/output.array.dequantize"
+          "$ref": "#/definitions/output.dequantize"
         }
       }
     },

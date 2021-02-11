@@ -22,13 +22,15 @@
 
 #import "TIOVectorLayerDescription.h"
 #import "TIOStringLayerDescription.h"
+#import "TIOScalarLayerDescription.h"
 #import "TIODataTypes.h"
 
 @implementation NSData (TIOTFLiteData)
 
 - (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
-        || [description isKindOfClass:TIOStringLayerDescription.class]);
+        || [description isKindOfClass:TIOStringLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
     if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
         TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
@@ -73,7 +75,29 @@
         break;
         }
         
-    } else {
+    } else if ( [description isKindOfClass:TIOScalarLayerDescription.class] ) {
+        TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
+        NSUInteger length = ((TIOVectorLayerDescription *)description).length;
+        
+        if ( description.isQuantized && dequantizer != nil ) {
+            size_t dest_size = length * sizeof(float_t);
+            float_t *buffer = (float_t *)malloc(dest_size);
+            for ( NSInteger i = 0; i < length; i++ ) {
+                ((float_t *)buffer)[i] = dequantizer(((uint8_t *)bytes)[i]);
+            }
+            NSData *data = [[NSData alloc] initWithBytes:buffer length:dest_size];
+            free(buffer);
+            return data;
+        } else if ( description.isQuantized && dequantizer == nil ) {
+            size_t dest_size = length * sizeof(uint8_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        } else {
+            size_t dest_size = length * sizeof(float_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        }
+    }
+    
+    else {
         @throw [NSException exceptionWithName:@"Unsupported Layer Description" reason:nil userInfo:nil];
         return nil;
     }
@@ -81,7 +105,8 @@
 
 - (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
-        || [description isKindOfClass:TIOStringLayerDescription.class]);
+        || [description isKindOfClass:TIOStringLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
     if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
         TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
@@ -120,8 +145,26 @@
         }
         break;
         }
+        
+    } else if ( [description isKindOfClass:TIOScalarLayerDescription.class] ) {
+        TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+        NSUInteger length = ((TIOVectorLayerDescription *)description).length;
+        
+        if ( description.isQuantized && quantizer != nil ) {
+            float_t *bytes = (float_t *)self.bytes;
+            for ( NSInteger i = 0; i < length; i++ ) {
+                ((uint8_t *)buffer)[i] = quantizer(bytes[i]);
+            }
+        } else if ( description.isQuantized && quantizer == nil ) {
+            size_t src_size = length * sizeof(uint8_t);
+            [self getBytes:buffer length:src_size];
+        } else {
+            size_t src_size = length * sizeof(float_t);
+            [self getBytes:buffer length:src_size];
+        }
+    }
     
-    } else {
+    else {
         @throw [NSException exceptionWithName:@"Unsupported Layer Description" reason:nil userInfo:nil];
     }
 }

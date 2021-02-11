@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TensorIO'
-  s.version          = '1.2.3'
+  s.version          = '1.2.4'
   s.summary          = 'An Objective-C and Swift wrapper for TensorFlow Lite and TensorFlow, with support for on device training.'
   s.description      = 'On device inference with TensorFlow Lite or inference and training with full TensorFlow models using all the conveniences of Objective-C or Swift'
   s.homepage         = 'https://github.com/doc-ai/tensorio-ios'
@@ -30,6 +30,12 @@ Pod::Spec.new do |s|
   s.user_target_xcconfig = {
     'OTHER_CFLAGS' => '-fcxx-modules -fmodules'
   }
+
+  # Xcode 12.2 build fix
+  # https://stackoverflow.com/questions/63607158/xcode-12-building-for-ios-simulator-but-linking-in-object-file-built-for-ios
+  
+  s.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
   # Core subspec contains base classes and protocol definitions but no backend implementation
   
@@ -65,7 +71,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'TensorFlow' do |ss|
     ss.dependency 'TensorIO/Core'
-    ss.dependency 'TensorIOTensorFlow', '~> 2.0.3'
+    ss.dependency 'TensorIOTensorFlow', '~> 2.0.8'
 
     ss.source_files = 'TensorIO/Classes/TensorFlow/**/*'
     ss.private_header_files = [

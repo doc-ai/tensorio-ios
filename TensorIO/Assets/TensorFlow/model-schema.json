@@ -37,7 +37,7 @@
       }
     },
 
-    "input.array.quantize": {
+    "input.quantize": {
       "type": "object",
       "oneOf": [
         {
@@ -56,6 +56,36 @@
           }
         }
       ]
+    },
+
+    "input.scalar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "shape"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["scalar"]
+        },
+        "dtype": {
+          "type": "string",
+          "enum": ["uint8", "float32", "int32", "int64"]
+        },
+        "shape": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "quantize": {
+          "$ref": "#/definitions/input.quantize"
+        }
+      }
     },
 
     "input.array": {
@@ -83,7 +113,7 @@
           "items": { "type": "integer" }
         },
         "quantize": {
-          "$ref": "#/definitions/input.array.quantize"
+          "$ref": "#/definitions/input.quantize"
         }
       }
     },
@@ -176,7 +206,7 @@
       }
     },
 
-    "output.array.dequantize": {
+    "output.dequantize": {
       "type": "object",
       "oneOf": [
         {
@@ -195,6 +225,39 @@
           }
         }
       ]
+    },
+
+    "output.scalar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "shape"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["scalar"]
+        },
+        "dtype": {
+          "type": "string",
+          "enum": ["uint8", "float32", "int32", "int64"]
+        },
+        "shape": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "labels": {
+          "type": "string"
+        },
+        "dequantize": {
+          "$ref": "#/definitions/output.dequantize"
+        }
+      }
     },
 
     "output.array": {
@@ -225,7 +288,7 @@
           "type": "string"
         },
         "dequantize": {
-          "$ref": "#/definitions/output.array.dequantize"
+          "$ref": "#/definitions/output.dequantize"
         }
       }
     },
@@ -318,7 +381,7 @@
       }
     },
 
-    "placeholder.array.quantize": {
+    "placeholder.quantize": {
       "type": "object",
       "oneOf": [
         {
@@ -337,6 +400,36 @@
           }
         }
       ]
+    },
+
+    "placeholder.scalar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "shape"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["scalar"]
+        },
+        "dtype": {
+          "type": "string",
+          "enum": ["uint8", "float32", "int32", "int64"]
+        },
+        "shape": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "quantize": {
+          "$ref": "#/definitions/placeholder.quantize"
+        }
+      }
     },
 
     "placeholder.array": {
@@ -364,7 +457,35 @@
           "items": { "type": "integer" }
         },
         "quantize": {
-          "$ref": "#/definitions/placeholder.array.quantize"
+          "$ref": "#/definitions/placeholder.quantize"
+        }
+      }
+    },
+
+    "placeholder.string": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "shape",
+        "dtype"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["string"]
+        },
+        "dtype": {
+          "type": "string",
+          "enum": ["uint8", "float32", "int32", "int64"]
+        },
+        "shape": {
+          "type": "array",
+          "items": { "type": "integer" }
         }
       }
     },
@@ -413,7 +534,8 @@
         "oneOf": [
           { "$ref": "#/definitions/input.array"  },
           { "$ref": "#/definitions/input.image"  },
-          { "$ref": "#/definitions/input.string" }
+          { "$ref": "#/definitions/input.string" },
+          { "$ref": "#/definitions/input.scalar" }
         ]
       }
     },
@@ -423,7 +545,8 @@
         "oneOf": [
           { "$ref": "#/definitions/output.array"  },
           { "$ref": "#/definitions/output.image"  },
-          { "$ref": "#/definitions/output.string" }
+          { "$ref": "#/definitions/output.string" },
+          { "$ref": "#/definitions/output.scalar" }
         ]
       }
     },
@@ -431,7 +554,9 @@
       "type": "array",
       "items": {
         "oneOf": [
-          { "$ref": "#/definitions/placeholder.array"  }
+          { "$ref": "#/definitions/placeholder.array"  },
+          { "$ref": "#/definitions/placeholder.string" },
+          { "$ref": "#/definitions/placeholder.scalar" }
         ]
       }
     },
