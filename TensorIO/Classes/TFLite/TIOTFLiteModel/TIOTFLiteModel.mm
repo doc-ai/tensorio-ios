@@ -20,14 +20,16 @@
 
 #import "TIOTFLiteModel.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
+#import "TFLTensorFlowLite.h"
 
-#include "tensorflow/lite/kernels/register.h"
-#include "tensorflow/lite/model.h"
-#include "tensorflow/lite/string_util.h"
-
-#pragma clang diagnostic pop
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wdocumentation"
+//
+//#include "tensorflow/lite/kernels/register.h"
+//#include "tensorflow/lite/model.h"
+//#include "tensorflow/lite/string_util.h"
+//
+//#pragma clang diagnostic pop
 
 #import "TIOModelBundle.h"
 #import "TIOTFLiteErrors.h"
@@ -49,8 +51,10 @@
 #import "TIOModelIO.h"
 
 @implementation TIOTFLiteModel {
-    std::unique_ptr<tflite::FlatBufferModel> model;
-    std::unique_ptr<tflite::Interpreter> interpreter;
+    // std::unique_ptr<tflite::FlatBufferModel> model;
+    // std::unique_ptr<tflite::Interpreter> interpreter;
+    
+    TFLInterpreter *interpreter;
 }
 
 + (nullable instancetype)modelWithBundleAtPath:(NSString *)path {
@@ -100,49 +104,71 @@
     }
     
     NSString *graphPath = self.bundle.modelFilepath;
+    BOOL didAllocateTensors = NO;
+    NSError *liteError = nil;
     
     // Load Graph
-
-    model = tflite::FlatBufferModel::BuildFromFile([graphPath UTF8String]);
     
-    if (!model) {
-        NSLog(@"Failed to mmap model at path %@", graphPath);
+    interpreter = [[TFLInterpreter alloc] initWithModelPath:graphPath error:&liteError];
+    
+    if (!interpreter) {
+        NSLog(@"Failed to init interpreter with model at path %@, error: %@", graphPath, liteError);
         if (error) {
             *error = kTIOTFLiteModelLoadModelError;
         }
         return NO;
     }
-
-    #ifdef DEBUG
-    NSLog(@"Loaded model");
-    #endif
     
-    model->error_reporter();
+    didAllocateTensors = [interpreter allocateTensorsWithError:&liteError];
     
-    #ifdef DEBUG
-    NSLog(@"Resolved reporter");
-    #endif
-
-    tflite::ops::builtin::BuiltinOpResolver resolver;
-
-    // Build model
-
-    tflite::InterpreterBuilder(*model, resolver)(&interpreter);
-   
-    if (!interpreter) {
-        NSLog(@"Failed to construct interpreter for model %@", self.identifier);
-        if (error) {
-            *error = kTIOTFLiteModelConstructInterpreterError;
-        }
-        return NO;
-    }
-    if (interpreter->AllocateTensors() != kTfLiteOk) {
-        NSLog(@"Failed to allocate tensors for model %@", self.identifier);
+    if (!didAllocateTensors) {
+        NSLog(@"Failed to allocate tensors for model %@, error: %@", self.identifier, liteError);
         if (error) {
             *error = kTIOTFLiteModelAllocateTensorsError;
         }
         return NO;
     }
+
+//    model = tflite::FlatBufferModel::BuildFromFile([graphPath UTF8String]);
+//
+//    if (!model) {
+//        NSLog(@"Failed to mmap model at path %@", graphPath);
+//        if (error) {
+//            *error = kTIOTFLiteModelLoadModelError;
+//        }
+//        return NO;
+//    }
+
+    #ifdef DEBUG
+    NSLog(@"Loaded model");
+    #endif
+    
+//    model->error_reporter();
+    
+//    #ifdef DEBUG
+//    NSLog(@"Resolved reporter");
+//    #endif
+
+//    tflite::ops::builtin::BuiltinOpResolver resolver;
+//
+//    // Build model
+//
+//    tflite::InterpreterBuilder(*model, resolver)(&interpreter);
+//   
+//    if (!interpreter) {
+//        NSLog(@"Failed to construct interpreter for model %@", self.identifier);
+//        if (error) {
+//            *error = kTIOTFLiteModelConstructInterpreterError;
+//        }
+//        return NO;
+//    }
+//    if (interpreter->AllocateTensors() != kTfLiteOk) {
+//        NSLog(@"Failed to allocate tensors for model %@", self.identifier);
+//        if (error) {
+//            *error = kTIOTFLiteModelAllocateTensorsError;
+//        }
+//        return NO;
+//    }
     
     _loaded = YES;
     return YES;
@@ -157,11 +183,11 @@
         return;
     }
     
-    interpreter.reset();
-    model.reset();
+//    interpreter.reset();
+//    model.reset();
    
     interpreter = nil;
-    model = nil;
+//    model = nil;
    
     _loaded = NO;
 }
@@ -218,7 +244,7 @@
     
     for ( NSString *name in item ) {
         int index = [self.io.inputs indexForName:name].intValue;
-        void *tensor = [self inputTensorAtIndex:index];
+        TFLTensor *tensor = [self inputTensorAtIndex:index];
         TIOLayerInterface *interface = self.io.inputs[name];
         id<TIOData> input = item[name];
     
@@ -261,7 +287,7 @@
     
         for ( NSString *name in dictionaryData ) {
             int index = [self.io.inputs indexForName:name].intValue;
-            void *tensor = [self inputTensorAtIndex:index];
+            TFLTensor *tensor = [self inputTensorAtIndex:index];
             TIOLayerInterface *interface = self.io.inputs[name];
             id<TIOData> input = dictionaryData[name];
             
@@ -272,7 +298,7 @@
     
         // If there is a single input available, simply take the input as it is
         
-        void *tensor = [self inputTensorAtIndex:0];
+        TFLTensor *tensor = [self inputTensorAtIndex:0];
         TIOLayerInterface *interface = self.io.inputs[0];
         id<TIOData> input = data;
         
@@ -290,7 +316,7 @@
         assert(arrayData.count == self.io.inputs.count);
         
         for ( int index = 0; index < arrayData.count; index++ ) {
-            void *tensor = [self inputTensorAtIndex:index];
+            TFLTensor *tensor = [self inputTensorAtIndex:index];
             TIOLayerInterface *interface = self.io.inputs[index];
             id<TIOData> input = arrayData[index];
             
@@ -307,7 +333,7 @@
  * @param interface A description of the data which the tensor expects
  */
 
-- (void)_prepareInput:(id<TIOData>)input tensor:(void *)tensor interface:(TIOLayerInterface *)interface {
+- (void)_prepareInput:(id<TIOData>)input tensor:(TFLTensor *)tensor interface:(TIOLayerInterface *)interface {
 
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
@@ -342,9 +368,15 @@
  */
 
 - (void)_runInference {
-    if (interpreter->Invoke() != kTfLiteOk) {
-        NSLog(@"Failed to invoke for model %@", self.identifier);
+    NSError *liteError = nil;
+    
+    if (![interpreter invokeWithError:&liteError]) {
+        NSLog(@"Failed to invoke for model %@, error: %@", self.identifier, liteError);
     }
+
+//    if (interpreter->Invoke() != kTfLiteOk) {
+//        NSLog(@"Failed to invoke for model %@", self.identifier);
+//    }
 }
 
 // MARK: - Capture Outputs
@@ -363,7 +395,7 @@
 
     for ( int index = 0; index < self.io.outputs.count; index++ ) {
         TIOLayerInterface *interface = self.io.outputs[index];
-        void *tensor = [self outputTensorAtIndex:index];
+        TFLTensor *tensor = [self outputTensorAtIndex:index];
         
         id<TIOData> data = [self _captureOutput:tensor interface:interface];
         outputs[interface.name] = data;
@@ -379,7 +411,7 @@
  * @param interface A description of the data which this tensor contains
  */
 
-- (id<TIOData>)_captureOutput:(void *)tensor interface:(TIOLayerInterface *)interface {
+- (id<TIOData>)_captureOutput:(TFLTensor *)tensor interface:(TIOLayerInterface *)interface {
     __block id<TIOData> data;
     
     [interface
@@ -414,26 +446,50 @@
 /**
  * Returns a pointer to an input tensor at a given index
  */
-
-- (void *)inputTensorAtIndex:(NSUInteger)index {
-    int tensor_input = interpreter->inputs()[index];
-    if ( self.quantized ) {
-        return interpreter->typed_tensor<uint8_t>(tensor_input);
-    } else {
-        return interpreter->typed_tensor<float_t>(tensor_input);
+ 
+- (nullable TFLTensor *)inputTensorAtIndex:(NSUInteger)index {
+    NSError *liteError = nil;
+    
+    TFLTensor *tensor = [interpreter inputTensorAtIndex:index error:&liteError];
+    
+    if (!tensor) {
+        // TODO: error
     }
+    
+    return tensor;
 }
+
+//- (void *)inputTensorAtIndex:(NSUInteger)index {
+//    int tensor_input = interpreter->inputs()[index];
+//    if ( self.quantized ) {
+//        return interpreter->typed_tensor<uint8_t>(tensor_input);
+//    } else {
+//        return interpreter->typed_tensor<float_t>(tensor_input);
+//    }
+//}
 
 /**
  * Returns a pointer to an output tensor at a given index
  */
 
-- (void *)outputTensorAtIndex:(NSUInteger)index {
-    if ( self.quantized ) {
-        return interpreter->typed_output_tensor<uint8_t>((int)index);
-    } else {
-        return interpreter->typed_output_tensor<float_t>((int)index);
+- (nullable TFLTensor *)outputTensorAtIndex:(NSUInteger)index {
+    NSError *liteError = nil;
+    
+    TFLTensor *tensor = [interpreter outputTensorAtIndex:index error:&liteError];
+    
+    if (!tensor) {
+        // TODO: error
     }
+    
+    return tensor;
 }
+
+//- (void *)outputTensorAtIndex:(NSUInteger)index {
+//    if ( self.quantized ) {
+//        return interpreter->typed_output_tensor<uint8_t>((int)index);
+//    } else {
+//        return interpreter->typed_output_tensor<float_t>((int)index);
+//    }
+//}
 
 @end

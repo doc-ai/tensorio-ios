@@ -20,15 +20,22 @@
 
 #import "NSDictionary+TIOTFLiteData.h"
 
+#import "TFLTensorFlowLite.h"
+
 @implementation NSDictionary (TIOTFLiteData)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
+- (nullable instancetype)initWithBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
     NSAssert(NO, @"This method is unimplemented. A dictionary cannot be constructed directly from a tensor.");
     return [self init];
 }
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
+- (void)getBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
     NSAssert(NO, @"This method is unimplemented. Tensor bytes cannot be captured from a dictionary.");
+}
+
++ (NSMutableData *)dataForDescription:(id<TIOLayerDescription>)description {
+    NSAssert(NO, @"This method is unimplemented. Tensor bytes cannot be captured from a dictionary.");
+    return nil;
 }
 
 @end

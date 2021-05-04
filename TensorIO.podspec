@@ -50,7 +50,7 @@ Pod::Spec.new do |s|
   
   s.subspec 'TFLite' do |ss|
     ss.dependency 'TensorIO/Core'
-    ss.dependency 'TensorFlowLite'
+    ss.dependency 'TensorFlowLiteObjC'
     
     ss.source_files = 'TensorIO/Classes/TFLite/**/*'
     ss.private_header_files = [

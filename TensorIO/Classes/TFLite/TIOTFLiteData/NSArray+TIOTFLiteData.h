@@ -23,6 +23,8 @@
 #import "TIOLayerDescription.h"
 #import "TIOTFLiteData.h"
 
+@class TFLTensor;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -49,13 +51,13 @@ NS_ASSUME_NONNULL_BEGIN
  *   interpreted as `uint8_t` values, passed to the dequantizer block, and the resulting `float_t`
  *   bytes are copied into numeric values and added to the resulting array
  *
- * @param bytes The output buffer to read from.
+ * @param tensor The output tensor to read from.
  * @param description A description of the data this buffer produces.
  *
  * @return instancetype An instance of `NSData`.
  */
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description;
 
 /**
  * Request to fill a TFLite tensor with bytes.
@@ -73,11 +75,21 @@ NS_ASSUME_NONNULL_BEGIN
  *   numeric entries are interpreted as `float_t` values, passed to the quantizer block, and the
  *   `uint8_t` values returned from it are copied to the buffer
  *
- * @param buffer The input buffer to copy bytes to.
+ * @param tensor The input tensor to copy bytes to.
  * @param description A description of the data this buffer expects.
  */
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (void)getBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description;
+
+/**
+ * Returns a reusable data object for a given description. Call `mutableBytes` on the returned object to
+ * acquire a pointer to the underlying data buffer, which you can fill with bytes.
+ *
+ *  @param description A description of the data this buffer expects.
+ *  @return A re-usable data buffer.
+ */
+
++ (NSMutableData *)dataForDescription:(id<TIOLayerDescription>)description;
 
 @end
 

@@ -58,6 +58,12 @@ extern const TIOImageVolume kTIOImageVolumeInvalid;
 
 BOOL TIOImageVolumesEqual(TIOImageVolume a, TIOImageVolume b);
 
+/**
+ * Returns the total length of an image volume, which is height * width * channels
+ */
+ 
+int TIOImageVolumeLength(TIOImageVolume volume);
+
 NS_ASSUME_NONNULL_END
 
 #endif /* TIOVisionModelHelpers_h */

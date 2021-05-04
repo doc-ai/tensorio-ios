@@ -23,6 +23,8 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 
+#import "TFLTensorFlowLite.h"
+
 /**
  * Copies a pixel buffer in ARGB or BGRA format to a tensor, which is a pointer to an array of
  * float_t or uint8_t.
@@ -217,11 +219,21 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
 
 @implementation TIOPixelBuffer (TIOTFLiteData)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
+- (nullable instancetype)initWithBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result;
+    
+    NSError *liteError = nil;
+    NSData *data = [tensor dataWithError:&liteError];
+    
+    if (!data) {
+        NSLog(@"There was a problem reading the data buffer from the tensor, error: %@", liteError);
+        return nil;
+    }
+    
+    const void *bytes = data.bytes;
     
     if ( description.isQuantized ) {
         result = TIOCreateCVPixelBufferFromTensor<uint8_t>(
@@ -240,16 +252,18 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
             pixelBufferDescription.denormalizer
         );
     }
-    
+
     if ( result != kCVReturnSuccess ) {
         NSLog(@"There was a problem creating the pixel buffer from the tensor");
         return nil;
     }
-    
+
     return [self initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+
+    return nil;
 }
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
+- (void)getBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
@@ -279,6 +293,20 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     CVPixelBufferRetain(transformedPixelBuffer);
     self.transformedPixelBuffer = transformedPixelBuffer;
     
+    NSMutableData *data = [TIOPixelBuffer dataForDescription:description];
+    void *buffer = data.mutableBytes;
+    
+//    size_t length = TIOImageVolumeLength(pixelBufferDescription.imageVolume);
+//    size_t size = 0;
+//
+//    if ( description.isQuantized ) {
+//        size = length * sizeof(uint8_t);
+//    } else {
+//        size = length * sizeof(float_t);
+//    }
+//
+//    void *buffer = malloc(size);
+    
     if ( description.isQuantized ) {
         TIOCopyCVPixelBufferToTensor<uint8_t>(
             transformedPixelBuffer,
@@ -294,6 +322,30 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
             pixelBufferDescription.normalizer
         );
     }
+
+//    NSData *data = [NSData dataWithBytes:buffer length:size];
+    NSError *liteError = nil;
+
+    if ( ![tensor copyData:data error:&liteError] ) {
+        NSLog(@"There was a problem writing the data buffer to the tensor, error: %@", liteError);
+    }
+
+//    free(buffer);
+}
+
++ (NSMutableData *)dataForDescription:(id<TIOLayerDescription>)description {
+    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
+    
+    size_t length = TIOImageVolumeLength(pixelBufferDescription.imageVolume);
+    size_t size = 0;
+    
+    if ( description.isQuantized ) {
+        size = length * sizeof(uint8_t);
+    } else {
+        size = length * sizeof(float_t);
+    }
+    
+    return [NSMutableData dataWithLength:size];
 }
 
 @end

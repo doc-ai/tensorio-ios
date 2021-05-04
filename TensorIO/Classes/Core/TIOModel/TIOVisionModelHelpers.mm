@@ -33,3 +33,7 @@ BOOL TIOImageVolumesEqual(TIOImageVolume a, TIOImageVolume b) {
         && a.width == b.width
         && a.channels == b.channels;
 }
+
+int TIOImageVolumeLength(TIOImageVolume volume) {
+    return volume.width * volume.height * volume.channels;
+}

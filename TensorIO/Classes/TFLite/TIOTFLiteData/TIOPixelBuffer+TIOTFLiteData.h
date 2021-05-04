@@ -25,6 +25,8 @@
 #import "TIOPixelBuffer.h"
 #import "TIOTFLiteData.h"
 
+@class TFLTensor;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -37,22 +39,33 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Initializes `TIOPixelBuffer` with bytes from a TFLite tensor.
  *
- * @param bytes The output buffer to read from.
+ * @param tensor The output tensor to read from.
  * @param description A description of the data this buffer produces.
  *
  * @return instancetype An instance of `TIOPixelBuffer`
  */
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description;
 
 /**
  * Request to fill a TFLite tensor with bytes.
  *
- * @param buffer The input buffer to copy bytes to.
+ * @param tensor The input tensor to copy bytes to.
  * @param description A description of the data this buffer expects.
  */
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (void)getBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description;
+
+/**
+ * Returns a reusable data object for a given description. Call `mutableBytes` on the returned object to
+ * acquire a pointer to the underlying data buffer, which you can fill with bytes.
+ *
+ *  @param description A description of the data this buffer expects.
+ *  @return A re-usable data buffer.
+ */
+
++ (NSMutableData *)dataForDescription:(id<TIOLayerDescription>)description;
+
 
 @end
 
