@@ -20,17 +20,6 @@
 
 #import "TIOTFLiteModel.h"
 
-#import "TFLTensorFlowLite.h"
-
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Wdocumentation"
-//
-//#include "tensorflow/lite/kernels/register.h"
-//#include "tensorflow/lite/model.h"
-//#include "tensorflow/lite/string_util.h"
-//
-//#pragma clang diagnostic pop
-
 #import "TIOModelBundle.h"
 #import "TIOTFLiteErrors.h"
 #import "TIOTFLiteData.h"
@@ -50,10 +39,9 @@
 #import "TIOBatch.h"
 #import "TIOModelIO.h"
 
+#import "TFLTensorFlowLite.h"
+
 @implementation TIOTFLiteModel {
-    // std::unique_ptr<tflite::FlatBufferModel> model;
-    // std::unique_ptr<tflite::Interpreter> interpreter;
-    
     TFLInterpreter *interpreter;
 }
 
@@ -129,46 +117,9 @@
         return NO;
     }
 
-//    model = tflite::FlatBufferModel::BuildFromFile([graphPath UTF8String]);
-//
-//    if (!model) {
-//        NSLog(@"Failed to mmap model at path %@", graphPath);
-//        if (error) {
-//            *error = kTIOTFLiteModelLoadModelError;
-//        }
-//        return NO;
-//    }
-
     #ifdef DEBUG
     NSLog(@"Loaded model");
     #endif
-    
-//    model->error_reporter();
-    
-//    #ifdef DEBUG
-//    NSLog(@"Resolved reporter");
-//    #endif
-
-//    tflite::ops::builtin::BuiltinOpResolver resolver;
-//
-//    // Build model
-//
-//    tflite::InterpreterBuilder(*model, resolver)(&interpreter);
-//   
-//    if (!interpreter) {
-//        NSLog(@"Failed to construct interpreter for model %@", self.identifier);
-//        if (error) {
-//            *error = kTIOTFLiteModelConstructInterpreterError;
-//        }
-//        return NO;
-//    }
-//    if (interpreter->AllocateTensors() != kTfLiteOk) {
-//        NSLog(@"Failed to allocate tensors for model %@", self.identifier);
-//        if (error) {
-//            *error = kTIOTFLiteModelAllocateTensorsError;
-//        }
-//        return NO;
-//    }
     
     _loaded = YES;
     return YES;
@@ -183,12 +134,7 @@
         return;
     }
     
-//    interpreter.reset();
-//    model.reset();
-   
     interpreter = nil;
-//    model = nil;
-   
     _loaded = NO;
 }
 
@@ -381,10 +327,6 @@
     if (![interpreter invokeWithError:&liteError]) {
         NSLog(@"Failed to invoke for model %@, error: %@", self.identifier, liteError);
     }
-
-//    if (interpreter->Invoke() != kTfLiteOk) {
-//        NSLog(@"Failed to invoke for model %@", self.identifier);
-//    }
 }
 
 // MARK: - Capture Outputs
@@ -475,15 +417,6 @@
     return tensor;
 }
 
-//- (void *)inputTensorAtIndex:(NSUInteger)index {
-//    int tensor_input = interpreter->inputs()[index];
-//    if ( self.quantized ) {
-//        return interpreter->typed_tensor<uint8_t>(tensor_input);
-//    } else {
-//        return interpreter->typed_tensor<float_t>(tensor_input);
-//    }
-//}
-
 /**
  * Returns a pointer to an output tensor at a given index
  */
@@ -499,13 +432,5 @@
     
     return tensor;
 }
-
-//- (void *)outputTensorAtIndex:(NSUInteger)index {
-//    if ( self.quantized ) {
-//        return interpreter->typed_output_tensor<uint8_t>((int)index);
-//    } else {
-//        return interpreter->typed_output_tensor<float_t>((int)index);
-//    }
-//}
 
 @end
