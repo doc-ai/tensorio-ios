@@ -286,17 +286,6 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     NSMutableData *data = [TIOPixelBuffer bufferForDescription:description];
     void *buffer = data.mutableBytes;
     
-//    size_t length = TIOImageVolumeLength(pixelBufferDescription.imageVolume);
-//    size_t size = 0;
-//
-//    if ( description.isQuantized ) {
-//        size = length * sizeof(uint8_t);
-//    } else {
-//        size = length * sizeof(float_t);
-//    }
-//
-//    void *buffer = malloc(size);
-    
     if ( description.isQuantized ) {
         TIOCopyCVPixelBufferToTensor<uint8_t>(
             transformedPixelBuffer,
@@ -312,15 +301,9 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
             pixelBufferDescription.normalizer
         );
     }
-
-//    NSData *data = [NSData dataWithBytes:buffer length:size];
     
     return data;
-
-//    free(buffer);
 }
-
-// TODO: Test
 
 + (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;

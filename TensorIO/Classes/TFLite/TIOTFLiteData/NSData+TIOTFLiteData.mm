@@ -97,9 +97,7 @@
             size_t dest_size = length * sizeof(float_t);
             return [[NSData alloc] initWithBytes:bytes length:dest_size];
         }
-    }
-
-    else {
+    } else {
         @throw [NSException exceptionWithName:@"Unsupported Layer Description" reason:nil userInfo:nil];
         return nil;
     }
@@ -177,8 +175,6 @@
     
     return data;
 }
-
-// TODO: Test
 
 + (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
     

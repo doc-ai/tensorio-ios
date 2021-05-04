@@ -68,19 +68,6 @@
     
     NSMutableData *data = [NSArray bufferForDescription:description];
     void *buffer = data.mutableBytes;
-    
-//    size_t length = self.count;
-//    size_t size = 0;
-//
-//    if ( description.isQuantized && quantizer != nil ) {
-//        size = length * sizeof(uint8_t);
-//    } else  if ( description.isQuantized && quantizer == nil ) {
-//        size = length * sizeof(uint8_t);
-//    } else {
-//        size = length * sizeof(float_t);
-//    }
-//
-//    void *buffer = malloc(size);
 
     if ( description.isQuantized && quantizer != nil ) {
         for ( NSInteger i = 0; i < self.count; i++ ) {
@@ -97,14 +84,7 @@
     }
     
     return data;
-    
-//    NSData *data = [NSData dataWithBytes:buffer length:size];
-    
-
-//    free(buffer);
 }
-
-// TODO: Test
 
 + (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
