@@ -57,7 +57,7 @@
         "TensorIO/Core": [
 
         ],
-        "TensorFlowLite": [
+        "TensorFlowLiteObjC": [
 
         ]
       },
