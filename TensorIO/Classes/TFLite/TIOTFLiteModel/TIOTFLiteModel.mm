@@ -334,31 +334,39 @@
  */
 
 - (void)_prepareInput:(id<TIOData>)input tensor:(TFLTensor *)tensor interface:(TIOLayerInterface *)interface {
-
+    __block NSData *data = nil;
+    NSError *liteError = nil;
+    
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription *pixelBufferDescription) {
             assert( [input isKindOfClass:TIOPixelBuffer.class] );
             
-            [(id<TIOTFLiteData>)input getBytes:tensor description:pixelBufferDescription];
+            data = [(id<TIOTFLiteData>)input dataForDescription:pixelBufferDescription];
             
         } caseVector:^(TIOVectorLayerDescription *vectorDescription) {
             assert( [input isKindOfClass:NSArray.class]
                 ||  [input isKindOfClass:NSData.class]
                 ||  [input isKindOfClass:NSNumber.class] );
             
-            [(id<TIOTFLiteData>)input getBytes:tensor description:vectorDescription];
+            data = [(id<TIOTFLiteData>)input dataForDescription:vectorDescription];
             
         } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
             assert( [input isKindOfClass:NSData.class]);
             
-            [(id<TIOTFLiteData>)input getBytes:tensor description:stringDescription];
+            data = [(id<TIOTFLiteData>)input dataForDescription:stringDescription];
+        
         } caseScalar:^(TIOScalarLayerDescription * _Nonnull scalarDescription) {
             assert( [input isKindOfClass:NSArray.class]
                 ||  [input isKindOfClass:NSData.class]
                 ||  [input isKindOfClass:NSNumber.class] );
                 
-            [(id<TIOTFLiteData>)input getBytes:tensor description:scalarDescription];
+            data = [(id<TIOTFLiteData>)input dataForDescription:scalarDescription];
         }];
+    
+    
+    if ( ![tensor copyData:data error:&liteError] ) {
+        NSLog(@"There was a problem writing the data buffer to the tensor, error: %@", liteError);
+    }
 }
 
 // MARK: - Execute Inference
@@ -412,33 +420,41 @@
  */
 
 - (id<TIOData>)_captureOutput:(TFLTensor *)tensor interface:(TIOLayerInterface *)interface {
-    __block id<TIOData> data;
+    __block id<TIOData> output;
+    
+    NSError *liteError = nil;
+    NSData *data = [tensor dataWithError:&liteError];
+
+    if (!data) {
+        NSLog(@"There was a problem reading the data buffer from the tensor, error: %@", liteError);
+        return nil;
+    }
     
     [interface
         matchCasePixelBuffer:^(TIOPixelBufferLayerDescription * _Nonnull pixelBufferDescription) {
-            data = [[TIOPixelBuffer alloc] initWithBytes:tensor description:pixelBufferDescription];
+            output = [[TIOPixelBuffer alloc] initWithData:data description:pixelBufferDescription];
         
         } caseVector:^(TIOVectorLayerDescription * _Nonnull vectorDescription) {
             
-            TIOVector *vector = [[TIOVector alloc] initWithBytes:tensor description:vectorDescription];
+            TIOVector *vector = [[TIOVector alloc] initWithData:data description:vectorDescription];
             
             if ( vectorDescription.isLabeled ) {
                 // If the vector's output is labeled, return a dictionary mapping labels to values
-                data = [vectorDescription labeledValues:vector];
+                output = [vectorDescription labeledValues:vector];
             } else {
                 // If the vector's output is single-valued just return that value
-                data = vector.count == 1
+                output = vector.count == 1
                     ? vector[0]
                     : vector;
             }
         } caseString:^(TIOStringLayerDescription * _Nonnull stringDescription) {
-            data = [[NSData alloc] initWithBytes:tensor description:stringDescription];
+            output = [[NSData alloc] initWithData:data description:stringDescription];
         
         } caseScalar:^(TIOScalarLayerDescription * _Nonnull scalarDescription) {
-            data = [[NSNumber alloc] initWithBytes:tensor description:scalarDescription];
+            output = [[NSNumber alloc] initWithData:data description:scalarDescription];
         }];
     
-    return data;
+    return output;
 }
 
 // MARK: - Utilities

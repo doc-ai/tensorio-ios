@@ -23,8 +23,6 @@
 #import "TIOPixelBufferLayerDescription.h"
 #import "TIOVisionPipeline.h"
 
-#import "TFLTensorFlowLite.h"
-
 /**
  * Copies a pixel buffer in ARGB or BGRA format to a tensor, which is a pointer to an array of
  * float_t or uint8_t.
@@ -219,19 +217,11 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
 
 @implementation TIOPixelBuffer (TIOTFLiteData)
 
-- (nullable instancetype)initWithBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description {
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result;
-    
-    NSError *liteError = nil;
-    NSData *data = [tensor dataWithError:&liteError];
-    
-    if (!data) {
-        NSLog(@"There was a problem reading the data buffer from the tensor, error: %@", liteError);
-        return nil;
-    }
     
     const void *bytes = data.bytes;
     
@@ -263,7 +253,7 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     return nil;
 }
 
-- (void)getBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
@@ -293,7 +283,7 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     CVPixelBufferRetain(transformedPixelBuffer);
     self.transformedPixelBuffer = transformedPixelBuffer;
     
-    NSMutableData *data = [TIOPixelBuffer dataForDescription:description];
+    NSMutableData *data = [TIOPixelBuffer bufferForDescription:description];
     void *buffer = data.mutableBytes;
     
 //    size_t length = TIOImageVolumeLength(pixelBufferDescription.imageVolume);
@@ -324,16 +314,13 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     }
 
 //    NSData *data = [NSData dataWithBytes:buffer length:size];
-    NSError *liteError = nil;
-
-    if ( ![tensor copyData:data error:&liteError] ) {
-        NSLog(@"There was a problem writing the data buffer to the tensor, error: %@", liteError);
-    }
+    
+    return data;
 
 //    free(buffer);
 }
 
-+ (NSMutableData *)dataForDescription:(id<TIOLayerDescription>)description {
++ (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     
     size_t length = TIOImageVolumeLength(pixelBufferDescription.imageVolume);

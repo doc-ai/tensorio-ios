@@ -23,11 +23,9 @@
 #import "TIOVectorLayerDescription.h"
 #import "TIOScalarLayerDescription.h"
 
-#import "TFLTensorFlowLite.h"
-
 @implementation NSNumber (TIOTFLiteData)
 
-- (nullable instancetype)initWithBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
@@ -37,14 +35,6 @@
          dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
     } else if ([description isKindOfClass:TIOScalarLayerDescription.class]) {
         dequantizer = ((TIOScalarLayerDescription *)description).dequantizer;
-    }
-    
-    NSError *liteError = nil;
-    NSData *data = [tensor dataWithError:&liteError];
-    
-    if (!data) {
-        NSLog(@"There was a problem reading the data buffer from the tensor, error: %@", liteError);
-        return nil;
     }
     
     const void *bytes = data.bytes;
@@ -58,7 +48,7 @@
     }
 }
 
-- (void)getBytes:(TFLTensor *)tensor description:(id<TIOLayerDescription>)description {
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
@@ -74,7 +64,7 @@
     // This is the what we do in the JNI implementation on Android: NSMutableData.mutableData
     // The model instance manages buffers and passes them to the data converters
     
-    NSMutableData *data = [NSNumber dataForDescription:description];
+    NSMutableData *data = [NSNumber bufferForDescription:description];
     void *buffer = data.mutableBytes;
     
 //    size_t length = 1;
@@ -99,16 +89,13 @@
     }
     
 //    NSData *data = [NSData dataWithBytes:buffer length:size];
-    NSError *liteError = nil;
     
-    if ( ![tensor copyData:data error:&liteError] ) {
-        NSLog(@"There was a problem writing the data buffer to the tensor, error: %@", liteError);
-    }
+    return data;
 
 //    free(buffer);
 }
 
-+ (NSMutableData *)dataForDescription:(id<TIOLayerDescription>)description {
++ (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
