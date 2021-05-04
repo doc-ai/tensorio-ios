@@ -29,22 +29,32 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Initializes a conforming object with bytes from a TFLite tensor.
  *
- * @param bytes The output buffer to read from.
+ * @param data NSData to read from taken from an output tensor.
  * @param description A description of the data this buffer produces.
  *
  * @return instancetype An instance of the conforming data type.
  */
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description;
 
 /**
- * Requests that a conforming object fill the TFLite tensor with bytes.
+ * Requests that a conforming object fill an NSData object with bytes that can later be copied to a TFLTensor
  *
- * @param buffer The input buffer to copy bytes to.
  * @param description A description of the data this buffer expects.
+ * @return NSData object filled with bytes that can be copied to a TFLTensor
  */
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description;
+
+/**
+ * Returns a reusable data object for a given description. Call `mutableBytes` on the returned object to
+ * acquire a pointer to the underlying data buffer, which you can fill with bytes.
+ *
+ *  @param description A description of the data this buffer expects.
+ *  @return A re-usable data buffer.
+ */
+
++ (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description;
 
 @end
 

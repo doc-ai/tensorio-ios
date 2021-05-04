@@ -27,36 +27,36 @@
 
 @interface NSArray (TIOTFLiteData_Testing)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description;
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description;
 
 @end
 
 @interface NSData (TIOTFLiteData_Testing)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description;
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description;
 
 @end
 
 @interface NSDictionary (TIOTFLiteData_Testing)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description;
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description;
 
 @end
 
 @interface NSNumber (TIOTFLiteData_Testing)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description;
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description;
 
 @end
 
 @interface TIOPixelBuffer (TIOTFLiteData_Testing)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description;
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description;
 
 @end
 
@@ -113,14 +113,12 @@
         quantizer:nil
         dequantizer:nil];
     
-    size_t length = 1 * sizeof(float_t);
-    float_t *bytes = (float *)malloc(length);
     NSNumber *number = @(1.0f);
     
-    [number getBytes:bytes description:description];
-    XCTAssertEqual(bytes[0], 1.0f);
+    NSData *data = [number dataForDescription:description];
+    float_t *bytes = (float_t *)data.bytes;
     
-    free(bytes);
+    XCTAssertEqual(bytes[0], 1.0f);
 }
 
 - (void)testNumberGetBytesUInt8QuantizedWithoutQuantizer {
@@ -135,22 +133,20 @@
         quantizer:nil
         dequantizer:nil];
     
-    size_t length = 1 * sizeof(uint8_t);
-    uint8_t *bytes = (uint8_t *)malloc(length);
-    
     NSNumber *n0 = @(0);
-    [n0 getBytes:bytes description:description];
-    XCTAssertEqual(bytes[0], 0);
+    NSData *d0 = [n0 dataForDescription:description];
+    uint8_t *bytes0 = (uint8_t *)d0.bytes;
+    XCTAssertEqual(bytes0[0], 0);
     
     NSNumber *n1 = @(1);
-    [n1 getBytes:bytes description:description];
-    XCTAssertEqual(bytes[0], 1);
+    NSData *d1 = [n1 dataForDescription:description];
+    uint8_t *bytes1 = (uint8_t *)d1.bytes;
+    XCTAssertEqual(bytes1[0], 1);
     
     NSNumber *n255 = @(255);
-    [n255 getBytes:bytes description:description];
-    XCTAssertEqual(bytes[0], 255);
-    
-    free(bytes);
+    NSData *d255 = [n255 dataForDescription:description];
+    uint8_t *bytes255 = (uint8_t *)d255.bytes;
+    XCTAssertEqual(bytes255[0], 255);
 }
 
 - (void)testNumberGetBytesUInt8QuantizedWithQuantizer {
@@ -173,16 +169,19 @@
     uint8_t *bytes = (uint8_t *)malloc(length);
     
     NSNumber *n0 = @(0.0f);
-    [n0 getBytes:bytes description:description];
-    XCTAssertEqual(bytes[0], 0);
+    NSData *d0 = [n0 dataForDescription:description];
+    uint8_t *bytes0 = (uint8_t *)d0.bytes;
+    XCTAssertEqual(bytes0[0], 0);
     
     NSNumber *n1 = @(1.0f);
-    [n1 getBytes:bytes description:description];
-    XCTAssertEqual(bytes[0], 1);
+    NSData *d1 = [n1 dataForDescription:description];
+    uint8_t *bytes1 = (uint8_t *)d1.bytes;
+    XCTAssertEqual(bytes1[0], 1);
     
     NSNumber *n255 = @(255.0f);
-    [n255 getBytes:bytes description:description];
-    XCTAssertEqual(bytes[0], 255);
+    NSData *d255 = [n255 dataForDescription:description];
+    uint8_t *bytes255 = (uint8_t *)d255.bytes;
+    XCTAssertEqual(bytes255[0], 255);
     
     free(bytes);
 }
@@ -191,7 +190,7 @@
 
 - (void)testNumberInitWithBytesFloatUnquantized {
     // It should return a number with the float_t numeric value
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
@@ -200,16 +199,18 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil];
-    
+
     float_t bytes[1] = { 1.0f };
-    
-    NSNumber *number = [[NSNumber alloc] initWithBytes:bytes description:description];
+    size_t size = 1 * sizeof(float_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSNumber *number = [[NSNumber alloc] initWithData:data description:description];
     XCTAssertEqual(number.floatValue, 1.0f);
 }
 
 - (void)testNumberInitWithBytesUInt8QuantizedWithoutDequantizer {
     // It should return a number with the uint8_t numeric value
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
@@ -218,29 +219,33 @@
         quantized:YES
         quantizer:nil
         dequantizer:nil];
-    
+
     uint8_t bytes[1] = { 0 };
-    
+    size_t size = 1 * sizeof(uint8_t);
+
     bytes[0] = 0;
-    NSNumber *n0 = [[NSNumber alloc] initWithBytes:bytes description:description];
+    NSData *d0 = [NSData dataWithBytes:bytes length:size];
+    NSNumber *n0 = [[NSNumber alloc] initWithData:d0 description:description];
     XCTAssertEqual(n0.unsignedCharValue, 0);
-    
+
     bytes[0] = 1;
-    NSNumber *n1 = [[NSNumber alloc] initWithBytes:bytes description:description];
+    NSData *d1 = [NSData dataWithBytes:bytes length:size];
+    NSNumber *n1 = [[NSNumber alloc] initWithData:d1 description:description];
     XCTAssertEqual(n1.unsignedCharValue, 1);
-    
+
     bytes[0] = 255;
-    NSNumber *n255 = [[NSNumber alloc] initWithBytes:bytes description:description];
+    NSData *d2 = [NSData dataWithBytes:bytes length:size];
+    NSNumber *n255 = [[NSNumber alloc] initWithData:d2 description:description];
     XCTAssertEqual(n255.unsignedCharValue, 255);
 }
 
 - (void)testNumberInitWithBytesUInt8QuantizedWithDequantizer {
     // It should return a number by converting a uint8_t value to a float_t value
-    
+
     TIODataDequantizer dequantizer = ^float_t(uint8_t value) {
         return (float_t)value;
     };
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(1)]
         batched:NO
@@ -249,19 +254,23 @@
         quantized:YES
         quantizer:nil
         dequantizer:dequantizer];
-    
+
     uint8_t bytes[1] = { 0 };
-    
+    size_t size = 1 * sizeof(uint8_t);
+
     bytes[0] = 0;
-    NSNumber *n0 = [[NSNumber alloc] initWithBytes:bytes description:description];
+    NSData *d0 = [NSData dataWithBytes:bytes length:size];
+    NSNumber *n0 = [[NSNumber alloc] initWithData:d0 description:description];
     XCTAssertEqual(n0.floatValue, 0.0f);
-    
+
     bytes[0] = 1;
-    NSNumber *n1 = [[NSNumber alloc] initWithBytes:bytes description:description];
+    NSData *d1 = [NSData dataWithBytes:bytes length:size];
+    NSNumber *n1 = [[NSNumber alloc] initWithData:d1 description:description];
     XCTAssertEqual(n1.floatValue, 1.0f);
-    
+
     bytes[0] = 255;
-    NSNumber *n255 = [[NSNumber alloc] initWithBytes:bytes description:description];
+    NSData *d2 = [NSData dataWithBytes:bytes length:size];
+    NSNumber *n255 = [[NSNumber alloc] initWithData:d2 description:description];
     XCTAssertEqual(n255.floatValue, 255.0f);
 }
 
@@ -269,7 +278,7 @@
 
 - (void)testArrayGetBytesFloatUnquantized {
     // It should get the float_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -278,22 +287,19 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil];
-    
-    size_t length = 3 * sizeof(float_t);
-    float_t *bytes = (float *)malloc(length);
+
     NSArray *numbers = @[ @(-1.0f), @(0.0f), @(1.0f)];
+    NSData *data = [numbers dataForDescription:description];
+    float_t *bytes = (float_t *)data.bytes;
     
-    [numbers getBytes:bytes description:description];
     XCTAssertEqual(bytes[0], -1.0f);
     XCTAssertEqual(bytes[1], 0.0f);
     XCTAssertEqual(bytes[2], 1.0f);
-    
-    free(bytes);
 }
 
 - (void)testArrayGetBytesUInt8QuantizedWithoutQuantizer {
     // It should get the uint8_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -302,26 +308,23 @@
         quantized:YES
         quantizer:nil
         dequantizer:nil];
-    
-    size_t length = 3 * sizeof(uint8_t);
-    uint8_t *bytes = (uint8_t *)malloc(length);
+        
     NSArray *numbers = @[ @(0), @(1), @(255)];
+    NSData *data = [numbers dataForDescription:description];
+    uint8_t *bytes = (uint8_t *)data.bytes;
     
-    [numbers getBytes:bytes description:description];
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
-    
-    free(bytes);
 }
 
 - (void)testArrayGetBytesUInt8QuantizedWithQuantizer {
     // It should convert the float_t numeric values to uint8_t values
-    
+
     TIODataQuantizer quantizer = ^uint8_t(float_t value) {
         return (uint8_t)value;
     };
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -330,24 +333,21 @@
         quantized:YES
         quantizer:quantizer
         dequantizer:nil];
-    
-    size_t length = 3 * sizeof(uint8_t);
-    uint8_t *bytes = (uint8_t *)malloc(length);
+
     NSArray *numbers = @[ @(0.0f), @(1.0f), @(255.0f)];
+    NSData *data = [numbers dataForDescription:description];
+    uint8_t *bytes = (uint8_t *)data.bytes;
     
-    [numbers getBytes:bytes description:description];
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
-    
-    free(bytes);
 }
 
 // MARK: - NSArray + TIOTFLiteData Init with Bytes
 
 - (void)testArrayInitWithBytesFloatUnquantized {
     // It should return an array of numbers with the float_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -356,10 +356,12 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil];
-    
+
     float_t bytes[3] = { -1.0f, 0.0f, 1.0f };
-    
-    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithBytes:bytes description:description];
+    size_t size = 3 * sizeof(float_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithData:data description:description];
     XCTAssertEqual(numbers[0].floatValue, -1.0f);
     XCTAssertEqual(numbers[1].floatValue, 0.0f);
     XCTAssertEqual(numbers[2].floatValue, 1.0f);
@@ -367,7 +369,7 @@
 
 - (void)testArrayInitWithBytesUInt8QuantizedWithoutDequantizer {
     // It should return an array of numbers with the uint8_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -376,10 +378,12 @@
         quantized:YES
         quantizer:nil
         dequantizer:nil];
-    
+
     uint8_t bytes[3] = { 0, 1, 255 };
-    
-    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithBytes:bytes description:description];
+    size_t size = 3 * sizeof(uint8_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithData:data description:description];
     XCTAssertEqual(numbers[0].unsignedCharValue, 0);
     XCTAssertEqual(numbers[1].unsignedCharValue, 1);
     XCTAssertEqual(numbers[2].unsignedCharValue, 255);
@@ -387,11 +391,11 @@
 
 - (void)testArrayInitWithBytesUInt8QuantizedWithDequantizer {
     // It should return an array of numbers by converting uint8_t values to float_t values
-    
+
     TIODataDequantizer dequantizer = ^float_t(uint8_t value) {
         return (float_t)value;
     };
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -400,10 +404,12 @@
         quantized:YES
         quantizer:nil
         dequantizer:dequantizer];
-    
+
     uint8_t bytes[3] = { 0, 1, 255 };
-    
-    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithBytes:bytes description:description];
+    size_t size = 3 * sizeof(uint8_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSArray<NSNumber*> *numbers = [[NSArray alloc] initWithData:data description:description];
     XCTAssertEqual(numbers[0].unsignedCharValue, 0.0);
     XCTAssertEqual(numbers[1].unsignedCharValue, 1.0);
     XCTAssertEqual(numbers[2].unsignedCharValue, 255.0);
@@ -413,7 +419,7 @@
 
 - (void)testDataGetVectorBytesFloatUnquantized {
     // It should get the float_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -422,24 +428,23 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil];
-    
-    size_t length = 3 * sizeof(float_t);
-    float_t *bytes = (float *)malloc(length);
+
     
     float_t srcBytes[3] = { -1.0f, 0.0f, 1.0f};
+    size_t length = 3 * sizeof(float_t);
     NSData *data = [NSData dataWithBytes:srcBytes length:length];
     
-    [data getBytes:bytes description:description];
+    NSData *dstData = [data dataForDescription:description];
+    float_t *bytes = (float_t*)dstData.bytes;
+    
     XCTAssertEqual(bytes[0], -1.0f);
     XCTAssertEqual(bytes[1], 0.0f);
     XCTAssertEqual(bytes[2], 1.0f);
-    
-    free(bytes);
 }
 
 - (void)testDataGetVectorBytesUInt8QuantizedWithoutQuantizer {
     // It should get the uint8_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -448,28 +453,26 @@
         quantized:YES
         quantizer:nil
         dequantizer:nil];
-    
-    size_t length = 3 * sizeof(uint8_t);
-    uint8_t *bytes = (uint8_t *)malloc(length);
-    
+
     uint8_t srcBytes[3] = { 0, 1, 255};
+    size_t length = 3 * sizeof(uint8_t);
     NSData *data = [NSData dataWithBytes:srcBytes length:length];
-    
-    [data getBytes:bytes description:description];
+
+    NSData *dstData = [data dataForDescription:description];
+    uint8_t *bytes = (uint8_t *)dstData.bytes;
+
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
-    
-    free(bytes);
 }
 
 - (void)testDataGetVectorBytesUInt8QuantizedWithQuantizer {
     // It should convert the float_t numeric values to uint8_t values
-    
+
     TIODataQuantizer quantizer = ^uint8_t(float_t value) {
         return (uint8_t)value;
     };
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -478,71 +481,64 @@
         quantized:YES
         quantizer:quantizer
         dequantizer:nil];
-    
-    size_t length = 3 * sizeof(uint8_t);
-    uint8_t *bytes = (uint8_t *)malloc(length);
-    
+
     size_t srcLength = 3 * sizeof(float_t);
     float_t srcBytes[3] = { 0.0f, 1.0f, 255.0f};
     NSData *data = [NSData dataWithBytes:srcBytes length:srcLength];
-    
-    [data getBytes:bytes description:description];
+
+    NSData *dstData = [data dataForDescription:description];
+    uint8_t *bytes = (uint8_t *)dstData.bytes;
+
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
-    
-    free(bytes);
 }
 
 - (void)testDataGetStringBytesFloat {
     // It should get the float_t numeric values
-    
+
     TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
         dtype:TIODataTypeFloat32];
-    
-    size_t length = 3 * sizeof(float_t);
-    float_t *bytes = (float *)malloc(length);
-    
+
     float_t srcBytes[3] = { -1.0f, 0.0f, 1.0f};
+    size_t length = 3 * sizeof(float_t);
     NSData *data = [NSData dataWithBytes:srcBytes length:length];
-    
-    [data getBytes:bytes description:description];
+
+    NSData *dstData = [data dataForDescription:description];
+    float_t *bytes = (float *)dstData.bytes;
+
     XCTAssertEqual(bytes[0], -1.0f);
     XCTAssertEqual(bytes[1], 0.0f);
     XCTAssertEqual(bytes[2], 1.0f);
-    
-    free(bytes);
 }
 
 - (void)testDataGetStringBytesUInt8 {
     // It should get the uint8_t numeric values
-    
+
     TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
         dtype:TIODataTypeUInt8];
-    
-    size_t length = 3 * sizeof(uint8_t);
-    uint8_t *bytes = (uint8_t *)malloc(length);
-    
+
     uint8_t srcBytes[3] = { 0, 1, 255};
+    size_t length = 3 * sizeof(uint8_t);
     NSData *data = [NSData dataWithBytes:srcBytes length:length];
-    
-    [data getBytes:bytes description:description];
+
+    NSData *dstData = [data dataForDescription:description];
+    uint8_t *bytes = (uint8_t *)dstData.bytes;
+
     XCTAssertEqual(bytes[0], 0);
     XCTAssertEqual(bytes[1], 1);
     XCTAssertEqual(bytes[2], 255);
-    
-    free(bytes);
 }
 
 // MARK: - NSData + TIOTFLiteData Init with Bytes
 
 - (void)testDataInitWithVectorBytesFloatUnquantized {
     // It should return an array of numbers with the float_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -551,10 +547,12 @@
         quantized:NO
         quantizer:nil
         dequantizer:nil];
-    
+
     float_t bytes[3] = { -1.0f, 0.0f, 1.0f };
+    size_t size = 3 * sizeof(float_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
     
-    NSData *numbers = [[NSData alloc] initWithBytes:bytes description:description];
+    NSData *numbers = [[NSData alloc] initWithData:data description:description];
     float_t *buffer = (float_t *)numbers.bytes;
     XCTAssertEqual(buffer[0], -1.0f);
     XCTAssertEqual(buffer[1], 0.0f);
@@ -563,7 +561,7 @@
 
 - (void)testDataInitWithVectorBytesUInt8QuantizedWithoutDequantizer {
     // It should return an array of numbers with the uint8_t numeric values
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -572,10 +570,12 @@
         quantized:YES
         quantizer:nil
         dequantizer:nil];
-    
+
     uint8_t bytes[3] = { 0, 1, 255 };
-    
-    NSData *numbers = [[NSData alloc] initWithBytes:bytes description:description];
+    size_t size = 3 * sizeof(uint8_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSData *numbers = [[NSData alloc] initWithData:data description:description];
     uint8_t *buffer = (uint8_t *)numbers.bytes;
     XCTAssertEqual(buffer[0], 0);
     XCTAssertEqual(buffer[1], 1);
@@ -584,11 +584,11 @@
 
 - (void)testDataInitWithVectorBytesUInt8QuantizedWithDequantizer {
     // It should return an array of numbers by converting uint8_t values to float_t values
-    
+
     TIODataDequantizer dequantizer = ^float_t(uint8_t value) {
         return (float_t)value;
     };
-    
+
     TIOVectorLayerDescription *description = [[TIOVectorLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
@@ -597,10 +597,12 @@
         quantized:YES
         quantizer:nil
         dequantizer:dequantizer];
-    
+
     uint8_t bytes[3] = { 0, 1, 255 };
-    
-    NSData *numbers = [[NSData alloc] initWithBytes:bytes description:description];
+    size_t size = 3 * sizeof(uint8_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSData *numbers = [[NSData alloc] initWithData:data description:description];
     float_t *buffer = (float_t *)numbers.bytes;
     XCTAssertEqual(buffer[0], 0.0);
     XCTAssertEqual(buffer[1], 1.0);
@@ -609,15 +611,17 @@
 
 - (void)testDataInitWithStringBytesFloat {
     // It should return an array of numbers with the float_t numeric values
-    
+
     TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
         dtype:TIODataTypeFloat32];
-    
+
     float_t bytes[3] = { -1.0f, 0.0f, 1.0f };
-    
-    NSData *numbers = [[NSData alloc] initWithBytes:bytes description:description];
+    size_t size = 3 * sizeof(float_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSData *numbers = [[NSData alloc] initWithData:data description:description];
     float_t *buffer = (float_t *)numbers.bytes;
     XCTAssertEqual(buffer[0], -1.0f);
     XCTAssertEqual(buffer[1], 0.0f);
@@ -626,15 +630,17 @@
 
 - (void)testDataInitWithStringBytesUInt8 {
     // It should return an array of numbers with the uint8_t numeric values
-    
+
     TIOStringLayerDescription *description = [[TIOStringLayerDescription alloc]
         initWithShape:@[@(3)]
         batched:NO
         dtype:TIODataTypeUInt8];
-    
+
     uint8_t bytes[3] = { 0, 1, 255 };
-    
-    NSData *numbers = [[NSData alloc] initWithBytes:bytes description:description];
+    size_t size = 3 * sizeof(uint8_t);
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+
+    NSData *numbers = [[NSData alloc] initWithData:data description:description];
     uint8_t *buffer = (uint8_t *)numbers.bytes;
     XCTAssertEqual(buffer[0], 0);
     XCTAssertEqual(buffer[1], 1);
@@ -645,27 +651,27 @@
 
 - (void)testPixelBufferGetBytesUnnormalized {
     // Create ARGB bytes
-    
+
     const int width = 224;
     const int height = 224;
     const int channels = 4;
-    
+
     uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
-    
+
     for ( int i = 0; i < width * height; i++) {
         uint8_t *pixel = bytes + (i * channels);
-        
+
         pixel[0] = 255; // A
         pixel[1] = 255; // R
         pixel[2] = 0;   // G
         pixel[3] = 0;   // B
     }
-    
+
     // Create a pixel buffer for those bytes
-    
+
     const OSType format = kCVPixelFormatType_32ARGB;
     CVPixelBufferRef pixelBuffer = NULL;
-    
+
     CVReturn status = CVPixelBufferCreate(
         kCFAllocatorDefault,
         width,
@@ -673,26 +679,26 @@
         format,
         NULL,
         &pixelBuffer);
-    
+
     // Error handling
-    
+
     if ( status != kCVReturnSuccess ) {
         XCTFail(@"Couldn't create pixel buffer");
     }
-    
+
     // Copy bytes to pixel buffer
-    
+
     CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
     uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
     memcpy(baseAddress, bytes, width * height * channels);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
-    
+
     // Get bytes from pixel buffer
-    
+
     TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
     NSArray *shape = @[@(224),@(224),@(3)];
     TIOImageVolume volume = TIOImageVolumeForShape(shape);
-    
+
     TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
         initWithPixelFormat:kCVPixelFormatType_32ARGB
         shape:shape
@@ -701,51 +707,50 @@
         normalizer:nil
         denormalizer:nil
         quantized:YES];
-    
-    uint8_t *tensor_bytes = (uint8_t *)malloc(224*224*3*sizeof(uint8_t));
+
     const int tensor_channels = 3;
     uint8_t espilon = 1;
-    
-    [pixelBufferWrapper getBytes:tensor_bytes description:description];
-    
+
+    NSData *data = [pixelBufferWrapper dataForDescription:description];
+    uint8_t *tensor_bytes = (uint8_t *)data.bytes;
+
     for ( int i = 0; i < width * height; i++) {
         uint8_t *pixel = tensor_bytes + (i * tensor_channels);
-        
+
         XCTAssertEqualWithAccuracy(pixel[0], 255, espilon); // R
         XCTAssertEqualWithAccuracy(pixel[1], 0, espilon);   // G
         XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // B
     }
-    
+
     // Free memory
-    
+
     CFRelease(pixelBuffer);
-    free(tensor_bytes);
     free(bytes);
 }
 
 - (void)testPixelBufferGetBytesNormalized {
     // Create ARGB bytes
-    
+
     const int width = 224;
     const int height = 224;
     const int channels = 4;
-    
+
     uint8_t *bytes = (uint8_t *)malloc(224*224*4*sizeof(uint8_t));
-    
+
     for ( int i = 0; i < width * height; i++) {
         uint8_t *pixel = bytes + (i * channels);
-        
+
         pixel[0] = 255; // A
         pixel[1] = 255; // R
         pixel[2] = 0;   // G
         pixel[3] = 0;   // B
     }
-    
+
     // Create a pixel buffer for those bytes
-    
+
     const OSType format = kCVPixelFormatType_32ARGB;
     CVPixelBufferRef pixelBuffer = NULL;
-    
+
     CVReturn status = CVPixelBufferCreate(
         kCFAllocatorDefault,
         width,
@@ -753,27 +758,27 @@
         format,
         NULL,
         &pixelBuffer);
-    
+
     // Error handling
-    
+
     if ( status != kCVReturnSuccess ) {
         XCTFail(@"Couldn't create pixel buffer");
     }
-    
+
     // Copy bytes to pixel buffer
-    
+
     CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
     uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
     memcpy(baseAddress, bytes, width * height * channels);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
-    
+
     // Get bytes from pixel buffer
-    
+
     TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
     NSArray *shape = @[@(224),@(224),@(3)];
     TIOImageVolume volume = TIOImageVolumeForShape(shape);
     TIOPixelNormalizer normalizer = TIOPixelNormalizerZeroToOne();
-    
+
     TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
         initWithPixelFormat:kCVPixelFormatType_32ARGB
         shape:shape
@@ -782,25 +787,24 @@
         normalizer:normalizer
         denormalizer:nil
         quantized:NO];
-    
-    float_t *tensor_bytes = (float_t *)malloc(224*224*3*sizeof(float_t));
+
     const int tensor_channels = 3;
     uint8_t espilon = 0.1;
-    
-    [pixelBufferWrapper getBytes:tensor_bytes description:description];
-    
+
+    NSData *data = [pixelBufferWrapper dataForDescription:description];
+    float_t *tensor_bytes = (float_t *)data.bytes;
+
     for ( int i = 0; i < width * height; i++) {
         float_t *pixel = tensor_bytes + (i * tensor_channels);
-        
+
         XCTAssertEqualWithAccuracy(pixel[0], 1, espilon);   // R
         XCTAssertEqualWithAccuracy(pixel[1], 0, espilon);   // G
         XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // B
     }
-    
+
     // Free memory
-    
+
     CFRelease(pixelBuffer);
-    free(tensor_bytes);
     free(bytes);
 }
 
@@ -808,26 +812,27 @@
 
 - (void)testPixelBufferInitWithBytesUnnormalized {
     // Create RGB bytes
-    
+
     const int width = 224;
     const int height = 224;
     const int channels = 3;
-    
-    uint8_t *bytes = (uint8_t *)malloc(224*224*3*sizeof(uint8_t));
-    
+
+    size_t size = 224*224*3*sizeof(uint8_t);
+    uint8_t *bytes = (uint8_t *)malloc(size);
+
     for ( int i = 0; i < width * height; i++) {
         uint8_t *pixel = bytes + (i * channels);
-        
+
         pixel[0] = 255; // R
         pixel[1] = 0;   // G
         pixel[2] = 0;   // B
     }
-    
+
     // Create a pixel buffer from them
-    
+
     NSArray *shape = @[@(224),@(224),@(3)];
     TIOImageVolume volume = TIOImageVolumeForShape(shape);
-    
+
     TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
         initWithPixelFormat:kCVPixelFormatType_32ARGB
         shape:shape
@@ -837,55 +842,57 @@
         denormalizer:nil
         quantized:YES];
     
-    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithBytes:bytes description:description];
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithData:data description:description];
     CVPixelBufferRef pixelBuffer = pixelBufferWrapper.pixelBuffer;
-    
+
     // Get bytes to pixel buffer
-    
+
     CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
     uint8_t *pixel_bytes = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
-    
+
     const int pixel_channels = 4;
     uint8_t espilon = 1;
-    
+
     for ( int i = 0; i < width * height; i++) {
         uint8_t *pixel = pixel_bytes + (i * pixel_channels);
-        
+
         XCTAssertEqualWithAccuracy(pixel[0], 255, espilon); // A
         XCTAssertEqualWithAccuracy(pixel[1], 255, espilon); // R
         XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // G
         XCTAssertEqualWithAccuracy(pixel[3], 0, espilon);   // B
     }
-    
+
     // Free memory
-    
+
     CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
     free(bytes);
 }
 
 - (void)testPixelBufferInitWithBytesNormalized {
     // Create floating point RGB bytes
-    
+
     const int width = 224;
     const int height = 224;
     const int channels = 3;
     
-    float_t *bytes = (float_t *)malloc(224*224*3*sizeof(float_t));
-    
+    size_t size = 224*224*3*sizeof(float_t);
+    float_t *bytes = (float_t *)malloc(size);
+
     for ( int i = 0; i < width * height; i++) {
         float_t *pixel = bytes + (i * channels);
-        
+
         pixel[0] = 1.0; // R
         pixel[1] = 0.0; // G
         pixel[2] = 0.0; // B
     }
-    
+
     // Create a pixel buffer from them
-    
+
     NSArray *shape = @[@(224),@(224),@(3)];
     TIOImageVolume volume = TIOImageVolumeForShape(shape);
     TIOPixelDenormalizer denormalizer = TIOPixelDenormalizerZeroToOne();
-    
+
     TIOPixelBufferLayerDescription *description = [[TIOPixelBufferLayerDescription alloc]
         initWithPixelFormat:kCVPixelFormatType_32ARGB
         shape:shape
@@ -894,29 +901,30 @@
         normalizer:nil
         denormalizer:denormalizer
         quantized:NO];
-    
-    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithBytes:bytes description:description];
+
+    NSData *data = [NSData dataWithBytes:bytes length:size];
+    TIOPixelBuffer *pixelBufferWrapper = [[TIOPixelBuffer alloc] initWithData:data description:description];
     CVPixelBufferRef pixelBuffer = pixelBufferWrapper.pixelBuffer;
-    
+
     // Get bytes to pixel buffer
-    
+
     CVPixelBufferLockBaseAddress(pixelBuffer, kNilOptions);
     uint8_t *pixel_bytes = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer);
-    
+
     const int pixel_channels = 4;
     uint8_t espilon = 1;
-    
+
     for ( int i = 0; i < width * height; i++) {
         uint8_t *pixel = pixel_bytes + (i * pixel_channels);
-        
+
         XCTAssertEqualWithAccuracy(pixel[0], 255, espilon); // A
         XCTAssertEqualWithAccuracy(pixel[1], 255, espilon); // R
         XCTAssertEqualWithAccuracy(pixel[2], 0, espilon);   // G
         XCTAssertEqualWithAccuracy(pixel[3], 0, espilon);   // B
     }
-    
+
     // Free memory
-    
+
     CVPixelBufferUnlockBaseAddress(pixelBuffer, kNilOptions);
     free(bytes);
 }
