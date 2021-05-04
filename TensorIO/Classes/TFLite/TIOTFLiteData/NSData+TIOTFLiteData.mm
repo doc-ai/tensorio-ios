@@ -178,6 +178,8 @@
     return data;
 }
 
+// TODO: Test
+
 + (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
     
     size_t size = 0;

@@ -104,6 +104,8 @@
 //    free(buffer);
 }
 
+// TODO: Test
+
 + (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
