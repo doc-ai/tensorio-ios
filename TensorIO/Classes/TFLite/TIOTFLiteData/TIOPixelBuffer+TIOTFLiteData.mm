@@ -217,11 +217,13 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
 
 @implementation TIOPixelBuffer (TIOTFLiteData)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description {
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result;
+    
+    const void *bytes = data.bytes;
     
     if ( description.isQuantized ) {
         result = TIOCreateCVPixelBufferFromTensor<uint8_t>(
@@ -240,16 +242,18 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
             pixelBufferDescription.denormalizer
         );
     }
-    
+
     if ( result != kCVReturnSuccess ) {
         NSLog(@"There was a problem creating the pixel buffer from the tensor");
         return nil;
     }
-    
+
     return [self initWithPixelBuffer:pixelBuffer orientation:kCGImagePropertyOrientationUp];
+
+    return nil;
 }
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOPixelBufferLayerDescription.class]);
     
     TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
@@ -279,6 +283,9 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
     CVPixelBufferRetain(transformedPixelBuffer);
     self.transformedPixelBuffer = transformedPixelBuffer;
     
+    NSMutableData *data = [TIOPixelBuffer bufferForDescription:description];
+    void *buffer = data.mutableBytes;
+    
     if ( description.isQuantized ) {
         TIOCopyCVPixelBufferToTensor<uint8_t>(
             transformedPixelBuffer,
@@ -294,6 +301,23 @@ CVReturn TIOCreateCVPixelBufferFromTensor(_Nonnull CVPixelBufferRef * _Nonnull p
             pixelBufferDescription.normalizer
         );
     }
+    
+    return data;
+}
+
++ (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
+    TIOPixelBufferLayerDescription *pixelBufferDescription = (TIOPixelBufferLayerDescription *)description;
+    
+    size_t length = TIOImageVolumeLength(pixelBufferDescription.imageVolume);
+    size_t size = 0;
+    
+    if ( description.isQuantized ) {
+        size = length * sizeof(uint8_t);
+    } else {
+        size = length * sizeof(float_t);
+    }
+    
+    return [NSMutableData dataWithLength:size];
 }
 
 @end

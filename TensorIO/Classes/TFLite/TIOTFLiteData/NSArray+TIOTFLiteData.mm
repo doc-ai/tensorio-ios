@@ -25,13 +25,15 @@
 
 @implementation NSArray (TIOTFLiteData)
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description {
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
     NSUInteger length = ((TIOVectorLayerDescription *)description).length;
     NSMutableArray *array = NSMutableArray.array;
+    
+    const void *bytes = data.bytes;
     
     if ( description.isQuantized && dequantizer != nil ) {
         for ( NSUInteger i = 0; i < length; i++ ) {
@@ -46,11 +48,11 @@
             [array addObject:@(((float_t *)bytes)[i])];
         }
     }
-    
+
     return [self initWithArray:array];
 }
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description {
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description {
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
@@ -59,6 +61,13 @@
     }
 
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+
+    // TODO: Cache data object so we aren't always mallocing and freeing memory
+    // This is the what we do in the JNI implementation on Android: NSMutableData.mutableData
+    // The model instance manages buffers and passes them to the data converters
+    
+    NSMutableData *data = [NSArray bufferForDescription:description];
+    void *buffer = data.mutableBytes;
 
     if ( description.isQuantized && quantizer != nil ) {
         for ( NSInteger i = 0; i < self.count; i++ ) {
@@ -73,6 +82,34 @@
             ((float_t *)buffer)[i] = ((NSNumber *)self[i]).floatValue;
         }
     }
+    
+    return data;
+}
+
++ (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description {
+    assert([description isKindOfClass:TIOVectorLayerDescription.class]
+        || [description isKindOfClass:TIOScalarLayerDescription.class]);
+    
+    TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+    
+    size_t length = 0;
+    size_t size = 0;
+    
+    if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
+        length = ((TIOVectorLayerDescription *)description).length;
+    } else if ( [description isKindOfClass:TIOScalarLayerDescription.class] ) {
+        length = 1;
+    }
+    
+    if ( description.isQuantized && quantizer != nil ) {
+        size = length * sizeof(uint8_t);
+    } else  if ( description.isQuantized && quantizer == nil ) {
+        size = length * sizeof(uint8_t);
+    } else {
+        size = length * sizeof(float_t);
+    }
+    
+    return [NSMutableData dataWithLength:size];
 }
 
 @end

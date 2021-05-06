@@ -1,14 +1,20 @@
 PODS:
   - DSJSONSchemaValidation (2.0.7)
-  - TensorFlowLite (1.13.1)
-  - TensorIO (1.2.4):
+  - TensorFlowLiteC (2.4.0):
+    - TensorFlowLiteC/Core (= 2.4.0)
+  - TensorFlowLiteC/Core (2.4.0)
+  - TensorFlowLiteObjC (2.4.0):
+    - TensorFlowLiteObjC/Core (= 2.4.0)
+  - TensorFlowLiteObjC/Core (2.4.0):
+    - TensorFlowLiteC (= 2.4.0)
+  - TensorIO (1.2.5):
     - DSJSONSchemaValidation
-    - TensorIO/Core (= 1.2.4)
-  - TensorIO/Core (1.2.4):
+    - TensorIO/Core (= 1.2.5)
+  - TensorIO/Core (1.2.5):
     - DSJSONSchemaValidation
-  - TensorIO/TFLite (1.2.4):
+  - TensorIO/TFLite (1.2.5):
     - DSJSONSchemaValidation
-    - TensorFlowLite
+    - TensorFlowLiteObjC
     - TensorIO/Core
 
 DEPENDENCIES:
@@ -18,7 +24,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - DSJSONSchemaValidation
-    - TensorFlowLite
+    - TensorFlowLiteC
+    - TensorFlowLiteObjC
 
 EXTERNAL SOURCES:
   TensorIO:
@@ -26,8 +33,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DSJSONSchemaValidation: 46e30ccfa9908c49d184f453d556f55aa0aac1ff
-  TensorFlowLite: 8b9dc4eb32eac0f8cb660c66bca7604da56dcc5a
-  TensorIO: 801d07e7d7d20db0b1c617bf6ad54dd8f58e1d7d
+  TensorFlowLiteC: 09f8ac75a76caeadb19bcfa694e97454cc1ecf87
+  TensorFlowLiteObjC: 2cf94aac7c183ec3dac786fb96420c2ce6e7b820
+  TensorIO: 5e794ef10ae651002878e05cc3547fddbc3c4de0
 
 PODFILE CHECKSUM: 2e76eddda1d036cc6dc70ac8020f70ff2f67e8af
 

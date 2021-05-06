@@ -48,16 +48,16 @@ NS_ASSUME_NONNULL_BEGIN
  *   interpreted as `uint8_t` values, passed to the dequantizer block, and the resulting `float_t`
  *   bytes are copied into a numeric object
  *
- * @param bytes The output buffer to read from.
+ * @param data NSData to read from taken from an output tensor.
  * @param description A description of the data this buffer produces.
  *
  * @return instancetype An instance of `NSNumber`.
  */
 
-- (nullable instancetype)initWithBytes:(const void *)bytes description:(id<TIOLayerDescription>)description;
+- (nullable instancetype)initWithData:(NSData *)data description:(id<TIOLayerDescription>)description;
 
 /**
- * Request to fill a TFLite tensor with bytes.
+ * Requests that a conforming object fill an NSData object with bytes that can later be copied to a TFLTensor
  *
  * Bytes are copied according to the following rules, with information about quantization taken
  * from the description:
@@ -70,11 +70,21 @@ NS_ASSUME_NONNULL_BEGIN
  * - If the layer is quantized and a quantizer block is provided, the number's `float_t` vlaue
  *   is passed to the quantizer block and the `uint8_t` value it returns is copied to the buffer
  *
- * @param buffer The input buffer to copy bytes to.
  * @param description A description of the data this buffer expects.
+ * @return NSData object filled with bytes that can be copied to a TFLTensor
  */
 
-- (void)getBytes:(void *)buffer description:(id<TIOLayerDescription>)description;
+- (NSData *)dataForDescription:(id<TIOLayerDescription>)description;
+
+/**
+ * Returns a reusable data object for a given description. Call `mutableBytes` on the returned object to
+ * acquire a pointer to the underlying data buffer, which you can fill with bytes.
+ *
+ *  @param description A description of the data this buffer expects.
+ *  @return A re-usable data buffer.
+ */
+
++ (NSMutableData *)bufferForDescription:(id<TIOLayerDescription>)description;
 
 @end
 
