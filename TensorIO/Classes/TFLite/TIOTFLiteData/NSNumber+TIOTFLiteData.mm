@@ -29,12 +29,15 @@
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
+    TIODataType dtype = TIODataTypeUnknown;
     TIODataDequantizer dequantizer;
     
     if ([description isKindOfClass:TIOVectorLayerDescription.class]) {
          dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
+         dtype = ((TIOVectorLayerDescription *)description).dtype;
     } else if ([description isKindOfClass:TIOScalarLayerDescription.class]) {
         dequantizer = ((TIOScalarLayerDescription *)description).dequantizer;
+        dtype = ((TIOScalarLayerDescription *)description).dtype;
     }
     
     const void *bytes = data.bytes;
@@ -43,6 +46,10 @@
         return [self initWithFloat:dequantizer(((uint8_t *)bytes)[0])];
     } else if ( description.isQuantized && dequantizer == nil ) {
         return [self initWithUnsignedChar:((uint8_t *)bytes)[0]];
+    } else if ( dtype == TIODataTypeInt32 ) {
+        return [self initWithLong:((uint32_t *)bytes)[0]];
+    } else if ( dtype == TIODataTypeInt64 ) {
+        return [self initWithLongLong:((uint64_t *)bytes)[0]];
     } else {
         return [self initWithFloat:((float_t *)bytes)[0]];
     }
@@ -52,12 +59,15 @@
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
+    TIODataType dtype = TIODataTypeUnknown;
     TIODataQuantizer quantizer;
     
     if ([description isKindOfClass:TIOVectorLayerDescription.class]) {
         quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+        dtype = ((TIOVectorLayerDescription *)description).dtype;
     } else if ([description isKindOfClass:TIOScalarLayerDescription.class]) {
         quantizer = ((TIOScalarLayerDescription *)description).quantizer;
+        dtype = ((TIOScalarLayerDescription *)description).dtype;
     }
     
     // TODO: Cache data object so we aren't always mallocing and freeing memory
@@ -71,6 +81,10 @@
         ((uint8_t *)buffer)[0] = quantizer(self.floatValue);
     } else if ( description.isQuantized && quantizer == nil ) {
         ((uint8_t *)buffer)[0] = self.unsignedCharValue;
+    } else if ( dtype == TIODataTypeInt32 ) {
+        ((int32_t *)buffer)[0] = (int32_t)self.longValue;
+    } else if ( dtype == TIODataTypeInt64 ) {
+        ((int64_t *)buffer)[0] = (int64_t)self.longLongValue;
     } else {
         ((float_t *)buffer)[0] = self.floatValue;
     }
@@ -82,12 +96,17 @@
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
+    TIODataType dtype = TIODataTypeUnknown;
     TIODataQuantizer quantizer;
+    
+    // TODO: Just refactor this up to the TIOLayerDescription
     
     if ([description isKindOfClass:TIOVectorLayerDescription.class]) {
         quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+        dtype = ((TIOVectorLayerDescription *)description).dtype;
     } else if ([description isKindOfClass:TIOScalarLayerDescription.class]) {
         quantizer = ((TIOScalarLayerDescription *)description).quantizer;
+        dtype = ((TIOScalarLayerDescription *)description).dtype;
     }
     
     size_t length = 1;
@@ -97,6 +116,10 @@
         size = length * sizeof(uint8_t);
     } else if ( description.isQuantized && quantizer == nil ) {
         size = length * sizeof(uint8_t);
+    } else if ( dtype == TIODataTypeInt32 ) {
+        size = length * sizeof(int32_t);
+    } else if ( dtype == TIODataTypeInt64 ) {
+        size = length * sizeof(int64_t);
     } else {
         size = length * sizeof(float_t);
     }

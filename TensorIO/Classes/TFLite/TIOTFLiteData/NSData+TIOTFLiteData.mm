@@ -36,6 +36,7 @@
     
     if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
         TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
+        TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
         NSUInteger length = ((TIOVectorLayerDescription *)description).length;
 
         if ( description.isQuantized && dequantizer != nil ) {
@@ -49,6 +50,12 @@
             return data;
         } else if ( description.isQuantized && dequantizer == nil ) {
             size_t dest_size = length * sizeof(uint8_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        } else if ( dtype == TIODataTypeInt32 ) {
+            size_t dest_size = length * sizeof(int32_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        } else if ( dtype == TIODataTypeInt64 ) {
+            size_t dest_size = length * sizeof(int64_t);
             return [[NSData alloc] initWithBytes:bytes length:dest_size];
         } else {
             size_t dest_size = length * sizeof(float_t);
@@ -70,6 +77,16 @@
             return [[NSData alloc] initWithBytes:bytes length:dest_size];
         }
         break;
+        case TIODataTypeInt32: {
+            size_t dest_size = length * sizeof(int32_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        }
+        break;
+        case TIODataTypeInt64: {
+            size_t dest_size = length * sizeof(int64_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        }
+        break;
         default: {
             @throw [NSException exceptionWithName:@"Unsupported Data Type" reason:nil userInfo:nil];
             return nil;
@@ -78,8 +95,9 @@
         }
 
     } else if ( [description isKindOfClass:TIOScalarLayerDescription.class] ) {
-        TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
-        NSUInteger length = ((TIOVectorLayerDescription *)description).length;
+        TIODataDequantizer dequantizer = ((TIOScalarLayerDescription *)description).dequantizer;
+        TIODataType dtype = ((TIOScalarLayerDescription *)description).dtype;
+        NSUInteger length = ((TIOScalarLayerDescription *)description).length;
 
         if ( description.isQuantized && dequantizer != nil ) {
             size_t dest_size = length * sizeof(float_t);
@@ -92,6 +110,12 @@
             return data;
         } else if ( description.isQuantized && dequantizer == nil ) {
             size_t dest_size = length * sizeof(uint8_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        } else if ( dtype == TIODataTypeInt32 ) {
+            size_t dest_size = length * sizeof(int32_t);
+            return [[NSData alloc] initWithBytes:bytes length:dest_size];
+        } else if ( dtype == TIODataTypeInt64 ) {
+            size_t dest_size = length * sizeof(int64_t);
             return [[NSData alloc] initWithBytes:bytes length:dest_size];
         } else {
             size_t dest_size = length * sizeof(float_t);
@@ -117,6 +141,7 @@
     
     if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
         TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+        TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
         NSUInteger length = ((TIOVectorLayerDescription *)description).length;
 
         if ( description.isQuantized && quantizer != nil ) {
@@ -126,6 +151,12 @@
             }
         } else if ( description.isQuantized && quantizer == nil ) {
             size_t src_size = length * sizeof(uint8_t);
+            [self getBytes:buffer length:src_size];
+        } else if ( dtype == TIODataTypeInt32 ) {
+            size_t src_size = length * sizeof(int32_t);
+            [self getBytes:buffer length:src_size];
+        } else if ( dtype == TIODataTypeInt64 ) {
+            size_t src_size = length * sizeof(int64_t);
             [self getBytes:buffer length:src_size];
         } else {
             size_t src_size = length * sizeof(float_t);
@@ -147,6 +178,16 @@
             [self getBytes:buffer length:src_size];
         }
         break;
+        case TIODataTypeInt32: {
+            size_t src_size = length * sizeof(int32_t);
+            [self getBytes:buffer length:src_size];
+        }
+        break;
+        case TIODataTypeInt64: {
+            size_t src_size = length * sizeof(int64_t);
+            [self getBytes:buffer length:src_size];
+        }
+        break;
         default: {
             @throw [NSException exceptionWithName:@"Unsupported Data Type" reason:nil userInfo:nil];
         }
@@ -154,8 +195,9 @@
         }
 
     } else if ( [description isKindOfClass:TIOScalarLayerDescription.class] ) {
-        TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
-        NSUInteger length = ((TIOVectorLayerDescription *)description).length;
+        TIODataQuantizer quantizer = ((TIOScalarLayerDescription *)description).quantizer;
+        TIODataType dtype = ((TIOScalarLayerDescription *)description).dtype;
+        NSUInteger length = ((TIOScalarLayerDescription *)description).length;
 
         if ( description.isQuantized && quantizer != nil ) {
             float_t *bytes = (float_t *)self.bytes;
@@ -164,6 +206,12 @@
             }
         } else if ( description.isQuantized && quantizer == nil ) {
             size_t src_size = length * sizeof(uint8_t);
+            [self getBytes:buffer length:src_size];
+        } else if ( dtype == TIODataTypeInt32 ) {
+            size_t src_size = length * sizeof(int32_t);
+            [self getBytes:buffer length:src_size];
+        } else if ( dtype == TIODataTypeInt64 ) {
+            size_t src_size = length * sizeof(int64_t);
             [self getBytes:buffer length:src_size];
         } else {
             size_t src_size = length * sizeof(float_t);
@@ -182,12 +230,17 @@
     
     if ( [description isKindOfClass:TIOVectorLayerDescription.class] ) {
         TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
+        TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
         size_t length = ((TIOVectorLayerDescription *)description).length;
         
         if ( description.isQuantized && quantizer != nil ) {
             size = length * sizeof(uint8_t);
         } else if ( description.isQuantized && quantizer == nil ) {
             size = length * sizeof(uint8_t);
+        } else if ( dtype == TIODataTypeInt32 ) {
+            size = length * sizeof(int32_t);
+        } else if ( dtype == TIODataTypeInt64 ) {
+            size = length * sizeof(int64_t);
         } else {
             size = length * sizeof(float_t);
         }
@@ -205,6 +258,14 @@
             size = length * sizeof(float_t);
         }
         break;
+        case TIODataTypeInt32: {
+            size = length * sizeof(int32_t);
+        }
+        break;
+        case TIODataTypeInt64: {
+            size = length * sizeof(int64_t);
+        }
+        break;
         default: {
             @throw [NSException exceptionWithName:@"Unsupported Data Type" reason:nil userInfo:nil];
         }
@@ -212,13 +273,18 @@
         }
         
     } else if ( [description isKindOfClass:TIOScalarLayerDescription.class] ) {
-        TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
-        size_t length = ((TIOVectorLayerDescription *)description).length;
+        TIODataQuantizer quantizer = ((TIOScalarLayerDescription *)description).quantizer;
+        TIODataType dtype = ((TIOScalarLayerDescription *)description).dtype;
+        size_t length = ((TIOScalarLayerDescription *)description).length;
         
         if ( description.isQuantized && quantizer != nil ) {
             size = length * sizeof(uint8_t);
         } else if ( description.isQuantized && quantizer == nil ) {
             size = length * sizeof(uint8_t);
+        } else if ( dtype == TIODataTypeInt32 ) {
+            size = length * sizeof(int32_t);
+        } else if ( dtype == TIODataTypeInt64 ) {
+            size = length * sizeof(int64_t);
         } else {
             size = length * sizeof(float_t);
         }

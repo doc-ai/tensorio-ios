@@ -29,6 +29,7 @@
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
+    TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
     TIODataDequantizer dequantizer = ((TIOVectorLayerDescription *)description).dequantizer;
     NSUInteger length = ((TIOVectorLayerDescription *)description).length;
     NSMutableArray *array = NSMutableArray.array;
@@ -42,6 +43,14 @@
     } else if ( description.isQuantized && dequantizer == nil ) {
         for ( NSUInteger i = 0; i < length; i++ ) {
             [array addObject:@(((uint8_t *)bytes)[i])];
+        }
+    } else if ( dtype == TIODataTypeInt32 ) {
+        for ( NSUInteger i = 0; i < length; i++ ) {
+            [array addObject:@(((int32_t *)bytes)[i])];
+        }
+    } else if ( dtype == TIODataTypeInt64 ) {
+        for ( NSUInteger i = 0; i < length; i++ ) {
+            [array addObject:@(((int64_t *)bytes)[i])];
         }
     } else {
         for ( NSUInteger i = 0; i < length; i++ ) {
@@ -60,6 +69,7 @@
         assert(self.count == 1);
     }
 
+    TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
 
     // TODO: Cache data object so we aren't always mallocing and freeing memory
@@ -77,6 +87,14 @@
         for ( NSInteger i = 0; i < self.count; i++ ) {
             ((uint8_t *)buffer)[i] = ((NSNumber *)self[i]).unsignedCharValue;
         }
+    } else if ( dtype == TIODataTypeInt32 ) {
+        for ( NSInteger i = 0; i < self.count; i++ ) {
+            ((int32_t *)buffer)[i] = (int32_t)((NSNumber *)self[i]).longValue;
+        }
+    } else if ( dtype == TIODataTypeInt64 ) {
+        for ( NSInteger i = 0; i < self.count; i++ ) {
+            ((int64_t *)buffer)[i] = (int64_t)((NSNumber *)self[i]).longLongValue;
+        }
     } else {
         for ( NSInteger i = 0; i < self.count; i++ ) {
             ((float_t *)buffer)[i] = ((NSNumber *)self[i]).floatValue;
@@ -90,6 +108,7 @@
     assert([description isKindOfClass:TIOVectorLayerDescription.class]
         || [description isKindOfClass:TIOScalarLayerDescription.class]);
     
+    TIODataType dtype = ((TIOVectorLayerDescription *)description).dtype;
     TIODataQuantizer quantizer = ((TIOVectorLayerDescription *)description).quantizer;
     
     size_t length = 0;
@@ -105,6 +124,10 @@
         size = length * sizeof(uint8_t);
     } else  if ( description.isQuantized && quantizer == nil ) {
         size = length * sizeof(uint8_t);
+    } else if ( dtype == TIODataTypeInt32 ) {
+        size = length * sizeof(int32_t);
+    } else if ( dtype == TIODataTypeInt64 ) {
+        size = length * sizeof(int64_t);
     } else {
         size = length * sizeof(float_t);
     }
